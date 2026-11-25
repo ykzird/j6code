@@ -38,7 +38,7 @@ export class ScratchUnavailableError extends Schema.TaggedError<ScratchUnavailab
     if (this.repositoryRoot === undefined) {
       return "Threads without a project are not available on this environment.";
     }
-    return `Threads without a project are off because the T3 home ${this.baseDir} is inside the Git repository ${this.repositoryRoot}. If that repository was created by mistake, move ${this.repositoryRoot}/.git out of the way; otherwise point J6CODE_HOME (or --base-dir) at a folder outside it. Then restart J6 Code.`;
+    return `Threads without a project are off because the J6 home ${this.baseDir} is inside the Git repository ${this.repositoryRoot}. If that repository was created by mistake, move ${this.repositoryRoot}/.git out of the way; otherwise point J6CODE_HOME (or --base-dir) at a folder outside it. Then restart J6 Code.`;
   }
 }
 
@@ -66,7 +66,7 @@ export class ScratchProjectError extends Schema.TaggedError<ScratchProjectError>
   }
 }
 
-/** Where No project threads keep their folders, whether or not this T3 home allows them. */
+/** Where No project threads keep their folders, whether or not this J6 home allows them. */
 export const scratchFolderRoot = (baseDir: string, path: Path.Path) =>
   path.resolve(baseDir, "scratch");
 

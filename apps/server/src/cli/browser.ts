@@ -244,7 +244,7 @@ const browserSetupCommand = Command.make("setup", { baseDir: baseDirFlag }).pipe
           );
         }
         yield* Console.log(
-          "Installed the browser's fonts. Restart the T3 server if browser tabs were already open.",
+          "Installed the browser's fonts. Restart the J6 server if browser tabs were already open.",
         );
       }
 

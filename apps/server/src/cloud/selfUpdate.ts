@@ -82,7 +82,7 @@ export const pruneRuntimesOnStart = Effect.fn("cloud.server_self_update.prune_on
     const platform = yield* HostProcess.Platform;
     const executablePath = yield* HostProcess.ExecutablePath;
     const { entryPath } = pinnedRuntimePaths(path, input.baseDir, packageJson.version, platform);
-    // The executable path is resolved, so it names the real path of a symlinked T3 home.
+    // The executable path is resolved, so it names the real path of a symlinked J6 home.
     const realEntryPath = yield* fs.realPath(entryPath).pipe(Effect.orElseSucceed(() => entryPath));
     if (!input.managed && executablePath !== entryPath && executablePath !== realEntryPath) {
       return [];
@@ -94,7 +94,7 @@ export const pruneRuntimesOnStart = Effect.fn("cloud.server_self_update.prune_on
         ? Option.none<string>()
         : yield* fs.readFile(unitPath).pipe(Effect.map(decodeServiceUnit), Effect.option);
     const program = Option.flatMapNullishOr(unit, bootServiceProgramOf);
-    // The unit may name it through another spelling of a symlinked T3 home.
+    // The unit may name it through another spelling of a symlinked J6 home.
     const references = Option.isNone(program)
       ? []
       : [

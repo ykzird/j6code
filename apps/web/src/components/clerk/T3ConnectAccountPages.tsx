@@ -22,7 +22,7 @@ export const T3_CONNECT_ACCOUNT_PAGES = [
     content: <T3ConnectUserProfilePage />,
   },
   {
-    label: "T3 Chat",
+    label: "J6 Code",
     url: "j6-chat",
     icon: <MessageSquareIcon className="size-4" />,
     content: <T3ChatUserProfilePage />,

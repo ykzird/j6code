@@ -13,7 +13,7 @@ import * as DesktopEnvironment from "../app/DesktopEnvironment.ts";
 import { m } from "../i18n/messages.ts";
 import { BACKEND_QUIT_STOP_TIMEOUT } from "./DesktopBackendManager.ts";
 
-// The fields of the server's `server-runtime.json` that identify the owner of a T3 home.
+// The fields of the server's `server-runtime.json` that identify the owner of a J6 home.
 const HomeOwnerRuntimeState = Schema.Struct({
   pid: Schema.Int,
   port: Schema.Int,
@@ -36,7 +36,7 @@ const isProcessAlive = (pid: number): boolean => {
 };
 
 /**
- * Whether a server holds the T3 home's ownership lock (an exclusive transaction on
+ * Whether a server holds the J6 home's ownership lock (an exclusive transaction on
  * `server-owner.sqlite`). A read-only read is refused with SQLITE_BUSY only while it is held.
  */
 const isHomeOwnershipLocked = Effect.fn("DesktopHomeOwner.isHomeOwnershipLocked")(function* () {
@@ -78,7 +78,7 @@ export const awaitHomeOwnershipRelease = Effect.fn("DesktopHomeOwner.awaitHomeOw
   }),
 );
 
-/** The live server recorded as owning the desktop's T3 home. Only call once the ownership lock is known held: a live PID alone may be reused. */
+/** The live server recorded as owning the desktop's J6 home. Only call once the ownership lock is known held: a live PID alone may be reused. */
 export const readLiveHomeOwner = Effect.fn("DesktopHomeOwner.readLiveHomeOwner")(function* () {
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
@@ -96,7 +96,7 @@ export const homeOwnedMessage = (owner: Option.Option<HomeOwner>): string =>
     onNone: () =>
       m(
         msg(
-          "Another J6 Code server, such as the background service, is using this data directory, or an older background service is set up for it. Stop that server or try `j6 update`. If the older launcher cannot update, run `j6 service uninstall` and optionally reinstall with `j6 service install` from a current CLI. Use `npx j6@latest` if `j6` is missing or outdated, and pass `--base-dir` with the service's T3 home to each command. Then reopen J6 Code. You can also set a separate J6CODE_HOME and pair with the running server.",
+          "Another J6 Code server, such as the background service, is using this data directory, or an older background service is set up for it. Stop that server or try `j6 update`. If the older launcher cannot update, run `j6 service uninstall` and optionally reinstall with `j6 service install` from a current CLI. Use `npx j6@latest` if `j6` is missing or outdated, and pass `--base-dir` with the service's J6 home to each command. Then reopen J6 Code. You can also set a separate J6CODE_HOME and pair with the running server.",
         ),
       ),
     onSome: (owner) => {
@@ -109,13 +109,13 @@ export const homeOwnedMessage = (owner: Option.Option<HomeOwner>): string =>
         return owner.serverVersion
           ? m(
               msg(
-                "The J6 Code background service is using this T3 home (PID {pid}, port {port}, version {version}). Stop it with `j6 service uninstall`, passing `--base-dir` with this T3 home, and reopen J6 Code. You can also set a separate J6CODE_HOME and pair with the running server.",
+                "The J6 Code background service is using this J6 home (PID {pid}, port {port}, version {version}). Stop it with `j6 service uninstall`, passing `--base-dir` with this J6 home, and reopen J6 Code. You can also set a separate J6CODE_HOME and pair with the running server.",
               ),
               variables,
             )
           : m(
               msg(
-                "The J6 Code background service is using this T3 home (PID {pid}, port {port}). Stop it with `j6 service uninstall`, passing `--base-dir` with this T3 home, and reopen J6 Code. You can also set a separate J6CODE_HOME and pair with the running server.",
+                "The J6 Code background service is using this J6 home (PID {pid}, port {port}). Stop it with `j6 service uninstall`, passing `--base-dir` with this J6 home, and reopen J6 Code. You can also set a separate J6CODE_HOME and pair with the running server.",
               ),
               variables,
             );
@@ -123,13 +123,13 @@ export const homeOwnedMessage = (owner: Option.Option<HomeOwner>): string =>
       return owner.serverVersion
         ? m(
             msg(
-              "Another J6 Code server (for example `j6 serve`, or one started over SSH) is using this T3 home (PID {pid}, port {port}, version {version}). If a J6 Code app on another machine started it over SSH, that app restarts it: remove or disconnect that SSH environment there, or quit that app. Then stop the server, and reopen J6 Code. You can also set a separate J6CODE_HOME and pair with the running server.",
+              "Another J6 Code server (for example `j6 serve`, or one started over SSH) is using this J6 home (PID {pid}, port {port}, version {version}). If a J6 Code app on another machine started it over SSH, that app restarts it: remove or disconnect that SSH environment there, or quit that app. Then stop the server, and reopen J6 Code. You can also set a separate J6CODE_HOME and pair with the running server.",
             ),
             variables,
           )
         : m(
             msg(
-              "Another J6 Code server (for example `j6 serve`, or one started over SSH) is using this T3 home (PID {pid}, port {port}). If a J6 Code app on another machine started it over SSH, that app restarts it: remove or disconnect that SSH environment there, or quit that app. Then stop the server, and reopen J6 Code. You can also set a separate J6CODE_HOME and pair with the running server.",
+              "Another J6 Code server (for example `j6 serve`, or one started over SSH) is using this J6 home (PID {pid}, port {port}). If a J6 Code app on another machine started it over SSH, that app restarts it: remove or disconnect that SSH environment there, or quit that app. Then stop the server, and reopen J6 Code. You can also set a separate J6CODE_HOME and pair with the running server.",
             ),
             variables,
           );

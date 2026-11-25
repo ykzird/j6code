@@ -1514,7 +1514,7 @@ export const ServerSettings = Schema.Struct({
    * and tasks on another machine; tasks already running there finish.
    */
   linkedEnvironmentsEnabled: Schema.Boolean.pipe(Schema.withDecodingDefault(Effect.succeed(false))),
-  /** Beta: durable workflows from the workflows folder of the T3 home. Off runs none of them. */
+  /** Beta: durable workflows from the workflows folder of the J6 home. Off runs none of them. */
   workflowsEnabled: Schema.Boolean.pipe(Schema.withDecodingDefault(Effect.succeed(false))),
   /** Skipped top-level runs kept per workflow; older ones are deleted. */
   workflowSkippedRunsKept: WorkflowSkippedRunsKept.pipe(

@@ -205,8 +205,8 @@ function readSessionClerkToken(
 
 const SIGN_IN_BEFORE = {
   deregister: msg("Sign in to J6 Connect before deregistering an environment."),
-  "link-t3chat": msg("Sign in to J6 Connect before linking T3 Chat."),
-  "unlink-t3chat": msg("Sign in to J6 Connect before unlinking T3 Chat."),
+  "link-t3chat": msg("Sign in to J6 Connect before linking J6 Code."),
+  "unlink-t3chat": msg("Sign in to J6 Connect before unlinking J6 Code."),
 };
 
 function requireSessionClerkToken(
@@ -232,7 +232,7 @@ export const deregisterManagedRelayEnvironment = Effect.fn(
   yield* relay.unlinkEnvironment({ clerkToken, environmentId: input.environmentId });
 });
 
-/** Returns the T3 Chat page URL where the signed-in user confirms the link. */
+/** Returns the J6 Code page URL where the signed-in user confirms the link. */
 export const createManagedRelayT3ChatLinkRequest = Effect.fn(
   "clientRuntime.managedRelaySession.createT3ChatLinkRequest",
 )(function* (registry: AtomRegistry.AtomRegistry, input: { readonly accountId: string }) {

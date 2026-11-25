@@ -660,9 +660,9 @@ export function withMessageSenderNote(
   const agent = message.createdBy === "agent";
   const note =
     agent && message.linkedSender !== undefined
-      ? `[J6 Code: the agent in T3 thread ${JSON.stringify(message.linkedSender.threadId)} on linked environment ${JSON.stringify(message.linkedSender.environmentId)} sent this message, not the user.]`
+      ? `[J6 Code: the agent in J6 thread ${JSON.stringify(message.linkedSender.threadId)} on linked environment ${JSON.stringify(message.linkedSender.environmentId)} sent this message, not the user.]`
       : agent && message.senderThreadId !== undefined
-        ? `[J6 Code: the agent in T3 thread ${JSON.stringify(message.senderThreadId)} sent this message, not the user.]`
+        ? `[J6 Code: the agent in J6 thread ${JSON.stringify(message.senderThreadId)} sent this message, not the user.]`
         : message.scheduledTaskId !== undefined
           ? `[J6 Code: scheduled task ${JSON.stringify(message.scheduledTaskId)} sent this prompt, not the user typing in this chat.]`
           : agent && message.creationSource === "mcp"
@@ -1892,7 +1892,7 @@ const OrchestrationV2LinkRequestFields = {
 } as const;
 
 /**
- * A report the user asked the agent to send to the T3 team, shown for approval. Send stores and
+ * A report the user asked the agent to send to the J6 team, shown for approval. Send stores and
  * sends exactly `preview`, with `conversationTrace` as its trace if the user included the
  * conversation. Once answered, the card keeps only what was sent.
  */

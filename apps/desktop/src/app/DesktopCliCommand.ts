@@ -117,7 +117,7 @@ export const make = Effect.gen(function* () {
 
   // PATH can reach the regular launcher directly; removal still requires isOurLink.
   const runsOurLauncher = Effect.fn("DesktopCliCommand.runsOurLauncher")(
-    // Another T3 home's link is marked too, so compare where it leads, not the marker alone.
+    // Another J6 home's link is marked too, so compare where it leads, not the marker alone.
     function* (candidate: string) {
       const [resolved, ours] = yield* Effect.all([fs.realPath(candidate), fs.realPath(launcher)]);
       if (resolved !== ours) return false;
@@ -240,7 +240,7 @@ export const make = Effect.gen(function* () {
     }
     const launcherPath = (yield* exists(launcher)) ? launcher : null;
     const found = yield* installedAt;
-    // Our link into another T3 home is not this app's command; Install updates it in place.
+    // Our link into another J6 home is not this app's command; Install updates it in place.
     const installed =
       windows || (Option.isSome(found) && (yield* leadsHere(found.value)))
         ? found
@@ -318,7 +318,7 @@ export const make = Effect.gen(function* () {
       if (Option.getOrUndefined(target) === launcher) return yield* state;
     }
     const shadowedBy = yield* foreignFirstOnPath;
-    // Our own link into another T3 home runs first too; it is the one this install updates.
+    // Our own link into another J6 home runs first too; it is the one this install updates.
     if (Option.isSome(shadowedBy) && shadowedBy.value !== replaced) {
       return yield* fail(
         `Another j6 at ${shadowedBy.value} runs first in a new terminal. Remove it, or run the launcher directly at ${launcher}.`,
@@ -424,7 +424,7 @@ export const make = Effect.gen(function* () {
       if (!freshInstall) {
         return yield* logInfo("left the j6 command to Settings on an existing install");
       }
-      // Another T3 home's app owns the existing link; only Install in Settings may take it over.
+      // Another J6 home's app owns the existing link; only Install in Settings may take it over.
       const existing = Option.getOrUndefined(yield* installedAt);
       if (existing !== undefined) {
         const target = yield* fs.readLink(existing).pipe(Effect.option);

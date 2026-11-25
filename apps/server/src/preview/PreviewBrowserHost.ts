@@ -75,7 +75,7 @@ export class PreviewBrowserRootError extends Schema.TaggedError<PreviewBrowserRo
   {},
 ) {
   override get message(): string {
-    return "T3 server is running as root; Chrome's sandbox cannot start. Run T3 as a nonroot user. Otherwise set `J6CODE_SERVER_BROWSER_SANDBOX=0` in the T3 server's environment and restart the server; this disables Chrome's sandbox. Manual: `J6CODE_SERVER_BROWSER_SANDBOX=0 j6 serve`. Systemd: add `Environment=J6CODE_SERVER_BROWSER_SANDBOX=0` under `[Service]`, reload systemd, then restart the service. `j6 browser setup` cannot fix root sandboxing.";
+    return "J6 server is running as root; Chrome's sandbox cannot start. Run J6 as a nonroot user. Otherwise set `J6CODE_SERVER_BROWSER_SANDBOX=0` in the J6 server's environment and restart the server; this disables Chrome's sandbox. Manual: `J6CODE_SERVER_BROWSER_SANDBOX=0 j6 serve`. Systemd: add `Environment=J6CODE_SERVER_BROWSER_SANDBOX=0` under `[Service]`, reload systemd, then restart the service. `j6 browser setup` cannot fix root sandboxing.";
   }
 }
 

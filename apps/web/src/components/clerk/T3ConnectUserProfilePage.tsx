@@ -158,7 +158,7 @@ function T3ConnectTunnelUsage() {
               {tunnelUpgradeCopy(usage.upgrade, m)}{" "}
               {usage.upgrade === "link" ? (
                 <InlineButton disabled={t3Chat.pending !== null} onClick={() => void t3Chat.link()}>
-                  {t3Chat.pending === "link" ? gt("Opening…") : gt("Link T3 Chat")}
+                  {t3Chat.pending === "link" ? gt("Opening…") : gt("Link J6 Code")}
                 </InlineButton>
               ) : (
                 <a
@@ -167,7 +167,7 @@ function T3ConnectTunnelUsage() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <T>Upgrade on T3 Chat</T>
+                  <T>Upgrade on J6 Code</T>
                 </a>
               )}
             </>
@@ -328,7 +328,7 @@ export function T3ConnectUserProfilePage() {
                 </EmptyTitle>
                 <EmptyDescription>
                   <T>
-                    Link an environment from its local Settings to make it available through T3
+                    Link an environment from its local Settings to make it available through J6
                     Connect.
                   </T>
                 </EmptyDescription>

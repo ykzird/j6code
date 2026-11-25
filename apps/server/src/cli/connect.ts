@@ -380,7 +380,7 @@ export const waitForReachability = Effect.fn("cloud.cli.wait_for_reachability")(
   yield* Console.error(
     formatAlertBox(
       last === null
-        ? "✕ Could not check J6 Connect\n  The T3 server on this machine did not answer.\n  Fix: run `j6 service status`, then `j6 connect status`."
+        ? "✕ Could not check J6 Connect\n  The J6 server on this machine did not answer.\n  Fix: run `j6 service status`, then `j6 connect status`."
         : formatReachabilityFailure(last),
     ),
   );

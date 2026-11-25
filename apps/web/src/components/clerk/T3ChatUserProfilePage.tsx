@@ -31,7 +31,7 @@ function planLabel(link: RelayT3ChatLink): ReactNode {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Upgrade on T3 Chat
+            Upgrade on J6 Code
           </a>{" "}
           to Premier for <Var>{T3CHAT_PLAN_TUNNEL_LIMITS.premier}</Var>.
         </T>
@@ -45,7 +45,7 @@ function planLabel(link: RelayT3ChatLink): ReactNode {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Upgrade on T3 Chat
+            Upgrade on J6 Code
           </a>{" "}
           for more tunnels
         </T>
@@ -53,7 +53,7 @@ function planLabel(link: RelayT3ChatLink): ReactNode {
   }
 }
 
-/** Links a T3 Chat account so paid subscribers get more tunnels. */
+/** Links a J6 Code account so paid subscribers get more tunnels. */
 export function T3ChatUserProfilePage() {
   const { linkState, pending, linkUrl, link: handleLink, unlink: handleUnlink } = useT3ChatLink();
   const usage = useManagedTunnelUsage();
@@ -64,9 +64,9 @@ export function T3ChatUserProfilePage() {
 
   return (
     <ClerkUserProfilePage
-      title="T3 Chat"
+      title="J6 Code"
       description={gt(
-        "Link a paid T3 Chat account for more J6 Connect tunnels: up to {pro} with Pro, {premier} with Premier.",
+        "Link a paid J6 Code account for more J6 Connect tunnels: up to {pro} with Pro, {premier} with Premier.",
         { pro: T3CHAT_PLAN_TUNNEL_LIMITS.pro, premier: T3CHAT_PLAN_TUNNEL_LIMITS.premier },
       )}
       action={
@@ -80,13 +80,13 @@ export function T3ChatUserProfilePage() {
       {linkState.error ? (
         <div className="border-t py-3 text-xs" role="alert">
           <p className="font-medium text-destructive-foreground">
-            <T>Could not load T3 Chat link</T>
+            <T>Could not load J6 Code link</T>
           </p>
           <p className="mt-0.5 text-muted-foreground">{linkState.error}</p>
         </div>
       ) : data === null ? null : !data.available ? (
         <p className="border-t py-4 text-xs text-muted-foreground">
-          <T>This J6 Connect server does not support T3 Chat linking.</T>
+          <T>This J6 Connect server does not support J6 Code linking.</T>
         </p>
       ) : (
         <ul className="border-t">
@@ -128,7 +128,7 @@ export function T3ChatUserProfilePage() {
                 </Button>
               ) : (
                 <Button size="sm" disabled={pending !== null} onClick={() => void handleLink()}>
-                  {pending === "link" ? gt("Opening…") : gt("Link T3 Chat")}
+                  {pending === "link" ? gt("Opening…") : gt("Link J6 Code")}
                 </Button>
               )}
             </div>

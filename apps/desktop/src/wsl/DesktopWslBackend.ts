@@ -128,7 +128,7 @@ export const layer = Layer.effect(
                 Ref.set(
                   preflightErrorRef,
                   Option.some(
-                    "Another J6 Code server is using this distro's T3 home, or an older background service is set up for it. Stop that server or pair with it, or try `j6 update` in the distro. If the older launcher cannot update, run `j6 service uninstall` and optionally reinstall with `j6 service install` from a current CLI in the distro. Use `npx j6@latest` if `j6` is missing or outdated, and pass `--base-dir` with the service's T3 home to each command.",
+                    "Another J6 Code server is using this distro's J6 home, or an older background service is set up for it. Stop that server or pair with it, or try `j6 update` in the distro. If the older launcher cannot update, run `j6 service uninstall` and optionally reinstall with `j6 service install` from a current CLI in the distro. Use `npx j6@latest` if `j6` is missing or outdated, and pass `--base-dir` with the service's J6 home to each command.",
                   ),
                 ),
               ),

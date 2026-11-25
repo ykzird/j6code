@@ -23,20 +23,20 @@ export function tunnelUpgradeCopy(
   switch (upgrade) {
     case "link":
       return resolve(
-        msg("Link T3 Chat Pro for up to {pro} tunnels, or Premier for up to {premier}.", {
+        msg("Link J6 Code Pro for up to {pro} tunnels, or Premier for up to {premier}.", {
           pro,
           premier,
         }),
       );
     case "pro":
       return resolve(
-        msg("Upgrade to T3 Chat Pro for up to {pro} tunnels, or Premier for up to {premier}.", {
+        msg("Upgrade to J6 Code Pro for up to {pro} tunnels, or Premier for up to {premier}.", {
           pro,
           premier,
         }),
       );
     case "premier":
-      return resolve(msg("Upgrade to T3 Chat Premier for up to {premier} tunnels.", { premier }));
+      return resolve(msg("Upgrade to J6 Code Premier for up to {premier} tunnels.", { premier }));
   }
 }
 
@@ -105,14 +105,14 @@ export function TunnelLimitAlert({
   const action =
     upgrade === "link" && onLinkT3Chat ? (
       <Button size="sm" onClick={onLinkT3Chat}>
-        <T>Link T3 Chat</T>
+        <T>Link J6 Code</T>
       </Button>
     ) : upgrade === "pro" || upgrade === "premier" ? (
       <Button
         size="sm"
         render={<a href={T3CHAT_SUBSCRIPTION_URL} target="_blank" rel="noopener noreferrer" />}
       >
-        <T>Upgrade on T3 Chat</T>
+        <T>Upgrade on J6 Code</T>
       </Button>
     ) : onManageTunnels ? (
       <Button size="sm" variant="outline" onClick={onManageTunnels}>
@@ -127,9 +127,9 @@ export function TunnelLimitAlert({
       </AlertTitle>
       <AlertDescription>
         {upgrade === "link"
-          ? gt("Switch to Tailscale or get more tunnels by linking your T3 Chat sub (sorry!)")
+          ? gt("Switch to Tailscale or get more tunnels by linking your J6 Code sub (sorry!)")
           : upgrade
-            ? gt("Switch to Tailscale or get more tunnels by upgrading your T3 Chat sub (sorry!)")
+            ? gt("Switch to Tailscale or get more tunnels by upgrading your J6 Code sub (sorry!)")
             : gt("Switch to Tailscale or deregister an environment you no longer use (sorry!)")}
       </AlertDescription>
       {action ? <AlertAction>{action}</AlertAction> : null}

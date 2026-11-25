@@ -33,7 +33,7 @@ function reportFailure(title: string, cause: unknown) {
   });
 }
 
-/** Starts and removes the T3 Chat link that raises the J6 Connect tunnel cap. */
+/** Starts and removes the J6 Code link that raises the J6 Connect tunnel cap. */
 export function useT3ChatLink() {
   const linkState = useManagedRelayT3ChatLink();
   const createLinkRequest = useAtomCommand(createManagedRelayT3ChatLinkRequestCommand, {
@@ -69,7 +69,7 @@ export function useT3ChatLink() {
       setLinkUrl(null);
       linkState.refresh();
     } else if (!isAtomCommandInterrupted(result)) {
-      reportFailure(m(msg("Could not unlink T3 Chat")), squashAtomCommandFailure(result));
+      reportFailure(m(msg("Could not unlink J6 Code")), squashAtomCommandFailure(result));
     }
     setPending(null);
   };

@@ -147,10 +147,10 @@ export function useManagedRelayDevices() {
   };
 }
 
-/** How this account can raise its tunnel cap: link T3 Chat, or upgrade the linked plan. */
+/** How this account can raise its tunnel cap: link J6 Code, or upgrade the linked plan. */
 export type ManagedTunnelUpgrade = "link" | "pro" | "premier" | null;
 
-// Mirrors the relay's cap: a manual override is exact, otherwise the T3 Chat plan raises the default.
+// Mirrors the relay's cap: a manual override is exact, otherwise the J6 Code plan raises the default.
 function managedTunnelCap(t3Chat: RelayT3ChatLinkResponse): {
   readonly limit: number;
   readonly upgrade: ManagedTunnelUpgrade;
@@ -171,7 +171,7 @@ function managedTunnelCap(t3Chat: RelayT3ChatLinkResponse): {
   }
 }
 
-/** Refetches the account's environments and T3 Chat plan after a tunnel changes. */
+/** Refetches the account's environments and J6 Code plan after a tunnel changes. */
 export function refreshManagedTunnelUsage() {
   const accountId = appAtomRegistry.get(managedRelaySessionAtom)?.accountId;
   if (!accountId) return;
