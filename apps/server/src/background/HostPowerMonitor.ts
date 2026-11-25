@@ -1,4 +1,4 @@
-import type { HostPowerSnapshot } from "@t3tools/contracts";
+import type { HostPowerSnapshot } from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -17,7 +17,7 @@ export class HostPowerMonitor extends Context.Service<
     readonly report: (snapshot: HostPowerSnapshot) => Effect.Effect<void>;
     readonly streamChanges: Stream.Stream<HostPowerSnapshot>;
   }
->()("t3/background/HostPowerMonitor") {}
+>()("j6/background/HostPowerMonitor") {}
 
 const makeUnknownSnapshot = (
   source: HostPowerSnapshot["source"],

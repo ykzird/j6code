@@ -6,8 +6,8 @@ import * as Exit from "effect/Exit";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { SpawnExecutableResolution } from "@t3tools/shared/shell";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { SpawnExecutableResolution } from "@j6/shared/shell";
 
 import { createMuseSdkHostEffect, MuseSdkError } from "./sdk.ts";
 
@@ -21,7 +21,7 @@ export class MuseUsageHome extends Context.Service<
       readonly awaitRefresh: boolean;
     }) => Effect.Effect<Option.Option<string | undefined>>;
   }
->()("@t3tools/provider-muse/server/MuseUsageHome") {}
+>()("@j6/provider-muse/server/MuseUsageHome") {}
 
 const make = Effect.gen(function* () {
   const scope = yield* Effect.scope;

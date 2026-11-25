@@ -1,6 +1,6 @@
-import * as ProviderEventLoggers from "@t3tools/provider-core/server/ProviderEventLoggers";
+import * as ProviderEventLoggers from "@j6/provider-core/server/ProviderEventLoggers";
 import * as DatabaseMigrationProgress from "./persistence/DatabaseMigrationProgress.ts";
-import type { RelayManagedEndpointRuntimeConfig } from "@t3tools/contracts/relay";
+import type { RelayManagedEndpointRuntimeConfig } from "@j6/contracts/relay";
 import * as Random from "effect/Random";
 import * as EnvironmentKeys from "./cloud/environmentKeys.ts";
 import * as AssetSigner from "./assets/AssetSigner.ts";
@@ -19,9 +19,9 @@ import * as NodeHttp from "node:http";
 import * as NodeHttpServer from "@effect/platform-node/NodeHttpServer";
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { EnvironmentHttpApi, type RepositoryIdentity } from "@t3tools/contracts";
-import * as FeatureFlags from "@t3tools/shared/FeatureFlags";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import { EnvironmentHttpApi, type RepositoryIdentity } from "@j6/contracts";
+import * as FeatureFlags from "@j6/shared/FeatureFlags";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Cause from "effect/Cause";
 import * as Duration from "effect/Duration";
 import * as Deferred from "effect/Deferred";
@@ -72,14 +72,14 @@ import * as ServerLifecycleEvents from "./serverLifecycleEvents.ts";
 import * as ModelManifest from "./provider/ModelManifest.ts";
 import * as ResetCreditCoordinator from "./provider/resetCreditCoordinator.ts";
 import * as EventNdjsonLogger from "./provider/EventNdjsonLogger.ts";
-import * as ProviderLatestVersions from "@t3tools/provider-core/server/ProviderLatestVersions";
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
-import * as OpenCodeRuntime from "@t3tools/provider-opencode/server/OpenCodeRuntime";
-import * as OpenCodeServerLedger from "@t3tools/provider-opencode/server/OpenCodeServerLedger";
+import * as ProviderLatestVersions from "@j6/provider-core/server/ProviderLatestVersions";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
+import * as OpenCodeRuntime from "@j6/provider-opencode/server/OpenCodeRuntime";
+import * as OpenCodeServerLedger from "@j6/provider-opencode/server/OpenCodeServerLedger";
 import * as ProviderHostLive from "./provider/ProviderHostLive.ts";
 import * as ProviderMaintenanceRunner from "./provider/providerMaintenanceRunner.ts";
 import * as DocumentText from "./provider/DocumentText.ts";
-import * as AcpRegistrySupport from "@t3tools/provider-acp-registry/server/AcpRegistrySupport";
+import * as AcpRegistrySupport from "@j6/provider-acp-registry/server/AcpRegistrySupport";
 import * as CheckpointDiffQuery from "./checkpointing/CheckpointDiffQuery.ts";
 import * as NativeChildWorkQuery from "./orchestration-v2/NativeChildWorkQuery.ts";
 import * as CheckpointStore from "./checkpointing/CheckpointStore.ts";
@@ -160,7 +160,7 @@ import * as GitWorkflowService from "./git/GitWorkflowService.ts";
 import * as ReviewService from "./review/ReviewService.ts";
 import * as SourceControlProviderRegistry from "./sourceControl/SourceControlProviderRegistry.ts";
 import * as PullRequestReadCache from "./pullRequest/PullRequestReadCache.ts";
-import * as SourceControlRateLimit from "@t3tools/source-control-core/server/SourceControlRateLimit";
+import * as SourceControlRateLimit from "@j6/source-control-core/server/SourceControlRateLimit";
 import * as SourceControlRepositoryService from "./sourceControl/SourceControlRepositoryService.ts";
 import * as WorktreeSetupTracker from "./project/WorktreeSetupTracker.ts";
 import * as Observability from "./observability/Observability.ts";
@@ -222,9 +222,9 @@ import * as ResourceMonitorBinary from "./resourceTelemetry/ResourceMonitorBinar
 import * as ProcessGroupMetrics from "./resourceTelemetry/ProcessGroupMetrics.ts";
 import * as ResourceTelemetry from "./resourceTelemetry/ResourceTelemetry.ts";
 import * as AntigravityUsage from "./provider/Drivers/AntigravityUsage.ts";
-import { MuseUsageHome } from "@t3tools/provider-muse/server";
-import * as CursorAccountReader from "@t3tools/provider-cursor/server/CursorAccountReader";
-import * as CursorUsageAccounts from "@t3tools/provider-cursor/server/CursorUsageAccounts";
+import { MuseUsageHome } from "@j6/provider-muse/server";
+import * as CursorAccountReader from "@j6/provider-cursor/server/CursorAccountReader";
+import * as CursorUsageAccounts from "@j6/provider-cursor/server/CursorUsageAccounts";
 import * as UsageService from "./usage/UsageService.ts";
 import * as CodexUsageHistory from "./usage/CodexUsageHistory.ts";
 import * as RuntimeLayer from "./orchestration-v2/runtimeLayer.ts";
@@ -243,15 +243,15 @@ import { makePersistedServerRuntimeState } from "./serverRuntimeState.ts";
 import { closeNonPrivateNetworkConnections, loopbackUrlHostForAddress } from "./startupAccess.ts";
 import * as OrchestrationHttp from "./orchestration-v2/http.ts";
 import * as ProjectHttp from "./project/http.ts";
-import * as NetService from "@t3tools/shared/Net";
-import * as RelayClient from "@t3tools/shared/relayClient";
+import * as NetService from "@j6/shared/Net";
+import * as RelayClient from "@j6/shared/relayClient";
 import {
   disableTailscaleServe,
   ensureTailscaleServe,
   readTailscaleServeRootHolder,
   readTailscaleServeRoutesTo,
   readTailscaleStatus,
-} from "@t3tools/tailscale";
+} from "@j6/tailscale";
 import * as ServerActivation from "./serverActivation.ts";
 
 // Escaped MCP handoff provenance can exceed find-my-way's 100-character segment default.
@@ -349,7 +349,7 @@ const layerRelayClient = Layer.unwrap(
     const policy = yield* ManagedPolicy.ManagedPolicy;
     const layerCloudflared = RelayClient.layerCloudflared({ baseDir: config.baseDir });
     if (ManagedLimits.allowsConnect(policy)) return layerCloudflared;
-    // The connector only carries T3 Connect, so a policy without Connect never installs one.
+    // The connector only carries J6 Connect, so a policy without Connect never installs one.
     const refused = Effect.fn("RelayClient.installRefusedByPolicy")(function* () {
       return yield* new RelayClient.RelayClientInstallError({
         reason: "managed_by_policy",
@@ -1223,12 +1223,12 @@ const layerMakeServer = Layer.unwrap(
             const recoverManagedTunnel = (config: RelayManagedEndpointRuntimeConfig) =>
               runManagedTunnelRecovery(config).pipe(
                 Effect.tap((recovered) =>
-                  recovered ? Effect.logInfo("T3 Connect managed tunnel recovered") : Effect.void,
+                  recovered ? Effect.logInfo("J6 Connect managed tunnel recovered") : Effect.void,
                 ),
                 Effect.catchCause((cause) =>
                   Cause.hasInterrupts(cause)
                     ? Effect.interrupt
-                    : Effect.logWarning("Failed to recover the T3 Connect managed tunnel", {
+                    : Effect.logWarning("Failed to recover the J6 Connect managed tunnel", {
                         cause,
                       }),
                 ),
@@ -1262,7 +1262,7 @@ const layerMakeServer = Layer.unwrap(
             const wantsCliLink = hasCloudPublicConfig
               ? yield* CloudCliState.readCliDesiredCloudLink.pipe(
                   Effect.catch((cause) =>
-                    Effect.logWarning("Failed to read the desired T3 Connect link", { cause }).pipe(
+                    Effect.logWarning("Failed to read the desired J6 Connect link", { cause }).pipe(
                       Effect.as(false),
                     ),
                   ),
@@ -1272,7 +1272,7 @@ const layerMakeServer = Layer.unwrap(
             const desiredCliLinkMode = wantsCliLink
               ? yield* CloudCliState.readCliDesiredLinkMode.pipe(
                   Effect.catch((cause) =>
-                    Effect.logWarning("Failed to read the desired T3 Connect link mode", {
+                    Effect.logWarning("Failed to read the desired J6 Connect link mode", {
                       cause,
                     }).pipe(Effect.as("managed" as const)),
                   ),
@@ -1284,7 +1284,7 @@ const layerMakeServer = Layer.unwrap(
                 ? false
                 : yield* cloudLink.startManagedTunnelIfOriginConfirmed(localOrigin).pipe(
                     Effect.catch((cause) =>
-                      Effect.logWarning("Failed to start the confirmed T3 Connect tunnel", {
+                      Effect.logWarning("Failed to start the confirmed J6 Connect tunnel", {
                         cause,
                       }).pipe(Effect.as(false)),
                     ),
@@ -1297,12 +1297,12 @@ const layerMakeServer = Layer.unwrap(
                 Effect.tap((started) =>
                   started
                     ? Effect.logWarning(
-                        "T3 Connect started the stored tunnel without relay confirmation",
+                        "J6 Connect started the stored tunnel without relay confirmation",
                       )
                     : Effect.void,
                 ),
                 Effect.catch((cause) =>
-                  Effect.logWarning("Failed to start the stored T3 Connect tunnel", { cause }),
+                  Effect.logWarning("Failed to start the stored J6 Connect tunnel", { cause }),
                 ),
                 Effect.asVoid,
               );
@@ -1317,13 +1317,13 @@ const layerMakeServer = Layer.unwrap(
             ).pipe(
               Effect.tap((result) =>
                 result.status === "ready"
-                  ? Effect.logInfo("T3 Connect managed tunnel recovery registered")
+                  ? Effect.logInfo("J6 Connect managed tunnel recovery registered")
                   : Effect.void,
               ),
               Effect.catchCause((cause) =>
                 Cause.hasInterrupts(cause)
                   ? Effect.interrupt
-                  : Effect.logWarning("Failed to register T3 Connect managed tunnel recovery", {
+                  : Effect.logWarning("Failed to register J6 Connect managed tunnel recovery", {
                       cause,
                     }).pipe(Effect.as({ status: "unavailable" as const })),
               ),
@@ -1354,17 +1354,17 @@ const layerMakeServer = Layer.unwrap(
                   (reconcile) =>
                     retryDesiredLinkReconcile(reconcile, CloudLink.shouldRetryCloudLink, (cause) =>
                       Effect.logWarning(
-                        "T3 Connect relay is still unavailable; retrying the desired link in the background",
+                        "J6 Connect relay is still unavailable; retrying the desired link in the background",
                         { cause },
                       ),
                     ),
                   Effect.tap((mode) =>
                     mode === null
                       ? Effect.void
-                      : Effect.logInfo("T3 Connect desired link reconciled on startup"),
+                      : Effect.logInfo("J6 Connect desired link reconciled on startup"),
                   ),
                   Effect.catch((cause) =>
-                    Effect.logWarning("Failed to reconcile T3 Connect desired link on startup", {
+                    Effect.logWarning("Failed to reconcile J6 Connect desired link on startup", {
                       cause,
                     }).pipe(Effect.as(null)),
                   ),

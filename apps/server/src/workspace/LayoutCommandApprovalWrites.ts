@@ -1,4 +1,4 @@
-import type { ProjectId, TaskFolderError, WorktreeLayoutCommandKind } from "@t3tools/contracts";
+import type { ProjectId, TaskFolderError, WorktreeLayoutCommandKind } from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as Digest from "effect/crypto/Digest";
 import * as DateTime from "effect/DateTime";
@@ -22,7 +22,7 @@ export class LayoutCommandApprovalWrites extends Context.Service<
       readonly command: string | null;
     }) => Effect.Effect<void, TaskFolderError>;
   }
->()("t3/workspace/LayoutCommandApprovalWrites") {}
+>()("j6/workspace/LayoutCommandApprovalWrites") {}
 
 const make = Effect.gen(function* () {
   const sql = yield* SqlClient.SqlClient;

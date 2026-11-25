@@ -7,7 +7,7 @@ import {
   MessageId,
   RunId,
   ScheduledTaskUpsertInput,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";

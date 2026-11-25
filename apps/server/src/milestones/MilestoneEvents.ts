@@ -6,7 +6,7 @@ import {
   ProjectId,
   ThreadId,
   TrimmedNonEmptyString,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Digest from "effect/crypto/Digest";
 import * as Effect from "effect/Effect";
 import * as Base64Url from "effect/encoding/Base64Url";

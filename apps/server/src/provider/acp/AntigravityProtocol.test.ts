@@ -19,8 +19,8 @@ import {
 import {
   mergeToolCallState,
   parseSessionUpdateEvent,
-} from "@t3tools/provider-acp/server/runtimeModel";
-import { acpToolCallDiffPatch } from "@t3tools/provider-acp/server/adapter";
+} from "@j6/provider-acp/server/runtimeModel";
+import { acpToolCallDiffPatch } from "@j6/provider-acp/server/adapter";
 
 const isSessionNotification = Schema.is(AcpWireSchema.SessionNotification);
 
@@ -803,7 +803,7 @@ describe("Antigravity served reads", () => {
           update: {
             sessionUpdate: "tool_call",
             toolCallId: "call_t3_send",
-            title: "Run mcp_t3-code_send_to_user",
+            title: "Run mcp_j6-code_send_to_user",
             kind: "other",
             status: "in_progress",
             rawInput: { message: "Hello", toolSummary: "Send greeting" },

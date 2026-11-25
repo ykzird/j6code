@@ -38,9 +38,9 @@ const DOC_RULES = [
       "Hold remote route, peer link, SSH, and preview tunnel changes to docs/internals/05_remote.md.",
   },
   {
-    files: "docs/internals/06_t3-connect.md",
+    files: "docs/internals/06_j6-connect.md",
     applyTo: "{infra/relay/src,apps/server/src/cloud}/**/*.ts",
-    instructions: "Hold relay and T3 Connect changes to docs/internals/06_t3-connect.md.",
+    instructions: "Hold relay and J6 Connect changes to docs/internals/06_j6-connect.md.",
   },
   {
     files: "SECURITY.md",

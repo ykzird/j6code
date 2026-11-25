@@ -2,7 +2,7 @@
  * What a standalone tracker package may ask of the server it runs in: the credential the user
  * saved in Settings. Git-host trackers never need it; their CLIs carry their own credentials.
  */
-import type { IssueTrackerAccountId, IssueTrackerKind } from "@t3tools/contracts";
+import type { IssueTrackerAccountId, IssueTrackerKind } from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import type * as Option from "effect/Option";
@@ -19,14 +19,14 @@ export class IssueTrackerHost extends Context.Service<
       ) => Effect.Effect<Option.Option<string>, IssueTrackerError>;
     };
   }
->()("@t3tools/source-control-core/server/IssueTrackerHost") {}
+>()("@j6/source-control-core/server/IssueTrackerHost") {}
 
 /**
  * The account a standalone tracker call is made as, set by the server around each call; null is
  * the tracker's first account. A tracker never reads it: `credentials.get` does.
  */
 export const IssueTrackerAccount = Context.Reference<IssueTrackerAccountId | null>(
-  "@t3tools/source-control-core/server/IssueTrackerHost/IssueTrackerAccount",
+  "@j6/source-control-core/server/IssueTrackerHost/IssueTrackerAccount",
   { defaultValue: () => null },
 );
 

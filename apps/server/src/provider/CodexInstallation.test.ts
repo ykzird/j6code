@@ -3,7 +3,7 @@ import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Layer from "effect/Layer";
 import * as ModelManifest from "./ModelManifest.ts";
 import { expect, it } from "@effect/vitest";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Digest from "effect/crypto/Digest";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
@@ -47,7 +47,7 @@ const makeHarness = Effect.fn("test.makeCodexInstallation")(function* (
 ) {
   const fs = yield* FileSystem.FileSystem;
   const baseDir =
-    input.baseDir ?? (yield* fs.makeTempDirectoryScoped({ prefix: "t3-codex-install-test-" }));
+    input.baseDir ?? (yield* fs.makeTempDirectoryScoped({ prefix: "j6-codex-install-test-" }));
   const localDirectory = `${baseDir}/local`;
   const localBinaryPath = `${localDirectory}/codex${input.platform === "win32" ? ".exe" : ""}`;
   const probeLog = `${baseDir}/local-probes.txt`;
@@ -224,7 +224,7 @@ it.effect.each([
   ({ layout, persists }) =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-codex-install-test-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-codex-install-test-" });
       const packageDirectory =
         layout === "npm shim"
           ? `${baseDir}/local/node_modules/@openai/codex`
@@ -498,7 +498,7 @@ it.effect(
   () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const directory = yield* fs.makeTempDirectoryScoped({ prefix: "t3-codex-install-test-" });
+      const directory = yield* fs.makeTempDirectoryScoped({ prefix: "j6-codex-install-test-" });
       const baseDir = `${directory}/not-a-directory`;
       yield* fs.writeFileString(baseDir, "existing file");
       const h = yield* makeHarness({ baseDir });
@@ -517,7 +517,7 @@ it.effect.each(["cached update", "reverify"] as const)(
   (operation) =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-codex-verify-test-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-codex-verify-test-" });
       const managed = `${baseDir}/tools/codex`;
       const installedVersion = operation === "cached update" ? "0.156.0" : asset.version;
       const target = "aarch64-pc-windows-msvc";

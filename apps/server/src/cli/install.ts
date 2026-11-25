@@ -1,5 +1,5 @@
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { pathSetupCommand, resolveCommandPath } from "@t3tools/shared/shell";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { pathSetupCommand, resolveCommandPath } from "@j6/shared/shell";
 import * as Console from "effect/Console";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
@@ -30,7 +30,7 @@ export class CliInstallError extends Schema.TaggedError<CliInstallError>()("CliI
   }
 }
 
-/** `<T3 home>/runtime/versions/<version>/t3`: the layout the install scripts and npm launcher share. */
+/** `<T3 home>/runtime/versions/<version>/j6`: the layout the install scripts and npm launcher share. */
 const standaloneRuntime = Effect.gen(function* () {
   const path = yield* Path.Path;
   if (!(yield* HostProcess.IsExecutable)) return Option.none();
@@ -43,7 +43,7 @@ const standaloneRuntime = Effect.gen(function* () {
   return Option.some({ executable, versionsDir, runtimeDir });
 });
 
-/** Installs this runtime as the `t3` command the way the install scripts do, replacing only our own launcher. */
+/** Installs this runtime as the `j6` command the way the install scripts do, replacing only our own launcher. */
 export const installCli = Effect.fn("cli.install.install")(function* () {
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
@@ -54,24 +54,24 @@ export const installCli = Effect.fn("cli.install.install")(function* () {
   const windows = platform === "win32";
   if (Option.isNone(runtime)) {
     const script = windows
-      ? "irm https://t3.codes/install.ps1 | iex"
-      : "curl -fsSL https://t3.codes/install.sh | sh";
+      ? "irm https://j6.codes/install.ps1 | iex"
+      : "curl -fsSL https://j6.codes/install.sh | sh";
     return yield* new CliInstallError({
-      reason: `Only the standalone t3 can install itself. Use \`${script}\`, or Settings in the desktop app.`,
+      reason: `Only the standalone j6 can install itself. Use \`${script}\`, or Settings in the desktop app.`,
     });
   }
   const { executable, versionsDir, runtimeDir } = runtime.value;
   // cmd.exe expands `%` and reads the shim in the OEM code page, so such a path would not run.
   if (windows && /[%\u0080-\uffff]/.test(executable)) {
     return yield* new CliInstallError({
-      reason: `A t3.cmd cannot run ${executable}, because the path has % or non-ASCII characters. Keep using npx t3.`,
+      reason: `A j6.cmd cannot run ${executable}, because the path has % or non-ASCII characters. Keep using npx j6.`,
     });
   }
   // Absolute, so the PATH hint never adds a folder that changes with the working directory.
   const binDir = path.resolve(
-    environment.T3CODE_INSTALL_BIN_DIR?.trim() || path.join(home, ".local", "bin"),
+    environment.J6CODE_INSTALL_BIN_DIR?.trim() || path.join(home, ".local", "bin"),
   );
-  const name = windows ? "t3.cmd" : "t3";
+  const name = windows ? "j6.cmd" : "j6";
   const link = path.join(binDir, name);
   const failed = (reason: string) => (cause: unknown) => new CliInstallError({ reason, cause });
 
@@ -108,7 +108,7 @@ export const installCli = Effect.fn("cli.install.install")(function* () {
     )
   ) {
     return yield* new CliInstallError({
-      reason: `Another t3 is already at ${link}. Remove it, then run this again.`,
+      reason: `Another j6 is already at ${link}. Remove it, then run this again.`,
     });
   }
 
@@ -149,7 +149,7 @@ export const installCli = Effect.fn("cli.install.install")(function* () {
   const rawPath = environment.PATH ?? environment.Path ?? "";
   const entries = rawPath === "" ? [] : rawPath.split(windows ? ";" : ":");
   let cwd = yield* Effect.catchDefect(HostProcess.WorkingDirectory, () => Effect.undefined);
-  // A t3 earlier on PATH runs instead, and an added folder goes last. Runner caches (npx's own
+  // A j6 earlier on PATH runs instead, and an added folder goes last. Runner caches (npx's own
   // .bin) are not installs.
   const firstOther = Effect.gen(function* () {
     for (const entry of entries) {
@@ -157,7 +157,7 @@ export const installCli = Effect.fn("cli.install.install")(function* () {
       if ((windows || absolute) && same(entry)) return null;
       const dir = absolute ? entry : windows || !cwd ? undefined : path.resolve(cwd, entry);
       if (dir === undefined || detectCliRunner(`${dir}/`) !== null) continue;
-      for (const name of windows ? ["t3.cmd", "t3.exe"] : ["t3"]) {
+      for (const name of windows ? ["j6.cmd", "j6.exe"] : ["j6"]) {
         const candidate = path.join(dir, name);
         if (!(yield* resolveCommandPath(candidate, { env: environment }))) continue;
         if (windows) return candidate;
@@ -169,7 +169,7 @@ export const installCli = Effect.fn("cli.install.install")(function* () {
     }
     return undefined;
   });
-  // null: this launcher runs first; a path: another t3 does; undefined: no t3 on PATH.
+  // null: this launcher runs first; a path: another j6 does; undefined: no j6 on PATH.
   const found = yield* firstOther;
   return {
     link,
@@ -199,30 +199,30 @@ export const installCli = Effect.fn("cli.install.install")(function* () {
 const reportInstalled = Effect.fn("cli.install.report")(function* (
   installed: Effect.Success<ReturnType<typeof installCli>>,
 ) {
-  yield* Console.log(`Installed t3 ${packageJson.version} at ${installed.link}.`);
+  yield* Console.log(`Installed j6 ${packageJson.version} at ${installed.link}.`);
   if (installed.shadowedBy !== undefined) {
     return yield* Console.log(
-      `Another t3 at ${installed.shadowedBy} runs first, so run ${installed.link} to use this one.`,
+      `Another j6 at ${installed.shadowedBy} runs first, so run ${installed.link} to use this one.`,
     );
   }
-  if (installed.onPath) return yield* Console.log("Run `t3` to get started.");
+  if (installed.onPath) return yield* Console.log("Run `j6` to get started.");
   if (installed.pathCommand === undefined) {
-    return yield* Console.log(`Add ${installed.binDir} to your PATH, then run \`t3\`.`);
+    return yield* Console.log(`Add ${installed.binDir} to your PATH, then run \`j6\`.`);
   }
   if ((yield* HostProcess.Platform) === "win32") {
     yield* Console.log(
       `${installed.binDir} is not on your PATH yet. In this PowerShell window, run:`,
     );
     yield* Console.log(`  ${installed.pathCommand}`);
-    return yield* Console.log("Then run `t3`. For new windows, add the folder to your PATH.");
+    return yield* Console.log("Then run `j6`. For new windows, add the folder to your PATH.");
   }
   yield* Console.log(`${installed.binDir} is not on your PATH yet. Add it with:`);
   yield* Console.log(`  ${installed.pathCommand}`);
-  yield* Console.log("Then open a new terminal and run `t3`.");
+  yield* Console.log("Then open a new terminal and run `j6`.");
 });
 
 export const installCommand = Command.make("install").pipe(
-  Command.withDescription("Install this version as the `t3` command."),
+  Command.withDescription("Install this version as the `j6` command."),
   Command.withHandler(() => installCli().pipe(Effect.flatMap(reportInstalled))),
 );
 
@@ -268,7 +268,7 @@ export const isForegroundPs = (output: string) => {
 };
 
 /**
- * A background job (`npx t3 serve &`) that reads the terminal is stopped by the shell, so only
+ * A background job (`npx j6 serve &`) that reads the terminal is stopped by the shell, so only
  * the terminal's foreground process group may prompt. Unknown counts as background.
  */
 export const inTerminalForeground = Effect.gen(function* () {
@@ -295,7 +295,7 @@ export const inTerminalForeground = Effect.gen(function* () {
 });
 
 /**
- * Before a command run through npx, pnpm dlx, or bunx at a terminal, asks to install the `t3`
+ * Before a command run through npx, pnpm dlx, or bunx at a terminal, asks to install the `j6`
  * command. Yes is the default. No, no answer, or a failed install is saved in the T3 home until
  * the next minor release. Returns false when the user quits the prompt, so the command does not run.
  */
@@ -323,16 +323,16 @@ export const offerCliInstall = Effect.fn("cli.install.offer")(function* <E, R, E
   if (Option.isNone(runtime)) return true;
   const { runtimeDir } = runtime.value;
 
-  // Any t3 already installed means no prompt: ours (even when off PATH) or another on PATH.
+  // Any j6 already installed means no prompt: ours (even when off PATH) or another on PATH.
   // Runners put their own cache's node_modules/.bin on PATH, so skip those.
   const windows = platform === "win32";
-  const names = windows ? ["t3.cmd", "t3.exe"] : ["t3"];
+  const names = windows ? ["j6.cmd", "j6.exe"] : ["j6"];
   const launchers = yield* fs
     .readFileString(path.join(runtimeDir, "launchers"))
     .pipe(Effect.orElseSucceed(() => ""));
   const candidates = [
     ...launchers.split(/\r?\n/).filter((launcher) => path.isAbsolute(launcher)),
-    path.join(path.dirname(runtimeDir), "bin", windows ? "t3.cmd" : "t3"),
+    path.join(path.dirname(runtimeDir), "bin", windows ? "j6.cmd" : "j6"),
     ...(environment.PATH ?? environment.Path ?? "")
       .split(windows ? ";" : ":")
       .filter(
@@ -355,7 +355,7 @@ export const offerCliInstall = Effect.fn("cli.install.offer")(function* <E, R, E
   const answer = yield* input.confirm.pipe(Effect.timeoutOption(PROMPT_TIMEOUT));
   if (Option.isNone(answer)) {
     yield* saveDecline;
-    yield* Console.log(`\nNo answer, so t3 was not installed. ${installHint}\n`);
+    yield* Console.log(`\nNo answer, so j6 was not installed. ${installHint}\n`);
     return true;
   }
   if (answer.value === undefined) return false;
@@ -367,7 +367,7 @@ export const offerCliInstall = Effect.fn("cli.install.offer")(function* <E, R, E
   yield* installCli().pipe(
     Effect.flatMap(reportInstalled),
     Effect.catch((error) =>
-      Effect.andThen(saveDecline, Console.error(`Could not install t3: ${error.message}`)),
+      Effect.andThen(saveDecline, Console.error(`Could not install j6: ${error.message}`)),
     ),
   );
   yield* Console.log("");
@@ -376,7 +376,7 @@ export const offerCliInstall = Effect.fn("cli.install.offer")(function* <E, R, E
 
 export const confirmCliInstall = Prompt.run(
   Prompt.Confirm({
-    message: "Install the t3 command? Then you can run `t3` directly.",
+    message: "Install the j6 command? Then you can run `j6` directly.",
     initial: true,
   }),
 ).pipe(Effect.catchTags({ QuitError: () => Effect.void }));

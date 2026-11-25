@@ -1,5 +1,5 @@
-import type { ResponseStreamingMode } from "@t3tools/contracts";
-import type * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
+import type { ResponseStreamingMode } from "@j6/contracts";
+import type * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
 
 // List fences can open at any indentation; closers may be at most three spaces deeper.
 // A backtick fence's info string cannot contain a backtick, so "```npm test``` runs" is inline code.

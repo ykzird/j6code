@@ -6,15 +6,15 @@ import {
   connectionRouteLabelText,
   connectionRoutes,
   routeHttpBaseUrl,
-} from "@t3tools/client-runtime/connection";
+} from "@j6/client-runtime/connection";
 import {
   ANOTHER_ADDRESS,
   linkableMachines,
   offersLinkedEnvironments,
-} from "@t3tools/client-runtime/link-request";
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
-import type { PeerLinkHealth } from "@t3tools/client-runtime/state/peerLinks";
-import { AuthAccessWriteScope, type EnvironmentId } from "@t3tools/contracts";
+} from "@j6/client-runtime/link-request";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
+import type { PeerLinkHealth } from "@j6/client-runtime/state/peerLinks";
+import { AuthAccessWriteScope, type EnvironmentId } from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Option from "effect/Option";
 import { useGT, useMessages } from "gt-react";
@@ -205,7 +205,7 @@ const ROUTE_STYLES: Record<
 function routeKindLabel(kind: ConnectionRouteKind, gt: GT): string {
   switch (kind) {
     case "relay":
-      return "T3 Connect";
+      return "J6 Connect";
     case "loopback":
       return gt("This device");
     case "lan":
@@ -240,7 +240,7 @@ function routeStateLabel(state: FleetRouteState, gt: GT): string {
   }
 }
 
-/** Asks T3 Connect for the account's machines once, as the list's own rows do on mount. */
+/** Asks J6 Connect for the account's machines once, as the list's own rows do on mount. */
 function useConnectMachines() {
   const gt = useGT();
   const m = useMessages();
@@ -249,7 +249,7 @@ function useConnectMachines() {
   const discoverIfUnasked = useEffectEvent(() => {
     if (hasCloudPublicConfig() && !discovery.listed && !discovery.refreshing) void refresh();
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- one T3 Connect listing when the map mounts, the request the list makes on mount
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- one J6 Connect listing when the map mounts, the request the list makes on mount
   useEffect(() => {
     discoverIfUnasked();
   }, []);
@@ -714,7 +714,7 @@ function FleetCanvas({
       false,
     );
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- measures the canvas with ResizeObserver, and React's wheel listener is passive so it cannot stop the page zooming
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- measures the canvas with ResizeObserver, and React's wheel listener is passive so it cannot stop the page zooming
   useEffect(() => {
     if (canvas === null) return;
     const stopObserving = observeResize(canvas, ([entry]) => {
@@ -2115,7 +2115,7 @@ const FleetScene = memo(function FleetScene({
               {...focusProps(
                 target,
                 rect,
-                gt("{label}, on your T3 Connect account, not added to this app. {status}", {
+                gt("{label}, on your J6 Connect account, not added to this app. {status}", {
                   label: node.label,
                   status: connectAvailabilityText(node.availability, gt),
                 }),

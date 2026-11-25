@@ -9,7 +9,7 @@ import {
   type OrchestrationV2ThreadShell,
   type Project,
   type RepositoryIdentity,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -51,7 +51,7 @@ const finalizationLayer = (
     ordinalWithinScope: 1,
     appRunOrdinal: null,
     status: "ready" as const,
-    ref: CheckpointRef.make(`refs/t3/test/${repositoryScopeId}`),
+    ref: CheckpointRef.make(`refs/j6/test/${repositoryScopeId}`),
   });
   return RunFinalization.layer.pipe(
     Layer.provide(
@@ -388,7 +388,7 @@ it.effect("resolves the identity of a project whose remote was added during the 
     const fileSystem = yield* FileSystem.FileSystem;
     const processRunner = yield* ProcessRunner.ProcessRunner;
     const workspaceRoot = yield* fileSystem.makeTempDirectoryScoped({
-      prefix: "t3-run-finalization-identity-test-",
+      prefix: "j6-run-finalization-identity-test-",
     });
     const git = (args: ReadonlyArray<string>) =>
       processRunner.run({ command: "git", args: ["-C", workspaceRoot, ...args] });
@@ -399,7 +399,7 @@ it.effect("resolves the identity of a project whose remote was added during the 
       // A shell read before the turn caches the folder as having no repository.
       assert.isNull(yield* enrichment.readRepositoryIdentity(workspaceRoot));
 
-      yield* git(["remote", "add", "origin", "https://github.com/t3-triage/example-29929.git"]);
+      yield* git(["remote", "add", "origin", "https://github.com/j6-triage/example-29929.git"]);
       const changes = yield* enrichment.subscribeChanges;
       const observer = yield* RunFinalization.RunFinalizationObserver;
       yield* observer.refresh({
@@ -411,7 +411,7 @@ it.effect("resolves the identity of a project whose remote was added during the 
       const change = yield* PubSub.take(changes);
       assert.strictEqual(
         change.enrichment.repositoryIdentity?.locator.remoteUrl,
-        "https://github.com/t3-triage/example-29929.git",
+        "https://github.com/j6-triage/example-29929.git",
         "the project's repository identity is still null after the turn added a remote",
       );
     }).pipe(

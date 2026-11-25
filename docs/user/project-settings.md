@@ -190,11 +190,11 @@ project crumb.
 The Projects category, under Code, holds the project's name, icon, actions,
 checkouts and removal. Actions belong to a project: editing them creates the project's own list
 on each selected environment, and reset returns to the environment's shared list. A project's
-`t3.json` actions can be imported there. When a project has several checkouts on one environment,
+`j6.json` actions can be imported there. When a project has several checkouts on one environment,
 choose one in the scope line at the top to see or change only that checkout's settings.
 
-Settings a repository can also declare in `t3.json`, such as the workspace for new threads,
-resolve in one order: a project override, then the environment setting, then `t3.json`, then the
+Settings a repository can also declare in `j6.json`, such as the workspace for new threads,
+resolve in one order: a project override, then the environment setting, then `j6.json`, then the
 built-in default. Leave a setting on **Inherit** to let the next tier decide.
 Browser access changes apply when an agent session next starts.
 
@@ -202,13 +202,13 @@ New worktrees initialize git submodules recursively. If that step is slow becaus
 declares many nested submodules, set **Submodules** in **Settings → Worktrees** under Advanced (with the project
 selected to override it there) to **Top level only** to stop at the ones the repository declares
 itself, or **Skip** to leave them for a setup script. It resolves in the same order as the
-workspace default: a `"worktreeSubmodules"` value in the `t3.json` of the branch being checked out
+workspace default: a `"worktreeSubmodules"` value in the `j6.json` of the branch being checked out
 applies when the project and environment are both on **Inherit**.
 
 New worktrees check out every file. For a large repository, set `"worktreeSparsePatternsPath"` in
-`t3.json` to a repository-relative file of git sparse-checkout patterns in non-cone syntax. New
+`j6.json` to a repository-relative file of git sparse-checkout patterns in non-cone syntax. New
 worktrees then check out only the matching files, before any other file is written. Both files are
-read from the branch being checked out, so the patterns can leave out `t3.json` and `.gitmodules`.
+read from the branch being checked out, so the patterns can leave out `j6.json` and `.gitmodules`.
 If the pattern file is missing, creating the worktree fails instead of checking out everything.
 Submodules still follow **Submodules** above, also under excluded paths; set it to **Skip** to leave
 them empty. The first sparse worktree turns on Git's `extensions.worktreeConfig` for the repository.

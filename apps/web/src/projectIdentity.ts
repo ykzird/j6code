@@ -1,6 +1,6 @@
 import { PROJECT_ICON_COLORS } from "./projectIconColors";
-import type { ProjectIconColor } from "@t3tools/contracts";
-import { projectMonogram } from "@t3tools/shared/projectMonogram";
+import type { ProjectIconColor } from "@j6/contracts";
+import { projectMonogram } from "@j6/shared/projectMonogram";
 
 export interface ProjectIdentity {
   readonly monogram: string;

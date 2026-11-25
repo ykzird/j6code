@@ -3,12 +3,12 @@ import {
   type DesktopCaptureConfigApplied,
   type DesktopCaptureConfigPreview,
   type DesktopSnapShotState,
-} from "@t3tools/contracts";
-import { parseKeybindingShortcut } from "@t3tools/shared/keybindings";
+} from "@j6/contracts";
+import { parseKeybindingShortcut } from "@j6/shared/keybindings";
 import { FileDiff } from "@pierre/diffs/react";
 import { T, useGT, Var } from "gt-react";
 import { parseDiffFromFile } from "@pierre/diffs";
-import { settlePromise } from "@t3tools/client-runtime/state/runtime";
+import { settlePromise } from "@j6/client-runtime/state/runtime";
 import * as Cause from "effect/Cause";
 import { useState } from "react";
 import { getDesktopSnapShotBridge } from "../../lib/desktopSnapShot";
@@ -225,7 +225,7 @@ export function CaptureShortcutConfig({
         <>
           <p className="text-muted-foreground">
             <T>
-              Allow T3 Code to read your desktop settings. You'll review any changes here before
+              Allow J6 Code to read your desktop settings. You'll review any changes here before
               saving.
             </T>
           </p>
@@ -247,7 +247,7 @@ export function CaptureShortcutConfig({
         <p role="status" className="text-muted-foreground">
           {state.shortcutPending
             ? gt("Connecting to your desktop…")
-            : gt("Restart T3 Code to finish connecting your shortcut.")}
+            : gt("Restart J6 Code to finish connecting your shortcut.")}
         </p>
       ) : null}
       <details className="text-xs text-muted-foreground">
@@ -274,7 +274,7 @@ export function CaptureShortcutConfig({
             </p>
             {niri ? (
               <p>
-                <T>T3 Code also reads any files included by this file.</T>
+                <T>J6 Code also reads any files included by this file.</T>
               </p>
             ) : null}
             {preview && preview.resolvedPath !== preview.path ? (
@@ -353,7 +353,7 @@ export function CaptureShortcutConfig({
           </Button>
           <p>
             <T>
-              Turn capture off in T3 Code to stop it. Remove the shortcut from <Var>{desktop}</Var>{" "}
+              Turn capture off in J6 Code to stop it. Remove the shortcut from <Var>{desktop}</Var>{" "}
               to free up the keys.
             </T>
           </p>

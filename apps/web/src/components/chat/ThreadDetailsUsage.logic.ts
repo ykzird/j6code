@@ -4,7 +4,7 @@ import {
   type ServerProvider,
   type ServerProviderUsageLimits,
   type UsageLimitSourceSnapshots,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   antigravityWindowLimitsModel,
   collectLimitAccounts,
@@ -14,8 +14,8 @@ import {
   hubRoutes,
   instanceHubs,
   type LimitPoolWindow,
-} from "@t3tools/shared/usageLimits";
-import { limitsNotice } from "@t3tools/shared/usageLimitsCopy";
+} from "@j6/shared/usageLimits";
+import { limitsNotice } from "@j6/shared/usageLimitsCopy";
 
 export type ThreadDetailsLimits =
   | { readonly kind: "instance"; readonly limits: ServerProviderUsageLimits }

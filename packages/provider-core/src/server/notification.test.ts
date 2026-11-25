@@ -7,7 +7,7 @@ import {
   RunId,
   ThreadId,
   TurnItemId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 
 import { backgroundWorkNotification, notificationTurnItem } from "./notification.ts";

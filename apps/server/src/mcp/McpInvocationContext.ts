@@ -10,12 +10,12 @@ import {
   type OrchestrationV2LinkedSender,
   type RuntimeMode,
   type ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import type * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
-import { formatThreadLink, hostedThreadLink } from "@t3tools/shared/threadLinks";
+import { formatThreadLink, hostedThreadLink } from "@j6/shared/threadLinks";
 
 const ALL_MCP_CAPABILITIES = [
   "preview",
@@ -41,7 +41,7 @@ export interface McpClientCaller {
   readonly label: string;
   readonly access: AuthMcpClientAccess;
   /**
-   * Another T3 Code environment's peer link. What it starts here carries its
+   * Another J6 Code environment's peer link. What it starts here carries its
    * session as `linkOrigin`, and it changes only that work (`linkOrigin.ts`).
    */
   readonly linked?: boolean | undefined;
@@ -64,20 +64,20 @@ export interface McpClientCaller {
  * the limits of the agent it calls for. It can only narrow (see
  * `clientModeCeiling`), so a client gains nothing by sending a broad one.
  */
-export const MODE_LIMIT_HEADER = "t3-mode-limit";
+export const MODE_LIMIT_HEADER = "j6-mode-limit";
 
 /**
  * `T3-Link-Expires-At: <ISO time>` answers a peer link's request with when its
  * session now ends. Using a link renews it, so the linking side keeps this.
  */
-export const LINK_EXPIRES_AT_HEADER = "t3-link-expires-at";
+export const LINK_EXPIRES_AT_HEADER = "j6-link-expires-at";
 
 /**
  * `T3-Sender-Thread: <environmentId>/<threadId>/<title>`, each URI-encoded: the
  * thread another environment makes a request for, so what it sends here can name
  * it. Read only from a linked client.
  */
-export const SENDER_THREAD_HEADER = "t3-sender-thread";
+export const SENDER_THREAD_HEADER = "j6-sender-thread";
 
 export interface ClientModes {
   readonly runtimeMode: RuntimeMode;
@@ -162,7 +162,7 @@ export interface McpInvocationScope {
   /** True while Labs → Workflows is on here; `/mcp` reads it per request. Unset is off. */
   readonly workflows?: boolean;
   /**
-   * The origin this `/mcp` request reached, e.g. a T3 Connect tunnel. Hosted clients cannot
+   * The origin this `/mcp` request reached, e.g. a J6 Connect tunnel. Hosted clients cannot
    * see the URL they were configured with, so links they must fetch carry it. Unset in-process.
    */
   readonly origin?: string | undefined;
@@ -171,7 +171,7 @@ export interface McpInvocationScope {
 }
 
 /**
- * T3 Code renders `t3-thread://` links as thread chips. Other MCP clients cannot open them, so
+ * J6 Code renders `j6-thread://` links as thread chips. Other MCP clients cannot open them, so
  * they get the hosted link Copy thread copies, which opens the thread in either app or a browser.
  * A known `title` labels the chip for clients that cannot load this environment's threads.
  */
@@ -190,7 +190,7 @@ export const threadLinkFor = (
 export class McpInvocationContext extends Context.Service<
   McpInvocationContext,
   McpInvocationScope
->()("t3/mcp/McpInvocationContext") {}
+>()("j6/mcp/McpInvocationContext") {}
 
 /**
  * `McpSchema.EnabledWhen` for tools a delegated child must not see or call.
@@ -236,7 +236,7 @@ export const hiddenWhileLinksOff = (): boolean => {
   return scope?.linkedEnvironments !== false;
 };
 
-/** `McpSchema.EnabledWhen` for agent feedback tools, for every client including `t3 feedback`. */
+/** `McpSchema.EnabledWhen` for agent feedback tools, for every client including `j6 feedback`. */
 export const hiddenWhileFeedbackOff = (): boolean => {
   const fiber = Fiber.getCurrent();
   const scope = fiber && Context.getOrUndefined(fiber.context, McpInvocationContext);
@@ -306,7 +306,7 @@ export const requireThreadMcpCapability = <const C extends "preview" | "device">
 const threadCallerRequired = (operation: string) =>
   new OrchestratorMcpFailure({
     code: "thread_credential_required",
-    message: `${operation} acts as the calling T3 thread, so it needs an agent running inside T3 Code. This MCP client signed in from outside a thread.`,
+    message: `${operation} acts as the calling T3 thread, so it needs an agent running inside J6 Code. This MCP client signed in from outside a thread.`,
   });
 
 export type McpThreadInvocationScope = McpInvocationScope & { readonly thread: McpThreadCaller };

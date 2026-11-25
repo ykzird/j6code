@@ -1,4 +1,4 @@
-import { RunId } from "@t3tools/contracts";
+import { RunId } from "@j6/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import {
   deriveMessagesTimelineRows,

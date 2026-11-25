@@ -1,7 +1,7 @@
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 
-import type * as SourceControlHost from "@t3tools/source-control-core/server/SourceControlHost";
+import type * as SourceControlHost from "@j6/source-control-core/server/SourceControlHost";
 
 // Forgejo's Markdown lookup order also preserves Gitea's root, .gitea, .github order.
 const TEMPLATE_PATHS = ["", ".forgejo/", ".gitea/", ".github/", "docs/"].flatMap((directory) => [

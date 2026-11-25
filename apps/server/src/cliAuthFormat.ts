@@ -4,7 +4,7 @@ import type {
   AuthConnectDevice,
   AuthConnectDeviceRequest,
   AuthPairingLink,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 
 import type { IssuedBearerSession, IssuedPairingLink } from "./auth/EnvironmentAuth.ts";
@@ -230,7 +230,7 @@ export function formatConnectDeviceList(
         (request) => `  ${request.verificationCode}  ${describe(request.client)}`,
       ),
       "",
-      devices.trusted.length === 0 ? "No trusted T3 Connect devices." : "Trusted:",
+      devices.trusted.length === 0 ? "No trusted J6 Connect devices." : "Trusted:",
       ...devices.trusted.map(
         (device) =>
           `  ${device.verificationCode}  ${describe(device.client)}  since ${toIsoString(device.approvedAt)}`,

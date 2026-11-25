@@ -1,12 +1,12 @@
-import { isLocalEditorFileUrl } from "@t3tools/contracts";
-import { fileBasename, isAbsolutePath, workspaceRelativeFilePath } from "@t3tools/shared/path";
+import { isLocalEditorFileUrl } from "@j6/contracts";
+import { fileBasename, isAbsolutePath, workspaceRelativeFilePath } from "@j6/shared/path";
 import {
   inlineCodeFilePathCandidate,
   isRelativeFilePath,
   normalizeMarkdownLinkDestination,
   resolveMarkdownFileLink,
-} from "@t3tools/shared/markdownLinks";
-import { parseFileUrlHref, splitFilePathPosition } from "@t3tools/shared/fileLinks";
+} from "@j6/shared/markdownLinks";
+import { parseFileUrlHref, splitFilePathPosition } from "@j6/shared/fileLinks";
 
 import { formatWorkspaceRelativePath } from "./filePathDisplay";
 import { isTerminalLinkActivation } from "./terminal-links";

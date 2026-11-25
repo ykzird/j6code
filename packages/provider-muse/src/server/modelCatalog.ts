@@ -1,8 +1,8 @@
-import { resolveProviderProbeTimeoutMs } from "@t3tools/provider-core/server/snapshotProbe";
+import { resolveProviderProbeTimeoutMs } from "@j6/provider-core/server/snapshotProbe";
 import type { SendUserTurnOptions } from "@muse-code/sdk";
-import { ModelCapabilities, ServerProviderModel } from "@t3tools/contracts";
+import { ModelCapabilities, ServerProviderModel } from "@j6/contracts";
 import { MuseSettings } from "../settings.ts";
-import { createModelCapabilities, getProviderOptionDescriptors } from "@t3tools/shared/model";
+import { createModelCapabilities, getProviderOptionDescriptors } from "@j6/shared/model";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import {

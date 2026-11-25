@@ -1,7 +1,7 @@
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, it } from "@effect/vitest";
-import * as NodeSqliteClient from "@t3tools/shared/nodeSqliteClient";
+import * as NodeSqliteClient from "@j6/shared/nodeSqliteClient";
 import * as Context from "effect/Context";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
@@ -50,7 +50,7 @@ const setup = Effect.fn("setup")(function* (
 ) {
   const fileSystem = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
-  const home = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-workflow-defs-" });
+  const home = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-workflow-defs-" });
   const directory = path.join(home, "workflows");
   const at = (name: string) => path.join(directory, name);
   yield* fileSystem.makeDirectory(directory);

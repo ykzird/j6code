@@ -1,5 +1,5 @@
-import type { DesktopAppleSpeechResult } from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import type { DesktopAppleSpeechResult } from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Context from "effect/Context";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
@@ -70,7 +70,7 @@ export class AppleSpeech extends Context.Service<
       pcm: Uint8Array,
     ) => Effect.Effect<DesktopAppleSpeechResult>;
   }
->()("@t3tools/desktop/speech/AppleSpeech") {}
+>()("@j6/desktop/speech/AppleSpeech") {}
 
 const unavailable: DesktopAppleSpeechResult = { ok: false, code: "unavailable" };
 const failed: DesktopAppleSpeechResult = { ok: false, code: "failed" };
@@ -88,14 +88,14 @@ export const layer = Layer.effect(
     // macOS 26 is Darwin 25, the helper's minimum deployment target.
     if (environment.platform === "darwin" && Number.parseInt(kernelRelease, 10) >= 25) {
       const candidate = environment.isPackaged
-        ? environment.path.join(environment.resourcesPath, "apple-speech", "t3-apple-speech")
+        ? environment.path.join(environment.resourcesPath, "apple-speech", "j6-apple-speech")
         : environment.path.join(
             environment.rootDir,
             "native",
             "apple-speech",
             "build",
             environment.processArch,
-            "t3-apple-speech",
+            "j6-apple-speech",
           );
       if (yield* fileSystem.exists(candidate).pipe(Effect.orElseSucceed(() => false)))
         helper = candidate;

@@ -1,5 +1,5 @@
 import { assert, it } from "@effect/vitest";
-import { IssueTrackerKind, ProjectId } from "@t3tools/contracts";
+import { IssueTrackerKind, ProjectId } from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

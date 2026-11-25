@@ -4,8 +4,8 @@ import {
   type AuthMcpClientAccess,
   isRuntimeModeAbove,
   parseMcpApprovalCode,
-} from "@t3tools/contracts";
-import { isLoopbackHost } from "@t3tools/shared/preview";
+} from "@j6/contracts";
+import { isLoopbackHost } from "@j6/shared/preview";
 
 /**
  * The picker's access, lowered to a managed ceiling: the user's choice, else Auto for a typed

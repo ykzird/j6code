@@ -14,12 +14,12 @@ import {
   type PreviewStreamSelectMenu,
   type PreviewStreamViewport,
   previewStreamHostSetupMessage,
-} from "@t3tools/client-runtime/preview/server-browser-stream";
+} from "@j6/client-runtime/preview/server-browser-stream";
 import type {
   EnvironmentId,
   PreviewStreamHostSetup,
   PreviewViewportSetting,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   type ClipboardEvent,
   type FormEvent,
@@ -41,7 +41,7 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Menu, MenuPopup, MenuRadioGroup, MenuRadioItem } from "~/components/ui/menu";
 import { toastManager } from "~/components/ui/toast";
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { m } from "~/i18n/messages";
 import { cn } from "~/lib/utils";
 import { refreshPreviewStreamAccess, usePreviewStreamAccess } from "~/state/previewStream";
@@ -333,7 +333,7 @@ export function ServerBrowserSurface(props: {
     [pdfUrl, send],
   );
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- observes the canvas container's size, sends resizes to the stream and grows the frame cap
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- observes the canvas container's size, sends resizes to the stream and grows the frame cap
   useEffect(() => {
     const element = canvasRef.current?.parentElement;
     if (!element) return;
@@ -379,7 +379,7 @@ export function ServerBrowserSurface(props: {
     };
   }, [followSize]);
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- opens the preview stream client and paints its frames onto the canvas while visible
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- opens the preview stream client and paints its frames onto the canvas while visible
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!visible || accessDenied || hostSetup || !access || !cap || !canvas) return;
@@ -502,7 +502,7 @@ export function ServerBrowserSurface(props: {
     visible,
   ]);
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- registers a non-passive wheel listener on the canvas so it can stop the panel scrolling
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- registers a non-passive wheel listener on the canvas so it can stop the panel scrolling
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -523,7 +523,7 @@ export function ServerBrowserSurface(props: {
     return () => canvas.removeEventListener("wheel", onWheel);
   }, [pagePoint, queueWheel]);
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- cancels the pending input animation frame when the component unmounts
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- cancels the pending input animation frame when the component unmounts
   useEffect(
     () => () => {
       if (inputFrameRef.current !== null) cancelAnimationFrame(inputFrameRef.current);

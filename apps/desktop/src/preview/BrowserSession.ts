@@ -1,4 +1,4 @@
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import type { Certificate, Session, WebContents } from "electron";
 import { BrowserWindow, session, systemPreferences } from "electron";
 import { msg } from "gt-i18n";
@@ -20,9 +20,9 @@ import * as ElectronApp from "../electron/ElectronApp.ts";
 import * as ElectronDialog from "../electron/ElectronDialog.ts";
 import { m } from "../i18n/messages.ts";
 
-const PREVIEW_PARTITION_PREFIX = "persist:t3code-preview-";
+const PREVIEW_PARTITION_PREFIX = "persist:j6code-preview-";
 /** Ephemeral partitions omit persist: but retain a product prefix so the webview gate recognizes them. */
-const PREVIEW_EPHEMERAL_PARTITION_PREFIX = "t3code-preview-ephemeral-";
+const PREVIEW_EPHEMERAL_PARTITION_PREFIX = "j6code-preview-ephemeral-";
 const PROFILE_PARTITION_MARKER = "profile-";
 
 export type BrowserSessionPartitionNamespace = "profile";
@@ -36,7 +36,7 @@ const ALLOWED_PREVIEW_PERMISSIONS: ReadonlySet<string> = new Set([
   // Loopback requests already succeed in Electron 44; permission-aware sign-in widgets query first.
   "loopback-network",
   // Deny local-fonts to untrusted previews: it exposes installed-font fingerprints and file bytes.
-  // Deny notifications: pages could impersonate T3 Code; app notifications use the default session.
+  // Deny notifications: pages could impersonate J6 Code; app notifications use the default session.
 ]);
 
 const NEVER_EXTERNAL_PROTOCOLS: ReadonlySet<string> = new Set([
@@ -158,7 +158,7 @@ const certificateApprovalKey = ({ origin, fingerprint, error }: CertificateAppro
   JSON.stringify([origin, fingerprint, error]);
 
 /** Kept beside the profile's cookies, so it lives and dies with them. */
-const CERTIFICATE_APPROVALS_FILE = "t3code-certificate-approvals.json";
+const CERTIFICATE_APPROVALS_FILE = "j6code-certificate-approvals.json";
 
 /** Server-chosen certificate names must not add lines or flood the prompt. */
 const promptCertificateName = (name: string): string => {
@@ -193,10 +193,10 @@ const mediaRequestMessage = (devices: ReadonlyArray<MediaDevice>, origin: string
 
 const mediaBlockedMessage = (devices: ReadonlyArray<MediaDevice>): string =>
   devices.length === 2
-    ? m(msg("macOS blocked T3 Code from using your camera and microphone"))
+    ? m(msg("macOS blocked J6 Code from using your camera and microphone"))
     : devices[0] === "microphone"
-      ? m(msg("macOS blocked T3 Code from using your microphone"))
-      : m(msg("macOS blocked T3 Code from using your camera"));
+      ? m(msg("macOS blocked J6 Code from using your microphone"))
+      : m(msg("macOS blocked J6 Code from using your camera"));
 
 /**
  * macOS gates capture devices per app and lists an app under Privacy & Security
@@ -319,7 +319,7 @@ export class BrowserSession extends Context.Service<
       partitions?: ReadonlyArray<string>,
     ) => Effect.Effect<void, BrowserSessionCacheClearError>;
   }
->()("@t3tools/desktop/preview/BrowserSession") {}
+>()("@j6/desktop/preview/BrowserSession") {}
 
 const selectSessions = (
   sessions: ReadonlyMap<string, Session>,
@@ -599,7 +599,7 @@ export const make = Effect.gen(function* BrowserSessionMake() {
                           m(msg("Could not trust the certificate for {host}"), { host }),
                           m(
                             msg(
-                              "T3 Code could not save this approval, so the page stays blocked. Check that the disk is not full and its data folder is writable, then try again.",
+                              "J6 Code could not save this approval, so the page stays blocked. Check that the disk is not full and its data folder is writable, then try again.",
                             ),
                           ),
                         ),
@@ -803,7 +803,7 @@ export const make = Effect.gen(function* BrowserSessionMake() {
                             message: mediaBlockedMessage(blocked),
                             detail: m(
                               msg(
-                                "Allow T3 Code in System Settings › Privacy & Security, then restart T3 Code.",
+                                "Allow J6 Code in System Settings › Privacy & Security, then restart J6 Code.",
                               ),
                             ),
                           },

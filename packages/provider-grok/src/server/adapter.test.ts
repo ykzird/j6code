@@ -13,9 +13,9 @@ import {
   RunAttemptId,
   RunId,
   ThreadId,
-} from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { resolveSelfInvocation } from "@t3tools/shared/nodeRuntime";
+} from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { resolveSelfInvocation } from "@j6/shared/nodeRuntime";
 import * as SecureRandom from "effect/crypto/SecureRandom";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -25,11 +25,11 @@ import * as Path from "effect/Path";
 import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
 
-import * as AcpSessionRuntime from "@t3tools/provider-acp/server/AcpSessionRuntime";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
-import * as TestProviderHost from "@t3tools/provider-testing/TestProviderHost";
+import * as AcpSessionRuntime from "@j6/provider-acp/server/AcpSessionRuntime";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
+import * as TestProviderHost from "@j6/provider-testing/TestProviderHost";
 import { GrokSettings } from "../settings.ts";
 import { makeGrokAcpAdapterFlavor, makeGrokAdapterV2 } from "./adapter.ts";
 
@@ -90,7 +90,7 @@ const writesPerSelection = (
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const directory = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-grok-effort-" });
+    const directory = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-grok-effort-" });
     const requestLogPath = path.join(directory, "requests.ndjson");
     yield* fileSystem.writeFileString(requestLogPath, "");
     const agentPath = yield* path.fromFileUrl(

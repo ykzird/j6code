@@ -1,14 +1,14 @@
 /// <reference lib="dom" />
-import type { IssueComment, IssueCommentsPage, IssueDetail, IssueRef } from "@t3tools/contracts";
+import type { IssueComment, IssueCommentsPage, IssueDetail, IssueRef } from "@j6/contracts";
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 test(
   "A page requested before refreshing an issue does not restore old comments",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    await t3.project("demo");
+  async ({ j6, app, browser, screen }) => {
+    await j6.project("demo");
     await browser.addInitScript(() => {
       const pendingPage = new Promise<void>((resolve) => {
         Object.assign(window, { releaseOldIssuePage: () => resolve() });
@@ -127,7 +127,7 @@ test(
       };
     });
 
-    await t3.open("/issues?selectedProjectId=demo&tracker=github&scope=example/demo&key=42");
+    await j6.open("/issues?selectedProjectId=demo&tracker=github&scope=example/demo&key=42");
     const loadOlder = screen.getByRole("button", "Load older comments", { exact: true });
     // The issues route compiles on first open, which can outlast the 30 s action timeout.
     await loadOlder.waitFor({ timeout: 60_000 });

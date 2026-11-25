@@ -4,7 +4,7 @@ import { expect } from "e2e";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 
-import { runPromise, test, WEB } from "./t3.ts";
+import { runPromise, test, WEB } from "./j6.ts";
 
 // A raw-mode program turns on application cursor and keypad modes as ncurses keypad(TRUE) does,
 // asks for DECCKM so its reply marks when the terminal has applied them, and logs what it reads.
@@ -35,9 +35,9 @@ const KEYPAD = [
 test(
   "NumLock-off keypad navigation keys reach a terminal program",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    const project = await t3.project("demo", { "keypad-probe.mjs": PROBE });
-    const thread = await t3.thread({ project, title: "Keypad", messages: ["hello"] });
+  async ({ j6, app, browser, screen }) => {
+    const project = await j6.project("demo", { "keypad-probe.mjs": PROBE });
+    const thread = await j6.thread({ project, title: "Keypad", messages: ["hello"] });
     const read = (file: string) =>
       runPromise(
         Effect.gen(function* () {
@@ -45,7 +45,7 @@ test(
           return yield* fs.readFileString(`${project}/${file}`);
         }).pipe(Effect.orElseSucceed(() => "")),
       );
-    await t3.open(thread);
+    await j6.open(thread);
 
     await screen.getByRole("button", "Toggle terminal drawer").tap();
     const terminal = screen.getByLabel("Terminal input");

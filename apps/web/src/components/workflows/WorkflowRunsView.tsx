@@ -1,4 +1,4 @@
-import { type EnvironmentId, type WorkflowRunReference } from "@t3tools/contracts";
+import { type EnvironmentId, type WorkflowRunReference } from "@j6/contracts";
 import { msg, T, useGT, useMessages } from "gt-react";
 import { WorkflowIcon } from "lucide-react";
 import * as Schema from "effect/Schema";
@@ -36,13 +36,13 @@ import {
   type WorkflowListTab,
   type WorkflowRunNode,
   workflowRunInvolves,
-} from "@t3tools/client-runtime/workflows";
+} from "@j6/client-runtime/workflows";
 
 const WORKFLOWS_GUIDE_URL = "https://github.com/pingdotgg/t3code/blob/main/docs/user/workflows.md";
 const EVERY_WORKFLOW = "";
 // Never a kind: the questions of no kind are filtered by the empty kind.
 const EVERY_KIND = "*";
-const QUESTION_KIND_KEY = "t3code:workflows:question-kind";
+const QUESTION_KIND_KEY = "j6code:workflows:question-kind";
 const TABS: ReadonlyArray<{ readonly value: WorkflowListTab; readonly label: string }> = [
   {
     value: "needs-you",

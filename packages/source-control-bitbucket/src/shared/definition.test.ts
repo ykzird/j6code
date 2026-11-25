@@ -1,7 +1,7 @@
 import {
   makeSourceControlDefinitionRegistry,
   recognizeRemoteWith,
-} from "@t3tools/source-control-core/shared/definition";
+} from "@j6/source-control-core/shared/definition";
 import { describe, expect, it } from "vite-plus/test";
 
 import { definition } from "./definition.ts";

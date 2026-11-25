@@ -6,7 +6,7 @@ import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
 import JSZip from "jszip";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 const SHEETS = ["Overview", "Actuals", "Forecast"];
 const RELATIONSHIPS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
@@ -36,8 +36,8 @@ async function workbook() {
 test(
   "Two rapid right arrows advance two tabs in an Excel preview",
   WEB,
-  async ({ t3, app, screen, browser }) => {
-    const project = await t3.project("demo", { "budget.xlsx": await workbook() });
+  async ({ j6, app, screen, browser }) => {
+    const project = await j6.project("demo", { "budget.xlsx": await workbook() });
     const archive = await JSZip.loadAsync(await workbook());
     const manifest = (await archive.file("xl/workbook.xml")!.async("string")).replace(
       '<sheet name="Forecast"',
@@ -51,8 +51,8 @@ test(
       yield* fs.writeFile(path.join(project, "wraparound.xlsx"), wraparound);
     }).pipe(Effect.provide(NodeServices.layer), Effect.runPromise);
 
-    const thread = await t3.thread({ project, title: "Review budget", messages: ["Start"] });
-    await t3.open(thread);
+    const thread = await j6.thread({ project, title: "Review budget", messages: ["Start"] });
+    await j6.open(thread);
     await screen.getByText("fixture turn complete", { exact: false }).waitFor();
 
     await browser.keyboard.press("Control+p");

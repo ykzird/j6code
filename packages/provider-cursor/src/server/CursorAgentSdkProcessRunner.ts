@@ -1,7 +1,7 @@
 import type { AgentMessage, InteractionUpdate, RunResult, SteerAckOutcome } from "@cursor/sdk";
-import * as ProviderEventLoggers from "@t3tools/provider-core/server/ProviderEventLoggers";
-import { AgentScope } from "@t3tools/shared/AgentScope";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as ProviderEventLoggers from "@j6/provider-core/server/ProviderEventLoggers";
+import { AgentScope } from "@j6/shared/AgentScope";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Cause from "effect/Cause";
 import * as Deferred from "effect/Deferred";
 import * as Duration from "effect/Duration";

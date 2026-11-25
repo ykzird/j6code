@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { SecretProviderId, type EnvironmentId } from "@t3tools/contracts";
+import { SecretProviderId, type EnvironmentId } from "@j6/contracts";
 
 import {
   newSimlockDeviceHost,

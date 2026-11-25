@@ -19,11 +19,11 @@ describe("webhookAddress", () => {
     expect(result.note).toBeNull();
   });
 
-  it("is not copyable and points at T3 Connect when no base URL exists", () => {
+  it("is not copyable and points at J6 Connect when no base URL exists", () => {
     const result = webhookAddress(endpoint, null);
     expect(result.address).toBe("/hooks/abc");
     expect(result.copyable).toBe(false);
-    expect(result.note).toContain("T3 Connect");
+    expect(result.note).toContain("J6 Connect");
   });
 
   it("warns that loopback addresses only work on this computer", () => {

@@ -2,7 +2,7 @@ import type {
   ServerProvider,
   ServerProviderVersionAdvisory,
   ServerProviderCompatibilityAdvisory,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { msg } from "gt-react";
 
 import { m, type MessageResolver } from "../../i18n/messages";
@@ -73,7 +73,7 @@ export function getProviderSummary(
       headline: resolve(msg("Disabled", { $context: "provider status" })),
       detail:
         provider.message ??
-        resolve(msg("This provider is installed but disabled for new sessions in T3 Code.")),
+        resolve(msg("This provider is installed but disabled for new sessions in J6 Code.")),
     };
   }
   if (!provider.installed) {

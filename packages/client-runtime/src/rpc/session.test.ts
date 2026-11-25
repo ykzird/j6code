@@ -8,8 +8,8 @@ import {
   ServerProvider,
   WS_METHODS,
   UsageLimitSourceId,
-} from "@t3tools/contracts";
-import { splitSocketFrame } from "@t3tools/shared/socketFrameParts";
+} from "@j6/contracts";
+import { splitSocketFrame } from "@j6/shared/socketFrameParts";
 import { describe, expect, it } from "@effect/vitest";
 import * as Cause from "effect/Cause";
 import * as Deferred from "effect/Deferred";
@@ -1080,7 +1080,7 @@ describe("RpcSessionFactory", () => {
       expect(error).toMatchObject({
         reason: "configuration",
         message:
-          "This address now runs a different T3 Code install (environment-2, not environment-1). Remove this connection and add it again.",
+          "This address now runs a different J6 Code install (environment-2, not environment-1). Remove this connection and add it again.",
       });
       expect((yield* Fiber.join(configFiber))._tag).toBe("RpcClientError");
       expect((yield* Fiber.join(customConfigFiber))._tag).toBe("RpcClientError");

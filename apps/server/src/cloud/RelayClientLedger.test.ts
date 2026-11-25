@@ -3,7 +3,7 @@ import * as NodeChildProcess from "node:child_process";
 
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { describe, expect, it } from "@effect/vitest";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -61,7 +61,7 @@ describe.each(observedPlatforms)("RelayClientLedger observing as %s", (platform)
     run(
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
-        const stateDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-relay-ledger-" });
+        const stateDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-relay-ledger-" });
         const deadOwner = yield* spawnSleep;
         const liveOwner = yield* spawnSleep;
         const orphan = yield* spawnSleep;
@@ -88,7 +88,7 @@ describe.each(observedPlatforms)("RelayClientLedger observing as %s", (platform)
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const stateDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-relay-ledger-" });
+        const stateDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-relay-ledger-" });
         const deadOwner = yield* spawnSleep;
         const unrelated = yield* spawnSleep;
 

@@ -4,7 +4,7 @@ import {
   ProjectId,
   type ProjectTrackedFolder,
   type TaskFolderError,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

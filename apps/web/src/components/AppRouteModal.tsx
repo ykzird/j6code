@@ -56,7 +56,7 @@ export function AppRouteModal({
   // commit, when React no longer delivers its blur, so commit-on-blur rows would drop what was
   // typed. Blur text fields before the navigation renders; other controls keep their focus.
   // Not onBeforeNavigate: the router skips it while a past redirect is still recorded.
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- router listener that blurs a field before navigation unmounts it
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- router listener that blurs a field before navigation unmounts it
   useEffect(
     () =>
       router.subscribe("onBeforeLoad", ({ pathChanged }) => {

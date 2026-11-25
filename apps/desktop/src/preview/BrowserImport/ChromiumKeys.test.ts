@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@effect/vitest";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -57,7 +57,7 @@ const layerHelper = (input: {
   readonly capture?: (command: CapturedCommand) => void;
 }) =>
   Layer.merge(
-    Layer.succeed(LinuxBrowserSecretPath, "/bundled/browser-secret/t3-browser-secret"),
+    Layer.succeed(LinuxBrowserSecretPath, "/bundled/browser-secret/j6-browser-secret"),
     Layer.succeed(
       ChildProcessSpawner.ChildProcessSpawner,
       ChildProcessSpawner.make((command) =>

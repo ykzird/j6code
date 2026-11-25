@@ -1,8 +1,8 @@
 // @effect-diagnostics nodeBuiltinImport:off -- The synchronous shell probe runs real commands with isolated config files.
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { it as effectIt } from "@effect/vitest";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { DesktopHostTelemetryMessage } from "@t3tools/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { DesktopHostTelemetryMessage } from "@j6/contracts";
 import * as Schema from "effect/Schema";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -78,7 +78,7 @@ describe("readEnvironmentFromLoginShell", () => {
     "captures Nushell PATH and multiline values without external tools",
     () => {
       const shell = process.env.T3_TEST_NU_PATH!;
-      const home = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "t3-nu-env-"));
+      const home = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "j6-nu-env-"));
       try {
         const toolPath = NodePath.join(home, "nu tools", "bin");
         const extraToolPath = NodePath.join(home, "extra-tools", "bin");
@@ -124,7 +124,7 @@ describe("readEnvironmentFromLoginShell", () => {
   it.runIf(NodeFS.existsSync("/bin/bash"))(
     "captures values when the profile replaces PATH and a DEBUG trap echoes commands",
     () => {
-      const home = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "t3-bash-env-"));
+      const home = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "j6-bash-env-"));
       try {
         const tools = NodePath.join(home, "tools 'quoted $dir");
         NodeFS.mkdirSync(tools);
@@ -174,12 +174,12 @@ describe("readEnvironmentFromLoginShell", () => {
       ) => string
     >(() =>
       [
-        "__T3CODE_ENV_PATH_START__",
+        "__J6CODE_ENV_PATH_START__",
         "/a:/b",
-        "__T3CODE_ENV_PATH_END__",
-        "__T3CODE_ENV_SSH_AUTH_SOCK_START__",
+        "__J6CODE_ENV_PATH_END__",
+        "__J6CODE_ENV_SSH_AUTH_SOCK_START__",
         "/tmp/secretive.sock",
-        "__T3CODE_ENV_SSH_AUTH_SOCK_END__",
+        "__J6CODE_ENV_SSH_AUTH_SOCK_END__",
       ].join("\n"),
     );
 
@@ -206,11 +206,11 @@ describe("readEnvironmentFromLoginShell", () => {
       ) => string
     >(() =>
       [
-        "__T3CODE_ENV_PATH_START__",
+        "__J6CODE_ENV_PATH_START__",
         "/a:/b",
-        "__T3CODE_ENV_PATH_END__",
-        "__T3CODE_ENV_SSH_AUTH_SOCK_START__",
-        "__T3CODE_ENV_SSH_AUTH_SOCK_END__",
+        "__J6CODE_ENV_PATH_END__",
+        "__J6CODE_ENV_SSH_AUTH_SOCK_START__",
+        "__J6CODE_ENV_SSH_AUTH_SOCK_END__",
       ].join("\n"),
     );
 
@@ -228,9 +228,9 @@ describe("readEnvironmentFromLoginShell", () => {
       ) => string
     >(() =>
       [
-        "__T3CODE_ENV_CUSTOM_VAR_START__",
+        "__J6CODE_ENV_CUSTOM_VAR_START__",
         "  first\nsecond  ",
-        "__T3CODE_ENV_CUSTOM_VAR_END__",
+        "__J6CODE_ENV_CUSTOM_VAR_END__",
       ].join("\n"),
     );
 
@@ -401,7 +401,7 @@ describe("readEnvironmentFromWindowsShell", () => {
         ) => string
       >(
         () =>
-          "__T3CODE_ENV_PATH_START__\nC:\\Users\\testuser\\AppData\\Roaming\\npm\n__T3CODE_ENV_PATH_END__\n",
+          "__J6CODE_ENV_PATH_START__\nC:\\Users\\testuser\\AppData\\Roaming\\npm\n__J6CODE_ENV_PATH_END__\n",
       );
 
       expect(
@@ -432,7 +432,7 @@ describe("readEnvironmentFromWindowsShell", () => {
         ) => string
       >(
         () =>
-          "__T3CODE_ENV_FNM_DIR_START__\r\nC:\\Users\\testuser\\AppData\\Roaming\\fnm\r\n__T3CODE_ENV_FNM_DIR_END__\r\n",
+          "__J6CODE_ENV_FNM_DIR_START__\r\nC:\\Users\\testuser\\AppData\\Roaming\\fnm\r\n__J6CODE_ENV_FNM_DIR_END__\r\n",
       );
 
       expect(
@@ -449,7 +449,7 @@ describe("readEnvironmentFromWindowsShell", () => {
     "reads a non-ASCII value from the real shell",
     () =>
       Effect.gen(function* () {
-        const name = "T3CODE_TEST_NON_ASCII_PATH";
+        const name = "J6CODE_TEST_NON_ASCII_PATH";
         const value = "C:\\Users\\Jürgen\\Grüße";
         vi.stubEnv(name, value);
         try {
@@ -468,7 +468,7 @@ describe("readEnvironmentFromWindowsShell", () => {
           args: ReadonlyArray<string>,
           options: { encoding: "utf8"; timeout: number },
         ) => string
-      >(() => "__T3CODE_ENV_PATH_START__\nC:\\Tools\n__T3CODE_ENV_PATH_END__\n");
+      >(() => "__J6CODE_ENV_PATH_START__\nC:\\Tools\n__J6CODE_ENV_PATH_END__\n");
 
       expect(
         yield* readEnvironmentFromWindowsShell(["PATH"], { loadProfile: true }, (...args) =>
@@ -498,7 +498,7 @@ describe("readEnvironmentFromWindowsShell", () => {
         if (file === "pwsh.exe") {
           throw new Error("spawn pwsh.exe ENOENT");
         }
-        return "__T3CODE_ENV_PATH_START__\nC:\\Tools\n__T3CODE_ENV_PATH_END__\n";
+        return "__J6CODE_ENV_PATH_START__\nC:\\Tools\n__J6CODE_ENV_PATH_END__\n";
       });
 
       expect(
@@ -562,7 +562,7 @@ effectIt.layer(NodeServices.layer)("resolveCommandPath", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const cwd = yield* fs.makeTempDirectoryScoped({ directory: ".", prefix: "t3-path-" });
+        const cwd = yield* fs.makeTempDirectoryScoped({ directory: ".", prefix: "j6-path-" });
         const directory = `${cwd}/bin \u00a0"`;
         yield* fs.makeDirectory(directory);
         const executable = `${directory}/audit-command`;
@@ -623,7 +623,7 @@ effectIt.layer(NodeServices.layer)("resolveCommandPath", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const cwd = yield* fs.makeTempDirectoryScoped({ prefix: "t3-case-sensitive-path-" });
+        const cwd = yield* fs.makeTempDirectoryScoped({ prefix: "j6-case-sensitive-path-" });
         const executable = path.join(cwd, "audit-command.cmd");
         yield* fs.writeFileString(executable, "@echo off\n");
 
@@ -816,13 +816,13 @@ console.log(JSON.stringify({ resolved, resolvedGit }));
         const path = yield* Path.Path;
         // Real paths: the child's process.cwd() reports them, and anchored matches start with it.
         const cwd = yield* fs.realPath(
-          yield* fs.makeTempDirectoryScoped({ prefix: "t3-empty-path-cwd-" }),
+          yield* fs.makeTempDirectoryScoped({ prefix: "j6-empty-path-cwd-" }),
         );
-        const listed = yield* fs.makeTempDirectoryScoped({ prefix: "t3-empty-path-listed-" });
+        const listed = yield* fs.makeTempDirectoryScoped({ prefix: "j6-empty-path-listed-" });
         const empty = yield* fs.realPath(
-          yield* fs.makeTempDirectoryScoped({ prefix: "t3-empty-path-absent-" }),
+          yield* fs.makeTempDirectoryScoped({ prefix: "j6-empty-path-absent-" }),
         );
-        const command = "t3-empty-path-cli";
+        const command = "j6-empty-path-cli";
         const inCwd = path.join(cwd, command);
         const inListed = path.join(listed, command);
         const gitShim = path.join(listed, "git");
@@ -1010,11 +1010,11 @@ console.log(JSON.stringify({ ...result, cached: cache.size }));
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const listed = yield* fs.makeTempDirectoryScoped({ prefix: "t3-gone-cwd-listed-" });
-        const parent = yield* fs.makeTempDirectoryScoped({ prefix: "t3-gone-cwd-parent-" });
+        const listed = yield* fs.makeTempDirectoryScoped({ prefix: "j6-gone-cwd-listed-" });
+        const parent = yield* fs.makeTempDirectoryScoped({ prefix: "j6-gone-cwd-parent-" });
         const removed = path.join(parent, "removed");
         yield* fs.makeDirectory(removed);
-        const command = "t3-gone-cwd-cli";
+        const command = "j6-gone-cwd-cli";
         const inListed = path.join(listed, command);
         const gitShim = path.join(listed, "git");
         const xcodeGit = path.join(listed, "xcode-git");
@@ -1071,9 +1071,9 @@ console.log(JSON.stringify(resolved));
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const parent = yield* fs.makeTempDirectoryScoped({ prefix: "t3-renamed-cwd-" });
+        const parent = yield* fs.makeTempDirectoryScoped({ prefix: "j6-renamed-cwd-" });
         const cwd = path.join(parent, "before");
-        const command = "t3-renamed-cwd-cli";
+        const command = "j6-renamed-cwd-cli";
         yield* fs.makeDirectory(path.join(cwd, "bin"), { recursive: true });
         yield* fs.writeFileString(path.join(cwd, "bin", command), "#!/bin/sh\n", { mode: 0o755 });
 
@@ -1321,7 +1321,7 @@ effectIt.layer(NodeServices.layer)("resolveSpawnCommand", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const directory = yield* fs.makeTempDirectoryScoped({ prefix: "t3-spawn-" });
+        const directory = yield* fs.makeTempDirectoryScoped({ prefix: "j6-spawn-" });
         const executable = path.join(directory, "tool.EXE");
         yield* fs.writeFileString(executable, "");
         let settled = false;
@@ -1345,7 +1345,7 @@ effectIt.layer(NodeServices.layer)("resolveSpawnCommand", (it) => {
     Effect.scoped(
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
-        const directory = yield* fs.makeTempDirectoryScoped({ prefix: "t3-spawn-" });
+        const directory = yield* fs.makeTempDirectoryScoped({ prefix: "j6-spawn-" });
         const fixture = NodePath.join(directory, "tool.EXE");
         yield* fs.writeFileString(fixture, "");
         const stat = yield* Effect.promise(() => NodeFS.promises.stat(fixture));
@@ -1406,7 +1406,7 @@ effectIt.layer(NodeServices.layer)("resolveSpawnCommand", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const prefix = yield* fs.makeTempDirectoryScoped({ prefix: "t3-npm-shim-" });
+        const prefix = yield* fs.makeTempDirectoryScoped({ prefix: "j6-npm-shim-" });
         const shim = path.join(prefix, "opencode.cmd");
         const executable = path.join(prefix, "node_modules", "opencode-ai", "bin", "opencode.exe");
         yield* fs.makeDirectory(path.dirname(executable), { recursive: true });
@@ -1801,10 +1801,10 @@ describe("pathSetupCommand", () => {
       `mkdir -p ~/.config/fish && printf '\\n%s\\n' 'fish_add_path --append --path $HOME/.local/bin' >> ~/.config/fish/config.fish`,
     ],
     [
-      "/opt/t3/bin",
+      "/opt/j6/bin",
       "/bin/zsh",
       "linux",
-      `printf '\\n%s\\n' 'export PATH="$PATH:/opt/t3/bin"' >> ~/.zshrc`,
+      `printf '\\n%s\\n' 'export PATH="$PATH:/opt/j6/bin"' >> ~/.zshrc`,
     ],
     ["/Users/theo/.local/bin", "/bin/tcsh", "darwin", undefined],
     ["/Users/theo/.local/bin", "/bin/bash", "darwin", undefined],
@@ -1818,7 +1818,7 @@ describe("pathSetupCommand", () => {
   });
 
   it("writes the startup file fish and zsh read, under XDG_CONFIG_HOME or ZDOTDIR", () => {
-    const setup = { directory: "/opt/t3/bin", home: "/home/theo", shell: "/usr/bin/fish" } as const;
+    const setup = { directory: "/opt/j6/bin", home: "/home/theo", shell: "/usr/bin/fish" } as const;
     expect(pathSetup({ ...setup, platform: "linux", configHome: "/home/theo/cfg" })?.file).toBe(
       "/home/theo/cfg/fish/config.fish",
     );

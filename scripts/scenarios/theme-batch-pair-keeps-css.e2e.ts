@@ -1,13 +1,13 @@
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 test(
   "Importing light and dark theme files together keeps their shared custom CSS",
   WEB,
-  async ({ t3, app, screen, browser }) => {
-    await t3.project("demo");
-    await t3.open("/settings/appearance");
+  async ({ j6, app, screen, browser }) => {
+    await j6.project("demo");
+    await j6.open("/settings/appearance");
     await screen.getByRole("button", "Add theme", { exact: true }).tap();
     const dialog = screen.getByRole("dialog", "Add a theme");
     await browser.evaluate(() => {

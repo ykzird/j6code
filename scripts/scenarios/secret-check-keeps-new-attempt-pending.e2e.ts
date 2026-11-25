@@ -1,11 +1,11 @@
 /// <reference lib="dom" />
-import { SecretProviderId, SecretProviderKind } from "@t3tools/contracts";
+import { SecretProviderId, SecretProviderKind } from "@j6/contracts";
 import { expect } from "e2e";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { environmentId, rpcClient, runPromise, test, WEB } from "./t3.ts";
+import { environmentId, rpcClient, runPromise, test, WEB } from "./j6.ts";
 
 const PROVIDER = SecretProviderId.make("scenario");
 const REFERENCE_A = "op://Scenario/GitHub/first";
@@ -23,10 +23,10 @@ declare global {
 test(
   "An earlier check of the same reference leaves the new check pending",
   WEB,
-  async ({ t3, app, browser, screen }) => {
+  async ({ j6, app, browser, screen }) => {
     const origin = app.baseUrl ?? "";
     const environment = await runPromise(environmentId(origin));
-    await t3.project("demo");
+    await j6.project("demo");
     await runPromise(
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
@@ -101,7 +101,7 @@ test(
       };
     });
 
-    await t3.open(`/settings/source-control?machine=${encodeURIComponent(environment)}`);
+    await j6.open(`/settings/source-control?machine=${encodeURIComponent(environment)}`);
     await screen.getByRole("button", "Toggle GitHub details", { exact: true }).tap();
     const input = screen.getByRole("textbox", "GitHub token reference", { exact: true });
     const check = screen.getByRole("button", "Check GitHub token", { exact: true });

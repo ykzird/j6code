@@ -1,5 +1,5 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import * as NodeSqliteClient from "@t3tools/shared/nodeSqliteClient";
+import * as NodeSqliteClient from "@j6/shared/nodeSqliteClient";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -21,7 +21,7 @@ import WorkflowPoolsMigration from "../persistence/Migrations/118_WorkflowPools.
 import * as MilestoneHub from "../milestones/MilestoneHub.ts";
 import * as WorkflowStore from "./WorkflowStore.ts";
 
-const sender = { answeredBy: "t3 CLI", answeredAt: "2026-01-01T00:00:00.000Z" };
+const sender = { answeredBy: "j6 CLI", answeredAt: "2026-01-01T00:00:00.000Z" };
 
 const withStore = <A, E>(
   use: Effect.Effect<
@@ -33,7 +33,7 @@ const withStore = <A, E>(
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const directory = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-workflow-store-" });
+    const directory = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-workflow-store-" });
     const database = NodeSqliteClient.layer({ filename: path.join(directory, "state.sqlite") });
     const migrated = Layer.effectDiscard(
       Effect.andThen(WorkflowsMigration, WorkflowSkippedRunsMigration).pipe(

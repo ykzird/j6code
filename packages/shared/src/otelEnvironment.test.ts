@@ -10,11 +10,11 @@ const load = (env: Record<string, string>) =>
   OtelEnvironment.load.pipe(Effect.provide(ConfigProvider.layer(ConfigProvider.fromEnv({ env }))));
 
 const SPEC_OFF =
-  "OTEL_SDK_DISABLED is set, so no telemetry is exported, whatever configured it; set T3CODE_OTEL_SDK_DISABLED=false to export anyway";
+  "OTEL_SDK_DISABLED is set, so no telemetry is exported, whatever configured it; set J6CODE_OTEL_SDK_DISABLED=false to export anyway";
 const T3_OFF =
-  "T3CODE_OTEL_SDK_DISABLED is set, so no telemetry is exported, whatever configured it";
+  "J6CODE_OTEL_SDK_DISABLED is set, so no telemetry is exported, whatever configured it";
 const specIgnored = (value: string) =>
-  `OTEL_SDK_DISABLED=${value} was read as false; the OpenTelemetry specification recognizes only the string true, so use OTEL_SDK_DISABLED=true or T3CODE_OTEL_SDK_DISABLED to say it any other way`;
+  `OTEL_SDK_DISABLED=${value} was read as false; the OpenTelemetry specification recognizes only the string true, so use OTEL_SDK_DISABLED=true or J6CODE_OTEL_SDK_DISABLED to say it any other way`;
 
 describe("OtelEnvironment", () => {
   it.effect.each([
@@ -26,18 +26,18 @@ describe("OtelEnvironment", () => {
       disabled: false,
       warnings: [specIgnored("1")],
     },
-    { name: "t3 1", env: { T3CODE_OTEL_SDK_DISABLED: "1" }, disabled: true, warnings: [T3_OFF] },
+    { name: "j6 1", env: { J6CODE_OTEL_SDK_DISABLED: "1" }, disabled: true, warnings: [T3_OFF] },
     {
-      name: "t3 false overrides spec true",
-      env: { T3CODE_OTEL_SDK_DISABLED: "false", OTEL_SDK_DISABLED: "true" },
+      name: "j6 false overrides spec true",
+      env: { J6CODE_OTEL_SDK_DISABLED: "false", OTEL_SDK_DISABLED: "true" },
       disabled: false,
       warnings: [],
     },
     {
-      name: "unreadable t3 warns and falls through",
-      env: { T3CODE_OTEL_SDK_DISABLED: "maybe", OTEL_SDK_DISABLED: "true" },
+      name: "unreadable j6 warns and falls through",
+      env: { J6CODE_OTEL_SDK_DISABLED: "maybe", OTEL_SDK_DISABLED: "true" },
       disabled: true,
-      warnings: ["T3CODE_OTEL_SDK_DISABLED=maybe is not a yes or a no and was ignored", SPEC_OFF],
+      warnings: ["J6CODE_OTEL_SDK_DISABLED=maybe is not a yes or a no and was ignored", SPEC_OFF],
     },
   ])("$name", ({ env, disabled, warnings }) =>
     Effect.gen(function* () {
@@ -142,7 +142,7 @@ describe("OtelEnvironment", () => {
       {
         name: "the kill switch wins outright over a valid endpoint",
         env: {
-          T3CODE_OTEL_SDK_DISABLED: "true",
+          J6CODE_OTEL_SDK_DISABLED: "true",
           OTEL_EXPORTER_OTLP_ENDPOINT: "https://collector:4318/base",
         },
         traces: "Unset",
@@ -241,7 +241,7 @@ describe("OtelEnvironment", () => {
   describe("resolveSignalEndpoint", () => {
     const t3Export = {
       protocol: "http/json",
-      headers: { "x-key": "t3" },
+      headers: { "x-key": "j6" },
       exportIntervalMs: 5_000,
     } as const;
     const withLogs = (logs: OtelEnvironment.OtelSignal, disabled = false) => ({
@@ -257,14 +257,14 @@ describe("OtelEnvironment", () => {
     });
     it.each([
       {
-        name: "T3CODE_OTLP_*_URL wins over a signal the OTEL variables turned off",
+        name: "J6CODE_OTLP_*_URL wins over a signal the OTEL variables turned off",
         otel: withLogs(OtelEnvironment.OtelSignal.Off()),
-        t3Url: "http://t3:4318/v1/logs",
+        t3Url: "http://j6:4318/v1/logs",
         expected: {
-          url: "http://t3:4318/v1/logs",
+          url: "http://j6:4318/v1/logs",
           export: t3Export,
           source: "environment" as const,
-          variable: "T3CODE_OTLP_LOGS_URL",
+          variable: "J6CODE_OTLP_LOGS_URL",
         },
       },
       {
@@ -336,19 +336,19 @@ describe("OtelEnvironment", () => {
   it.effect("an exporter of none keeps the Settings endpoint from re-enabling its signal", () =>
     Effect.gen(function* () {
       const otel = yield* load({ OTEL_LOGS_EXPORTER: "none" });
-      const t3 = {
+      const j6 = {
         url: undefined,
         export: { protocol: "http/json", headers: undefined, exportIntervalMs: 10_000 },
       } as const;
       assert.strictEqual(
-        OtelEnvironment.resolveSignalEndpoint(otel, "logs", t3, {
+        OtelEnvironment.resolveSignalEndpoint(otel, "logs", j6, {
           bootstrapUrl: undefined,
           settingsUrl: "http://settings:4318/v1/logs",
         }),
         undefined,
       );
       assert.strictEqual(
-        OtelEnvironment.resolveSignalEndpoint(otel, "traces", t3, {
+        OtelEnvironment.resolveSignalEndpoint(otel, "traces", j6, {
           bootstrapUrl: undefined,
           settingsUrl: "http://settings:4318/v1/traces",
         })?.url,
@@ -367,7 +367,7 @@ describe("OtelEnvironment", () => {
           ConfigProvider.fromEnv({ env: { OTEL_RESOURCE_ATTRIBUTES: raw } }),
         );
         const otel = yield* OtelEnvironment.load.pipe(Effect.provide(layerEnv));
-        const resource = yield* OtlpResource.fromConfig({ serviceName: "t3" }).pipe(
+        const resource = yield* OtlpResource.fromConfig({ serviceName: "j6" }).pipe(
           Effect.provide(
             Layer.provide(
               OtelEnvironment.layerResourceAttributes(otel.resourceAttributes),
@@ -405,46 +405,46 @@ describe("isRelayTracingEnabled", () => {
     assert.isFalse(
       OtelEnvironment.isRelayTracingEnabled({
         DO_NOT_TRACK: "true",
-        T3CODE_TELEMETRY_ENABLED: "1",
+        J6CODE_TELEMETRY_ENABLED: "1",
       }),
     );
     assert.isTrue(OtelEnvironment.isRelayTracingEnabled({ DO_NOT_TRACK: "0" }));
     assert.isTrue(OtelEnvironment.isRelayTracingEnabled({ DO_NOT_TRACK: "" }));
   });
 
-  it("defaults on and respects the T3CODE SDK override of the standard kill switch", () => {
+  it("defaults on and respects the J6CODE SDK override of the standard kill switch", () => {
     assert.isTrue(OtelEnvironment.isRelayTracingEnabled({}));
     assert.isFalse(OtelEnvironment.isRelayTracingEnabled({ OTEL_SDK_DISABLED: "true" }));
     assert.isTrue(
       OtelEnvironment.isRelayTracingEnabled({
         OTEL_SDK_DISABLED: "true",
-        T3CODE_OTEL_SDK_DISABLED: "false",
+        J6CODE_OTEL_SDK_DISABLED: "false",
       }),
     );
     assert.isFalse(
       OtelEnvironment.isRelayTracingEnabled({
         OTEL_SDK_DISABLED: "false",
-        T3CODE_OTEL_SDK_DISABLED: "true",
+        J6CODE_OTEL_SDK_DISABLED: "true",
       }),
     );
   });
 
-  it("is off on a CI runner unless T3CODE_TELEMETRY_ENABLED turns it on", () => {
+  it("is off on a CI runner unless J6CODE_TELEMETRY_ENABLED turns it on", () => {
     assert.isFalse(OtelEnvironment.isRelayTracingEnabled({ CI: "true" }));
     assert.isFalse(OtelEnvironment.isRelayTracingEnabled({ JENKINS_URL: "https://ci.example" }));
     assert.isTrue(
-      OtelEnvironment.isRelayTracingEnabled({ CI: "true", T3CODE_TELEMETRY_ENABLED: "true" }),
+      OtelEnvironment.isRelayTracingEnabled({ CI: "true", J6CODE_TELEMETRY_ENABLED: "true" }),
     );
     assert.isFalse(
-      OtelEnvironment.isRelayTracingEnabled({ CI: "true", T3CODE_TELEMETRY_ENABLED: "false" }),
+      OtelEnvironment.isRelayTracingEnabled({ CI: "true", J6CODE_TELEMETRY_ENABLED: "false" }),
     );
   });
 
   it.effect("product opt-out beats SDK enable without disabling user-configured tracing", () =>
     Effect.gen(function* () {
       const env = {
-        T3CODE_TELEMETRY_ENABLED: "false",
-        T3CODE_OTEL_SDK_DISABLED: "false",
+        J6CODE_TELEMETRY_ENABLED: "false",
+        J6CODE_OTEL_SDK_DISABLED: "false",
         OTEL_SDK_DISABLED: "true",
         OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "https://user.example.test/v1/traces",
       };

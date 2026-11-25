@@ -20,7 +20,7 @@ import {
   toCanonicalThemeColor,
 } from "./themePalette";
 
-const THEME_STORAGE_KEY = "t3code:theme";
+const THEME_STORAGE_KEY = "j6code:theme";
 const DEFAULT_DARK_CHROME = getDefaultThemeColors("dark").chrome;
 
 const bootScript = (() => {
@@ -156,13 +156,13 @@ describe("index.html boot script", () => {
     { name: "no stored preference on a dark OS", storage: {}, prefersDark: true },
     {
       name: "T3 Chat follows a dark OS",
-      storage: { [THEME_STORAGE_KEY]: "t3-chat", [THEME_FOLLOW_SYSTEM_STORAGE_KEY]: "true" },
+      storage: { [THEME_STORAGE_KEY]: "j6-chat", [THEME_FOLLOW_SYSTEM_STORAGE_KEY]: "true" },
       prefersDark: true,
     },
     {
       name: "an explicit global dark mode applies to T3 Chat",
       storage: {
-        [THEME_STORAGE_KEY]: "t3-chat",
+        [THEME_STORAGE_KEY]: "j6-chat",
         [THEME_APPEARANCE_MODE_STORAGE_KEY]: "dark",
         [THEME_FOLLOW_SYSTEM_STORAGE_KEY]: "false",
       },
@@ -189,13 +189,13 @@ describe("index.html boot script", () => {
       prefersDark: true,
     },
     {
-      name: "a legacy t3-grove preference resolves through the alias",
-      storage: { [THEME_STORAGE_KEY]: "t3-grove", [THEME_FOLLOW_SYSTEM_STORAGE_KEY]: "true" },
+      name: "a legacy j6-grove preference resolves through the alias",
+      storage: { [THEME_STORAGE_KEY]: "j6-grove", [THEME_FOLLOW_SYSTEM_STORAGE_KEY]: "true" },
       prefersDark: true,
     },
     {
-      name: "legacy t3-chat-dark resolves to dark T3 Chat",
-      storage: { [THEME_STORAGE_KEY]: "t3-chat-dark" },
+      name: "legacy j6-chat-dark resolves to dark T3 Chat",
+      storage: { [THEME_STORAGE_KEY]: "j6-chat-dark" },
       prefersDark: true,
     },
     {
@@ -335,9 +335,9 @@ describe("index.html boot script", () => {
 
   it("applies the matching half of an automatic mix to the splash", () => {
     const storage = {
-      [THEME_STORAGE_KEY]: "t3-chat",
+      [THEME_STORAGE_KEY]: "j6-chat",
       [THEME_APPEARANCE_MODE_STORAGE_KEY]: "system",
-      "t3code:theme-halves:v1": JSON.stringify({ dark: GROVE_THEME.id }),
+      "j6code:theme-halves:v1": JSON.stringify({ dark: GROVE_THEME.id }),
     };
 
     const dark = runBootScript({ storage, prefersDark: true });
@@ -349,7 +349,7 @@ describe("index.html boot script", () => {
 
     const light = runBootScript({ storage, prefersDark: false });
     expect(light.isDark).toBe(false);
-    expect(light.themeId).toBe("t3-chat");
+    expect(light.themeId).toBe("j6-chat");
     expect(light.bootVariables["--boot-background"]).toBe(
       getThemeColorsForMode(T3_CHAT_THEME, "light")!.canvas,
     );
@@ -360,7 +360,7 @@ describe("index.html boot script", () => {
       storage: {
         [THEME_STORAGE_KEY]: "gone-theme",
         [THEME_APPEARANCE_MODE_STORAGE_KEY]: "system",
-        "t3code:theme-halves:v1": JSON.stringify({ dark: GROVE_THEME.id }),
+        "j6code:theme-halves:v1": JSON.stringify({ dark: GROVE_THEME.id }),
       },
       prefersDark: true,
     });

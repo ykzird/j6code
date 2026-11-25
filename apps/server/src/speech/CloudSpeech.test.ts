@@ -1,6 +1,6 @@
 import { it } from "@effect/vitest";
-import { DEFAULT_SPEECH_TRANSCRIPTION_OPTIONS, SecretProviderId } from "@t3tools/contracts";
-import * as SecretResolver from "@t3tools/secret-provider-core/server/SecretResolver";
+import { DEFAULT_SPEECH_TRANSCRIPTION_OPTIONS, SecretProviderId } from "@j6/contracts";
+import * as SecretResolver from "@j6/secret-provider-core/server/SecretResolver";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
 import * as Layer from "effect/Layer";
@@ -45,7 +45,7 @@ it.effect.each(["openai", "xai"] as const)("sends only to %s using its own saved
         .transcribe(provider, pcm, {
           ...DEFAULT_SPEECH_TRANSCRIPTION_OPTIONS,
           speechLanguage: "en",
-          speechCustomWords: ["T3 Code", ...words].map((term) => ({ term, aliases: [] })),
+          speechCustomWords: ["J6 Code", ...words].map((term) => ({ term, aliases: [] })),
           speechHints: ["Server"],
         })
         .pipe(Effect.provideService(FetchHttpClient.Fetch, upstream));
@@ -71,7 +71,7 @@ it.effect.each(["openai", "xai"] as const)("sends only to %s using its own saved
     );
     expect(form.getAll(provider === "openai" ? "keywords[]" : "keyterm")).toEqual([
       "Server",
-      "T3 Code",
+      "J6 Code",
       ...words.slice(0, 98),
     ]);
     expect(form.get(provider === "openai" ? "languages[]" : "language")).toBe("en");

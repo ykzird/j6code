@@ -1,22 +1,22 @@
 import { msg } from "gt-react";
-import { errorDisplayMessage, thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { errorDisplayMessage, thrownErrorMessage } from "@j6/client-runtime/errors";
 import { m } from "~/i18n/messages";
 import type { ToolCallDiffTarget } from "../../diffPanelStore";
-import type { EnvironmentProject } from "@t3tools/client-runtime/state/shell";
+import type { EnvironmentProject } from "@j6/client-runtime/state/shell";
 import type { ThreadPreviewState } from "../../previewStateStore";
-import { formatFilePathForClipboard } from "@t3tools/client-runtime/media-actions";
-import { resolvePathLinkTarget } from "@t3tools/shared/fileLinks";
+import { formatFilePathForClipboard } from "@j6/client-runtime/media-actions";
+import { resolvePathLinkTarget } from "@j6/shared/fileLinks";
 import { useStableCallback } from "../../hooks/useStableCallback";
-import { type ScopedThreadRef, type PreviewSessionSnapshot } from "@t3tools/contracts";
-import { scopeThreadRef } from "@t3tools/client-runtime/environment";
-import { sideThreadComposer, sideThreadKindOf } from "@t3tools/client-runtime/side-thread";
+import { type ScopedThreadRef, type PreviewSessionSnapshot } from "@j6/contracts";
+import { scopeThreadRef } from "@j6/client-runtime/environment";
+import { sideThreadComposer, sideThreadKindOf } from "@j6/client-runtime/side-thread";
 import { readThreadShell } from "../../state/entities";
-import { scopedThreadKey } from "@t3tools/client-runtime/environment";
+import { scopedThreadKey } from "@j6/client-runtime/environment";
 import { useEffect } from "react";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
+} from "@j6/client-runtime/state/runtime";
 import { useDiffPanelStore } from "../../diffPanelStore";
 import { type ThreadPanelPresentation } from "../../rightPanelLayout";
 import {
@@ -313,7 +313,7 @@ export function useRightPanelActions(input: RightPanelActionsInput) {
     useRightPanelStore.getState().open(activeThreadRef, "diff");
     onDiffPanelOpen?.();
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- subscribes to the preview action bus to toggle the preview panel
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- subscribes to the preview action bus to toggle the preview panel
   useEffect(
     () =>
       embedded

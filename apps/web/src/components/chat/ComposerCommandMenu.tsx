@@ -1,9 +1,9 @@
-import { formatProviderSkillDisplayName } from "@t3tools/shared/inlineSkills";
-import type { ComposerPathSearchTarget } from "@t3tools/client-runtime/state/threads";
+import { formatProviderSkillDisplayName } from "@j6/shared/inlineSkills";
+import type { ComposerPathSearchTarget } from "@j6/client-runtime/state/threads";
 import {
   resolveProviderSkillSourceKind,
   type ProviderSkillSourceKind,
-} from "@t3tools/client-runtime/providerSkills";
+} from "@j6/client-runtime/providerSkills";
 import {
   type EnvironmentId,
   type EnvironmentMachineKind,
@@ -14,7 +14,7 @@ import {
   type ScopedThreadRef,
   type ServerProviderSkill,
   type ServerProviderSlashCommand,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   BlocksIcon,
   FolderIcon,
@@ -121,7 +121,7 @@ export const ComposerCommandMenu = memo(function ComposerCommandMenu(props: {
   const m = useMessages();
   const listRef = useRef<HTMLDivElement>(null);
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- scrolls the highlighted menu item's DOM node into view
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- scrolls the highlighted menu item's DOM node into view
   useLayoutEffect(() => {
     if (!props.activeItemId || !listRef.current) return;
     const el = listRef.current.querySelector<HTMLElement>(
@@ -209,7 +209,7 @@ const ComposerCommandMenuItem = memo(function ComposerCommandMenuItem(props: {
     props.item.type === "pull-request" ? resolvePullRequestState(props.item.pullRequest, m) : null;
   const descriptionRef = useRef<HTMLSpanElement>(null);
   const [descriptionTruncated, setDescriptionTruncated] = useState(false);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- measures the rendered description so only cut-off text gets a tooltip
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- measures the rendered description so only cut-off text gets a tooltip
   useLayoutEffect(() => {
     const description = descriptionRef.current;
     setDescriptionTruncated(

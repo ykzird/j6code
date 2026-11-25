@@ -15,7 +15,7 @@ import {
   type RuntimeMode,
   type OrchestrationV2ThreadShell,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Cause from "effect/Cause";
@@ -194,7 +194,7 @@ const clientLaunchHarness = (input: {
     Layer.provideMerge(GitVcsDriver.layer),
     Layer.provideMerge(VcsProcess.layer),
     Layer.provideMerge(
-      ServerConfig.layerTest(process.cwd(), { prefix: "t3-client-launch-" }).pipe(
+      ServerConfig.layerTest(process.cwd(), { prefix: "j6-client-launch-" }).pipe(
         Layer.provide(NodeServices.layer),
       ),
     ),
@@ -251,7 +251,7 @@ it.effect(
       expect(belowCeiling.result).toMatchObject({
         projectId: belowCeiling.projectId,
         modelSelection: belowCeiling.modelSelection,
-        link: `[Fix](t3-thread://v2/environment/${belowCeiling.launched[0]?.threadId})`,
+        link: `[Fix](j6-thread://v2/environment/${belowCeiling.launched[0]?.threadId})`,
       });
       expect(belowCeiling.launched[0]?.runtimeMode).toBe("approval-required");
       expect(belowCeiling.launched[0]?.initialMessage?.senderThreadId).toBeUndefined();
@@ -278,11 +278,11 @@ it.effect(
 
       const aboveCeiling = yield* launchWith("auto-accept-edits", "full-access", {
         title: "Fix",
-        hostedAppUrl: "https://t3.example.com",
+        hostedAppUrl: "https://j6.example.com",
       });
       expect(aboveCeiling.launched[0]?.runtimeMode).toBe("auto-accept-edits");
       expect(aboveCeiling.result).toMatchObject({
-        link: `https://t3.example.com/threads/environment/${encodeURIComponent(aboveCeiling.launched[0]?.threadId ?? "")}`,
+        link: `https://j6.example.com/threads/environment/${encodeURIComponent(aboveCeiling.launched[0]?.threadId ?? "")}`,
       });
 
       const requested = yield* launchWith("full-access", "approval-required", {
@@ -658,7 +658,7 @@ it.effect("a launch binds only an existing checkout that is one of the project's
     const path = yield* Path.Path;
     // Git registers resolved paths, and a launch keeps the registered one.
     const root = yield* fileSystem.realPath(
-      yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-launch-worktree-" }),
+      yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-launch-worktree-" }),
     );
     const repo = path.join(root, "repo");
     const worktree = path.join(root, "feature");
@@ -734,7 +734,7 @@ it.effect("a launch into a new worktree creates nothing when its base ref has no
       checkWorktreeBase: ({ projectId, workspaceStrategy }) =>
         workspaceStrategy.type !== "worktree"
           ? Effect.void
-          : workspaceStrategy.baseRef === "t3/renamed"
+          : workspaceStrategy.baseRef === "j6/renamed"
             ? Effect.fail(
                 new ThreadLaunch.ThreadLaunchBaseRefError({
                   projectId,
@@ -772,10 +772,10 @@ it.effect("a launch into a new worktree creates nothing when its base ref has no
         })
         .pipe(Stream.unwrap, Stream.runCollect, Effect.provide(dependencies));
 
-    const refused = (yield* launchFrom("t3/renamed")).at(-1)?.result;
+    const refused = (yield* launchFrom("j6/renamed")).at(-1)?.result;
     expect(refused).toMatchObject({ code: "invalid_request" });
     expect((refused as { message: string }).message).toContain(
-      'Base ref "t3/renamed" does not resolve to a commit in project "Client target" (/projects/client-target). No thread was created. Pass a branch, tag, or commit that exists there',
+      'Base ref "j6/renamed" does not resolve to a commit in project "Client target" (/projects/client-target). No thread was created. Pass a branch, tag, or commit that exists there',
     );
     expect((yield* launchFrom("main", "feature/taken")).at(-1)?.result).toMatchObject({
       code: "invalid_request",
@@ -837,8 +837,8 @@ it.effect("a worktree launch that omits startFromOrigin follows the new-worktree
 it.effect("a launch that omits its workspace follows the new-threads-in-a-worktree default", () =>
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
-    for (const source of ["setting", "t3.json"] as const) {
-      const repo = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-launch-env-mode-" });
+    for (const source of ["setting", "j6.json"] as const) {
+      const repo = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-launch-env-mode-" });
       const launched: Array<ThreadLaunch.ThreadLaunchInput> = [];
       const { projectId, dependencies } = clientLaunchHarness({
         runtimeModeCeiling: "auto",
@@ -853,9 +853,9 @@ it.effect("a launch that omits its workspace follows the new-threads-in-a-worktr
       ]) {
         yield* git.execute({ operation: "test.setupRepo", cwd: repo, args });
       }
-      if (source === "t3.json")
+      if (source === "j6.json")
         yield* fileSystem.writeFileString(
-          `${repo}/t3.json`,
+          `${repo}/j6.json`,
           JSON.stringify({ defaultThreadEnvMode: "worktree" }),
         );
       const toolkit = yield* ProjectToolkit.pipe(
@@ -893,7 +893,7 @@ it.effect("a defaulted worktree launch stays shared only when Git says HEAD has 
       ["branch tip object missing", "worktree"],
       ["git refuses the repository", "refused"],
     ] as const) {
-      const repo = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-launch-head-" });
+      const repo = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-launch-head-" });
       const launched: Array<ThreadLaunch.ThreadLaunchInput> = [];
       const { projectId, dependencies } = clientLaunchHarness({
         runtimeModeCeiling: "auto",
@@ -1145,7 +1145,7 @@ it.effect("an agent's clone is not cut off while git is still transferring", () 
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const parent = yield* fs.makeTempDirectoryScoped({ prefix: "t3-mcp-clone-" });
+    const parent = yield* fs.makeTempDirectoryScoped({ prefix: "j6-mcp-clone-" });
     const destinationPath = path.join(parent, "repo");
     const started = yield* Deferred.make<void>();
     const transferred = yield* Deferred.make<void>();

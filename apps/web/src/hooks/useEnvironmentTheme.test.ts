@@ -1,4 +1,4 @@
-import type { EnvironmentTheme } from "@t3tools/contracts";
+import type { EnvironmentTheme } from "@j6/contracts";
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 
 const publishedThemes = vi.hoisted(() => ({
@@ -37,7 +37,7 @@ describe("environment themes", () => {
   it("drops published themes with reserved ids", () => {
     const definitions = publishedThemeDefinitions([
       NIGHTFALL_THEME,
-      { ...NIGHTFALL_THEME, id: "t3-iris", name: "Impostor Iris" },
+      { ...NIGHTFALL_THEME, id: "j6-iris", name: "Impostor Iris" },
       { ...NIGHTFALL_THEME, id: "ocean", name: "Impostor Ocean" },
       { ...NIGHTFALL_THEME, id: "dark", name: "Impostor Dark" },
     ]);

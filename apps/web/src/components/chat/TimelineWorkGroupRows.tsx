@@ -1,13 +1,13 @@
 import { TimelinePendingApprovalRow } from "./TimelinePendingApprovalRow";
 import { WorkLogButton, WorkLogList, WorkLogRow } from "./WorkLog";
-import type { WorktreeSetupSnapshot } from "@t3tools/contracts";
-import { type ToolActivityIcon } from "@t3tools/contracts";
+import type { WorktreeSetupSnapshot } from "@j6/contracts";
+import { type ToolActivityIcon } from "@j6/contracts";
 import {
   liveThoughtLine,
   resolveViewedImageAsset,
   workEntriesViewedImagePaths,
-} from "@t3tools/client-runtime/work-log/presentation";
-import { resolveWorkGroupScrollAnchor } from "@t3tools/client-runtime/work-log/scroll-anchor";
+} from "@j6/client-runtime/work-log/presentation";
+import { resolveWorkGroupScrollAnchor } from "@j6/client-runtime/work-log/scroll-anchor";
 import { useAssetUrls } from "~/assets/assetUrls";
 import { observeResize } from "~/lib/observeResize";
 import { tickTextContent } from "~/lib/tickTextContent";
@@ -32,7 +32,7 @@ import { Popover, PopoverPopup, PopoverTrigger } from "../ui/popover";
 import { Spinner } from "../ui/spinner";
 import { WorktreeSetupCard } from "./WorktreeSetupCard";
 import { cn } from "~/lib/utils";
-import { type TimestampFormat } from "@t3tools/contracts/settings";
+import { type TimestampFormat } from "@j6/contracts/settings";
 import {
   TimelineRowCtx,
   TimelineRowActivityCtx,
@@ -276,7 +276,7 @@ function ExpandedWorkGroupEntries({
     setRestoringPosition(false);
   };
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- observes the list scroller and its content with ResizeObserver to update scroll fades
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- observes the list scroller and its content with ResizeObserver to update scroll fades
   useLayoutEffect(() => {
     const element = listRef.current?.getScrollableNode();
     if (!element) return;
@@ -302,7 +302,7 @@ function ExpandedWorkGroupEntries({
     setExpandedContentHeight(height);
   };
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- reads expanded row sizes from LegendList's measured state after layout
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- reads expanded row sizes from LegendList's measured state after layout
   useLayoutEffect(updateExpandedContentHeight, [entries, updateExpandedContentHeight]);
 
   return (

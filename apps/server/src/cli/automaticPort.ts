@@ -1,5 +1,5 @@
-import { listensOnLoopback } from "@t3tools/shared/hostClassification";
-import * as NetService from "@t3tools/shared/Net";
+import { listensOnLoopback } from "@j6/shared/hostClassification";
+import * as NetService from "@j6/shared/Net";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -67,7 +67,7 @@ export const make = Effect.gen(function* () {
     }
     return yield* new CliError.UserError({
       cause:
-        "Windows is already using every port T3 Code tried. Pass --port or set T3CODE_PORT to a port Windows is not using.",
+        "Windows is already using every port J6 Code tried. Pass --port or set J6CODE_PORT to a port Windows is not using.",
     });
   });
 });

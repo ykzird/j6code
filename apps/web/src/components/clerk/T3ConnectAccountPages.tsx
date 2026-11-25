@@ -16,14 +16,14 @@ export const T3_CONNECT_ACCOUNT_PAGES = [
     content: <MobileClientsUserProfilePage />,
   },
   {
-    label: "T3 Connect",
-    url: "t3-connect",
+    label: "J6 Connect",
+    url: "j6-connect",
     icon: <ServerIcon className="size-4" />,
     content: <T3ConnectUserProfilePage />,
   },
   {
     label: "T3 Chat",
-    url: "t3-chat",
+    url: "j6-chat",
     icon: <MessageSquareIcon className="size-4" />,
     content: <T3ChatUserProfilePage />,
   },
@@ -43,7 +43,7 @@ export function useT3ConnectAccountPage(): {
   const m = useMessages();
   const [targets, setTargets] = useState<PortalTargets>({});
 
-  const open = (page: T3ConnectAccountPageUrl = "t3-connect") => {
+  const open = (page: T3ConnectAccountPageUrl = "j6-connect") => {
     const setTarget = (key: string, element: HTMLDivElement | undefined) =>
       setTargets((current) => ({ ...current, [key]: element }));
     clerk.openUserProfile({

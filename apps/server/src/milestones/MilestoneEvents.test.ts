@@ -8,7 +8,7 @@ import {
   ProviderInstanceId,
   RunId,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as ConfigProvider from "effect/ConfigProvider";
 import * as Mac from "effect/crypto/Mac";
 import * as SecureRandom from "effect/crypto/SecureRandom";
@@ -167,7 +167,7 @@ const serveWith = Effect.fnUntraced(function* (settings: { readonly workflowsEna
       Layer.provide(ServerSettings.layerTest(settings)),
       Layer.provide(
         Layer.mock(SessionStore.SessionStore)({
-          cookieName: "t3-session",
+          cookieName: "j6-session",
           legacyCookieName: undefined,
           awaitInvalidation: (sessionId) =>
             sessionId === "client-session" ? Deferred.await(revoked) : Effect.never,

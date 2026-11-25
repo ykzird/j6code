@@ -3,7 +3,7 @@ import {
   type EnvironmentId,
   type SecretReference,
   type SettingsSecretValue,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { T, useGT, Var } from "gt-react";
 import { ExternalLinkIcon } from "lucide-react";
 import { useState } from "react";
@@ -13,7 +13,7 @@ import {
   readHostCredentialSettings,
   type SourceControlDefinition,
   type SourceControlHostCredentials,
-} from "@t3tools/client-runtime/source-control-clients";
+} from "@j6/client-runtime/source-control-clients";
 import { serverEnvironment } from "../../state/server";
 import { useAtomCommand } from "../../state/use-atom-command";
 import { Button, InlineButton } from "../ui/button";

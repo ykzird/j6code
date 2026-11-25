@@ -17,13 +17,13 @@ const workspaceFiles = [
   "apps/desktop/package.json",
   "apps/web/package.json",
   "apps/mobile/package.json",
-  "apps/mobile/modules/t3-highlights/package.json",
-  "apps/mobile/modules/t3-source-text/package.json",
-  "apps/mobile/modules/t3-review-diff/package.json",
-  "apps/mobile/modules/t3-terminal/package.json",
+  "apps/mobile/modules/j6-highlights/package.json",
+  "apps/mobile/modules/j6-source-text/package.json",
+  "apps/mobile/modules/j6-review-diff/package.json",
+  "apps/mobile/modules/j6-terminal/package.json",
   "apps/marketing/package.json",
   "infra/relay/package.json",
-  "oxlint-plugin-t3code/package.json",
+  "oxlint-plugin-j6code/package.json",
   "packages/client-runtime/package.json",
   "packages/contracts/package.json",
   "packages/shared/package.json",
@@ -219,7 +219,7 @@ function assertMissing(path: string, message: string): void {
   }
 }
 
-const tempRoot = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "t3-release-smoke-"));
+const tempRoot = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "j6-release-smoke-"));
 
 try {
   NodeChildProcess.execFileSync(
@@ -291,7 +291,7 @@ try {
   );
   assertContains(
     nightlyReleaseMetadata,
-    "name=T3 Code Nightly 9.9.10-nightly.20260413.321 (abcdef123456)",
+    "name=J6 Code Nightly 9.9.10-nightly.20260413.321 (abcdef123456)",
     "Expected nightly metadata to include the short commit SHA in the release name.",
   );
 

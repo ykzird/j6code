@@ -1,11 +1,11 @@
-import { SourceControlProviderKind } from "@t3tools/contracts";
+import { SourceControlProviderKind } from "@j6/contracts";
 import {
   defineSourceControl,
   isChangeRequestInProjectRepository,
   isChangeRequestOnProjectHost,
   type ParsedChangeRequestUrl,
   projectChangeRequestHost,
-} from "@t3tools/source-control-core/shared/definition";
+} from "@j6/source-control-core/shared/definition";
 import { icon } from "./icon.ts";
 
 /** Origin's git host; its browser pages live under `cursor.com/codebase` instead. */

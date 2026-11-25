@@ -9,8 +9,8 @@ import {
   type UsageSummary,
   type UsageSummaryInput,
   UsageReadError,
-} from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+} from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Cause from "effect/Cause";
 import * as Clock from "effect/Clock";
 import * as Context from "effect/Context";
@@ -27,18 +27,18 @@ import * as Schema from "effect/Schema";
 import * as Semaphore from "effect/Semaphore";
 import { HttpClient, HttpClientResponse } from "effect/http";
 
-import { writeFileStringAtomically } from "@t3tools/shared/atomicWrite";
-import { formatMalformedUsageWarning } from "@t3tools/shared/usageFormat";
+import { writeFileStringAtomically } from "@j6/shared/atomicWrite";
+import { formatMalformedUsageWarning } from "@j6/shared/usageFormat";
 import * as ServerConfig from "../config.ts";
 import * as ServerSettings from "../serverSettings.ts";
 import { BUILT_IN_USAGE_DRIVERS, type BuiltInUsageReadersEnv } from "../provider/builtInDrivers.ts";
-import type { ProviderDriver } from "@t3tools/provider-core/server/driver";
-import { mergeProviderInstanceEnvironment } from "@t3tools/provider-core/server/instanceEnvironment";
+import type { ProviderDriver } from "@j6/provider-core/server/driver";
+import { mergeProviderInstanceEnvironment } from "@j6/provider-core/server/instanceEnvironment";
 import type {
   ProviderUsageInstance,
   TranscriptUsageFormat,
   UsageRecord,
-} from "@t3tools/provider-core/server/usage";
+} from "@j6/provider-core/server/usage";
 import {
   canonicalModelFilter,
   resolveModelAliases,
@@ -167,7 +167,7 @@ export class UsageService extends Context.Service<
     readonly readSummary: (input: UsageSummaryInput) => Effect.Effect<UsageSummary, UsageReadError>;
     readonly refreshRates: Effect.Effect<UsagePricing>;
   }
->()("t3/usage/UsageService") {}
+>()("j6/usage/UsageService") {}
 
 export const make = Effect.gen(function* () {
   const fileSystem = yield* FileSystem.FileSystem;
@@ -226,7 +226,7 @@ export const make = Effect.gen(function* () {
       Effect.provideService(Path.Path, path),
     );
   const hostIdPath = path.join(config.baseDir, "usage-host-id");
-  const explicitHostId = hostEnvironment["T3CODE_HOST_ID"]?.trim();
+  const explicitHostId = hostEnvironment["J6CODE_HOST_ID"]?.trim();
   const hostId =
     explicitHostId ||
     (yield* fileSystem.readFileString(hostIdPath).pipe(

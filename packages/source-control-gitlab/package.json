@@ -1,5 +1,5 @@
 {
-  "name": "@t3tools/source-control-gitlab",
+  "name": "@j6/source-control-gitlab",
   "private": true,
   "type": "module",
   "exports": {
@@ -17,15 +17,15 @@
     "test": "vp test run --config ../../vite.config.ts --dir ."
   },
   "dependencies": {
-    "@t3tools/contracts": "workspace:*",
-    "@t3tools/shared": "workspace:*",
-    "@t3tools/source-control-core": "workspace:*",
+    "@j6/contracts": "workspace:*",
+    "@j6/shared": "workspace:*",
+    "@j6/source-control-core": "workspace:*",
     "effect": "catalog:"
   },
   "devDependencies": {
     "@effect/platform-node": "catalog:",
     "@effect/vitest": "catalog:",
-    "@t3tools/source-control-testing": "workspace:*",
+    "@j6/source-control-testing": "workspace:*",
     "@types/node": "catalog:",
     "vite-plus": "catalog:"
   }

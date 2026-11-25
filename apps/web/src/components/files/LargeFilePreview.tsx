@@ -1,4 +1,4 @@
-import type { ScopedThreadRef } from "@t3tools/contracts";
+import type { ScopedThreadRef } from "@j6/contracts";
 import { DEFAULT_TOKENIZE_MAX_LENGTH } from "@pierre/diffs";
 import type { FileOptions } from "@pierre/diffs/react";
 import { useGT } from "gt-react";

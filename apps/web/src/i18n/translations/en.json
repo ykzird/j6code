@@ -9129,10 +9129,10 @@
   "74a80f881d59c64d": "Commands that run in this project's checkout or its worktree, with optional shortcuts.",
   "b021ef2874c6c24b": "Different actions across checkouts",
   "1e0bbb3a6c4afd6c": "Narrow the selection above to one checkout to edit its list. Adding an action here adds it to every selected checkout.",
-  "8fadca1175fbcbd8": "t3.json is invalid",
-  "917d2359f549794c": "A t3.json exists in this checkout but fails to parse, so every action and icon it declares is ignored. Check the JSON syntax and icon values.",
+  "8fadca1175fbcbd8": "j6.json is invalid",
+  "917d2359f549794c": "A j6.json exists in this checkout but fails to parse, so every action and icon it declares is ignored. Check the JSON syntax and icon values.",
   "df4cf566c6d08a4b": "Import scripts",
-  "2aaeffe4fe3d29d7": "Import from t3.json",
+  "2aaeffe4fe3d29d7": "Import from j6.json",
   "84f1752d64c3152e": "Add actions declared by this checkout without editing them first.",
   "3b893da0373ab50e": "Add action",
   "5afea423d829496e": "This provider is not available on this environment.",
@@ -9149,7 +9149,7 @@
   "2f65da0a2375c66a": "Automatic (mixed)",
   "369304844a14a649": "No providers available",
   "846ba52561c0e6bb": "Where new threads in this project start.",
-  "af64dbd4bfce12aa": "Where new threads start. Projects and their t3.json can override it.",
+  "af64dbd4bfce12aa": "Where new threads start. Projects and their j6.json can override it.",
   "8ab693ae67cd5e86": "Reset default workspace to default",
   "d1d1342ccb83a14b": "Default workspace",
   "a22721e847136f21": "Unavailable",
@@ -9180,7 +9180,7 @@
   "9290d5de050e5302": "Default pull request merge method",
   "3619911bbdb05fc1": "Last selected",
   "87717de46afcdaed": "How new worktrees in this project populate git submodules.",
-  "3212b4d0725a27c7": "How new worktrees populate git submodules. Projects and their t3.json can override it.",
+  "3212b4d0725a27c7": "How new worktrees populate git submodules. Projects and their j6.json can override it.",
   "74a80f6d7962be21": "Reset worktree submodules to default",
   "1c97d5a78ca1fdb6": "Worktree submodules",
   "2c2b437431e4cd1d": "No providers available",
@@ -11804,7 +11804,7 @@
   "dfd5b72fe7308d9e": "Saved on this device. Select All projects to change it.",
   "091be13f50490708": "Mixed across selected environments",
   "06e9973f7537ed51": "Overridden for this project",
-  "b1d09e365249f87b": "Inherited from the repository's t3.json",
+  "b1d09e365249f87b": "Inherited from the repository's j6.json",
   "539b097411fd1307": "Inherited from environment",
   "6340f81c024cfe12": "Inherited from {environment}",
   "49a60879f4348f46": "Set on the environment",
@@ -11932,7 +11932,7 @@
   "00469926c7027e2d": "balanced performance battery saver advanced git fetch provider health refresh host power monitor idle policy",
   "54e33e572cc71746": "default workspace mode draft local worktree",
   "b2ece956b72c4a48": "Submodules",
-  "579153f275a1636f": "git submodule init recursive top-level none worktree t3.json",
+  "579153f275a1636f": "git submodule init recursive top-level none worktree j6.json",
   "88553740587a9beb": "Start from remote",
   "4a172e139167badc": "new worktrees start remote origin latest fetched branch local",
   "30aac12099fcaf53": "Add project starts in",
@@ -12004,7 +12004,7 @@
   "4c241258fdc87942": "pull request pr guided review guide tour beta experimental",
   "39e4c844a9d56a1d": "pull request pr guided review guide brief maintainer",
   "f27f2e85e05f664c": "pull request pr guided review guide preferences taste prompt custom",
-  "01cff0c3cb858073": "commands scripts setup run dev server checkout worktree t3.json import",
+  "01cff0c3cb858073": "commands scripts setup run dev server checkout worktree j6.json import",
   "756e41fd7e0b044c": "tracked folders multi repo workspace code-workspace rescan add folder",
   "c349ea1db3f9e9f1": "Environment icon",
   "18bd7981d6c50994": "machine glyph sidebar mac mini studio laptop desktop server cloud vm",
@@ -12893,7 +12893,7 @@
     {
       "t": "code",
       "i": 2,
-      "c": "t3.json"
+      "c": "j6.json"
     },
     ". They run on this environment's machine with your permissions, outside any agent sandbox. You are asked again whenever their text changes."
   ],
@@ -12911,7 +12911,7 @@
     {
       "t": "code",
       "i": 1,
-      "c": "t3.json"
+      "c": "j6.json"
     },
     " sets up worktree threads with its own commands. They run on this environment's machine with your permissions, and only as approved here: a command whose text changes needs approval again."
   ],

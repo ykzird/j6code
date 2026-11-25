@@ -5,7 +5,7 @@ import * as Path from "effect/Path";
 
 import { T3_HOME } from "../e2e.config.ts";
 import { run } from "./shell.ts";
-import { makeState, runPromise, test, WEB } from "./t3.ts";
+import { makeState, runPromise, test, WEB } from "./j6.ts";
 
 // Stand in for the Azure CLI upstream. The real tracker builds WIQL and decodes its rows.
 const azureCli = String.raw`#!/usr/bin/env node
@@ -77,8 +77,8 @@ console.log(JSON.stringify(output));
 test(
   "Refreshing Closed issues picks up a new Azure DevOps finished state",
   WEB,
-  async ({ t3, app, screen }) => {
-    const workspace = await t3.project("demo");
+  async ({ j6, app, screen }) => {
+    const workspace = await j6.project("demo");
     const { repository, changed } = await runPromise(
       Effect.gen(function* () {
         const path = yield* Path.Path;
@@ -105,7 +105,7 @@ test(
     const primary = makeState(T3_HOME);
     await runPromise(primary.cli(["project", "add", repository, "--title", "Release"]));
     try {
-      await t3.open("/issues?status=closed");
+      await j6.open("/issues?status=closed");
       // The initial Closed list warms the workflow cache.
       await screen.getByText("Release notes drafted", { exact: true }).waitFor({ timeout: 60_000 });
       await runPromise(

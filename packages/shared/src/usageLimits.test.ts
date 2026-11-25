@@ -6,7 +6,7 @@ import {
   type ServerProvider,
   type UsageLimitSourceAccount,
   UsageLimitSourceId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

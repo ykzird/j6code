@@ -1,13 +1,13 @@
-import { createCanvasFrameSink } from "@t3tools/client-runtime/device/frame";
-import type { DuoControlState } from "@t3tools/client-runtime/device/duo-control";
+import { createCanvasFrameSink } from "@j6/client-runtime/device/frame";
+import type { DuoControlState } from "@j6/client-runtime/device/duo-control";
 import {
   createDeviceStreamClient,
   type DeviceScreenSize,
   type DeviceStreamClient,
   type DeviceStreamStatus,
-} from "@t3tools/client-runtime/device/stream";
-import type { DeviceHubAccess } from "@t3tools/client-runtime/state/deviceHubAccess";
-import type { DevicePlatform, EnvironmentId } from "@t3tools/contracts";
+} from "@j6/client-runtime/device/stream";
+import type { DeviceHubAccess } from "@j6/client-runtime/state/deviceHubAccess";
+import type { DevicePlatform, EnvironmentId } from "@j6/contracts";
 import { Atom } from "effect/reactivity";
 
 import { m } from "~/i18n/messages";

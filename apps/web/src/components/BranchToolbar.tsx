@@ -1,4 +1,4 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { contextMenuSourceOf } from "../contextMenuSource";
 import {
   ClipboardApiUnavailableError,
@@ -6,12 +6,12 @@ import {
   writeTextToClipboard,
 } from "../hooks/useCopyToClipboard";
 import * as Schema from "effect/Schema";
-import { formatFilePathForClipboard } from "@t3tools/client-runtime/media-actions";
+import { formatFilePathForClipboard } from "@j6/client-runtime/media-actions";
 import { readLocalApi } from "../localApi";
 import { stackedThreadToast, toastManager } from "./ui/toast";
 import { ComposerContextLabel } from "./ComposerContextLabel";
-import { scopeProjectRef, scopeThreadRef } from "@t3tools/client-runtime/environment";
-import type { EnvironmentId, ProjectId, ThreadId } from "@t3tools/contracts";
+import { scopeProjectRef, scopeThreadRef } from "@j6/client-runtime/environment";
+import type { EnvironmentId, ProjectId, ThreadId } from "@j6/contracts";
 import { msg, T, useGT, useMessages } from "gt-react";
 import { m as resolveMessage } from "../i18n/messages";
 import { FolderGit2Icon, FolderGitIcon, FolderIcon, PlusIcon, ScaleIcon } from "lucide-react";

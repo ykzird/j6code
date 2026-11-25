@@ -14,7 +14,7 @@ import * as VcsProcess from "./VcsProcess.ts";
  * `git add` trusts the stat data of files it already hashed instead of rehashing every untracked
  * or modified file. The index lives in the common Git directory, never in the worktree.
  */
-const DIRECTORY = "t3-checkpoint-indexes";
+const DIRECTORY = "j6-checkpoint-indexes";
 // Archived threads stop capturing; their indexes age out instead of waiting for a delete.
 const IDLE_MS = 14 * 24 * 60 * 60 * 1000;
 const MAX_INDEXES = 32;

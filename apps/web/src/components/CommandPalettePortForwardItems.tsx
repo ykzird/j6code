@@ -3,7 +3,7 @@ import {
   type DesktopPortForward,
   type EnvironmentId,
   type ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { useAtomValue } from "@effect/atom-react";
 import { useGT } from "gt-react";
 import { CableIcon, ClipboardCopyIcon, ExternalLinkIcon, SquareIcon } from "lucide-react";

@@ -14,7 +14,7 @@ import {
   RunId,
   ThreadId,
   type ThreadPullRequestLink,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 

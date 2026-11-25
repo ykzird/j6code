@@ -1,6 +1,6 @@
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 const KEPT = "a".repeat(199);
 // The emoji's two UTF-16 units straddle unit 200, where both pages cut the search.
@@ -9,8 +9,8 @@ const QUERY = `${KEPT}😀 rest`;
 test(
   "A long Issues or Pull Requests search ends without a broken character",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    await t3.project("demo");
+  async ({ j6, app, browser, screen }) => {
+    await j6.project("demo");
     // The search is wider than its box, so the capture needs the box scrolled to its end.
     const showSearchEnd = () =>
       browser.evaluate(() => {
@@ -19,14 +19,14 @@ test(
         return null;
       });
 
-    await t3.open(`/issues?${new URLSearchParams({ q: QUERY })}`);
+    await j6.open(`/issues?${new URLSearchParams({ q: QUERY })}`);
     const issues = screen.getByRole("searchbox", "Search issues");
     await issues.waitFor({ timeout: 60_000 });
     await showSearchEnd();
     await app.screenshot("issues-search");
     await expect(issues).toHaveValue(KEPT);
 
-    await t3.open(`/pull-requests?${new URLSearchParams({ q: QUERY })}`);
+    await j6.open(`/pull-requests?${new URLSearchParams({ q: QUERY })}`);
     const pullRequests = screen.getByRole("searchbox", "Search pull requests");
     await pullRequests.waitFor({ timeout: 60_000 });
     await showSearchEnd();

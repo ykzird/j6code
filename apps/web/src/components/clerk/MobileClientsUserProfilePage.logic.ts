@@ -1,4 +1,4 @@
-import type { RelayClientDeviceRecord } from "@t3tools/contracts/relay";
+import type { RelayClientDeviceRecord } from "@j6/contracts/relay";
 import { msg } from "gt-react";
 
 import { m, type MessageResolver } from "~/i18n/messages";
@@ -24,7 +24,7 @@ export function mobileClientPlatformLabel(device: RelayClientDeviceRecord): stri
       : device.iosMajorVersion === null
         ? "iOS"
         : `iOS ${device.iosMajorVersion}`;
-  return `${platform}${device.appVersion ? ` · T3 Code ${device.appVersion}` : ""}`;
+  return `${platform}${device.appVersion ? ` · J6 Code ${device.appVersion}` : ""}`;
 }
 
 /** Components pass `useMessages()` so the detail follows a language switch. */

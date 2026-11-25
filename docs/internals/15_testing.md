@@ -52,7 +52,7 @@ vp run scenarios                                                  # run all
 vp run scenarios:prove scripts/scenarios/<name>.e2e.ts --base main --upload-command "ghdrop upload"
 ```
 
-- One test per file (`WEB` from `./t3.ts` or `IOS` from `./t3-mobile.ts`). Seed projects and threads via `j6.project` / `j6.thread` before calling `j6.open(...)` so the app does not land on first-run setup.
+- One test per file (`WEB` from `./j6.ts` or `IOS` from `./j6-mobile.ts`). Seed projects and threads via `j6.project` / `j6.thread` before calling `j6.open(...)` so the app does not land on first-run setup.
 - In web scenarios, navigate directly with `j6.open(thread)` or `j6.open("/settings/...")` unless the scenario exercises sidebar navigation.
 - Put `expect` assertions only on the behavior the bug breaks, and take `app.screenshot("label")` where the bug shows so `scenarios:prove` pairs base and head captures. Never call `agent.act` or `agent.assert` (no model is configured).
 - The app starts with a minimal env (`PATH`, `HOME`, temp dir); pass extra env vars via `J6_SCENARIO_INHERIT_ENV='VAR,PREFIX_*'`. Run one scenario run at a time per checkout.

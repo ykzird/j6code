@@ -1,6 +1,6 @@
 import { assert, describe, it } from "@effect/vitest";
 import type * as NodeOS from "node:os";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
 import * as FileSystem from "effect/FileSystem";
@@ -39,9 +39,9 @@ const setup = (busy = 0) => {
 
 const GiB = 1024 ** 3;
 const MiB = 1024 ** 2;
-const cgroup = "/sys/fs/cgroup/t3.slice/server.scope";
+const cgroup = "/sys/fs/cgroup/j6.slice/server.scope";
 const unlimitedCgroup = {
-  "/proc/self/cgroup": ["0::/t3.slice/server.scope\n"],
+  "/proc/self/cgroup": ["0::/j6.slice/server.scope\n"],
   "/proc/meminfo": [`MemTotal: ${4 * 1024 * 1024} kB\nMemAvailable: ${2 * 1024 * 1024} kB\n`],
   [`${cgroup}/cpu.max`]: ["max 100000\n"],
   [`${cgroup}/cpu.stat`]: ["usage_usec 5000000\n"],

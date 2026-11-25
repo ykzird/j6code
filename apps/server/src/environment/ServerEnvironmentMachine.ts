@@ -1,5 +1,5 @@
-import { EnvironmentMachineKind } from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import { EnvironmentMachineKind } from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -147,7 +147,7 @@ const detectLinuxMachineKind = Effect.fn("detectLinuxMachineKind")(function* () 
 // Overrides detection, e.g. for staged demos on a VM that should read as a laptop.
 const machineKindOverride = Config.schema(
   EnvironmentMachineKind,
-  "T3CODE_ENVIRONMENT_MACHINE_KIND",
+  "J6CODE_ENVIRONMENT_MACHINE_KIND",
 ).pipe(Config.option);
 
 export const detectServerEnvironmentMachineKind = Effect.fn("detectServerEnvironmentMachineKind")(

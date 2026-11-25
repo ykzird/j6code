@@ -1,6 +1,6 @@
-import type { ServerProviderUsageWindow } from "@t3tools/contracts";
+import type { ServerProviderUsageWindow } from "@j6/contracts";
 import type { CursorSettings } from "../settings.ts";
-import { CURSOR_USAGE_WINDOWS } from "@t3tools/shared/usageLimits";
+import { CURSOR_USAGE_WINDOWS } from "@j6/shared/usageLimits";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -12,7 +12,7 @@ import {
   clampPercent,
   makeUnavailableUsageLimits,
   makeUsageLimits,
-} from "@t3tools/provider-core/server/usageLimits";
+} from "@j6/provider-core/server/usageLimits";
 import { DEFAULT_CURSOR_API_ENDPOINT, exchangeCursorApiKey } from "./apiKey.ts";
 
 const CursorUsageResponse = Schema.Struct({

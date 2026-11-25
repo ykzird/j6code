@@ -459,7 +459,7 @@ describe("pull request detail decoding", () => {
         isCrossRepository: true,
         viewerDidAuthor: true,
         headRepositoryOwner: { __typename: "User", login: "octocat" },
-        headRepository: { nameWithOwner: "octocat/t3code", viewerPermission: "ADMIN" },
+        headRepository: { nameWithOwner: "octocat/j6code", viewerPermission: "ADMIN" },
         headRef: { id: "REF_7" },
         ...overrides,
       });
@@ -1114,7 +1114,7 @@ describe("review thread decoding", () => {
             id: "PRRT_all_hidden",
             path: "apps/web/src/main.tsx",
             comments: {
-              nodes: [{ id: "t3", createdAt: "2026-07-01T00:00:00Z", isMinimized: true }],
+              nodes: [{ id: "j6", createdAt: "2026-07-01T00:00:00Z", isMinimized: true }],
             },
           },
         ]),

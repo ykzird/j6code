@@ -4,20 +4,20 @@ import {
   AuthSettingsWriteScope,
   AuthProvidersManageScope,
   AuthOrchestrationReadScope,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { useEnvironmentScope, readEnvironmentScope } from "../../state/session";
 import { useAtomValue } from "@effect/atom-react";
-import { connectionErrorText, connectionStatusTitle } from "@t3tools/client-runtime/connection";
+import { connectionErrorText, connectionStatusTitle } from "@j6/client-runtime/connection";
 import {
   errorDisplayMessage,
   safeErrorLogAttributes,
   thrownErrorMessage,
-} from "@t3tools/client-runtime/errors";
+} from "@j6/client-runtime/errors";
 import {
   isAtomCommandInterrupted,
   settlePromise,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
+} from "@j6/client-runtime/state/runtime";
 import {
   defaultInstanceIdForDriver,
   type EnvironmentId,
@@ -31,12 +31,12 @@ import {
   resolveEnvironmentMachineKind,
   resolveProjectProviderInstanceEnabled,
   resolveProviderInstanceEnabled,
-} from "@t3tools/contracts";
-import { DEFAULT_UNIFIED_SETTINGS, type UnifiedSettings } from "@t3tools/contracts/settings";
+} from "@j6/contracts";
+import { DEFAULT_UNIFIED_SETTINGS, type UnifiedSettings } from "@j6/contracts/settings";
 import {
   getBackgroundActivityPresetSettings,
   resolveServerBackgroundActivitySettings,
-} from "@t3tools/shared/backgroundActivitySettings";
+} from "@j6/shared/backgroundActivitySettings";
 import * as Arr from "effect/Array";
 import * as Duration from "effect/Duration";
 import * as Result from "effect/Result";
@@ -222,7 +222,7 @@ function ProviderLastChecked({ environmentId }: { environmentId: EnvironmentId }
   );
 }
 
-const T3_CONNECT_NAME = "T3 Connect";
+const T3_CONNECT_NAME = "J6 Connect";
 
 function providerEnvironmentDetail(
   environment: EnvironmentPresentation,

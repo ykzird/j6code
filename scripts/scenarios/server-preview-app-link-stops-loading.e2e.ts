@@ -3,7 +3,7 @@ import * as NodeHttp from "node:http";
 
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 // One app link that fills the page. Its click renames the page a moment later, after the server
 // has seen the link's request.
@@ -15,7 +15,7 @@ const PAGE = `<!doctype html>
 test(
   "An app link clicked in the Browser leaves the page shown and loaded",
   WEB,
-  async ({ t3, app, browser, screen }) => {
+  async ({ j6, app, browser, screen }) => {
     const server = NodeHttp.createServer((_request, response) => {
       response.writeHead(200, { "content-type": "text/html" });
       response.end(PAGE);
@@ -25,9 +25,9 @@ test(
       const address = server.address();
       if (address === null || typeof address === "string") throw new Error("No page port.");
       const url = `http://127.0.0.1:${address.port}/`;
-      const project = await t3.project("demo");
-      const thread = await t3.thread({ project, title: "Note check", messages: ["first"] });
-      await t3.open(thread);
+      const project = await j6.project("demo");
+      const thread = await j6.thread({ project, title: "Note check", messages: ["first"] });
+      await j6.open(thread);
 
       await screen.getByRole("button", "Toggle right panel").tap();
       await screen.getByRole("button", "Browser B").tap();

@@ -11,14 +11,14 @@ import {
   RunAttemptId,
   RunId,
   ThreadId,
-} from "@t3tools/contracts";
-import { resolveSelfInvocation } from "@t3tools/shared/nodeRuntime";
+} from "@j6/contracts";
+import { resolveSelfInvocation } from "@j6/shared/nodeRuntime";
 import {
   compactDynamicToolOutput,
   htmlRenderFromToolItem,
   previewRecordingIdFromToolItem,
   sentMessageFromToolItem,
-} from "@t3tools/shared/toolOutput";
+} from "@j6/shared/toolOutput";
 import * as SecureRandom from "effect/crypto/SecureRandom";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
@@ -37,18 +37,18 @@ import * as TestClock from "effect/testing/TestClock";
 import type * as EffectAcpSchema from "effect-acp/compat";
 import * as EffectAcpErrors from "effect-acp/errors";
 
-import * as ProviderHost from "@t3tools/provider-core/server/ProviderHost";
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
-import * as TestProviderHost from "@t3tools/provider-testing/TestProviderHost";
-import type * as AcpSessionRuntime from "@t3tools/provider-acp/server/AcpSessionRuntime";
-import { makeAcpAdapterV2 } from "@t3tools/provider-acp/server/adapter";
+import * as ProviderHost from "@j6/provider-core/server/ProviderHost";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
+import * as TestProviderHost from "@j6/provider-testing/TestProviderHost";
+import type * as AcpSessionRuntime from "@j6/provider-acp/server/AcpSessionRuntime";
+import { makeAcpAdapterV2 } from "@j6/provider-acp/server/adapter";
 import { makeAntigravityAcpRuntime } from "../../provider/acp/AntigravityAcpSupport.ts";
 import { normalizeAntigravitySessionUpdate } from "../../provider/acp/AntigravityProtocol.ts";
 import { ANTIGRAVITY_SIGN_IN_REQUIRED_MESSAGE } from "../../provider/antigravityAuthSupport.ts";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
 import { makeTurnInput } from "./AcpAdapterV2.testkit.ts";
-import type * as ProviderContinuationRequests from "@t3tools/provider-core/server/ProviderContinuationRequests";
+import type * as ProviderContinuationRequests from "@j6/provider-core/server/ProviderContinuationRequests";
 import {
   type AntigravityAdapterV2Options,
   type AntigravityAdapterV2RuntimeInput,
@@ -190,7 +190,7 @@ describe("AntigravityAdapterV2 compaction", () => {
         const mockAgentPath = yield* path.fromFileUrl(
           new URL("../../../scripts/acp-mock-agent.ts", import.meta.url),
         );
-        const logs = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-ag-compact-" });
+        const logs = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-ag-compact-" });
         const requestLog = path.join(logs, "requests.ndjson");
         const instanceId = ProviderInstanceId.make("antigravity-compaction-test");
         const goalSupport = yield* Ref.make(false);
@@ -384,7 +384,7 @@ describe("AntigravityAdapterV2 client file system", () => {
       // effect-acp keeps the last handler registered per method; so does this.
       let readTextFile: Parameters<RuntimeService["handleReadTextFile"]>[0] | undefined;
       let writeTextFile: Parameters<RuntimeService["handleWriteTextFile"]>[0] | undefined;
-      const logs = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-antigravity-log-" });
+      const logs = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-antigravity-log-" });
       const requestLog = path.join(logs, "requests.ndjson");
       const crypto = yield* SecureRandom.SecureRandom;
       const instanceId = ProviderInstanceId.make("antigravity-containment-test");
@@ -419,10 +419,10 @@ describe("AntigravityAdapterV2 client file system", () => {
         defaultModel: Effect.undefined,
       });
       const workspace = yield* fileSystem.makeTempDirectoryScoped({
-        prefix: "t3-antigravity-workspace-",
+        prefix: "j6-antigravity-workspace-",
       });
       const outside = yield* fileSystem.makeTempDirectoryScoped({
-        prefix: "t3-antigravity-outside-",
+        prefix: "j6-antigravity-outside-",
       });
       const outsideFile = path.join(outside, "secret.txt");
       yield* fileSystem.writeFileString(outsideFile, "secret");
@@ -592,8 +592,8 @@ describe("AntigravityAdapterV2 workspace changes", () => {
         withProcess: (_stop, task) => task,
         defaultModel: Effect.undefined,
       });
-      const workspaceA = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-ag-a-" });
-      const workspaceB = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-ag-b-" });
+      const workspaceA = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-ag-a-" });
+      const workspaceB = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-ag-b-" });
       yield* fileSystem.writeFileString(path.join(workspaceA, "a.txt"), "from a");
       yield* fileSystem.writeFileString(path.join(workspaceB, "b.txt"), "from b");
       const policyFor = (cwd: string) =>
@@ -844,7 +844,7 @@ describe("AntigravityAdapterV2 html_render pages", () => {
                   yield* send({
                     sessionUpdate: "tool_call",
                     toolCallId: "agy-1.5.8",
-                    title: "Run mcp_t3-code_html_render",
+                    title: "Run mcp_j6-code_html_render",
                     kind: "other",
                     status: "in_progress",
                     rawInput: { ...telemetry, toolSummary: "Render telemetry" },
@@ -947,25 +947,25 @@ describe("AntigravityAdapterV2 html_render pages", () => {
 
       assert.deepEqual(tool("published"), {
         status: "completed",
-        toolName: "t3-code.html_render",
+        toolName: "j6-code.html_render",
         page: page("replacement"),
         output: { htmlRender: page("replacement") },
       });
       assert.deepEqual(tool("unpublished"), {
         status: "completed",
-        toolName: "t3-code.html_render",
+        toolName: "j6-code.html_render",
         page: undefined,
         output: "Summary of unpublished",
       });
       assert.deepEqual(tool("failed"), {
         status: "failed",
-        toolName: "t3-code.html_render",
+        toolName: "j6-code.html_render",
         page: undefined,
         output: "Summary of failed",
       });
       assert.deepEqual(tool("error"), {
         status: "completed",
-        toolName: "t3-code.html_render",
+        toolName: "j6-code.html_render",
         page: undefined,
         output: [],
       });
@@ -983,7 +983,7 @@ describe("AntigravityAdapterV2 html_render pages", () => {
       for (const name of ["failed-retry", "error-retry", "agy-1.5.8"]) {
         assert.deepEqual(tool(name), {
           status: "completed",
-          toolName: "t3-code.html_render",
+          toolName: "j6-code.html_render",
           page: page(name),
           output: { htmlRender: page(name) },
         });
@@ -1058,7 +1058,7 @@ describe("AntigravityAdapterV2 html_render pages", () => {
                       send({
                         sessionUpdate: "tool_call",
                         toolCallId,
-                        title: `Run mcp_t3-code_${toolName}`,
+                        title: `Run mcp_j6-code_${toolName}`,
                         kind: "other",
                         status: "in_progress",
                         rawInput,
@@ -1809,7 +1809,7 @@ describe("AntigravityAdapterV2 work after the prompt ends", () => {
       Effect.gen(function* () {
         const fileSystem = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const profile = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-agy-race-" });
+        const profile = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-agy-race-" });
         const generated = (kind: string) =>
           path.join(
             profile,
@@ -2030,7 +2030,7 @@ describe("AntigravityAdapterV2 work after the prompt ends", () => {
       Effect.gen(function* () {
         const fileSystem = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const profile = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-agy-pre-settle-" });
+        const profile = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-agy-pre-settle-" });
         const generated = (kind: string) =>
           path.join(
             profile,
@@ -2273,7 +2273,7 @@ describe("AntigravityAdapterV2 work after the prompt ends", () => {
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const profile = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-antigravity-kids-" });
+      const profile = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-antigravity-kids-" });
       const records = (conversationId: string, kind: string) =>
         path.join(profile, "antigravity-acp", "brain", conversationId, ".system_generated", kind);
       const write = (directory: string, name: string, value: unknown) =>
@@ -2345,7 +2345,7 @@ describe("AntigravityAdapterV2 work after the prompt ends", () => {
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const profile = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-antigravity-kids-" });
+      const profile = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-antigravity-kids-" });
       const records = (conversationId: string, kind: string) =>
         path.join(profile, "antigravity-acp", "brain", conversationId, ".system_generated", kind);
       const write = (directory: string, name: string, value: unknown) =>
@@ -2402,7 +2402,7 @@ describe("AntigravityAdapterV2 work after the prompt ends", () => {
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       // No records: nothing proves a child is at work, so none may hold a run open.
-      const profile = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-antigravity-kids-" });
+      const profile = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-antigravity-kids-" });
       const { usage, offers, send, startTurn, throughTerminal } =
         yield* openSessionWithRunningCommand({}, profile);
       yield* startTurn(1, false);
@@ -2470,10 +2470,10 @@ describe("AntigravityAdapterV2 subagent reads", () => {
         new URL("../../../scripts/acp-mock-agent.ts", import.meta.url),
       );
       const workspace = yield* fileSystem.makeTempDirectoryScoped({
-        prefix: "t3-antigravity-reads-",
+        prefix: "j6-antigravity-reads-",
       });
       const outside = yield* fileSystem.makeTempDirectoryScoped({
-        prefix: "t3-antigravity-reads-outside-",
+        prefix: "j6-antigravity-reads-outside-",
       });
       const served = path.join(workspace, "served.ts");
       yield* fileSystem.writeFileString(served, "export {};");
@@ -2839,7 +2839,7 @@ describe("AntigravityAdapterV2 session system prompt", () => {
         const mockAgentPath = yield* path.fromFileUrl(
           new URL("../../../scripts/acp-mock-agent.ts", import.meta.url),
         );
-        const logs = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-antigravity-log-" });
+        const logs = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-antigravity-log-" });
         const requestLog = path.join(logs, "requests.ndjson");
         type RuntimeService = AcpSessionRuntime.AcpSessionRuntime["Service"];
         const promptReceived = yield* Deferred.make<Parameters<RuntimeService["prompt"]>[0]>();
@@ -2875,7 +2875,7 @@ describe("AntigravityAdapterV2 session system prompt", () => {
           withProcess: (_stop, task) => task,
           defaultModel: Effect.undefined,
         });
-        const workspace = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-ag-sp-" });
+        const workspace = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-ag-sp-" });
         const runtimePolicy = ProviderAdapter.ProviderAdapterV2RuntimePolicy.make({
           runtimeMode: "full-access",
           interactionMode: "default",

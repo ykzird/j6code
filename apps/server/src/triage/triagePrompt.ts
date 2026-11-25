@@ -1,10 +1,10 @@
-import { serializeComposerFileLink } from "@t3tools/shared/composerTrigger";
+import { serializeComposerFileLink } from "@j6/shared/composerTrigger";
 
 /** Keep TRIAGE_PLAYBOOK byte-identical to .github/triage/PLAYBOOK.md after unescaping backticks and backslashes. */
 
-export const TRIAGE_PLAYBOOK = `# T3 Code triage playbook
+export const TRIAGE_PLAYBOOK = `# J6 Code triage playbook
 
-You are a support engineer for T3 Code (https://github.com/pingdotgg/t3code), working
+You are a support engineer for J6 Code (https://github.com/pingdotgg/t3code), working
 inside a coding-agent session on the machine of a user whose install is misbehaving:
 crashes, auth failures, broken setups, slow launches, or anything else. Your job is to
 find out what went wrong, unblock the user if you can, and turn what you learned into
@@ -27,8 +27,8 @@ the server process is currently running, and the exact paths for state, logs, an
 the database.
 
 Its triage CLI version (called "Installed version" in older context files) is only
-the version of the \`t3\` that ran \`t3 triage\`. It is often not the build the bug
-happened on: \`npx t3 triage\` runs whatever \`t3\` npm resolves, while the user may
+the version of the \`j6\` that ran \`j6 triage\`. It is often not the build the bug
+happened on: \`npx j6 triage\` runs whatever \`j6\` npm resolves, while the user may
 run the desktop app, the background service, or a nightly. The server process line
 gives the local server's version when the server recorded one.
 
@@ -44,7 +44,7 @@ Before cloning, ask the user which version, device, and surface the bug happened
 on. The bug may have happened on another machine, a remote server, the mobile app,
 or an older build they have since updated. Check their answer against local facts
 where they apply: the server version in the context file, or \`serverVersion\` from
-\`<origin>/.well-known/t3/environment\` when a local server is running. If neither
+\`<origin>/.well-known/j6/environment\` when a local server is running. If neither
 the user nor the machine can tell you the version, say it is unknown. Do not guess.
 
 Clone the repo at the release tag for that version (\`v\` followed by the version,
@@ -69,7 +69,7 @@ Diagnosis grounded in source beats guessing.
 First establish the shape of the install, because the same symptom points at
 different code depending on it:
 
-- How is T3 Code running on this machine: \`npx t3 serve\` in a terminal, the
+- How is J6 Code running on this machine: \`npx j6 serve\` in a terminal, the
   background service, or the desktop app?
 - Which surface is the user connecting from: the website (app.t3.codes), the
   desktop app against a local server, the desktop app against a remote server,
@@ -113,7 +113,7 @@ Present what you found and let the user choose: fix it now, file an issue, both,
 neither. For fixes: propose the exact commands, explain what they do, and run them
 only with the user's approval. Prefer configuration and service-level fixes.
 
-Do not patch the T3 Code source as a fix. A good issue with strong repro steps
+Do not patch the J6 Code source as a fix. A good issue with strong repro steps
 helps every user; an ad-hoc local patch helps one machine until the next update.
 If the user explicitly insists on preparing a fix PR, use a separate clean clone
 of \`main\` for that work, never the tag-pinned diagnosis clone.
@@ -166,14 +166,14 @@ user's environment and evidence instead of filing a new issue. A confirmed
 duplicate with fresh evidence is more useful than a second thread.
 `;
 
-/** Where the session started: the `t3 triage` CLI, or "Triage an issue" in a client. */
+/** Where the session started: the `j6 triage` CLI, or "Triage an issue" in a client. */
 export type TriageEntry =
   | { readonly kind: "cli"; readonly cliVersion: string; readonly launchedAs: string }
   | { readonly kind: "app"; readonly client: string };
 
 /** Windows .cmd shims cannot carry a multiline playbook in argv; point to the file instead. */
 export const buildTriageLaunchPrompt = (promptFilePath: string) =>
-  `Read the file "${promptFilePath}" and follow its instructions exactly: it is your T3 Code triage playbook, and it starts with asking the user what went wrong.`;
+  `Read the file "${promptFilePath}" and follow its instructions exactly: it is your J6 Code triage playbook, and it starts with asking the user what went wrong.`;
 
 /**
  * The composer text an in-app session opens with. The file link renders as a
@@ -186,8 +186,8 @@ export const buildTriageAppPrompt = (promptFilePath: string) =>
 export const buildTriageSeedPrompt = (input: {
   readonly contextFilePath: string;
   readonly entry: TriageEntry;
-}) => `A T3 Code user is having a problem with their install and started this \
-session ${input.entry.kind === "cli" ? "with `t3 triage`" : "from the T3 Code app"}.
+}) => `A J6 Code user is having a problem with their install and started this \
+session ${input.entry.kind === "cli" ? "with `j6 triage`" : "from the J6 Code app"}.
 
 Machine facts (versions, OS, paths, server liveness) are in the triage context file:
 
@@ -241,12 +241,12 @@ export interface TriageContextInput {
 const entryLines = (entry: TriageEntry) =>
   entry.kind === "cli"
     ? {
-        generatedBy: "`t3 triage`",
-        before: `- Triage CLI version: ${entry.cliVersion} (the \`t3\` that ran this command; the bug may have happened on another build)`,
+        generatedBy: "`j6 triage`",
+        before: `- Triage CLI version: ${entry.cliVersion} (the \`j6\` that ran this command; the bug may have happened on another build)`,
         after: `- CLI launched as: ${entry.launchedAs}`,
       }
     : {
-        generatedBy: "the T3 Code app",
+        generatedBy: "the J6 Code app",
         before: `- Started from: ${entry.client} (the client the user pressed "Triage an issue" in; the bug may have happened on another device)`,
         after: undefined,
       };
@@ -286,9 +286,9 @@ build, clone that version as step 4 describes.
 };
 
 const IN_APP_SECTION = `
-## This session runs inside T3 Code
+## This session runs inside J6 Code
 
-You are a thread inside the T3 Code server described above. Stopping,
+You are a thread inside the J6 Code server described above. Stopping,
 restarting, or killing that server, its service, or the desktop app ends this
 session. When a fix needs one of those, give the user the exact steps and let
 them do it. The database is in use by that server: read it, never lock it.
@@ -296,7 +296,7 @@ them do it. The database is in use by that server: read it, never lock it.
 
 export const buildTriageContext = (input: TriageContextInput) => {
   const entry = entryLines(input.entry);
-  return `# T3 Code triage context
+  return `# J6 Code triage context
 
 Generated by ${entry.generatedBy} at ${input.generatedAt}.
 
@@ -314,7 +314,7 @@ ${input.entry.kind === "app" ? IN_APP_SECTION : ""}${input.sourceClone === undef
 - Logs dir: ${input.paths.logsDir}
 - Service log (systemd/launchd service installs only): ${input.paths.serviceLogPath}
 - Desktop backend logs (glob; one file per backend plus rotated copies; written only when a backend crashes or fails to start): ${input.paths.desktopBackendLogGlob}
-- T3 Connect tunnel log (ndjson; what the server logged about its cloudflared connector, with rotated copies \`.1\` and \`.2\`): ${input.paths.relayClientLogPath}
+- J6 Connect tunnel log (ndjson; what the server logged about its cloudflared connector, with rotated copies \`.1\` and \`.2\`): ${input.paths.relayClientLogPath}
 - Server trace (ndjson): ${input.paths.serverTracePath}
 - Provider event log: ${input.paths.providerEventLogPath}
 - Terminal logs: ${input.paths.terminalLogsDir}

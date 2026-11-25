@@ -37,7 +37,7 @@ describe("startOpenCodeServerProcess", () => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const tempDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-opencode-password-" });
+      const tempDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-opencode-password-" });
       const binaryPath = path.join(tempDir, "opencode");
       const receivedPath = path.join(tempDir, "received");
       yield* fs.writeFileString(

@@ -1,17 +1,17 @@
 import { msg } from "gt-react";
 import { m } from "~/i18n/messages";
-import type { EnvironmentProject } from "@t3tools/client-runtime/state/shell";
-import type { UnifiedSettings } from "@t3tools/contracts";
+import type { EnvironmentProject } from "@j6/client-runtime/state/shell";
+import type { UnifiedSettings } from "@j6/contracts";
 import { useStableCallback } from "../../hooks/useStableCallback";
-import { scopeProjectRef } from "@t3tools/client-runtime/environment";
-import { resolveProjectSettings } from "@t3tools/shared/projectSettings";
+import { scopeProjectRef } from "@j6/client-runtime/environment";
+import { resolveProjectSettings } from "@j6/shared/projectSettings";
 import { useNavigate } from "@tanstack/react-router";
 import { DEFAULT_INTERACTION_MODE } from "../../types";
 import { newDraftId, newThreadId } from "~/lib/utils";
 import {
   deriveLogicalProjectKeyFromSettings,
   selectProjectGroupingSettings,
-} from "@t3tools/client-runtime/state/project-grouping";
+} from "@j6/client-runtime/state/project-grouping";
 import { buildDraftThreadRouteParams } from "../../threadRoutes";
 import {
   type DraftCheckoutPullRequest,

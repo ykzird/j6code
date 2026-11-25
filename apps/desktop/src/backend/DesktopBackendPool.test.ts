@@ -1,5 +1,5 @@
 import { assert, describe, it } from "@effect/vitest";
-import { DESKTOP_UPDATE_IN_PROGRESS_TTL_MS } from "@t3tools/contracts";
+import { DESKTOP_UPDATE_IN_PROGRESS_TTL_MS } from "@j6/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
@@ -95,7 +95,7 @@ const runningConfig = {
     mode: "desktop",
     noBrowser: true,
     port: 3774,
-    t3Home: "/tmp/t3",
+    t3Home: "/tmp/j6",
     host: "127.0.0.1",
     desktopBootstrapToken: "token",
     tailscaleServeEnabled: false,
@@ -138,7 +138,7 @@ function layerPool(
           runningUnderArm64Translation: false,
         }).pipe(
           Layer.provide(
-            Layer.mergeAll(Path.layer, DesktopConfig.layerTest({ T3CODE_HOME: "/test-home" })),
+            Layer.mergeAll(Path.layer, DesktopConfig.layerTest({ J6CODE_HOME: "/test-home" })),
           ),
           Layer.orDie,
         ),

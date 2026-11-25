@@ -22,7 +22,7 @@ export async function acquireServiceSelectionLock(
   const owner = `${process.pid}.${bootEpochSeconds()}.${NodeCrypto.randomUUID()}`;
   const candidate = `${lock}.${owner}`;
   const deadline = Date.now() + 30_000;
-  // oxlint-disable-next-line t3code/no-global-process-runtime -- Standalone launcher has no Effect runtime.
+  // oxlint-disable-next-line j6code/no-global-process-runtime -- Standalone launcher has no Effect runtime.
   const windows = NodeOS.platform() === "win32";
   const removeEmptyLock = () => {
     try {

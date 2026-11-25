@@ -1,5 +1,5 @@
 import * as Console from "effect/Console";
-import type { ManagedPolicyDocument } from "@t3tools/contracts";
+import type { ManagedPolicyDocument } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
@@ -49,7 +49,7 @@ export const describeRunningServer = Effect.fn("cli.policy.describeRunningServer
 ) {
   const state = yield* readPersistedServerRuntimeState(statePath);
   if (Option.isNone(state) || !isProcessAlive(state.value.pid)) {
-    return "No T3 Code server is running from this T3 home. The installed policy applies when one starts.";
+    return "No J6 Code server is running from this T3 home. The installed policy applies when one starts.";
   }
   const { pid, startedAt, managedPolicy: loaded } = state.value;
   const server = `The running server (pid ${pid}, started ${startedAt})`;
@@ -65,7 +65,7 @@ export const describeRunningServer = Effect.fn("cli.policy.describeRunningServer
     loaded === null
       ? "no policy"
       : `${loaded.organization}'s policy from ${loaded.source} (fingerprint ${loaded.fingerprint})`;
-  return `${server} loaded ${what}. Restart T3 Code to apply the installed policy.`;
+  return `${server} loaded ${what}. Restart J6 Code to apply the installed policy.`;
 });
 
 const showCommand = Command.make("show", projectLocationFlags).pipe(
@@ -154,9 +154,9 @@ const templatesCommand = Command.make("templates", {
       }
       const outputDir = yield* expandHomePath(directory);
       const files = [
-        [path.join(outputDir, "windows", "t3code.admx"), windowsAdmx()],
-        [path.join(outputDir, "windows", "en-US", "t3code.adml"), windowsAdml()],
-        [path.join(outputDir, "macos", "t3code.mobileconfig"), profile.profile],
+        [path.join(outputDir, "windows", "j6code.admx"), windowsAdmx()],
+        [path.join(outputDir, "windows", "en-US", "j6code.adml"), windowsAdml()],
+        [path.join(outputDir, "macos", "j6code.mobileconfig"), profile.profile],
       ] as const;
       for (const [file, contents] of files) {
         yield* fs.makeDirectory(path.dirname(file), { recursive: true });

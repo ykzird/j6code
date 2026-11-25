@@ -4,7 +4,7 @@ import { expect } from "e2e";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 
-import { runPromise, test, WEB } from "./t3.ts";
+import { runPromise, test, WEB } from "./j6.ts";
 
 // One raw-mode process logs every byte the terminal sends to `received` and steps on exact
 // input: DECRQM replies mark when 1004 is on or off, and `x` ends it.
@@ -37,9 +37,9 @@ const DISABLED = "\x1b[?1004;2$y";
 test(
   "The web terminal reports focus changes only while a program enables DEC 1004",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    const project = await t3.project("demo", { "focus-probe.mjs": PROBE });
-    const thread = await t3.thread({ project, title: "Focus", messages: ["hello"] });
+  async ({ j6, app, browser, screen }) => {
+    const project = await j6.project("demo", { "focus-probe.mjs": PROBE });
+    const thread = await j6.thread({ project, title: "Focus", messages: ["hello"] });
     const read = (file: string) =>
       runPromise(
         Effect.gen(function* () {
@@ -47,12 +47,12 @@ test(
           return yield* fs.readFileString(`${project}/${file}`);
         }).pipe(Effect.orElseSucceed(() => "")),
       );
-    await t3.open(thread);
+    await j6.open(thread);
     await browser.evaluate(() => {
-      localStorage.setItem("t3code:theme", "dark");
+      localStorage.setItem("j6code:theme", "dark");
       return null;
     });
-    await t3.open(thread);
+    await j6.open(thread);
 
     await screen.getByRole("button", "Toggle terminal drawer").tap();
     const terminal = screen.getByLabel("Terminal input");

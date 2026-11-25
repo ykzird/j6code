@@ -1,4 +1,4 @@
-import { SecretProviderId, SourceControlProviderKind } from "@t3tools/contracts";
+import { SecretProviderId, SourceControlProviderKind } from "@j6/contracts";
 import { assert, it, vi } from "@effect/vitest";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as ConfigProvider from "effect/ConfigProvider";
@@ -16,12 +16,12 @@ import * as Schema from "effect/Schema";
 import * as TestClock from "effect/testing/TestClock";
 import { HttpClient, HttpClientError, HttpClientRequest, HttpClientResponse } from "effect/http";
 
-import * as SourceControlRateLimit from "@t3tools/source-control-core/server/SourceControlRateLimit";
-import type * as SourceControlHost from "@t3tools/source-control-core/server/SourceControlHost";
-import * as TestSourceControlHost from "@t3tools/source-control-testing/TestSourceControlHost";
+import * as SourceControlRateLimit from "@j6/source-control-core/server/SourceControlRateLimit";
+import type * as SourceControlHost from "@j6/source-control-core/server/SourceControlHost";
+import * as TestSourceControlHost from "@j6/source-control-testing/TestSourceControlHost";
 
 import * as BitbucketApi from "./BitbucketApi.ts";
-import { userFacingSourceControlDetail } from "@t3tools/source-control-core/server/SourceControlProvider";
+import { userFacingSourceControlDetail } from "@j6/source-control-core/server/SourceControlProvider";
 
 type HostGit = SourceControlHost.SourceControlHost["Service"]["git"];
 
@@ -40,7 +40,7 @@ const bitbucketPullRequest = {
   source: {
     branch: { name: "feature/source-control" },
     repository: {
-      full_name: "octocat/t3code",
+      full_name: "octocat/j6code",
       workspace: { slug: "octocat" },
     },
   },
@@ -150,9 +150,9 @@ function makeLayer(input: {
       ConfigProvider.layer(
         ConfigProvider.fromEnv({
           env: input.env ?? {
-            T3CODE_BITBUCKET_API_BASE_URL: "https://api.test.local/2.0",
-            T3CODE_BITBUCKET_EMAIL: "user@example.com",
-            T3CODE_BITBUCKET_API_TOKEN: "token",
+            J6CODE_BITBUCKET_API_BASE_URL: "https://api.test.local/2.0",
+            J6CODE_BITBUCKET_EMAIL: "user@example.com",
+            J6CODE_BITBUCKET_API_TOKEN: "token",
           },
         }),
       ),
@@ -188,7 +188,7 @@ it.effect("parses pull request responses from the Bitbucket REST API", () => {
       state: "open",
       updatedAt: Option.some(DateTime.makeUnsafe("2026-01-02T00:00:00.000Z")),
       isCrossRepository: true,
-      headRepositoryNameWithOwner: "octocat/t3code",
+      headRepositoryNameWithOwner: "octocat/j6code",
       headRepositoryOwnerLogin: "octocat",
     });
     assert.strictEqual(
@@ -283,11 +283,11 @@ it.effect("adds a fork remote with the protocol of the URL origin fetches from",
           ? bitbucketPullRequest
           : {
               ...repositoryJson,
-              full_name: "octocat/t3code",
+              full_name: "octocat/j6code",
               links: {
                 clone: [
-                  { name: "https", href: "https://bitbucket.org/octocat/t3code.git" },
-                  { name: "ssh", href: "git@bitbucket.org:octocat/t3code.git" },
+                  { name: "https", href: "https://bitbucket.org/octocat/j6code.git" },
+                  { name: "ssh", href: "git@bitbucket.org:octocat/j6code.git" },
                 ],
               },
             },
@@ -299,7 +299,7 @@ it.effect("adds a fork remote with the protocol of the URL origin fetches from",
     assert.deepStrictEqual(git.ensureRemote.mock.calls[0]?.[0], {
       cwd: "/repo",
       preferredName: "octocat",
-      url: "https://bitbucket.org/octocat/t3code.git",
+      url: "https://bitbucket.org/octocat/j6code.git",
     });
   }).pipe(Effect.provide(layer));
 });
@@ -428,7 +428,7 @@ it.effect.each([false, true])(
 
     return Effect.gen(function* () {
       const bitbucket = yield* BitbucketApi.BitbucketApi;
-      for (const repository of ["t3code", "", " \t "]) {
+      for (const repository of ["j6code", "", " \t "]) {
         const error = yield* bitbucket
           .getRepositoryCloneUrls({
             cwd: "/repo",
@@ -511,8 +511,8 @@ it.effect("sends a self-hosted Bitbucket remote nowhere unless an API base url i
       remoteUrl,
     };
     const cloudEnv = {
-      T3CODE_BITBUCKET_EMAIL: "user@example.com",
-      T3CODE_BITBUCKET_API_TOKEN: "t",
+      J6CODE_BITBUCKET_EMAIL: "user@example.com",
+      J6CODE_BITBUCKET_API_TOKEN: "t",
     };
     const response = (request: HttpClientRequest.HttpClientRequest) =>
       Response.json(request.url.endsWith("/branching-model") ? {} : repositoryJson);
@@ -664,7 +664,7 @@ it.effect("creates pull requests using the official REST payload shape", () => {
       description: "PR body",
       source: {
         branch: { name: "feature/provider" },
-        repository: { full_name: "owner/t3code" },
+        repository: { full_name: "owner/j6code" },
       },
       destination: {
         branch: { name: "main" },
@@ -766,7 +766,7 @@ it.effect("never puts a saved token that is unsafe for an HTTP header on the wir
 it.effect("reports saved credentials as configured when Bitbucket cannot confirm them", () => {
   const { execute, layer } = makeLayer({
     response: () => new Response(null, { status: 401 }),
-    env: { T3CODE_BITBUCKET_API_BASE_URL: "https://api.test.local/2.0" },
+    env: { J6CODE_BITBUCKET_API_BASE_URL: "https://api.test.local/2.0" },
   });
 
   return Effect.gen(function* () {
@@ -836,15 +836,15 @@ it.effect("keeps Bitbucket response bodies out of checkout diagnostics", () => {
 it.effect("checks out fork pull requests through an ensured fork remote", () => {
   const { git, layer } = makeLayer({
     response: (request) => {
-      if (request.url.endsWith("/repositories/octocat/t3code")) {
+      if (request.url.endsWith("/repositories/octocat/j6code")) {
         return Response.json({
           ...repositoryJson,
-          full_name: "octocat/t3code",
+          full_name: "octocat/j6code",
           links: {
-            html: { href: "https://bitbucket.org/octocat/t3code" },
+            html: { href: "https://bitbucket.org/octocat/j6code" },
             clone: [
-              { name: "https", href: "https://bitbucket.org/octocat/t3code.git" },
-              { name: "ssh", href: "git@bitbucket.org:octocat/t3code.git" },
+              { name: "https", href: "https://bitbucket.org/octocat/j6code.git" },
+              { name: "ssh", href: "git@bitbucket.org:octocat/j6code.git" },
             ],
           },
         });
@@ -854,7 +854,7 @@ it.effect("checks out fork pull requests through an ensured fork remote", () => 
         source: {
           branch: { name: "main" },
           repository: {
-            full_name: "octocat/t3code",
+            full_name: "octocat/j6code",
             workspace: { slug: "octocat" },
           },
         },
@@ -873,23 +873,23 @@ it.effect("checks out fork pull requests through an ensured fork remote", () => 
     assert.deepStrictEqual(git.ensureRemote.mock.calls[0]?.[0], {
       cwd: "/repo",
       preferredName: "octocat",
-      url: "git@bitbucket.org:octocat/t3code.git",
+      url: "git@bitbucket.org:octocat/j6code.git",
     });
     assert.deepStrictEqual(git.fetchRemoteBranch.mock.calls[0]?.[0], {
       cwd: "/repo",
       remoteName: "octocat",
       remoteBranch: "main",
-      localBranch: "t3code/pr-42/main",
+      localBranch: "j6code/pr-42/main",
     });
     assert.deepStrictEqual(git.setBranchUpstream.mock.calls[0]?.[0], {
       cwd: "/repo",
-      branch: "t3code/pr-42/main",
+      branch: "j6code/pr-42/main",
       remoteName: "octocat",
       remoteBranch: "main",
     });
     assert.deepStrictEqual(git.switchRef.mock.calls[0]?.[0], {
       cwd: "/repo",
-      refName: "t3code/pr-42/main",
+      refName: "j6code/pr-42/main",
     });
   }).pipe(Effect.provide(layer));
 });

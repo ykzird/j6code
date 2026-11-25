@@ -1,12 +1,12 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import { assert, describe, it } from "@effect/vitest";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 
-import type { DesktopUpdateCheckResult, DesktopUpdateState } from "@t3tools/contracts";
+import type { DesktopUpdateCheckResult, DesktopUpdateState } from "@j6/contracts";
 import * as Electron from "electron";
 import { vi } from "vite-plus/test";
 
@@ -38,7 +38,7 @@ const environmentInput = {
 
 const layerElectronApp = Layer.succeed(ElectronApp.ElectronApp, {
   metadata: Effect.die("unexpected metadata read"),
-  name: Effect.succeed("T3 Code"),
+  name: Effect.succeed("J6 Code"),
   systemLocale: Effect.succeed("en-US"),
   preferredSystemLanguages: Effect.succeed(["en-US"]),
   whenReady: Effect.void,

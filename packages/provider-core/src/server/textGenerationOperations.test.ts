@@ -1,5 +1,5 @@
 import { assert, it } from "@effect/vitest";
-import { ProviderInstanceId, TextGenerationError } from "@t3tools/contracts";
+import { ProviderInstanceId, TextGenerationError } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 
 import { decodeJsonReply, fromRunner } from "./textGenerationOperations.ts";

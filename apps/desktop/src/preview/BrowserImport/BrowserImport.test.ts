@@ -2,8 +2,8 @@ import * as NodeSqlite from "node:sqlite";
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, describe, it } from "@effect/vitest";
-import { BrowserImportSource } from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import { BrowserImportSource } from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
 import type { Session } from "electron";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -15,12 +15,12 @@ import * as Kdf from "effect/crypto/Kdf";
 import { vi } from "vite-plus/test";
 
 import * as BrowserSession from "../BrowserSession.ts";
-import { readManagedPolicyFile } from "@t3tools/shared/managedPolicyFile";
+import { readManagedPolicyFile } from "@j6/shared/managedPolicyFile";
 import * as DesktopManagedPolicy from "../../app/DesktopManagedPolicy.ts";
 import * as BrowserImport from "./BrowserImport.ts";
 import { LinuxBrowserSecretPath } from "./LinuxBrowserSecret.ts";
 import { BROWSER_IMPORT_SOURCES, sourcePathContext } from "./Sources.ts";
-import { symlinksSupported } from "@t3tools/shared/testing/symlinks";
+import { symlinksSupported } from "@j6/shared/testing/symlinks";
 
 const helium = BROWSER_IMPORT_SOURCES.find((source) => source.id === "helium")!;
 const decodeImportSource = Schema.decodeEffect(BrowserImportSource);
@@ -65,7 +65,7 @@ const layerRejectedBeforeSession = Layer.succeed(
 
 const withImporter = Effect.fnUntraced(function* () {
   const fileSystem = yield* FileSystem.FileSystem;
-  const home = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3code-import-" });
+  const home = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6code-import-" });
   const layerEnvironment = Layer.succeed(HostProcess.Environment, { HOME: home });
   const context = yield* sourcePathContext.pipe(
     Effect.provideService(HostProcess.Environment, { HOME: home }),
@@ -83,7 +83,7 @@ const withImporter = Effect.fnUntraced(function* () {
         Layer.provide(DesktopManagedPolicy.layerTest()),
         Layer.provide(layerEnvironment),
         Layer.provide(Layer.succeed(HostProcess.Platform, "darwin")),
-        Layer.provide(Layer.succeed(HostProcess.ExecutablePath, "/Applications/T3 Code.app")),
+        Layer.provide(Layer.succeed(HostProcess.ExecutablePath, "/Applications/J6 Code.app")),
         Layer.provide(NodeServices.layer),
       ),
     ),
@@ -101,7 +101,7 @@ describe("BrowserImport.importCookies", () => {
     ({ platform, cookiePath }) =>
       Effect.gen(function* () {
         const fileSystem = yield* FileSystem.FileSystem;
-        const home = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3code-chromium-" });
+        const home = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6code-chromium-" });
         const root =
           platform === "darwin"
             ? `${home}/Library/Application Support/Chromium`
@@ -169,7 +169,7 @@ describe("BrowserImport.importCookies", () => {
               Layer.provide(DesktopManagedPolicy.layerTest()),
               Layer.provide(Layer.succeed(HostProcess.Environment, { HOME: home })),
               Layer.provide(Layer.succeed(HostProcess.Platform, platform)),
-              Layer.provide(Layer.succeed(HostProcess.ExecutablePath, "/fixture/t3code")),
+              Layer.provide(Layer.succeed(HostProcess.ExecutablePath, "/fixture/j6code")),
               Layer.provide(NodeServices.layer),
             ),
           ),
@@ -190,7 +190,7 @@ describe("BrowserImport.importCookies", () => {
               sourceProfileDirectory: "Default",
               targetProfileId: "default",
             },
-            scope: "persist:t3code-preview-test",
+            scope: "persist:j6code-preview-test",
             persistent: true,
           }),
           { imported: 1, skipped: 0, skippedDomains: [] },
@@ -229,7 +229,7 @@ describe("BrowserImport.importCookies", () => {
             sourceProfileDirectory: "../../../../secrets",
             targetProfileId: "default",
           },
-          scope: "persist:t3code-preview-test",
+          scope: "persist:j6code-preview-test",
           persistent: true,
         })
         .pipe(Effect.flip);
@@ -254,7 +254,7 @@ describe("BrowserImport.importCookies", () => {
               sourceProfileDirectory: "Default",
               targetProfileId: "default",
             },
-            scope: "persist:t3code-preview-test",
+            scope: "persist:j6code-preview-test",
             persistent: true,
           })
           .pipe(Effect.flip);
@@ -269,7 +269,7 @@ describe("BrowserImport.checkBrowserImportPolicy", () => {
   it.effect("allows imports unless a readable policy turns them off, and fails closed", () =>
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
-      const dir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3code-import-policy-" });
+      const dir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6code-import-policy-" });
       const outcome = (contents: string | undefined) =>
         Effect.gen(function* () {
           const policyPath = `${dir}/policy.json`;

@@ -4,7 +4,7 @@ import * as NodeURL from "node:url";
 
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { expect, it } from "@effect/vitest";
-import { symlinksSupported } from "@t3tools/shared/testing/symlinks";
+import { symlinksSupported } from "@j6/shared/testing/symlinks";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
@@ -65,7 +65,7 @@ const makeNativeSessionFixture = Effect.fn("makeNativeSessionFixture")(function*
 }) {
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
-  const root = yield* fs.makeTempDirectoryScoped({ prefix: "t3-agy-session-files-" });
+  const root = yield* fs.makeTempDirectoryScoped({ prefix: "j6-agy-session-files-" });
   const profileDirectory = path.join(root, "profile");
   const acpDirectory = path.join(profileDirectory, "antigravity-acp");
   const conversations = path.join(acpDirectory, "conversations");
@@ -101,7 +101,7 @@ it.layer(NodeServices.layer)("removeAntigravitySessionFiles", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const cwd = yield* fs.makeTempDirectoryScoped({ prefix: "t3-antigravity-setup-" });
+        const cwd = yield* fs.makeTempDirectoryScoped({ prefix: "j6-antigravity-setup-" });
         const realCwd = yield* fs.realPath(cwd);
         const fixture = yield* makeNativeSessionFixture({
           workspacePaths: [realCwd, cwd],
@@ -127,7 +127,7 @@ it.layer(NodeServices.layer)("removeAntigravitySessionFiles", (it) => {
       if (!symlinksSupported) return;
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const parent = yield* fs.makeTempDirectoryScoped({ prefix: "t3-agy-symlink-" });
+      const parent = yield* fs.makeTempDirectoryScoped({ prefix: "j6-agy-symlink-" });
       const targetCwd = path.join(parent, "real-temp");
       const linkCwd = path.join(parent, "link-temp");
       yield* fs.makeDirectory(targetCwd, { recursive: true });
@@ -151,8 +151,8 @@ it.layer(NodeServices.layer)("removeAntigravitySessionFiles", (it) => {
   it.effect("keeps a 1.5+ session DB whose metadata belongs to a different workspace", () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const projectCwd = yield* fs.makeTempDirectoryScoped({ prefix: "t3-agy-project-" });
-      const helperCwd = yield* fs.makeTempDirectoryScoped({ prefix: "t3-agy-helper-" });
+      const projectCwd = yield* fs.makeTempDirectoryScoped({ prefix: "j6-agy-project-" });
+      const helperCwd = yield* fs.makeTempDirectoryScoped({ prefix: "j6-agy-helper-" });
       const fixture = yield* makeNativeSessionFixture({
         workspacePaths: [projectCwd],
       });
@@ -172,8 +172,8 @@ it.layer(NodeServices.layer)("removeAntigravitySessionFiles", (it) => {
   it.effect("keeps a 1.5+ session DB that also includes an additional workspace", () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const helperCwd = yield* fs.makeTempDirectoryScoped({ prefix: "t3-agy-helper-" });
-      const attachmentsDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-agy-attachments-" });
+      const helperCwd = yield* fs.makeTempDirectoryScoped({ prefix: "j6-agy-helper-" });
+      const attachmentsDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-agy-attachments-" });
       const fixture = yield* makeNativeSessionFixture({
         workspacePaths: [helperCwd, attachmentsDir],
       });
@@ -195,7 +195,7 @@ it.layer(NodeServices.layer)("removeAntigravitySessionFiles", (it) => {
     () =>
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
-        const helperCwd = yield* fs.makeTempDirectoryScoped({ prefix: "t3-agy-helper-" });
+        const helperCwd = yield* fs.makeTempDirectoryScoped({ prefix: "j6-agy-helper-" });
         const wrongId = yield* makeNativeSessionFixture({
           workspacePaths: [helperCwd],
           metadataSessionId: OTHER_SESSION_ID,

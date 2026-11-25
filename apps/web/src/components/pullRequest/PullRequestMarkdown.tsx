@@ -1,13 +1,13 @@
 import { T, useGT, Var } from "gt-react";
 import { ExternalLinkIcon, PaperclipIcon } from "lucide-react";
-import { markdownImageSourceFragment } from "@t3tools/client-runtime/markdown-images";
-import { sourceControlClients } from "@t3tools/client-runtime/source-control-clients";
+import { markdownImageSourceFragment } from "@j6/client-runtime/markdown-images";
+import { sourceControlClients } from "@j6/client-runtime/source-control-clients";
 import {
   SOURCE_CONTROL_MEDIA_ASSET,
   type AssetResource,
   type EnvironmentId,
   type ScopedThreadRef,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { createContext, useContext } from "react";
 import type { MarkdownExtensions } from "~/markdown/wordsHast";
 

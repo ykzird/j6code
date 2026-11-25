@@ -1,6 +1,6 @@
-import { runAtomCommand } from "@t3tools/client-runtime/state/runtime";
+import { runAtomCommand } from "@j6/client-runtime/state/runtime";
 import { useAtomValue } from "@effect/atom-react";
-import { providerClients } from "@t3tools/client-runtime/provider-clients";
+import { providerClients } from "@j6/client-runtime/provider-clients";
 import {
   type EnvironmentId,
   type ModelSelection,
@@ -13,7 +13,7 @@ import {
   type TextGeneratorConfig,
   type TextGeneratorKind,
   type TextGeneratorModel,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import { msg, useMessages } from "gt-react";
 import * as Option from "effect/Option";

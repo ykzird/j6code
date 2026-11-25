@@ -1,4 +1,4 @@
-import { resolveLocale } from "@t3tools/client-runtime/locales";
+import { resolveLocale } from "@j6/client-runtime/locales";
 import * as Effect from "effect/Effect";
 import { decodeOptions, gtFallback } from "gt-i18n";
 import { hashMessage } from "gt-i18n/internal";

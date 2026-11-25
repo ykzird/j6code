@@ -132,6 +132,6 @@ export function resolveT3McpToolPresentation(
   const displayName = DISPLAY_NAMES.get(definition.displayName);
   return {
     displayName: displayName === undefined ? definition.displayName : resolve(displayName),
-    logo: "t3-code",
+    logo: "j6-code",
   };
 }

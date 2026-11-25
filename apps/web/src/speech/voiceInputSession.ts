@@ -6,8 +6,8 @@ import {
   type VoiceInputControllerDependencies,
   type VoiceInputErrorCode,
   type VoiceInputState,
-} from "@t3tools/client-runtime/voice-input";
-import type { PreparedConnection } from "@t3tools/client-runtime/connection";
+} from "@j6/client-runtime/voice-input";
+import type { PreparedConnection } from "@j6/client-runtime/connection";
 import type {
   CloudSpeechModelId,
   CloudSpeechProvider,
@@ -18,9 +18,9 @@ import type {
   SpeechPostProcessingOptions,
   SpeechStreamText,
   SpeechTranscriptionOptions,
-} from "@t3tools/contracts";
-import { DEFAULT_CLIENT_SETTINGS, EnvironmentInternalError } from "@t3tools/contracts";
-import { resolveSpeechVocabulary } from "@t3tools/shared/speech";
+} from "@j6/contracts";
+import { DEFAULT_CLIENT_SETTINGS, EnvironmentInternalError } from "@j6/contracts";
+import { resolveSpeechVocabulary } from "@j6/shared/speech";
 import * as Schema from "effect/Schema";
 import { useEffect, useSyncExternalStore } from "react";
 
@@ -427,7 +427,7 @@ export function useRetainedVoiceInputSession(input: {
   const { grantId, cloudProvider, cloudModel } = input;
   const prepared = input.onDevice ? null : input.prepared;
   const ready = (input.onDevice === true || prepared !== null) && grantId !== null;
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- retains the shared recording session for this destination while mounted
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- retains the shared recording session for this destination while mounted
   useEffect(() => {
     if (!ready || !grantId || typeof navigator === "undefined") return;
     return retainVoiceInputSession({ prepared, grantId, cloudProvider, cloudModel });

@@ -1,24 +1,24 @@
 import * as DateTime from "effect/DateTime";
 import { msg } from "gt-react";
-import { worktreeSetupAgentStarted } from "@t3tools/client-runtime/worktree-setup";
-import { resolveUserMessagePresentation } from "@t3tools/client-runtime/user-message";
+import { worktreeSetupAgentStarted } from "@j6/client-runtime/worktree-setup";
+import { resolveUserMessagePresentation } from "@j6/client-runtime/user-message";
 import {
   isLiveSubagentTurnItem,
   waitingOnSubagentsLabel,
-} from "@t3tools/client-runtime/state/subagentRuntime";
+} from "@j6/client-runtime/state/subagentRuntime";
 import * as Equal from "effect/Equal";
 import { shallow } from "zustand/vanilla/shallow";
-import { claudeResumeCompactionAge } from "@t3tools/shared/claudeCompaction";
+import { claudeResumeCompactionAge } from "@j6/shared/claudeCompaction";
 import {
   IDLE_COMPACTING_LABELS,
   IDLE_COMPACTION_TITLES,
-} from "@t3tools/client-runtime/user-message";
-import type { HandoffTimelineRun } from "@t3tools/client-runtime/handoff";
+} from "@j6/client-runtime/user-message";
+import type { HandoffTimelineRun } from "@j6/client-runtime/handoff";
 import { renderCodexDirectivesForCopy } from "~/markdown/markdownText";
 import {
   commandDisplayText,
   commandProgramName,
-} from "@t3tools/client-runtime/work-log/command-label";
+} from "@j6/client-runtime/work-log/command-label";
 import {
   commandlessCommandLabel,
   genericCommandStatusLabel,
@@ -33,7 +33,7 @@ import {
   type ToolGroupSummaryKind,
   liveThoughtLine,
   workEntryHiddenByToolCallVisibility,
-} from "@t3tools/client-runtime/work-log/presentation";
+} from "@j6/client-runtime/work-log/presentation";
 import {
   deriveRevertTurnCountByUserMessageId,
   isStreamingMessageTextUpdate,
@@ -65,23 +65,23 @@ import {
   RunId,
   type ThreadId,
   type TurnItemId,
-} from "@t3tools/contracts";
-import type { ThreadRunSummary } from "@t3tools/client-runtime/state/shell";
-import type { ToolCallVisibility } from "@t3tools/contracts/settings";
-import { resolveT3McpToolDefinition } from "@t3tools/shared/t3McpToolPresentation";
-import { compactDynamicToolOutput } from "@t3tools/shared/toolOutput";
-import { htmlRenderReferencesEqual, type HtmlRenderReference } from "@t3tools/shared/htmlRender";
-import { mcpAppReferencesEqual, type McpAppReference } from "@t3tools/shared/mcpApp";
-import { formatDuration } from "@t3tools/shared/orchestrationTimingCopy";
+} from "@j6/contracts";
+import type { ThreadRunSummary } from "@j6/client-runtime/state/shell";
+import type { ToolCallVisibility } from "@j6/contracts/settings";
+import { resolveT3McpToolDefinition } from "@j6/shared/t3McpToolPresentation";
+import { compactDynamicToolOutput } from "@j6/shared/toolOutput";
+import { htmlRenderReferencesEqual, type HtmlRenderReference } from "@j6/shared/htmlRender";
+import { mcpAppReferencesEqual, type McpAppReference } from "@j6/shared/mcpApp";
+import { formatDuration } from "@j6/shared/orchestrationTimingCopy";
 import { formatWorkspaceRelativePath } from "../../filePathDisplay";
 import { m, type MessageResolver } from "../../i18n/messages";
-import { collectToolFilePaths } from "@t3tools/shared/toolActivity";
+import { collectToolFilePaths } from "@j6/shared/toolActivity";
 import {
   dynamicToolTitle,
   formatReadToolLabel,
   formatSearchToolLabel,
-} from "@t3tools/shared/toolActivityCopy";
-import { isHostPath } from "@t3tools/shared/path";
+} from "@j6/shared/toolActivityCopy";
+import { isHostPath } from "@j6/shared/path";
 
 export function timelineEntryRunId(entry: TimelineEntry): RunId | null {
   if (entry.kind === "message") {
@@ -621,7 +621,7 @@ type MessagesTimelineRowContent =
       label: string;
       tokenCounts: ReturnType<typeof contextCompactionTokenCounts>;
       active: boolean;
-      /** Replaces "Context compacted" when T3 Code compacted without being asked. */
+      /** Replaces "Context compacted" when J6 Code compacted without being asked. */
       title?: string;
       /** The compaction finished, so `title` names it. */
       compacted?: true;

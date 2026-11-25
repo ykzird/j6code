@@ -18,7 +18,7 @@ import {
   type OrchestrationV2ThreadLaunchInput,
   type OrchestrationV2ThreadProjection,
   type ProjectMutation,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { describe, expect, it } from "@effect/vitest";
 import * as Cause from "effect/Cause";
 import * as SecureRandom from "effect/crypto/SecureRandom";
@@ -203,7 +203,7 @@ describe("V2 environment commands", () => {
             parentCheckpointId: null,
             ordinalWithinScope: 0,
             appRunOrdinal: null,
-            ref: CheckpointRef.make("refs/t3/thread-start"),
+            ref: CheckpointRef.make("refs/j6/thread-start"),
             status: "ready",
             files: [],
             capturedAt: v2Now,
@@ -218,7 +218,7 @@ describe("V2 environment commands", () => {
             parentCheckpointId: null,
             ordinalWithinScope: 0,
             appRunOrdinal: null,
-            ref: CheckpointRef.make("refs/t3/repository-start"),
+            ref: CheckpointRef.make("refs/j6/repository-start"),
             status: "ready",
             files: [],
             capturedAt: v2Now,

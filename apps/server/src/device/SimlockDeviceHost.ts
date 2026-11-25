@@ -13,7 +13,7 @@ import {
   type DevicePlatformAvailability,
   type SettingsSecretValue,
   type SimlockDeviceHostConfig,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as Clock from "effect/Clock";
 import * as Duration from "effect/Duration";
@@ -26,11 +26,11 @@ import * as Random from "effect/Random";
 import * as Schema from "effect/Schema";
 import * as Semaphore from "effect/Semaphore";
 import { HttpClient, HttpClientError, HttpClientRequest, HttpClientResponse } from "effect/http";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { truncate } from "@t3tools/shared/String";
-import type { NodeRuntimeUnavailableError } from "@t3tools/shared/nodeRuntime";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { truncate } from "@j6/shared/String";
+import type { NodeRuntimeUnavailableError } from "@j6/shared/nodeRuntime";
 
-import * as SecretResolver from "@t3tools/secret-provider-core/server/SecretResolver";
+import * as SecretResolver from "@j6/secret-provider-core/server/SecretResolver";
 import * as ServerConfig from "../config.ts";
 import * as ProcessRunner from "../processRunner.ts";
 import { requireSettingsSecret } from "../secrets/settingsSecretValue.ts";
@@ -471,7 +471,7 @@ export const make = Effect.fn("SimlockDeviceHost.make")(function* (
       });
     }
     const suffix = (yield* Random.nextIntBetween(0, 0xffffff)).toString(16).padStart(6, "0");
-    const session = `t3-${suffix}`;
+    const session = `j6-${suffix}`;
     const dir = path.join(hostDir, suffix);
     const configPath = path.join(dir, "agent-device.json");
     const agentToken = yield* currentToken;

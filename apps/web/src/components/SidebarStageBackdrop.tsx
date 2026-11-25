@@ -1,5 +1,5 @@
 import { useAtomValue } from "@effect/atom-react";
-import type { EnvironmentIdentificationMode } from "@t3tools/contracts";
+import type { EnvironmentIdentificationMode } from "@j6/contracts";
 import { useId } from "react";
 
 import { APP_STAGE_LABEL } from "../branding";
@@ -28,9 +28,9 @@ export function resolveEnvironmentIdentificationPillLabel(
   stageLabel: string,
 ): EnvironmentIdentificationPillLabel | null {
   const normalized = stageLabel.trim().toLowerCase();
-  // oxlint-disable-next-line t3code/no-untranslated-copy -- release channel names
+  // oxlint-disable-next-line j6code/no-untranslated-copy -- release channel names
   if (normalized === "dev") return "Dev";
-  // oxlint-disable-next-line t3code/no-untranslated-copy -- release channel names
+  // oxlint-disable-next-line j6code/no-untranslated-copy -- release channel names
   if (normalized === "nightly") return "Nightly";
   return null;
 }

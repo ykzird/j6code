@@ -67,7 +67,7 @@ it("probes generic vocabulary support and delivers ordered terms to offline infe
       const options = {
         timestamps: "none" as const,
         language: "en",
-        ...(supported ? { vocabulary: ["T3 Code", "GitHub"] } : {}),
+        ...(supported ? { vocabulary: ["J6 Code", "GitHub"] } : {}),
       };
       const result = await model.transcribe(new Float32Array([0.25]), options, false);
       expect(JSON.parse(result.text)).toEqual(options);
@@ -136,11 +136,11 @@ it("returns streaming previews and final text from an isolated process", async (
     await model.feed(new Float32Array(512));
     expect(await model.finish()).toBe("fr");
     await model.begin(
-      { timestamps: "none", language: "fr", vocabulary: ["T3 Code", "GitHub"] },
+      { timestamps: "none", language: "fr", vocabulary: ["J6 Code", "GitHub"] },
       false,
     );
     await model.feed(new Float32Array(512).fill(0.25));
-    expect(await model.finish()).toBe("T3 Code / GitHub");
+    expect(await model.finish()).toBe("J6 Code / GitHub");
   } finally {
     await model.dispose();
   }
@@ -161,7 +161,7 @@ it("kills a hung streaming feed without waiting for native cleanup", async () =>
 });
 
 it("skips process exit teardown when the backend dies during native inference", async () => {
-  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "t3code-speech-orphan-"));
+  const directory = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "j6code-speech-orphan-"));
   const marker = NodePath.join(directory, "exit-teardown");
   // The exit hook stands in for native atexit teardown; the interval for the threadpool call.
   const model = await loadNativeSpeechModel(

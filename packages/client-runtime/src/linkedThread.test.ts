@@ -6,7 +6,7 @@ import {
   type OrchestrationV2ThreadHistoryPage,
   type OrchestrationV2ThreadStreamItem,
   type PeerLinkClientPairingResult,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { describe, expect, it } from "@effect/vitest";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -314,7 +314,7 @@ describe("connectLinkedEnvironment", () => {
       return Promise.resolve(true);
     });
     try {
-      // oxlint-disable-next-line t3code/no-real-time-wait-in-tests -- Let the already runnable probe continuations finish while the last probe stays pending.
+      // oxlint-disable-next-line j6code/no-real-time-wait-in-tests -- Let the already runnable probe continuations finish while the last probe stays pending.
       const pending = NodeTimersPromises.setImmediate("still waiting for an address");
       expect(await Promise.race([connecting, pending])).toEqual(row.expected);
     } finally {

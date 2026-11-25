@@ -77,7 +77,7 @@ const check = (
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const home = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-fx-status-" });
+    const home = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-fx-status-" });
     const profile = path.join(home, profileInFxHome ? "fx-home" : ".fx");
     yield* fileSystem.makeDirectory(profile);
     yield* fileSystem.writeFileString(

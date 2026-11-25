@@ -8,9 +8,9 @@ import {
   ProjectScript,
   ProjectTrackedFolders,
   ThreadEnvMode,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
-import * as NodeSqliteClient from "@t3tools/shared/nodeSqliteClient";
+import * as NodeSqliteClient from "@j6/shared/nodeSqliteClient";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
@@ -105,7 +105,7 @@ export class ProjectStoreV2 extends Context.Service<
       readonly projectIds?: ReadonlyArray<ProjectId>;
     }) => Effect.Effect<ReadonlyArray<OrchestrationProjectShell>, ProjectStoreV2Error>;
   }
->()("t3/orchestration-v2/ProjectStore/ProjectStoreV2") {}
+>()("j6/orchestration-v2/ProjectStore/ProjectStoreV2") {}
 
 /** @public */
 export const make = Effect.gen(function* () {

@@ -1,16 +1,16 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
-import { filePreviewDelimiter } from "@t3tools/shared/delimitedPreview";
-import type { AssetResource, EnvironmentId, ScopedThreadRef } from "@t3tools/contracts";
-import { formatAttachmentSize } from "@t3tools/client-runtime/state/attachments";
-import { readFilePreviewResponse } from "@t3tools/client-runtime/file-preview";
-import { settlePromise } from "@t3tools/client-runtime/state/runtime";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
+import { filePreviewDelimiter } from "@j6/shared/delimitedPreview";
+import type { AssetResource, EnvironmentId, ScopedThreadRef } from "@j6/contracts";
+import { formatAttachmentSize } from "@j6/client-runtime/state/attachments";
+import { readFilePreviewResponse } from "@j6/client-runtime/file-preview";
+import { settlePromise } from "@j6/client-runtime/state/runtime";
 import * as AsyncResult from "effect/reactivity/AsyncResult";
 import * as Cause from "effect/Cause";
 import {
   filePreviewKind,
   officePreviewKind,
   FILE_TEXT_PREVIEW_MAX_BYTES,
-} from "@t3tools/shared/filePreview";
+} from "@j6/shared/filePreview";
 import {
   ChevronRightIcon,
   DownloadIcon,
@@ -29,7 +29,7 @@ import { m, type MessageResolver } from "~/i18n/messages";
 
 import { useAssetUrlRefresh } from "~/assets/assetUrls";
 import ChatMarkdown from "~/components/ChatMarkdown";
-import { maskMarkdownFrontmatter } from "@t3tools/shared/markdownFrontmatter";
+import { maskMarkdownFrontmatter } from "@j6/shared/markdownFrontmatter";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { toastManager } from "~/components/ui/toast";
 import { namedClipboardTarget, useCopyToClipboard } from "~/hooks/useCopyToClipboard";
@@ -167,7 +167,7 @@ export function AttachmentFilePreview(props: {
   const [contentError, setContentError] = useState<string | null>(null);
   const copyContents = useRef<(() => Promise<string>) | null>(null);
   const authorizedAt = useRef(0);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- creates an object URL for the local file and revokes it on cleanup
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- creates an object URL for the local file and revokes it on cleanup
   useEffect(() => {
     if (!props.file) return;
     const url = URL.createObjectURL(props.file);
@@ -175,7 +175,7 @@ export function AttachmentFilePreview(props: {
     setLocalUrl(url);
     return () => URL.revokeObjectURL(url);
   }, [props.file]);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- authorizes a remote attachment URL from the server and ignores the result after cleanup
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- authorizes a remote attachment URL from the server and ignores the result after cleanup
   useEffect(() => {
     if (props.file) return;
     let cancelled = false;
@@ -205,7 +205,7 @@ export function AttachmentFilePreview(props: {
       (props.sizeBytes === 0 && (!resource || resource._tag === "attachment")));
   const needsText =
     kind === "text" || kind === "markdown" || kind === "mermaid" || (kind === "html" && !rendered);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- fetches the file's text from its URL or Blob stream and aborts the request on cleanup
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- fetches the file's text from its URL or Blob stream and aborts the request on cleanup
   useEffect(() => {
     if (!needsText || streamsText || !url) return;
     const controller = new AbortController();

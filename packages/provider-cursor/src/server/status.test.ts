@@ -6,8 +6,8 @@ import * as Schema from "effect/Schema";
 import * as TestClock from "effect/testing/TestClock";
 import type { CursorSettings } from "../settings.ts";
 import { CursorSettings as CursorSettingsSchema } from "../settings.ts";
-import { createModelCapabilities } from "@t3tools/shared/model";
-import { COMPACT_SLASH_COMMAND } from "@t3tools/provider-core/server/snapshotProbe";
+import { createModelCapabilities } from "@j6/shared/model";
+import { COMPACT_SLASH_COMMAND } from "@j6/provider-core/server/snapshotProbe";
 
 import {
   buildCursorCapabilitiesFromSdkModel,
@@ -231,7 +231,7 @@ describe("checkCursorProviderStatus", () => {
     Effect.gen(function* () {
       const fiber = yield* checkCursorProviderStatus(baseCursorSettings, {
         CURSOR_API_KEY: "test-key",
-        T3CODE_CURSOR_PROBE_TIMEOUT_MS: "30000",
+        J6CODE_CURSOR_PROBE_TIMEOUT_MS: "30000",
       }).pipe(
         Effect.provide(
           CursorSdkCatalog.layerTest(() =>
@@ -283,12 +283,12 @@ describe("checkCursorProviderStatus", () => {
     {
       authenticationType: "browser" as const,
       message:
-        "Cursor needs a paid plan to run in T3 Code. Upgrade this account or sign in with a different one.",
+        "Cursor needs a paid plan to run in J6 Code. Upgrade this account or sign in with a different one.",
     },
     {
       authenticationType: "api-key" as const,
       message:
-        "Cursor needs a paid plan to run in T3 Code. Upgrade the account that owns CURSOR_API_KEY or use a key from a paid account.",
+        "Cursor needs a paid plan to run in J6 Code. Upgrade the account that owns CURSOR_API_KEY or use a key from a paid account.",
     },
   ])(
     "explains a rejected plan for $authenticationType authentication",
@@ -355,7 +355,7 @@ describe("checkCursorProviderStatus", () => {
         status: "error",
         auth: { status: "unknown" },
         message:
-          "Cursor needs a paid plan to run in T3 Code. Upgrade the account that owns CURSOR_API_KEY or use a key from a paid account.",
+          "Cursor needs a paid plan to run in J6 Code. Upgrade the account that owns CURSOR_API_KEY or use a key from a paid account.",
       },
     },
     {

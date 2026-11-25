@@ -1,8 +1,8 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { describe, expect, it } from "@effect/vitest";
-import type { ModelCapabilities } from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { createModelCapabilities } from "@t3tools/shared/model";
+import type { ModelCapabilities } from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { createModelCapabilities } from "@j6/shared/model";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import * as Result from "effect/Result";
@@ -177,18 +177,18 @@ describe("resolveProviderProbeTimeoutMs", () => {
     "opencode",
     "acp_registry",
   ])("uses only %s's readiness override", (provider) => {
-    const key = `T3CODE_${provider.toUpperCase()}_PROBE_TIMEOUT_MS`;
+    const key = `J6CODE_${provider.toUpperCase()}_PROBE_TIMEOUT_MS`;
     expect(resolveProviderProbeTimeoutMs(provider, 25000, { [key]: "60000" })).toBe(60000);
     expect(resolveProviderProbeTimeoutMs(provider, 25000, { [key]: "1000" })).toBe(25000);
     expect(
-      resolveProviderProbeTimeoutMs(provider, 25000, { T3CODE_OTHER_PROBE_TIMEOUT_MS: "60000" }),
+      resolveProviderProbeTimeoutMs(provider, 25000, { J6CODE_OTHER_PROBE_TIMEOUT_MS: "60000" }),
     ).toBe(25000);
   });
   it.each([undefined, "", " ", "bad", "0", "-1", "1.5", "Infinity", "2147483648"])(
     "retains the phase default for invalid value %s",
     (value) => {
       expect(
-        resolveProviderProbeTimeoutMs("claude", 25000, { T3CODE_CLAUDE_PROBE_TIMEOUT_MS: value }),
+        resolveProviderProbeTimeoutMs("claude", 25000, { J6CODE_CLAUDE_PROBE_TIMEOUT_MS: value }),
       ).toBe(25000);
     },
   );

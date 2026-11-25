@@ -423,7 +423,7 @@ describe("AcpMcpStdioBridge", () => {
       const fiber = yield* mcpToolSession({
         endpoint: "http://127.0.0.1:1/mcp",
         authorization: "Bearer bridge-test",
-        clientName: "t3-code-acp-cli",
+        clientName: "j6-code-acp-cli",
         fetchImplementation: pendingFetch(started),
       }).pipe(
         Effect.flatMap((session) => session.call("orchestrator_capabilities", {})),
@@ -443,7 +443,7 @@ describe("AcpMcpStdioBridge", () => {
       const result = yield* mcpToolSession({
         endpoint: "http://127.0.0.1:1/mcp",
         authorization: "Bearer bridge-test",
-        clientName: "t3-code-acp-cli",
+        clientName: "j6-code-acp-cli",
         fetchImplementation: async (_url, init) => {
           if (init?.method === "DELETE") return new Response(null, { status: 204 });
           const message = JSON.parse(String(init?.body)) as (typeof sent)[number];
@@ -478,7 +478,7 @@ describe("AcpMcpStdioBridge", () => {
       const error = yield* mcpToolSession({
         endpoint: "http://127.0.0.1:1/mcp",
         authorization: "Bearer bridge-test",
-        clientName: "t3-thread-cli",
+        clientName: "j6-thread-cli",
         fetchImplementation: async (_url, init) => {
           if (init?.method === "DELETE") return new Response(null, { status: 204 });
           const message = JSON.parse(String(init?.body)) as { id?: unknown; method?: string };

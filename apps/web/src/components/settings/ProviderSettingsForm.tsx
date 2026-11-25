@@ -11,7 +11,7 @@ import {
   type ProviderSettingsFormOption,
   type ProviderSettingsFormSchemaAnnotation,
   type SecretReference,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { msg, T, useGT, useMessages } from "gt-react";
 import { PlusIcon, XIcon } from "lucide-react";
 
@@ -25,7 +25,7 @@ import { SecretSourceInput, useSecretSources } from "./SecretSourceInput";
 import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "../ui/select";
 import { Switch } from "../ui/switch";
 import { Textarea } from "../ui/textarea";
-import type { ProviderClientDefinition } from "@t3tools/provider-core/client";
+import type { ProviderClientDefinition } from "@j6/provider-core/client";
 
 export type SettingsFormDefinition = Pick<ProviderClientDefinition, "settingsSchema"> & {
   readonly driverKind?: ProviderClientDefinition["driverKind"];
@@ -209,8 +209,8 @@ const PACKAGE_FIELD_TEXT: ReadonlyMap<string, string> = new Map([
   ],
   ["Path to the OpenCode binary.", msg("Path to the OpenCode binary.")],
   [
-    "Leave blank to let T3 Code spawn the server when needed.",
-    msg("Leave blank to let T3 Code spawn the server when needed."),
+    "Leave blank to let J6 Code spawn the server when needed.",
+    msg("Leave blank to let J6 Code spawn the server when needed."),
   ],
   ["Stored separately on the host.", msg("Stored separately on the host.")],
   ["Path to the Pi coding agent binary.", msg("Path to the Pi coding agent binary.")],

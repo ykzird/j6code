@@ -7,8 +7,8 @@ import type * as NodeWorkerThreads from "node:worker_threads";
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, it } from "@effect/vitest";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import * as NodeSqliteClient from "@t3tools/shared/nodeSqliteClient";
+import * as HostProcess from "@j6/shared/HostProcess";
+import * as NodeSqliteClient from "@j6/shared/nodeSqliteClient";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
@@ -51,7 +51,7 @@ const openDeletedTempFiles = () =>
 it.effect.skipIf(HostProcess.Platform.defaultValue() !== "linux")(
   "keeps a write transaction's statement journal off the temp directory",
   () => {
-    const tempDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "t3-sqlite-temp-"));
+    const tempDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "j6-sqlite-temp-"));
     const persistence = SqlitePersistence.layerFromPath(
       NodePath.join(tempDir, "state.sqlite"),
     ).pipe(Layer.provide(NodeServices.layer));
@@ -80,7 +80,7 @@ it.effect.skipIf(HostProcess.Platform.defaultValue() !== "linux")(
 );
 
 it.effect("drops planner statistics a database already has", () => {
-  const tempDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "t3-sqlite-stats-"));
+  const tempDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "j6-sqlite-stats-"));
   const dbPath = NodePath.join(tempDir, "state.sqlite");
   const persistence = () =>
     SqlitePersistence.layerFromPath(dbPath).pipe(Layer.provide(NodeServices.layer));
@@ -121,7 +121,7 @@ it.effect("drops planner statistics a database already has", () => {
 });
 
 it.effect("upgrades an existing database on a read-write worker connection", () => {
-  const tempDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "t3-sqlite-upgrade-"));
+  const tempDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "j6-sqlite-upgrade-"));
   const dbPath = NodePath.join(tempDir, "state.sqlite");
 
   return Effect.gen(function* () {
@@ -159,7 +159,7 @@ it.effect("upgrades an existing database on a read-write worker connection", () 
 });
 
 it.effect("names a database file that is not SQLite", () => {
-  const tempDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "t3-sqlite-notadb-"));
+  const tempDir = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "j6-sqlite-notadb-"));
   const dbPath = NodePath.join(tempDir, "state.sqlite");
   NodeFS.writeFileSync(dbPath, "not a db\n");
 
@@ -211,7 +211,7 @@ const latestRecordedMigrationId = Effect.gen(function* () {
   return rows[0]?.id;
 });
 
-const layerT3Home = ServerConfig.layerTest(process.cwd(), { prefix: "t3-sqlite-cli-" });
+const layerT3Home = ServerConfig.layerTest(process.cwd(), { prefix: "j6-sqlite-cli-" });
 
 it.layer(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer))("layerCliConfig", (it) => {
   it.effect("does not migrate a T3 home a running server owns", () =>

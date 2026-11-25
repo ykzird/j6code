@@ -5,9 +5,9 @@ import {
   ProviderDriverKind,
   type ProviderInstanceId,
   type ServerProviderModel,
-} from "@t3tools/contracts";
-import { isReasoningControl } from "@t3tools/client-runtime/model-traits";
-import { type CustomModelDefinition, normalizeCustomModelSlug } from "@t3tools/shared/model";
+} from "@j6/contracts";
+import { isReasoningControl } from "@j6/client-runtime/model-traits";
+import { type CustomModelDefinition, normalizeCustomModelSlug } from "@j6/shared/model";
 
 import { useStableCallback } from "../../hooks/useStableCallback";
 import type { MessageResolver } from "../../i18n/messages";
@@ -190,7 +190,7 @@ export function ProviderModelsSection({
     : displayModels;
 
   // A model added or moved lands in a later commit, so each commit looks for the pending row.
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- scrolls the pending model's DOM row into view once a later commit renders it
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- scrolls the pending model's DOM row into view once a later commit renders it
   useEffect(() => {
     const slug = scrollToSlugRef.current;
     if (slug === null) return;

@@ -11,7 +11,7 @@ export const CODE_BLOCK_LANGUAGES = [
   { id: "csharp", label: "C#" },
   { id: "css", label: "CSS" },
   { id: "dart", label: "Dart" },
-  // oxlint-disable-next-line t3code/no-untranslated-copy -- code language name
+  // oxlint-disable-next-line j6code/no-untranslated-copy -- code language name
   { id: "diff", label: "Diff" },
   { id: "dockerfile", label: "Dockerfile" },
   { id: "elixir", label: "Elixir" },
@@ -41,7 +41,7 @@ export const CODE_BLOCK_LANGUAGES = [
   { id: "toml", label: "TOML" },
   { id: "tsx", label: "TSX" },
   { id: "typescript", label: "TypeScript" },
-  // oxlint-disable-next-line t3code/no-untranslated-copy -- code language name
+  // oxlint-disable-next-line j6code/no-untranslated-copy -- code language name
   { id: "verilog", label: "Verilog" },
   { id: "vhdl", label: "VHDL" },
   { id: "vue", label: "Vue" },

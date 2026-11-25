@@ -8,9 +8,9 @@
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
-import type { IssueTrackerAccountId, IssueTrackerKind } from "@t3tools/contracts";
-import { IssueTrackerError } from "@t3tools/source-control-core/server/IssueTracker";
-import * as IssueTrackerHost from "@t3tools/source-control-core/server/IssueTrackerHost";
+import type { IssueTrackerAccountId, IssueTrackerKind } from "@j6/contracts";
+import { IssueTrackerError } from "@j6/source-control-core/server/IssueTracker";
+import * as IssueTrackerHost from "@j6/source-control-core/server/IssueTrackerHost";
 
 import * as ServerSecretStore from "../auth/ServerSecretStore.ts";
 

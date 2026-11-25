@@ -1,4 +1,4 @@
-import { settlePromise } from "@t3tools/client-runtime/state/runtime";
+import { settlePromise } from "@j6/client-runtime/state/runtime";
 import { AsyncResult } from "effect/reactivity";
 import { PlayIcon, RotateCwIcon, TriangleAlertIcon } from "lucide-react";
 import { useGT } from "gt-react";

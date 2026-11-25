@@ -9,7 +9,7 @@ import {
   IssueTrackerKind,
   IssueTrackerProjectBinding,
   ProjectId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
 import {
   PersistenceDecodeError,
@@ -73,7 +73,7 @@ export class IssueTrackerBindingsRepository extends Context.Service<
       readonly createdAt: string;
     }) => Effect.Effect<void, IssueTrackerBindingsRepositoryError>;
   }
->()("t3/persistence/IssueTrackerBindings/IssueTrackerBindingsRepository") {}
+>()("j6/persistence/IssueTrackerBindings/IssueTrackerBindingsRepository") {}
 
 const encodeAdditionalScopes = Schema.encodeEffect(BindingRow.fields.additionalScopes);
 

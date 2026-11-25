@@ -1,5 +1,5 @@
 // @effect-diagnostics nodeBuiltinImport:off - Drives the real shell installer against a local GitHub fixture.
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as NodeChildProcess from "node:child_process";
 import * as NodeCrypto from "node:crypto";
 import * as NodeFSP from "node:fs/promises";
@@ -8,7 +8,7 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import { describe, expect, it } from "vite-plus/test";
 
-/** The launcher install.sh, `t3 install`, and `t3 update` write; exec by absolute path. */
+/** The launcher install.sh, `j6 install`, and `j6 update` write; exec by absolute path. */
 const launcherScript = (executable: string) =>
   `#!/bin/sh\nexec '${executable.replaceAll("'", "'\\''")}' "$@"\n`;
 
@@ -19,18 +19,18 @@ const nightlies = Array.from({ length: 100 }, (_, index) => ({
 describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("installer home", () => {
   it("installs a relative home from a directory ending in a newline", async () => {
     const temporaryRoot = await NodeFSP.realpath(
-      await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-install-home-")),
+      await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-install-home-")),
     );
     const root = NodePath.join(temporaryRoot, "cwd\n");
     const homeName = "-custom home\\home\n";
     const home = NodePath.join(root, homeName);
     const version = "1.2.3";
     const target = NodePath.join(home, "runtime/versions", version);
-    const launcher = NodePath.join(root, "bin/t3");
+    const launcher = NodePath.join(root, "bin/j6");
     try {
       await NodeFSP.mkdir(target, { recursive: true });
       await NodeFSP.writeFile(NodePath.join(target, ".install-complete"), `${version}\n`);
-      await NodeFSP.writeFile(NodePath.join(target, "t3"), "#!/bin/sh\necho 't3 v1.2.3'\n", {
+      await NodeFSP.writeFile(NodePath.join(target, "j6"), "#!/bin/sh\necho 'j6 v1.2.3'\n", {
         mode: 0o755,
       });
       const install = () =>
@@ -39,10 +39,10 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("installer home
           env: {
             ...process.env,
             HOME: root,
-            T3CODE_HOME: homeName,
-            T3CODE_VERSION: version,
-            T3CODE_INSTALL_BIN_DIR: NodePath.dirname(launcher),
-            T3CODE_RELEASE_BASE_URL: "http://127.0.0.1:1",
+            J6CODE_HOME: homeName,
+            J6CODE_VERSION: version,
+            J6CODE_INSTALL_BIN_DIR: NodePath.dirname(launcher),
+            J6CODE_RELEASE_BASE_URL: "http://127.0.0.1:1",
           },
           encoding: "utf8",
         });
@@ -51,16 +51,16 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("installer home
       expect(first.status, first.stdout + first.stderr).toBe(0);
       const { status, stdout, stderr } = install();
       expect(status, stdout + stderr).toBe(0);
-      expect(stderr).toContain(`Installed T3 Code ${version}`);
+      expect(stderr).toContain(`Installed J6 Code ${version}`);
       expect(await NodeFSP.readFile(launcher, "utf8")).toBe(
-        launcherScript(NodePath.join(target, "t3")),
+        launcherScript(NodePath.join(target, "j6")),
       );
       expect(
         NodeChildProcess.execFileSync(launcher, ["--version"], {
           cwd: NodeOS.tmpdir(),
           encoding: "utf8",
         }).trim(),
-      ).toBe("t3 v1.2.3");
+      ).toBe("j6 v1.2.3");
     } finally {
       await NodeFSP.rm(temporaryRoot, { recursive: true, force: true });
     }
@@ -74,7 +74,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("installer chan
     ["stable", "1.2.3", 1],
     ["preview", "1.2.4-preview.20261019.50", 0],
   ])("finds %s %s behind nightlies and %i HTTP 504s", async (channel, version, failures) => {
-    const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-install-index-"));
+    const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-install-index-"));
     const target = NodePath.join(root, "home/runtime/versions", version);
     const server = NodeHttp.createServer((request, response) => {
       if (failures-- > 0) return response.writeHead(504).end();
@@ -111,12 +111,12 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("installer chan
           const child = NodeChildProcess.spawn("sh", [installer], {
             env: {
               ...process.env,
-              T3CODE_VERSION: "",
-              T3CODE_CHANNEL: channel,
-              T3CODE_HOME: NodePath.join(root, "home"),
-              T3CODE_INSTALL_BIN_DIR: NodePath.join(root, "bin"),
+              J6CODE_VERSION: "",
+              J6CODE_CHANNEL: channel,
+              J6CODE_HOME: NodePath.join(root, "home"),
+              J6CODE_INSTALL_BIN_DIR: NodePath.join(root, "bin"),
               // A wrong version must fail here instead of downloading a real release.
-              T3CODE_RELEASE_BASE_URL: origin,
+              J6CODE_RELEASE_BASE_URL: origin,
             },
             stdio: ["ignore", "pipe", "pipe"],
           });
@@ -128,7 +128,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("installer chan
         },
       );
       expect(code, output).toBe(0);
-      expect(output).toContain(`Installed T3 Code ${version}`);
+      expect(output).toContain(`Installed J6 Code ${version}`);
     } finally {
       server.closeAllConnections();
       await new Promise<void>((resolve) => server.close(() => resolve()));
@@ -142,9 +142,9 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")(
   "installer archive download",
   () => {
     it("names the archive when it returns 404", async () => {
-      const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-install-archive-"));
+      const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-install-archive-"));
       const arch = HostProcess.Architecture.defaultValue() === "arm64" ? "arm64" : "x64";
-      const archive = `t3-1.2.3-linux-${arch}.tar.gz`;
+      const archive = `j6-1.2.3-linux-${arch}.tar.gz`;
       const server = NodeHttp.createServer((request, response) => {
         if (request.url === "/v1.2.3/SHA256SUMS")
           return response.end(`${"0".repeat(64)}  ${archive}\n`);
@@ -162,11 +162,11 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")(
               {
                 env: {
                   ...process.env,
-                  T3CODE_CHANNEL: "",
-                  T3CODE_VERSION: "1.2.3",
-                  T3CODE_HOME: NodePath.join(root, "home"),
-                  T3CODE_INSTALL_BIN_DIR: NodePath.join(root, "bin"),
-                  T3CODE_RELEASE_BASE_URL: `http://127.0.0.1:${address.port}`,
+                  J6CODE_CHANNEL: "",
+                  J6CODE_VERSION: "1.2.3",
+                  J6CODE_HOME: NodePath.join(root, "home"),
+                  J6CODE_INSTALL_BIN_DIR: NodePath.join(root, "bin"),
+                  J6CODE_RELEASE_BASE_URL: `http://127.0.0.1:${address.port}`,
                 },
                 stdio: ["ignore", "pipe", "pipe"],
               },
@@ -179,7 +179,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")(
           },
         );
         expect(code, output).not.toBe(0);
-        expect(output).toMatch(new RegExp(`t3 install: .*${archive.replaceAll(".", "\\.")}`));
+        expect(output).toMatch(new RegExp(`j6 install: .*${archive.replaceAll(".", "\\.")}`));
       } finally {
         server.closeAllConnections();
         await new Promise<void>((resolve) => server.close(() => resolve()));
@@ -189,7 +189,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")(
   },
 );
 
-/** Runs an installer for a version that is already unpacked, so only the t3 command step runs. */
+/** Runs an installer for a version that is already unpacked, so only the j6 command step runs. */
 async function installOver(input: {
   readonly script: "install.sh" | "install.ps1";
   readonly home: string;
@@ -210,30 +210,30 @@ async function installOver(input: {
     ...(input.cwd === undefined ? {} : { cwd: input.cwd }),
     env: {
       ...process.env,
-      T3CODE_CHANNEL: "",
-      T3CODE_VERSION: "1.2.3",
-      T3CODE_HOME: input.home,
-      T3CODE_INSTALL_BIN_DIR: input.binDir,
-      T3CODE_RELEASE_BASE_URL: "http://127.0.0.1:9",
+      J6CODE_CHANNEL: "",
+      J6CODE_VERSION: "1.2.3",
+      J6CODE_HOME: input.home,
+      J6CODE_INSTALL_BIN_DIR: input.binDir,
+      J6CODE_RELEASE_BASE_URL: "http://127.0.0.1:9",
       ...input.env,
     },
   });
   return { code: result.status, output: `${result.stdout}${result.stderr}`, target };
 }
 
-describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("install.sh t3 command", () => {
+describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("install.sh j6 command", () => {
   it("replaces only this home's own launchers and prints a PATH command", async () => {
-    const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-install-link-"));
+    const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-install-link-"));
     try {
       const home = NodePath.join(root, "home");
       const binDir = NodePath.join(root, "bin");
-      const link = NodePath.join(binDir, "t3");
+      const link = NodePath.join(binDir, "j6");
       await NodeFSP.mkdir(binDir, { recursive: true });
 
       await NodeFSP.writeFile(link, "#!/bin/sh\necho mine\n");
       const foreign = await installOver({ script: "install.sh", home, binDir });
       expect(foreign.code).not.toBe(0);
-      expect(foreign.output).toContain(`another t3 is already at ${link}`);
+      expect(foreign.output).toContain(`another j6 is already at ${link}`);
       expect(await NodeFSP.readFile(link, "utf8")).toBe("#!/bin/sh\necho mine\n");
       // Not even from inside the versions folder, where `.` would resolve into it.
       const fromVersions = await installOver({
@@ -248,13 +248,13 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("install.sh t3 
       // A link that only looks like it points into versions (join() would normalize the ..).
       await NodeFSP.rm(link);
       await NodeFSP.mkdir(NodePath.join(home, "other"), { recursive: true });
-      await NodeFSP.writeFile(NodePath.join(home, "other/t3"), "#!/bin/sh\n");
-      await NodeFSP.symlink(`${home}/runtime/versions/../../other/t3`, link);
+      await NodeFSP.writeFile(NodePath.join(home, "other/j6"), "#!/bin/sh\n");
+      await NodeFSP.symlink(`${home}/runtime/versions/../../other/j6`, link);
       const climbing = await installOver({ script: "install.sh", home, binDir });
       expect(climbing.code).not.toBe(0);
-      expect(await NodeFSP.readlink(link)).toBe(`${home}/runtime/versions/../../other/t3`);
+      expect(await NodeFSP.readlink(link)).toBe(`${home}/runtime/versions/../../other/j6`);
 
-      // Only `<version>/t3` counts, not another program inside a version.
+      // Only `<version>/j6` counts, not another program inside a version.
       await NodeFSP.rm(link);
       await NodeFSP.symlink(NodePath.join(home, "runtime/versions/1.0.0/helper"), link);
       const sibling = await installOver({ script: "install.sh", home, binDir });
@@ -265,7 +265,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("install.sh t3 
 
       // An upgrade over an older version's link, written through a symlinked T3 home.
       await NodeFSP.rm(link);
-      await NodeFSP.symlink(NodePath.join(home, "runtime/versions/1.0.0/t3"), link);
+      await NodeFSP.symlink(NodePath.join(home, "runtime/versions/1.0.0/j6"), link);
       await NodeFSP.symlink(home, NodePath.join(root, "alias"));
       const upgrade = await installOver({
         script: "install.sh",
@@ -275,7 +275,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("install.sh t3 
       });
       expect(upgrade.code, upgrade.output).toBe(0);
       expect(await NodeFSP.readFile(link, "utf8")).toBe(
-        launcherScript(NodePath.join(root, "alias/runtime/versions/1.2.3/t3")),
+        launcherScript(NodePath.join(root, "alias/runtime/versions/1.2.3/j6")),
       );
       expect(upgrade.output).toContain(
         `printf '\\n%s\\n' 'export PATH="$PATH:$HOME/bin"' >> ~/.zshrc`,
@@ -291,7 +291,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("install.sh t3 
       expect(noShell.code, noShell.output).toBe(0);
       expect(noShell.output).toContain(`Add ${binDir} to your PATH`);
 
-      // Its folder on PATH with a trailing slash is still this t3, not another one.
+      // Its folder on PATH with a trailing slash is still this j6, not another one.
       const slashed = await installOver({
         script: "install.sh",
         home,
@@ -299,7 +299,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("install.sh t3 
         env: { HOME: root, PATH: `${binDir}/:/usr/bin:/bin` },
       });
       expect(slashed.code, slashed.output).toBe(0);
-      expect(slashed.output).toContain("Run t3 to use T3 Code here");
+      expect(slashed.output).toContain("Run j6 to use J6 Code here");
 
       // A relative folder is made absolute, so the PATH command never follows the working directory.
       const relative = await installOver({
@@ -313,14 +313,14 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("install.sh t3 
       expect(relative.output).toContain(`'export PATH="$PATH:$HOME/bin"'`);
 
       // A launcher script someone edited is theirs now.
-      const edited = `${launcherScript(NodePath.join(home, "runtime/versions/1.2.3/t3"))}# mine\n`;
+      const edited = `${launcherScript(NodePath.join(home, "runtime/versions/1.2.3/j6"))}# mine\n`;
       await NodeFSP.writeFile(link, edited);
       const overEdited = await installOver({ script: "install.sh", home, binDir });
       expect(overEdited.code).not.toBe(0);
       expect(await NodeFSP.readFile(link, "utf8")).toBe(edited);
 
       await NodeFSP.rm(link);
-      await NodeFSP.symlink(NodePath.join(home, "bin/t3"), link);
+      await NodeFSP.symlink(NodePath.join(home, "bin/j6"), link);
       const overDesktop = await installOver({
         script: "install.sh",
         home: `${home}//`,
@@ -328,7 +328,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("install.sh t3 
       });
       expect(overDesktop.code, overDesktop.output).toBe(0);
       expect(await NodeFSP.readFile(link, "utf8")).toBe(
-        launcherScript(NodePath.join(home, "runtime/versions/1.2.3/t3")),
+        launcherScript(NodePath.join(home, "runtime/versions/1.2.3/j6")),
       );
     } finally {
       await NodeFSP.rm(root, { recursive: true, force: true });
@@ -336,51 +336,51 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("install.sh t3 
   });
 });
 
-describe.skipIf(HostProcess.Platform.defaultValue() !== "win32")("install.ps1 t3 command", () => {
-  it("replaces only its own t3.cmd, also in non-ASCII and bracketed paths", async () => {
-    const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-install-ps1-"));
+describe.skipIf(HostProcess.Platform.defaultValue() !== "win32")("install.ps1 j6 command", () => {
+  it("replaces only its own j6.cmd, also in non-ASCII and bracketed paths", async () => {
+    const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-install-ps1-"));
     try {
       // Windows PowerShell 5.1 reads files as ANSI by default and expands wildcards in paths.
-      const home = NodePath.join(root, "José", ".t3");
-      const binDir = NodePath.join(root, "bin[t3]");
-      const shim = NodePath.join(binDir, "t3.cmd");
+      const home = NodePath.join(root, "José", ".j6");
+      const binDir = NodePath.join(root, "bin[j6]");
+      const shim = NodePath.join(binDir, "j6.cmd");
       await NodeFSP.mkdir(binDir, { recursive: true });
 
-      const desktopShim = '@echo off\r\n"C:\\Program Files\\T3 Code\\T3 Code.exe" "x" %*\r\n';
+      const desktopShim = '@echo off\r\n"C:\\Program Files\\J6 Code\\J6 Code.exe" "x" %*\r\n';
       await NodeFSP.writeFile(shim, desktopShim);
       const foreign = await installOver({ script: "install.ps1", home, binDir });
       expect(foreign.code).not.toBe(0);
-      expect(foreign.output).toContain("another t3 is already at");
+      expect(foreign.output).toContain("another j6 is already at");
       expect(await NodeFSP.readFile(shim, "utf8")).toBe(desktopShim);
 
       // A hand-edited wrapper may set its own environment; replacing it would drop that.
-      const edited = `@echo off\r\nset "T3CODE_HOME=D:\\other"\r\n"${NodePath.join(home, "runtime", "versions", "1.0.0", "t3.exe")}" %*`;
+      const edited = `@echo off\r\nset "J6CODE_HOME=D:\\other"\r\n"${NodePath.join(home, "runtime", "versions", "1.0.0", "j6.exe")}" %*`;
       await NodeFSP.writeFile(shim, edited, "utf8");
       const wrapper = await installOver({ script: "install.ps1", home, binDir });
       expect(wrapper.code).not.toBe(0);
       expect(await NodeFSP.readFile(shim, "utf8")).toBe(edited);
 
-      const climbing = `@echo off\r\n"${NodePath.join(home, "runtime", "versions")}\\..\\other\\t3.exe" %*`;
+      const climbing = `@echo off\r\n"${NodePath.join(home, "runtime", "versions")}\\..\\other\\j6.exe" %*`;
       await NodeFSP.writeFile(shim, climbing, "utf8");
       const outside = await installOver({ script: "install.ps1", home, binDir });
       expect(outside.code).not.toBe(0);
       expect(await NodeFSP.readFile(shim, "utf8")).toBe(climbing);
 
-      const older = NodePath.join(home, "runtime", "versions", "1.0.0", "t3.exe");
+      const older = NodePath.join(home, "runtime", "versions", "1.0.0", "j6.exe");
       await NodeFSP.writeFile(shim, `@echo off\r\n"${older}" %*`, "utf8");
       const upgrade = await installOver({ script: "install.ps1", home, binDir });
       expect(upgrade.code, upgrade.output).toBe(0);
       expect(await NodeFSP.readFile(shim, "utf8")).toContain(
-        NodePath.join(upgrade.target, "t3.exe"),
+        NodePath.join(upgrade.target, "j6.exe"),
       );
 
       const again = await installOver({ script: "install.ps1", home, binDir });
       expect(again.code, again.output).toBe(0);
 
-      // Another t3 first on PATH still runs, so the installer names this one in full.
+      // Another j6 first on PATH still runs, so the installer names this one in full.
       const otherBin = NodePath.join(root, "other");
       await NodeFSP.mkdir(otherBin);
-      await NodeFSP.writeFile(NodePath.join(otherBin, "t3.cmd"), "@echo off\r\n");
+      await NodeFSP.writeFile(NodePath.join(otherBin, "j6.cmd"), "@echo off\r\n");
       // Windows spells it Path; a second PATH key would be ambiguous.
       const pathKey =
         Object.keys(process.env).find((key) => key.toUpperCase() === "PATH") ?? "PATH";
@@ -392,7 +392,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "win32")("install.ps1 t3
       });
       expect(shadowed.code, shadowed.output).toBe(0);
       expect(shadowed.output).toContain(
-        `Another t3 at ${NodePath.join(otherBin, "t3.cmd")} runs first`,
+        `Another j6 at ${NodePath.join(otherBin, "j6.cmd")} runs first`,
       );
 
       // Its own folder on PATH with a trailing separator is already on PATH.
@@ -403,7 +403,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "win32")("install.ps1 t3
         env: { [pathKey]: `${binDir}\\;${process.env[pathKey] ?? ""}` },
       });
       expect(slashed.code, slashed.output).toBe(0);
-      expect(slashed.output).toContain("to use T3 Code here");
+      expect(slashed.output).toContain("to use J6 Code here");
       // The same when the install folder itself is given with a trailing separator.
       const bothSlashed = await installOver({
         script: "install.ps1",
@@ -412,7 +412,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "win32")("install.ps1 t3
         env: { [pathKey]: `${binDir}\\;${process.env[pathKey] ?? ""}` },
       });
       expect(bothSlashed.code, bothSlashed.output).toBe(0);
-      expect(bothSlashed.output).toContain("to use T3 Code here");
+      expect(bothSlashed.output).toContain("to use J6 Code here");
     } finally {
       await NodeFSP.rm(root, { recursive: true, force: true });
     }
@@ -433,10 +433,10 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("installer chec
       );
       expect(availableTools.length).toBeGreaterThan(0);
       for (const checksumTool of availableTools) {
-        const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-install-checksum-"));
+        const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-install-checksum-"));
         const home = NodePath.join(root, homeName);
         const version = "1.2.3";
-        const stem = `t3-${version}-linux-${HostProcess.Architecture.defaultValue()}`;
+        const stem = `j6-${version}-linux-${HostProcess.Architecture.defaultValue()}`;
         const archiveName = `${stem}.tar.gz`;
         const server = NodeHttp.createServer();
         try {
@@ -468,8 +468,8 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("installer chec
           }
           await NodeFSP.mkdir(NodePath.join(root, stem));
           await NodeFSP.writeFile(
-            NodePath.join(root, stem, "t3"),
-            "#!/bin/sh\necho 't3 v1.2.3'\n",
+            NodePath.join(root, stem, "j6"),
+            "#!/bin/sh\necho 'j6 v1.2.3'\n",
             { mode: 0o755 },
           );
           const archivePath = NodePath.join(root, archiveName);
@@ -495,10 +495,10 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("installer chec
                   env: {
                     ...process.env,
                     PATH: tools,
-                    T3CODE_VERSION: version,
-                    T3CODE_HOME: home,
-                    T3CODE_INSTALL_BIN_DIR: NodePath.join(root, "bin"),
-                    T3CODE_RELEASE_BASE_URL: `http://127.0.0.1:${address.port}`,
+                    J6CODE_VERSION: version,
+                    J6CODE_HOME: home,
+                    J6CODE_INSTALL_BIN_DIR: NodePath.join(root, "bin"),
+                    J6CODE_RELEASE_BASE_URL: `http://127.0.0.1:${address.port}`,
                   },
                   stdio: ["ignore", "pipe", "pipe"],
                 },
@@ -517,14 +517,14 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("installer chec
               await NodeFSP.readFile(NodePath.join(versions, version, ".install-complete"), "utf8"),
             ).toBe("1.2.3\n");
             expect(
-              NodeChildProcess.execFileSync(NodePath.join(root, "bin/t3"), ["--version"], {
+              NodeChildProcess.execFileSync(NodePath.join(root, "bin/j6"), ["--version"], {
                 encoding: "utf8",
               }).trim(),
-            ).toBe("t3 v1.2.3");
+            ).toBe("j6 v1.2.3");
           } else {
             expect(code).not.toBe(0);
             expect(output).toContain("checksum mismatch");
-            expect(output).not.toContain("Installed T3 Code");
+            expect(output).not.toContain("Installed J6 Code");
             expect(await NodeFSP.readdir(versions)).toEqual([]);
           }
         } finally {
@@ -540,9 +540,9 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("installer chec
 // regression: #38234
 describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("concurrent installers", () => {
   it("publishes one runtime without nesting the other install's staging directory", async () => {
-    const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-install-concurrent-"));
+    const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-install-concurrent-"));
     const version = "1.2.3";
-    const stem = `t3-${version}-linux-${HostProcess.Architecture.defaultValue()}`;
+    const stem = `j6-${version}-linux-${HostProcess.Architecture.defaultValue()}`;
     const archiveName = `${stem}.tar.gz`;
     const target = NodePath.join(root, "home/runtime/versions", version);
     const waiting = new Map<string, NodeHttp.ServerResponse>();
@@ -551,7 +551,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("concurrent ins
       const tools = NodePath.join(root, "tools");
       await NodeFSP.mkdir(tools);
       await NodeFSP.mkdir(NodePath.join(root, stem));
-      await NodeFSP.writeFile(NodePath.join(root, stem, "t3"), "#!/bin/sh\necho 't3 v1.2.3'\n", {
+      await NodeFSP.writeFile(NodePath.join(root, stem, "j6"), "#!/bin/sh\necho 'j6 v1.2.3'\n", {
         mode: 0o755,
       });
       const archivePath = NodePath.join(root, archiveName);
@@ -603,10 +603,10 @@ if (process.env.T3_TEST_INSTALLER === 'first') await fetch(process.env.T3_TEST_O
               env: {
                 ...process.env,
                 PATH: `${tools}:${process.env.PATH}`,
-                T3CODE_VERSION: version,
-                T3CODE_HOME: NodePath.join(root, "home"),
-                T3CODE_INSTALL_BIN_DIR: NodePath.join(root, "bin", id),
-                T3CODE_RELEASE_BASE_URL: origin,
+                J6CODE_VERSION: version,
+                J6CODE_HOME: NodePath.join(root, "home"),
+                J6CODE_INSTALL_BIN_DIR: NodePath.join(root, "bin", id),
+                J6CODE_RELEASE_BASE_URL: origin,
                 T3_TEST_ORIGIN: origin,
                 T3_TEST_INSTALLER: id,
               },

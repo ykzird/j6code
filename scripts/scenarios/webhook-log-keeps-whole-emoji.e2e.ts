@@ -1,10 +1,10 @@
-import { ProjectSnapshot, ProviderInstanceId } from "@t3tools/contracts";
+import { ProjectSnapshot, ProviderInstanceId } from "@j6/contracts";
 import { expect } from "e2e";
 import * as Effect from "effect/Effect";
 import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect/http";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { makeState, rpcClient, runPromise, test, WEB } from "./t3.ts";
+import { makeState, rpcClient, runPromise, test, WEB } from "./j6.ts";
 
 const PROMPT_LOG_LIMIT = 64 * 1024;
 const FRAME_OPEN = "<webhook-data-000000000000>".length;
@@ -47,11 +47,11 @@ const deliverStraddlingEmoji = Effect.fn("scenario.deliverStraddlingEmoji")(
 test(
   "A long webhook prompt in the delivery log does not end in a broken character",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    await t3.project("webhook-log");
+  async ({ j6, app, browser, screen }) => {
+    await j6.project("webhook-log");
     await runPromise(deliverStraddlingEmoji(app.baseUrl ?? ""));
 
-    await t3.open("/settings/scheduled-tasks");
+    await j6.open("/settings/scheduled-tasks");
     await screen.getByRole("button", "Actions for Webhook log").tap();
     await screen.getByRole("menuitem", "Deliveries").tap();
     const dialog = screen.getByRole("dialog");

@@ -1,4 +1,4 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { useRef, useSyncExternalStore, use } from "react";
 import { useSyncExternalStoreWithSelector } from "use-sync-external-store/with-selector";
 import { RegistryContext, useAtomValue } from "@effect/atom-react";
@@ -12,25 +12,25 @@ import {
   ServerSettings,
   type ServerSettingsPatch,
   sessionGrantsScope,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   type ClientSettingsPatch,
   type ClientSettings,
   DEFAULT_CLIENT_SETTINGS,
   type EnvironmentIdentificationMode,
   type UnifiedSettings,
-} from "@t3tools/contracts/settings";
-import { safeErrorLogAttributes } from "@t3tools/client-runtime/errors";
+} from "@j6/contracts/settings";
+import { safeErrorLogAttributes } from "@j6/client-runtime/errors";
 import {
   isAtomCommandInterrupted,
   runAtomCommand,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
+} from "@j6/client-runtime/state/runtime";
 import {
   filterSharedServerPatch,
   splitSharedServerPatch,
   supportsSharedSettingsSync,
-} from "@t3tools/client-runtime/state/shared-settings";
+} from "@j6/client-runtime/state/shared-settings";
 import { ensureLocalApi } from "~/localApi";
 import { subscribeBrowserClientSettingsWrites } from "~/clientPersistenceStorage";
 import {
@@ -43,7 +43,7 @@ import {
 import {
   modelPreferencesMigrationPatch,
   resolveModelPreferences,
-} from "@t3tools/shared/serverSettings";
+} from "@j6/shared/serverSettings";
 import * as Equal from "effect/Equal";
 import * as Struct from "effect/Struct";
 import * as Option from "effect/Option";

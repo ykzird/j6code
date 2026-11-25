@@ -1,4 +1,4 @@
-import { safeDecodeURIComponent } from "@t3tools/shared/markdownLinks";
+import { safeDecodeURIComponent } from "@j6/shared/markdownLinks";
 import * as Cache from "effect/Cache";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
@@ -121,7 +121,7 @@ export class ProjectFaviconResolver extends Context.Service<
     /** Forgets cached lookups for a workspace whose files changed, such as a finished clone. */
     readonly invalidate: (cwd: string) => Effect.Effect<void>;
   }
->()("t3/project/ProjectFaviconResolver") {}
+>()("j6/project/ProjectFaviconResolver") {}
 
 function* extractIconHrefs(source: string): Generator<string> {
   for (const [tag] of source.matchAll(HTML_LINK_RE)) {

@@ -1,4 +1,4 @@
-import { CommandId, EnvironmentId, ThreadId } from "@t3tools/contracts";
+import { CommandId, EnvironmentId, ThreadId } from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -83,7 +83,7 @@ export function makeThreadTriageOutboxStore(
 }
 
 export class ThreadTriageOutboxStore extends Context.Reference<ThreadTriageOutboxStoreShape>(
-  "@t3tools/client-runtime/state/ThreadTriageOutboxStore",
+  "@j6/client-runtime/state/ThreadTriageOutboxStore",
   {
     defaultValue: () => {
       let value: string | null = null;

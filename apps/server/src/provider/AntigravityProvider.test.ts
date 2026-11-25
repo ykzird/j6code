@@ -9,7 +9,7 @@ import {
   ProviderSetupError,
   type RuntimeMode,
   type ServerProviderUsageLimits,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -26,8 +26,8 @@ import * as ServerConfig from "../config.ts";
 import * as ServerSettings from "../serverSettings.ts";
 import * as ProviderHostLive from "./ProviderHostLive.ts";
 import * as ServerSecretStore from "../auth/ServerSecretStore.ts";
-import type * as AcpSessionRuntime from "@t3tools/provider-acp/server/AcpSessionRuntime";
-import type { ServerProvider } from "@t3tools/contracts";
+import type * as AcpSessionRuntime from "@j6/provider-acp/server/AcpSessionRuntime";
+import type { ServerProvider } from "@j6/contracts";
 import {
   buildAntigravityModelsFromSession,
   makeAntigravityProvider,
@@ -125,7 +125,7 @@ const makeLayerTest = (runBackgroundWork: boolean) =>
     Layer.provideMerge(ServerSettings.layerTest()),
     Layer.provideMerge(ServerSecretStore.layer),
     Layer.provide(
-      ServerConfig.layerTest(process.cwd(), { prefix: "t3-antigravity-provider-test-" }).pipe(
+      ServerConfig.layerTest(process.cwd(), { prefix: "j6-antigravity-provider-test-" }).pipe(
         Layer.provideMerge(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
       ),
     ),

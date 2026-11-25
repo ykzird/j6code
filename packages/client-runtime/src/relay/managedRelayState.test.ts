@@ -1,8 +1,8 @@
-import { EnvironmentId } from "@t3tools/contracts";
+import { EnvironmentId } from "@j6/contracts";
 import {
   type RelayClientDeviceRecord,
   type RelayClientEnvironmentRecord,
-} from "@t3tools/contracts/relay";
+} from "@j6/contracts/relay";
 import { describe, expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -142,7 +142,7 @@ describe("createManagedRelayQueryManager", () => {
       yield* Effect.promise(() => failed.promise);
       for (const unsubscribe of readers) unsubscribe();
 
-      expect(logs).toEqual([["[t3-cloud] Relay device listing failed"]]);
+      expect(logs).toEqual([["[j6-cloud] Relay device listing failed"]]);
     }),
   );
 
@@ -222,7 +222,7 @@ describe("createManagedRelayQueryManager", () => {
       yield* TestClock.adjust("12 seconds");
 
       expect((yield* Fiber.join(readFiber)).message).toBe(
-        "Timed out obtaining the T3 Connect session token.",
+        "Timed out obtaining the J6 Connect session token.",
       );
       expect(readClerkToken).toHaveBeenCalledTimes(3);
     }),

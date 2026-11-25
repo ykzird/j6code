@@ -1,4 +1,4 @@
-import type { OrchestrationV2HistoricalMessage } from "@t3tools/contracts";
+import type { OrchestrationV2HistoricalMessage } from "@j6/contracts";
 import {
   type AgentFeedbackMode,
   ChatAttachment,
@@ -36,7 +36,7 @@ import {
   RunId,
   ThreadId,
   TurnItemId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as Schema from "effect/Schema";
 import type * as Effect from "effect/Effect";
@@ -70,7 +70,7 @@ export const ProviderAdapterV2RuntimePolicy = Schema.Struct({
   sandboxPolicy: Schema.optional(Schema.Unknown),
   /**
    * The administrator's ceiling, when a managed policy sets one. `runtimeMode` is already under
-   * it; adapters use it to refuse native mode choices a user makes beside T3 Code's own.
+   * it; adapters use it to refuse native mode choices a user makes beside J6 Code's own.
    */
   maxRuntimeMode: Schema.optional(RuntimeMode),
   workspace: Schema.optional(ProviderAdapterV2RuntimeWorkspace),
@@ -900,4 +900,4 @@ export class ProviderAdapterV2 extends Context.Service<
       input: ProviderAdapterV2OpenSessionInput,
     ) => Effect.Effect<ProviderAdapterV2SessionRuntime, ProviderAdapterV2Error, Scope.Scope>;
   }
->()("@t3tools/provider-core/server/ProviderAdapter/ProviderAdapterV2") {}
+>()("@j6/provider-core/server/ProviderAdapter/ProviderAdapterV2") {}

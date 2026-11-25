@@ -76,7 +76,7 @@ export class RunContext extends Context.Service<
     /** Hands out the places a pause gave back. */
     readonly placesFreed: Effect.Effect<void>;
   }
->()("t3/workflows/workflow/RunContext") {}
+>()("j6/workflows/workflow/RunContext") {}
 
 /** What a workflow body may require: the run it is in, the engine, and somewhere to run agents. */
 export type InRun =
@@ -671,7 +671,7 @@ export const wait = <A, I>(
 
 /** The pools the code running here holds a place in, and what took each. */
 const PoolsHeld = Context.Reference<ReadonlyMap<string, "within" | "concurrency">>(
-  "t3/workflows/workflow/PoolsHeld",
+  "j6/workflows/workflow/PoolsHeld",
   { defaultValue: () => new Map() },
 );
 
@@ -788,7 +788,7 @@ export const title = (
 };
 
 /**
- * Tag the run, for finding it among the others: `t3 workflow list --tag` and `runs({ tag })`.
+ * Tag the run, for finding it among the others: `j6 workflow list --tag` and `runs({ tag })`.
  * Calling it again replaces the tags.
  */
 export const tags = (

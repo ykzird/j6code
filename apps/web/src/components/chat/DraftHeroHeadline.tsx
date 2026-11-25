@@ -1,8 +1,8 @@
 import type { DraftId } from "~/composerDraftStore";
 import { composerDraftHasUserContent, useComposerDraftStore } from "~/composerDraftStore";
-import { resolveEnvironmentMachineKind, type ScopedProjectRef } from "@t3tools/contracts";
-import { scopedProjectKey, scopeProjectRef } from "@t3tools/client-runtime/environment";
-import { isScratchProject } from "@t3tools/client-runtime/state/projects";
+import { resolveEnvironmentMachineKind, type ScopedProjectRef } from "@j6/contracts";
+import { scopedProjectKey, scopeProjectRef } from "@j6/client-runtime/environment";
+import { isScratchProject } from "@j6/client-runtime/state/projects";
 import { T, useGT, Var } from "gt-react";
 import { FolderPlusIcon } from "lucide-react";
 import { useAtomValue } from "@effect/atom-react";
@@ -15,14 +15,14 @@ import { useNewThreadHandler } from "~/hooks/useHandleNewThread";
 import { useOrderWhileOpen } from "~/hooks/useOrderWhileOpen";
 import { useProjectPin } from "~/hooks/useProjectGroupUpdate";
 import { useScratchProject } from "~/hooks/useScratchProject";
-import { isTriagePrompt } from "@t3tools/shared/triagePrompt";
+import { isTriagePrompt } from "@j6/shared/triagePrompt";
 import { useClientSettings } from "~/hooks/useSettings";
 import { seedDraftModelSelection } from "~/lib/seedDraftModelSelection";
 import {
   deriveLogicalProjectKeyFromSettings,
   pickableProjectGroups,
   selectProjectGroupingSettings,
-} from "@t3tools/client-runtime/state/project-grouping";
+} from "@j6/client-runtime/state/project-grouping";
 import {
   buildSidebarProjectPickerEntries,
   projectGroupsSpanEnvironments,

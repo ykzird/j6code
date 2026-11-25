@@ -14,10 +14,10 @@ import {
   type OrchestrationV2AppThread,
   type OrchestrationV2DomainEvent,
   type OrchestrationV2ProviderThread,
-} from "@t3tools/contracts";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
-import * as AcpRegistryRuntimeCoordinator from "@t3tools/provider-acp-registry/server/AcpRegistryRuntimeCoordinator";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
+} from "@j6/contracts";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
+import * as AcpRegistryRuntimeCoordinator from "@j6/provider-acp-registry/server/AcpRegistryRuntimeCoordinator";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
@@ -964,7 +964,7 @@ it.effect("repeated imports reach linked-worktree sessions behind the scan budge
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const root = yield* fs.makeTempDirectoryScoped({ prefix: "t3-import-worktree-budget-" });
+    const root = yield* fs.makeTempDirectoryScoped({ prefix: "j6-import-worktree-budget-" });
     const repo = path.join(root, "repo");
     const worktree = path.join(root, "feature");
     const worktreeGitDir = path.join(repo, ".git", "worktrees", "feature");
@@ -1008,7 +1008,7 @@ it.effect("repeated imports reach linked-worktree sessions behind the scan budge
       AgentSessionScanner.layer.pipe(
         Layer.provide(
           Layer.mergeAll(
-            ServerConfig.layerTest(claudeHome, { prefix: "t3-import-budget-config-" }),
+            ServerConfig.layerTest(claudeHome, { prefix: "j6-import-budget-config-" }),
             ServerSettings.layerTest({
               providerInstances: {
                 [ProviderInstanceId.make("claudeAgent")]: {

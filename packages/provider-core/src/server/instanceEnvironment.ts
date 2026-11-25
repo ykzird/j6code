@@ -1,6 +1,6 @@
-import type { ProviderInstanceEnvironment } from "@t3tools/contracts";
-import { stripAppImageRuntimeEnv } from "@t3tools/shared/appImageRuntimeEnv";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import type { ProviderInstanceEnvironment } from "@j6/contracts";
+import { stripAppImageRuntimeEnv } from "@j6/shared/appImageRuntimeEnv";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Effect from "effect/Effect";
 
 import { expandHomeVariable } from "./pathExpansion.ts";

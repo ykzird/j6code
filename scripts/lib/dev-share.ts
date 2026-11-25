@@ -9,7 +9,7 @@ import {
   type TailscaleCommandError,
   type TailscaleServeHttpsDisabledError,
   type TailscaleStderrDiagnostic,
-} from "@t3tools/tailscale";
+} from "@j6/tailscale";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import type { ChildProcessSpawner } from "effect/process";
@@ -93,7 +93,7 @@ export class DevServePortTakenError extends Schema.TaggedError<DevServePortTaken
   }
 
   get hint(): string {
-    return `Pick another port with T3CODE_PORT_OFFSET, or remove that mapping with \`tailscale serve --https=${String(this.webPort)} --set-path=/ off\` if nothing needs it.`;
+    return `Pick another port with J6CODE_PORT_OFFSET, or remove that mapping with \`tailscale serve --https=${String(this.webPort)} --set-path=/ off\` if nothing needs it.`;
   }
 }
 

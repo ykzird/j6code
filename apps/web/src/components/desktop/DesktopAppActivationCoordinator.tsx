@@ -1,4 +1,4 @@
-import type { DesktopAppActivationRequest } from "@t3tools/contracts";
+import type { DesktopAppActivationRequest } from "@j6/contracts";
 import { useEffect, useEffectEvent, useRef } from "react";
 
 import { useOpenLocalWorkspace } from "../../hooks/useOpenLocalWorkspace";
@@ -13,7 +13,7 @@ export function DesktopAppActivationCoordinator() {
     openLocalWorkspace.open(request),
   );
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- subscribes to desktop activation requests over the bridge and marks the renderer ready
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- subscribes to desktop activation requests over the bridge and marks the renderer ready
   useEffect(() => {
     if (!ready || activation === undefined) return;
 

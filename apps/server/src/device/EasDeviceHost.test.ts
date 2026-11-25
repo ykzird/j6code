@@ -1,8 +1,8 @@
 import { describe, expect, it } from "@effect/vitest";
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { type EasDeviceHostConfig, SecretProviderId, ThreadId } from "@t3tools/contracts";
-import * as SecretResolver from "@t3tools/secret-provider-core/server/SecretResolver";
+import { type EasDeviceHostConfig, SecretProviderId, ThreadId } from "@j6/contracts";
+import * as SecretResolver from "@j6/secret-provider-core/server/SecretResolver";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -13,7 +13,7 @@ import * as Path from "effect/Path";
 import * as Scope from "effect/Scope";
 import * as TestClock from "effect/testing/TestClock";
 import { HttpClient, HttpClientResponse } from "effect/http";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 
 import * as ServerConfig from "../config.ts";
 import * as ProcessRunner from "../processRunner.ts";
@@ -189,7 +189,7 @@ const fakeExpo = (
                           node: {
                             id: "someone-else",
                             status: "IN_PROGRESS",
-                            name: "T3 Code · Expo Simulators · 000000",
+                            name: "J6 Code · Expo Simulators · 000000",
                           },
                         },
                         ...(options.active ?? []).map((node) => ({ node })),
@@ -255,13 +255,13 @@ const makeSecretResolver = (values: Record<string, string> = {}) =>
 const layerWith = (secrets: Layer.Layer<SecretResolver.SecretResolver>) =>
   Layer.mergeAll(
     ProcessRunner.layer,
-    ServerConfig.layerTest(process.cwd(), { prefix: "t3-eas-host-" }),
+    ServerConfig.layerTest(process.cwd(), { prefix: "j6-eas-host-" }),
     secrets,
   ).pipe(Layer.provideMerge(NodeServices.layer));
 
 const layer = Layer.mergeAll(
   ProcessRunner.layer,
-  ServerConfig.layerTest(process.cwd(), { prefix: "t3-eas-host-" }),
+  ServerConfig.layerTest(process.cwd(), { prefix: "j6-eas-host-" }),
   makeSecretResolver(),
 ).pipe(Layer.provideMerge(NodeServices.layer));
 
@@ -653,7 +653,7 @@ describe("Expo Simulators host", () => {
   it.effect("reports iOS unavailable on a server with no Expo credential", () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-expo-home-" });
+      const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-expo-home-" });
       const host = yield* makeHost(
         fakeExpo(),
         config({ accessToken: "" }),

@@ -1,5 +1,5 @@
-import { EnvironmentId, ThreadId, type ScopedThreadRef } from "@t3tools/contracts";
-import { scopedThreadKey } from "@t3tools/client-runtime/environment";
+import { EnvironmentId, ThreadId, type ScopedThreadRef } from "@j6/contracts";
+import { scopedThreadKey } from "@j6/client-runtime/environment";
 import { expect, it, vi } from "vite-plus/test";
 import { act, render } from "../../test/render";
 import { selectThreadRightPanelState, useRightPanelStore } from "../rightPanelStore";
@@ -64,7 +64,7 @@ vi.mock("../state/terminal", () => ({ terminalEnvironment: { open: {}, close: {}
 vi.mock("../state/preview", () => ({ previewEnvironment: { close: {} } }));
 vi.mock("../state/threads", () => ({ threadEnvironment: { delete: {} } }));
 vi.mock("../state/shell", () => ({ environmentShell: { stateValueAtom: () => null } }));
-vi.mock("@t3tools/client-runtime/state/runtime", () => ({
+vi.mock("@j6/client-runtime/state/runtime", () => ({
   isAtomCommandInterrupted: () => false,
 }));
 

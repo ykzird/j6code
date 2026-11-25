@@ -75,7 +75,7 @@ export const make = Effect.gen(function* () {
             ).pipe(
               HttpClientRequest.setHeaders({
                 accept: "text/event-stream",
-                "user-agent": "t3code",
+                "user-agent": "j6code",
                 authorization: `Bearer ${Redacted.value(credential.token)}`,
                 ...(cursor.lastEventId === undefined
                   ? {}

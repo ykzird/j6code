@@ -1,6 +1,6 @@
-export const BUILT_IN_THEME_IDS = ["t3-chat", "grove", "ocean", "ember", "iris"] as const;
+export const BUILT_IN_THEME_IDS = ["j6-chat", "grove", "ocean", "ember", "iris"] as const;
 
-export const MOBILE_DEFAULT_THEME_ID = "t3-code";
+export const MOBILE_DEFAULT_THEME_ID = "j6-code";
 
 export const MOBILE_THEME_IDS = [MOBILE_DEFAULT_THEME_ID, ...BUILT_IN_THEME_IDS] as const;
 
@@ -10,11 +10,11 @@ export const RESERVED_THEME_IDS: ReadonlySet<string> = new Set([
   "light",
   "dark",
   ...BUILT_IN_THEME_IDS,
-  "t3-chat-dark",
-  "t3-grove",
-  "t3-ocean",
-  "t3-ember",
-  "t3-iris",
+  "j6-chat-dark",
+  "j6-grove",
+  "j6-ocean",
+  "j6-ember",
+  "j6-iris",
 ]);
 
 /** The mobile default id is valid in saved themes but cannot be published because web/desktop cannot resolve it. */
@@ -236,7 +236,7 @@ export const T3_CODE_DARK_THEME_COLORS: ThemeColors = {
 };
 
 export const T3_CHAT_THEME: ThemeDefinition = {
-  id: "t3-chat",
+  id: "j6-chat",
   label: "T3 Chat",
   appearance: "light",
   colors: {

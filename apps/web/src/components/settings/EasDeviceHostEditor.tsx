@@ -1,4 +1,4 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { m as resolveMessage } from "~/i18n/messages";
 import { useAtomValue } from "@effect/atom-react";
 import { msg, T, useGT, useMessages } from "gt-react";
@@ -11,7 +11,7 @@ import {
   type EasDeviceHostConfig,
   type EnvironmentId,
   type SettingsSecretValue,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { XIcon } from "lucide-react";
 
 import { deviceEasAccountCheck, deviceEnvironment } from "../../state/device";

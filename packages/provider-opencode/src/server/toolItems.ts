@@ -1,15 +1,15 @@
-import type { OrchestrationV2TurnItem } from "@t3tools/contracts";
-import { parseGrepOutput } from "@t3tools/shared/grepOutput";
-import { HTML_RENDER_TOOL_NAME } from "@t3tools/shared/htmlRender";
-import { resolveT3McpToolId } from "@t3tools/shared/t3McpToolPresentation";
-import { formatReadToolLabel, formatSearchToolLabel } from "@t3tools/shared/toolActivity";
+import type { OrchestrationV2TurnItem } from "@j6/contracts";
+import { parseGrepOutput } from "@j6/shared/grepOutput";
+import { HTML_RENDER_TOOL_NAME } from "@j6/shared/htmlRender";
+import { resolveT3McpToolId } from "@j6/shared/t3McpToolPresentation";
+import { formatReadToolLabel, formatSearchToolLabel } from "@j6/shared/toolActivity";
 import {
   MAX_TOOL_OUTPUT_IMAGES,
   readToolOutputImage,
   SEND_TO_USER_TOOL_NAME,
   sentMessageFromToolItem,
   type ToolOutputImage,
-} from "@t3tools/shared/toolOutput";
+} from "@j6/shared/toolOutput";
 
 export function openCodeToolOutput(
   output: string | undefined,

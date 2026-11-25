@@ -13,7 +13,7 @@ import {
   type OrchestrationV2Run,
   type OrchestrationV2ThreadProjection,
   type OrchestrationV2TurnItem,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { describe, expect, it } from "@effect/vitest";
 import * as DateTime from "effect/DateTime";
 import * as Option from "effect/Option";
@@ -365,7 +365,7 @@ describe("derived thread state through a streamed message", () => {
     parentCheckpointId: null,
     ordinalWithinScope: ordinal,
     appRunOrdinal: ordinal,
-    ref: CheckpointRef.make(`refs/t3/checkpoint-${ordinal}`),
+    ref: CheckpointRef.make(`refs/j6/checkpoint-${ordinal}`),
     status: "ready",
     files: [],
     capturedAt: v2Now,

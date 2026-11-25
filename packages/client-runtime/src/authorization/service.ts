@@ -6,10 +6,10 @@ import {
   type ClientConnectionMethod,
   EnvironmentId,
   type ExecutionEnvironmentDescriptor,
-} from "@t3tools/contracts";
-import { RelayEnvironmentConnectScope } from "@t3tools/contracts/relay";
-import * as KeyedLock from "@t3tools/shared/KeyedLock";
-import { withRelayClientTracing } from "@t3tools/shared/relayTracing";
+} from "@j6/contracts";
+import { RelayEnvironmentConnectScope } from "@j6/contracts/relay";
+import * as KeyedLock from "@j6/shared/KeyedLock";
+import { withRelayClientTracing } from "@j6/shared/relayTracing";
 import {
   exchangeRemoteDpopAccessToken,
   type RemoteEnvironmentAuthError,
@@ -125,7 +125,7 @@ export class RemoteEnvironmentAuthorization extends Context.Service<
       readonly directConnection?: DirectDpopConnection;
     }) => Effect.Effect<void, ConnectionAttemptError>;
   }
->()("@t3tools/client-runtime/authorization/service/RemoteEnvironmentAuthorization") {}
+>()("@j6/client-runtime/authorization/service/RemoteEnvironmentAuthorization") {}
 
 const CACHED_ENDPOINT_SOCKET_TIMEOUT_MS = 3_000;
 const DPOP_AUTHORIZATION_TIMEOUT_MS = 30_000;
@@ -321,7 +321,7 @@ export const make = Effect.gen(function* () {
   const sessionPending = () =>
     new ConnectionTransientError({
       reason: "session-pending",
-      ...translatableDetail(msg("Waiting for the T3 Connect sign-in to load.")),
+      ...translatableDetail(msg("Waiting for the J6 Connect sign-in to load.")),
     });
 
   const assertSession = Effect.fnUntraced(function* (
@@ -727,7 +727,7 @@ export const make = Effect.gen(function* () {
         return yield* mapDpopSocketError(cachedSocket.failure);
       }
       // An unreachable direct address says nothing about the token, so keep
-      // it for the T3 Connect route rather than forcing a relay round trip.
+      // it for the J6 Connect route rather than forcing a relay round trip.
       if (endpoint !== undefined && cachedSocket.failure._tag !== "EnvironmentAuthInvalidError") {
         return yield* mapDpopSocketError(cachedSocket.failure);
       }
@@ -786,7 +786,7 @@ export const make = Effect.gen(function* () {
       const direct = input.directConnection;
       let expiresAtEpochMs = input.expiresAtEpochMs;
       let now = yield* Clock.currentTimeMillis;
-      // Past expiry the server has closed a T3 Connect socket. A direct socket stays open for
+      // Past expiry the server has closed a J6 Connect socket. A direct socket stays open for
       // its session's whole renewal window, so it keeps retrying until a blocked credential.
       while (direct !== undefined || now < expiresAtEpochMs) {
         // getDpopToken reuses a cached token until it is within the skew of expiry.

@@ -29,8 +29,8 @@ export class DeviceError extends Schema.TaggedError<DeviceError>()("DeviceError"
   message: Schema.String,
 }) {}
 
-export const APP_ID = "com.t3tools.t3code.dev";
-export const SCHEME = "t3code-dev";
+export const APP_ID = "com.ykzird.j6code.dev";
+export const SCHEME = "j6code-dev";
 
 export interface ProbeState {
   readonly route: {
@@ -228,7 +228,7 @@ export function makeDevice(options: DeviceOptions) {
 
   const screenSize = run([
     "screenshot",
-    NodePath.join(NodeOS.tmpdir(), "t3-mobile-behavior-screen.png"),
+    NodePath.join(NodeOS.tmpdir(), "j6-mobile-behavior-screen.png"),
     "--json",
   ]).pipe(
     Effect.map((out) => {

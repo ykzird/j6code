@@ -1,4 +1,4 @@
-import type { AuthConnectDevice } from "@t3tools/contracts";
+import type { AuthConnectDevice } from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 import { describe, expect, it } from "vite-plus/test";
 

@@ -1,4 +1,4 @@
-import type { PullRequestCheck } from "@t3tools/contracts";
+import type { PullRequestCheck } from "@j6/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { pullRequestChecksCountLabel } from "./pullRequestPresentation";

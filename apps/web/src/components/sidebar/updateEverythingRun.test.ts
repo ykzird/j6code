@@ -1,5 +1,5 @@
-import { AVAILABLE_CONNECTION_STATE } from "@t3tools/client-runtime/connection";
-import { EnvironmentId, type ServerConfig, type ServerSelfUpdateOutcome } from "@t3tools/contracts";
+import { AVAILABLE_CONNECTION_STATE } from "@j6/client-runtime/connection";
+import { EnvironmentId, type ServerConfig, type ServerSelfUpdateOutcome } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import { AsyncResult, Atom } from "effect/reactivity";
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
@@ -22,7 +22,7 @@ function relaunchWhileRestarting(environmentId: EnvironmentId, updateId?: string
   vi.useFakeTimers({ now });
   const store = new Map([
     [
-      "t3code:update-everything-result:v1",
+      "j6code:update-everything-result:v1",
       JSON.stringify({
         savedAt: now,
         localVersion: null,

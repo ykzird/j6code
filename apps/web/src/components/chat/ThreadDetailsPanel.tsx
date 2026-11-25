@@ -5,10 +5,10 @@ import type {
   ProjectScript,
   ResolvedKeybindingsConfig,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
-import { scopeProjectRef } from "@t3tools/client-runtime/environment";
-import { isScratchProject } from "@t3tools/client-runtime/state/projects";
+import { scopeProjectRef } from "@j6/client-runtime/environment";
+import { isScratchProject } from "@j6/client-runtime/state/projects";
 
 import type { ComposerThreadTarget, DraftId } from "../../composerDraftStore";
 import { useT3ProjectFileState } from "../../hooks/useT3ProjectFileScripts";

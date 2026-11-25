@@ -83,8 +83,8 @@ describe("buildFileLinkParentSuffixByPath", () => {
 describe("parseFileUrlHref", () => {
   it.each([
     [
-      "file:///D:/Programme/t3code/OpenInPicker.tsx#L69",
-      "D:/Programme/t3code/OpenInPicker.tsx",
+      "file:///D:/Programme/j6code/OpenInPicker.tsx#L69",
+      "D:/Programme/j6code/OpenInPicker.tsx",
       "#L69",
     ],
     [

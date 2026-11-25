@@ -1,4 +1,4 @@
-import { EnvironmentId, ThreadId } from "@t3tools/contracts";
+import { EnvironmentId, ThreadId } from "@j6/contracts";
 import { expect, it, vi } from "vite-plus/test";
 
 import { act, render } from "../../../test/render";

@@ -9,8 +9,8 @@ import type {
   ScopedThreadRef,
   ThreadLinkedPullRequest,
   ThreadPullRequestLink,
-} from "@t3tools/contracts";
-import { scopedThreadKey } from "@t3tools/client-runtime/environment";
+} from "@j6/contracts";
+import { scopedThreadKey } from "@j6/client-runtime/environment";
 import { lazy, Suspense } from "react";
 import { LinkedThreadPane } from "./LinkedThreadPane";
 import SideThreadPane from "./SideThreadPane";
@@ -132,7 +132,7 @@ export function RightPanelSurfaceContent(props: {
         return (
           <PullRequestsUnavailableState
             title={gt("Pull requests unavailable")}
-            error={gt("Update this environment's T3 Code server to browse pull requests.")}
+            error={gt("Update this environment's J6 Code server to browse pull requests.")}
           />
         );
       }
@@ -190,7 +190,7 @@ export function RightPanelSurfaceContent(props: {
         return (
           <PullRequestsUnavailableState
             title={gt("Issues unavailable")}
-            error={gt("Update this environment's T3 Code server to browse issues.")}
+            error={gt("Update this environment's J6 Code server to browse issues.")}
           />
         );
       }

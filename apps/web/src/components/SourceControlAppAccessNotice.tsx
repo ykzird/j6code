@@ -1,8 +1,8 @@
-import type { EnvironmentId } from "@t3tools/contracts";
+import type { EnvironmentId } from "@j6/contracts";
 import {
   readHostCredentialSettings,
   sourceControlClients,
-} from "@t3tools/client-runtime/source-control-clients";
+} from "@j6/client-runtime/source-control-clients";
 import { ExternalLinkIcon } from "lucide-react";
 import { T, Var } from "gt-react";
 

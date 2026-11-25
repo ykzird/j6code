@@ -5,7 +5,7 @@ import * as Path from "effect/Path";
 import * as Schema from "effect/Schema";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { runPromise, test, WEB } from "./t3.ts";
+import { runPromise, test, WEB } from "./j6.ts";
 
 const SettingsJson = Schema.fromJsonString(Schema.Record(Schema.String, Schema.Unknown));
 const decodeSettings = Schema.decodeEffect(SettingsJson);
@@ -28,21 +28,21 @@ const threadRuntimeSettings = Effect.gen(function* () {
 test(
   "A recurring task reports when its queued occurrence is held",
   WEB,
-  async ({ t3, app, screen }) => {
+  async ({ j6, app, screen }) => {
     const settings = await runPromise(threadRuntimeSettings);
     try {
       // Supervised mode makes the approval recording wait for an answer, which holds its turn open.
       await runPromise(settings.supervise);
-      const project = await t3.project("scheduled-hold");
-      await t3.thread({ project, title: "Earlier work", messages: ["Start"] });
-      const thread = await t3.thread({
+      const project = await j6.project("scheduled-hold");
+      await j6.thread({ project, title: "Earlier work", messages: ["Start"] });
+      const thread = await j6.thread({
         project,
         title: "Waiting scheduled thread",
         messages: ["Ask a question"],
         model: "approval",
       });
 
-      await t3.open("/settings/scheduled-tasks");
+      await j6.open("/settings/scheduled-tasks");
       await screen.getByRole("button", "New task").tap();
       await screen.getByRole("textbox", "Name").fill("Held recurring task");
       await screen.getByRole("combobox", "Destination").tap();
@@ -54,7 +54,7 @@ test(
       await screen.getByRole("spinbutton", "Run every").fill("1");
       await screen.getByRole("button", "Create task").tap();
 
-      await t3.open(thread);
+      await j6.open(thread);
       await screen.getByRole("button", "Approve", { exact: true }).waitFor();
       await screen
         .getByRole("button", "Automation Held recurring task")

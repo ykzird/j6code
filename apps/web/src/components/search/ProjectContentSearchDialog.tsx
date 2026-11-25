@@ -1,5 +1,5 @@
 import { Spinner } from "~/components/ui/spinner";
-import { AuthFilesystemReadScope, type ProjectContentMatch } from "@t3tools/contracts";
+import { AuthFilesystemReadScope, type ProjectContentMatch } from "@j6/contracts";
 
 import { T, useGT, useMessages } from "gt-react";
 import { useState, type ReactNode } from "react";
@@ -181,7 +181,7 @@ function OpenContentSearchDialog(props: {
             label={gt("Match case")}
             onClick={() => setCaseSensitive((current) => !current)}
           >
-            {/* oxlint-disable-next-line t3code/no-untranslated-copy -- match-case glyph; the label carries the meaning */}
+            {/* oxlint-disable-next-line j6code/no-untranslated-copy -- match-case glyph; the label carries the meaning */}
             {"Aa"}
           </SearchOptionButton>
           <SearchOptionButton

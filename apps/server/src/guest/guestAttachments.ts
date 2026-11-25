@@ -2,10 +2,10 @@ import {
   GUEST_MESSAGE_MAX_ATTACHMENT_BYTES,
   GUEST_MESSAGE_MAX_ATTACHMENTS,
   isProviderSendTurnSupportedImageMimeType,
-} from "@t3tools/contracts";
-import { markdownDestinationHostPath } from "@t3tools/shared/markdownLinks";
-import { chatMarkdownImageSources } from "@t3tools/shared/markdownPipeline";
-import { isAbsolutePath, isNetworkPath } from "@t3tools/shared/path";
+} from "@j6/contracts";
+import { markdownDestinationHostPath } from "@j6/shared/markdownLinks";
+import { chatMarkdownImageSources } from "@j6/shared/markdownPipeline";
+import { isAbsolutePath, isNetworkPath } from "@j6/shared/path";
 
 /** A file from a guest's message request, saved by the multipart parser to a temporary path. */
 export interface GuestUpload {

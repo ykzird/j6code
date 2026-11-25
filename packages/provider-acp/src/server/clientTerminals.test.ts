@@ -8,7 +8,7 @@ import * as TestClock from "effect/testing/TestClock";
 import * as Result from "effect/Result";
 import * as Stream from "effect/Stream";
 import * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 
 import {
   makeAcpClientTerminals,
@@ -107,7 +107,7 @@ describe("AcpClientTerminals", () => {
             ? undefined
             : {
                 T3_ACP_MCP_AUTHORIZATION: sessionId === "session-a" ? "token-a" : "token-b",
-                T3CODE_THREAD_ID: sessionId,
+                J6CODE_THREAD_ID: sessionId,
               },
       });
       yield* Effect.addFinalizer(() => terminals.disposeAll);
@@ -123,7 +123,7 @@ describe("AcpClientTerminals", () => {
           command: process.execPath,
           args: [
             "-e",
-            "const env = process.env; process.stdout.write([env.T3_ACP_MCP_AUTHORIZATION ?? '', env.t3_Acp_Mcp_Endpoint ?? '', env.T3CODE_THREAD_ID ?? '', env.T3_TEST_INHERITED, ...Object.keys(env).filter((name) => name.toUpperCase() === 'T3_TEST_OVERRIDE').map((name) => name + '=' + env[name])].join('|'))",
+            "const env = process.env; process.stdout.write([env.T3_ACP_MCP_AUTHORIZATION ?? '', env.t3_Acp_Mcp_Endpoint ?? '', env.J6CODE_THREAD_ID ?? '', env.T3_TEST_INHERITED, ...Object.keys(env).filter((name) => name.toUpperCase() === 'T3_TEST_OVERRIDE').map((name) => name + '=' + env[name])].join('|'))",
           ],
           ...(sessionId === "unknown"
             ? {}
@@ -144,7 +144,7 @@ describe("AcpClientTerminals", () => {
         ...process.env,
         T3_ACP_MCP_AUTHORIZATION: "launching-thread-token",
         t3_Acp_Mcp_Endpoint: "launching-thread-endpoint",
-        T3CODE_THREAD_ID: "launching-thread",
+        J6CODE_THREAD_ID: "launching-thread",
         T3_TEST_INHERITED: "kept",
         T3_TEST_OVERRIDE: "inherited",
       }),
@@ -510,14 +510,14 @@ describe("resolveEmbeddedTerminalContent", () => {
         toolCallId: "call-1",
         content: [
           { type: "content" as const, content: { type: "text" as const, text: "before" } },
-          { type: "terminal" as const, terminalId: "t3-term-1" },
-          { type: "terminal" as const, terminalId: "t3-term-unknown" },
+          { type: "terminal" as const, terminalId: "j6-term-1" },
+          { type: "terminal" as const, terminalId: "j6-term-unknown" },
         ],
       },
     };
 
     const resolved = resolveEmbeddedTerminalContent(notification, (sessionId, terminalId) =>
-      sessionId === "session" && terminalId === "t3-term-1"
+      sessionId === "session" && terminalId === "j6-term-1"
         ? { output: "compiled 3 files", truncated: false, exitStatus: undefined }
         : undefined,
     );
@@ -526,7 +526,7 @@ describe("resolveEmbeddedTerminalContent", () => {
       content: [
         { type: "content", content: { type: "text", text: "before" } },
         { type: "content", content: { type: "text", text: "compiled 3 files" } },
-        { type: "content", content: { type: "text", text: "[terminal t3-term-unknown]" } },
+        { type: "content", content: { type: "text", text: "[terminal j6-term-unknown]" } },
       ],
     });
   });

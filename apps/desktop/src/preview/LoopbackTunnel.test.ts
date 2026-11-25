@@ -1,9 +1,9 @@
 import * as NodeFileSystem from "@effect/platform-node/NodeFileSystem";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as NodeWS from "@effect/platform-node/NodeWS";
-import { EnvironmentId } from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import * as NetService from "@t3tools/shared/Net";
+import { EnvironmentId } from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
+import * as NetService from "@j6/shared/Net";
 import { expect, it } from "@effect/vitest";
 import * as NodeNet from "node:net";
 import * as Context from "effect/Context";
@@ -578,7 +578,7 @@ it.effect.each([
 ])("decides a forward's machine only on proof: $case", ({ refused }) =>
   Effect.gen(function* () {
     const endpoint = yield* listenRefusingEndpoint(
-      refused ? { "x-t3-tunnel-port-refused": "1" } : {},
+      refused ? { "x-j6-tunnel-port-refused": "1" } : {},
     );
     const remotePort = yield* unusedPort;
     const tunnel = yield* makeTunnel(`ws://127.0.0.1:${addressPort(endpoint)}/api/preview/tunnel`);

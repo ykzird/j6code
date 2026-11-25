@@ -4,7 +4,7 @@ import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { runPromise, test, WEB } from "./t3.ts";
+import { runPromise, test, WEB } from "./j6.ts";
 
 const PREFIX = "Codex CLI command failed: ";
 const KEPT = `${PREFIX}${"The title model refused this request. ".repeat(10)}`.slice(0, 298);
@@ -17,7 +17,7 @@ exit 1
 test(
   "A long title regeneration failure ends without a broken character",
   WEB,
-  async ({ t3, app, browser, screen }) => {
+  async ({ j6, app, browser, screen }) => {
     const { fakeCodex, settingsPath, originalSettings } = await runPromise(
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
@@ -46,9 +46,9 @@ test(
         }),
       );
 
-      const project = await t3.project("demo");
-      const thread = await t3.thread({ project, title: "Earlier work", messages: ["first"] });
-      await t3.open(thread);
+      const project = await j6.project("demo");
+      const thread = await j6.thread({ project, title: "Earlier work", messages: ["first"] });
+      await j6.open(thread);
 
       await screen.getByRole("button", "Thread actions for Earlier work").tap();
       await screen.getByRole("menuitem", "Regenerate title").tap();

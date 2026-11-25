@@ -13,7 +13,7 @@ const narrow = (value: string) => (
 
 describe("MiddleTruncate", () => {
   it("does not clip a short value that replaces a truncated one", async () => {
-    await using screen = await render(narrow("t3/investigate-release-build-times"));
+    await using screen = await render(narrow("j6/investigate-release-build-times"));
     const label = () => screen.container.querySelector("[title] > span");
     await expect.poll(() => label()?.hasAttribute("data-overflow")).toBe(true);
 
@@ -25,7 +25,7 @@ describe("MiddleTruncate", () => {
   });
 
   it("fits every head mounted in the same commit", async () => {
-    const values = ["t3/investigate-release-build-times", "t3/remove-stale-worktree-branches"];
+    const values = ["j6/investigate-release-build-times", "j6/remove-stale-worktree-branches"];
     await using screen = await render(
       <>
         {values.map((value) => (

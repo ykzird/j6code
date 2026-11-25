@@ -6,12 +6,12 @@ import {
   OrchestratorMcpThreadReadResult,
   OrchestratorMcpThreadSendResult,
   OrchestratorMcpThreadWaitResult,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   fileBasename,
   isWindowsDrivePath,
   normalizeProjectPathForComparison,
-} from "@t3tools/shared/path";
+} from "@j6/shared/path";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -35,7 +35,7 @@ import {
 // only ceiling on what it starts there is the access the link was paired with.
 const LIMITS = { runtimeMode: "full-access", interactionMode: "default" } as const;
 
-// T3 Connect's edge drops a request that is idle for about 100 s, so a wait goes out in pieces.
+// J6 Connect's edge drops a request that is idle for about 100 s, so a wait goes out in pieces.
 const WAIT_PIECE = Duration.seconds(50);
 
 /** The link is gone or the thread is: asking again cannot help. */

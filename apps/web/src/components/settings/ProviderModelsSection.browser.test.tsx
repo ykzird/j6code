@@ -2,7 +2,7 @@ import {
   ProviderDriverKind,
   ProviderInstanceId,
   type ServerProviderModel,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { type ComponentProps, useState } from "react";
 import { expect, it, vi } from "vite-plus/test";
 import { page, userEvent } from "vite-plus/test/browser";

@@ -11,10 +11,10 @@ import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
 import * as SqlClient from "effect/sql/SqlClient";
 
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 
 import * as OrchestrationEventStore from "../persistence/OrchestrationEventStore.ts";
-import { windowsPowerShellPath } from "@t3tools/shared/windowsSystem";
+import { windowsPowerShellPath } from "@j6/shared/windowsSystem";
 import { forkParked } from "../serverActivation.ts";
 import * as Settings from "../serverSettings.ts";
 
@@ -66,7 +66,7 @@ export function inhibitorCommand(
         command: "systemd-inhibit",
         args: [
           "--what=sleep",
-          "--who=T3 Code",
+          "--who=J6 Code",
           "--why=Agents are working",
           "--mode=block",
           // systemd-inhibit starts this only after logind grants the lock.

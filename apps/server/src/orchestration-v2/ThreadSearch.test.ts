@@ -11,7 +11,7 @@ import {
   TurnItemId,
   type OrchestrationV2DomainEvent,
   type ThreadLinkedPullRequest,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
@@ -22,9 +22,9 @@ import * as Fiber from "effect/Fiber";
 import * as Layer from "effect/Layer";
 import * as Path from "effect/Path";
 import * as SqlClient from "effect/sql/SqlClient";
-import { serializeAssistantCitation } from "@t3tools/shared/assistantCitations";
-import { ATTACHMENT_ONLY_BOOTSTRAP_PROMPT } from "@t3tools/shared/composerContextReferences";
-import { EXACT_PHRASE_GAP } from "@t3tools/shared/paletteSearch";
+import { serializeAssistantCitation } from "@j6/shared/assistantCitations";
+import { ATTACHMENT_ONLY_BOOTSTRAP_PROMPT } from "@j6/shared/composerContextReferences";
+import { EXACT_PHRASE_GAP } from "@j6/shared/paletteSearch";
 
 import * as SqlitePersistence from "../persistence/Sqlite.ts";
 import { rebuildMessageSearch } from "./messageSearchIndex.ts";
@@ -460,7 +460,7 @@ it.layer(layerTest)("ThreadSearch", (it) => {
       ]) {
         assert.deepEqual(yield* threadIds(query), [threadId], query);
       }
-      // `t3 doctor` rebuilds the index after VACUUM; quotes must still read.
+      // `j6 doctor` rebuilds the index after VACUUM; quotes must still read.
       yield* rebuildMessageSearch(sql);
       assert.deepEqual(yield* threadIds("résumé"), [threadId]);
 
@@ -1541,7 +1541,7 @@ it.effect("searches on the reader worker while the writer is busy", () =>
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const directory = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-thread-search-" });
+    const directory = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-thread-search-" });
     const layerFile = Layer.mergeAll(
       ThreadSearch.layer,
       ProjectionStore.layer,

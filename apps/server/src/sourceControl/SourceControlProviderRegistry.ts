@@ -1,4 +1,4 @@
-import { SourceControlProviderKind } from "@t3tools/contracts";
+import { SourceControlProviderKind } from "@j6/contracts";
 import * as Cache from "effect/Cache";
 import * as Context from "effect/Context";
 import * as Duration from "effect/Duration";
@@ -12,18 +12,18 @@ import * as Stream from "effect/Stream";
 import {
   SourceControlProviderError,
   type SourceControlProviderDiscoveryItem,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
 import * as BuiltInDrivers from "./builtInDrivers.ts";
 import { sourceControlDefinitions } from "./sourceControlDefinitions.ts";
-import * as SourceControlProvider from "@t3tools/source-control-core/server/SourceControlProvider";
+import * as SourceControlProvider from "@j6/source-control-core/server/SourceControlProvider";
 import {
   probeSourceControlProvider,
   refineUnknownRemoteProvider,
   type SourceControlProviderDiscoverySpec,
   type UnknownRemoteVerdict,
-} from "@t3tools/source-control-core/server/discovery";
-import * as SourceControlHost from "@t3tools/source-control-core/server/SourceControlHost";
+} from "@j6/source-control-core/server/discovery";
+import * as SourceControlHost from "@j6/source-control-core/server/SourceControlHost";
 
 import * as ServerConfig from "../config.ts";
 import * as ServerSettings from "../serverSettings.ts";
@@ -67,7 +67,7 @@ export class SourceControlProviderRegistry extends Context.Service<
     >;
     readonly discover: Effect.Effect<ReadonlyArray<SourceControlProviderDiscoveryItem>>;
   }
->()("t3/sourceControl/SourceControlProviderRegistry") {}
+>()("j6/sourceControl/SourceControlProviderRegistry") {}
 
 function unsupportedProvider(
   kind: SourceControlProviderKind,

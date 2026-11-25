@@ -1,7 +1,7 @@
 # Environment authentication
 
 The environment issues its own sessions and enforces their capabilities. Cloud identity and relay
-credentials belong to a separate trust boundary, described in [J6 Connect](./06_t3-connect.md). A relay
+credentials belong to a separate trust boundary, described in [J6 Connect](./06_j6-connect.md). A relay
 token is never an environment login. See [SECURITY.md](../../SECURITY.md) for the overall threat
 model.
 
@@ -13,7 +13,7 @@ model.
   returns a credential to the caller requires `access:write` and every scope that credential
   carries: a pairing link, an MCP sign-in approval, a link code from a linked environment, and a
   guest link (which reads a thread). Revoking is not capped by the caller's scopes. Admitting a
-  J6 Connect device is not delegation; see [J6 Connect](./06_t3-connect.md).
+  J6 Connect device is not delegation; see [J6 Connect](./06_j6-connect.md).
 - **Why the default grant includes management scopes.** `terminal:operate` and
   `orchestration:operate` already grant OS-user execution (which can invoke `j6 auth session issue`),
   so withholding access or relay management from the default grant would not be a real boundary.
@@ -60,7 +60,7 @@ model.
   or an administrator's ceiling below it) can start or change runs, change what workflows store, or
   read webhook paths. Narrower callers can still read runs.
 - **A project's worktree layout commands run only as a person approved them.** The commands come
-  from the project folder's `t3.json` and run as the server's OS user, so each runs only after a
+  from the project folder's `j6.json` and run as the server's OS user, so each runs only after a
   client session holding `terminal:operate` approved its exact text for that project.
   [`TaskFolders`](../../apps/server/src/workspace/TaskFolders.ts) is the only place they run and
   checks the approval, managed policy, and who asked at every run. Recording an approval is a
@@ -80,7 +80,7 @@ model.
 
 ### Reusable dev credential
 
-Web development servers can accept a fixed `T3CODE_DEV_AUTH_TOKEN` across worktrees and ports on one
+Web development servers can accept a fixed `J6CODE_DEV_AUTH_TOKEN` across worktrees and ports on one
 hostname (see the [development runbook](../operations/00_development.md#reusable-dev-credential)). It
 grants administrative access and is ignored by desktop and non-development servers.
 

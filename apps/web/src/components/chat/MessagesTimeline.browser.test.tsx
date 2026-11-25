@@ -1,4 +1,4 @@
-import { injectHtmlRenderBootstrap } from "@t3tools/shared/htmlRender";
+import { injectHtmlRenderBootstrap } from "@j6/shared/htmlRender";
 import { HtmlRenderDocument } from "../files/BrowserDocumentFrame";
 import { AudioPreview } from "../files/AudioPreview";
 import { cdp, page, userEvent } from "vite-plus/test/browser";
@@ -16,7 +16,7 @@ import {
   ScheduledTaskId,
   ThreadId,
   type OrchestrationV2Subagent,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { type LegendListRef } from "@legendapp/list/react";
 import {
   createRef,
@@ -50,8 +50,8 @@ import {
 } from "./TimelineWorkEntryRow.logic";
 import { wordsHast } from "~/markdown/wordsHast";
 import { TimelineRowCtx } from "./timelineRowContext";
-import { searchableMessageSegments } from "@t3tools/shared/threadFindText";
-import { countThreadSearchOccurrences } from "@t3tools/shared/threadSearch";
+import { searchableMessageSegments } from "@j6/shared/threadFindText";
+import { countThreadSearchOccurrences } from "@j6/shared/threadSearch";
 import { collectThreadFindRanges } from "./threadFindHighlights";
 import { toastManager } from "../ui/toast";
 import type { CitedHistory } from "./citationProcedure";
@@ -60,8 +60,8 @@ import { rememberTimelinePosition } from "./timelineScrollAnchoring";
 import {
   COMPOSER_CONTEXT_CLIPBOARD_MIME,
   decodeComposerContextFragment,
-} from "@t3tools/shared/composerContextClipboard";
-import { collectComposerContextReferences } from "@t3tools/shared/composerContextReferences";
+} from "@j6/shared/composerContextClipboard";
+import { collectComposerContextReferences } from "@j6/shared/composerContextReferences";
 
 const environmentQuery = vi.hoisted(() => ({
   error: "Pull request not found" as string | null,
@@ -1635,7 +1635,7 @@ describe("MessagesTimeline agent messages", () => {
     expect(screen.buttons("Open thread")).toHaveLength(0);
   });
 
-  it("leaves messages sent by T3 Code as full bubbles", async () => {
+  it("leaves messages sent by J6 Code as full bubbles", async () => {
     setup();
     await using screen = await renderTimeline([
       message(AGENT_MESSAGE, { createdBy: "agent", creationSource: "server" }),
@@ -2065,7 +2065,7 @@ describe("MessagesTimeline thread find", () => {
 
     await screen.rerender(element(0, 2));
     await vi.waitFor(() => {
-      const [match] = CSS.highlights.get("t3-thread-find-active") ?? [];
+      const [match] = CSS.highlights.get("j6-thread-find-active") ?? [];
       if (!(match instanceof Range)) throw new Error("Missing active match range");
       expect(match.startContainer.parentElement?.closest("td")).toBe(viewport.querySelector("td"));
       expect(match.getBoundingClientRect().left).toBeGreaterThanOrEqual(clip.left - 1);
@@ -2109,7 +2109,7 @@ describe("MessagesTimeline thread find", () => {
       />,
     );
     await vi.waitFor(() => {
-      const [match] = CSS.highlights.get("t3-thread-find-active") ?? [];
+      const [match] = CSS.highlights.get("j6-thread-find-active") ?? [];
       if (!(match instanceof Range)) throw new Error("Missing active match range");
       const bounds = match.getBoundingClientRect();
       const clip = outerViewport.getBoundingClientRect();

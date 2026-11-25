@@ -4,7 +4,7 @@ import {
   type AttachmentCreateUploadUrlInput,
   type AttachmentCreateUploadUrlResult,
   type AttachmentDeleteInput,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
 import { Atom, AtomRegistry } from "effect/reactivity";

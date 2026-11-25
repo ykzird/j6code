@@ -15,9 +15,9 @@ import {
   type RuntimeMode,
   type RuntimeRequestId,
   ThreadId,
-} from "@t3tools/contracts";
-import { resolveSelfInvocation } from "@t3tools/shared/nodeRuntime";
-import { htmlRenderFromToolItem } from "@t3tools/shared/toolOutput";
+} from "@j6/contracts";
+import { resolveSelfInvocation } from "@j6/shared/nodeRuntime";
+import { htmlRenderFromToolItem } from "@j6/shared/toolOutput";
 import * as Cause from "effect/Cause";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
@@ -34,10 +34,10 @@ import * as TestClock from "effect/testing/TestClock";
 import * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
 import type * as EffectAcpSchema from "effect-acp/compat";
 
-import * as TestProviderHost from "@t3tools/provider-testing/TestProviderHost";
-import type * as AcpSessionRuntime from "@t3tools/provider-acp/server/AcpSessionRuntime";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
+import * as TestProviderHost from "@j6/provider-testing/TestProviderHost";
+import type * as AcpSessionRuntime from "@j6/provider-acp/server/AcpSessionRuntime";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
 import {
   ProviderAdapterTurnStartError,
   type ProviderAdapterV2Error,
@@ -45,7 +45,7 @@ import {
   type ProviderAdapterV2TurnInput,
   ProviderCompactionUnsupportedError,
   ProviderAdapterV2RuntimePolicy,
-} from "@t3tools/provider-core/server/ProviderAdapter";
+} from "@j6/provider-core/server/ProviderAdapter";
 import {
   decodeAcpReplayTranscript,
   makeAcpReplayCompletenessAssertion,
@@ -54,16 +54,16 @@ import {
 import {
   makeProviderReplayGate,
   type ProviderReplayGate,
-} from "@t3tools/provider-testing/replayGate";
-import { readProviderReplayTranscript } from "@t3tools/provider-testing/replayTranscript";
-import { KiroSettings } from "@t3tools/provider-kiro/settings";
+} from "@j6/provider-testing/replayGate";
+import { readProviderReplayTranscript } from "@j6/provider-testing/replayTranscript";
+import { KiroSettings } from "@j6/provider-kiro/settings";
 import {
   KIRO_PROVIDER,
   kiroApprovalOptions,
   kiroAutopilotValue,
   kiroPermissionDisposition,
   makeKiroAdapterV2,
-} from "@t3tools/provider-kiro/testing";
+} from "@j6/provider-kiro/testing";
 
 const testLayer = Layer.mergeAll(
   NodeServices.layer,
@@ -335,7 +335,7 @@ const runKiroScript = Effect.fn("runKiroScript")(function* (input: {
   const fileSystem = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
   const replayDir = yield* fileSystem.makeTempDirectoryScoped({
-    prefix: `t3-kiro-${input.scenario}-`,
+    prefix: `j6-kiro-${input.scenario}-`,
   });
   const statusPath = path.join(replayDir, "status.json");
   const transcript = yield* decodeAcpReplayTranscript(
@@ -1270,16 +1270,16 @@ describe("KiroAdapterV2 early Stop", () => {
 });
 
 describe("KiroAdapterV2 MCP tools", () => {
-  // Probed live on Kiro 2.33.1 against a stdio MCP server named t3-code, without
-  // the permission round trip. Kiro titles the call "@t3-code/html_render", names
+  // Probed live on Kiro 2.33.1 against a stdio MCP server named j6-code, without
+  // the permission round trip. Kiro titles the call "@j6-code/html_render", names
   // it in `tool_id`, and keeps only the result's text.
   it.effect("shows T3's html_render as T3's tool with the page T3 published", () =>
     Effect.gen(function* () {
       const mcpSessions = yield* McpProviderSessions.McpProviderSessions;
       const toolCallId = "tooluse_4N3LnlI9PRlphUtzdBQGDD";
       const args = { html: "<p>hi</p>", title: "Probe", height: 120 };
-      const rawInput = { tool_id: "t3-code::html_render", arguments: args };
-      const kiroMeta = { kiro: { serverName: "t3-code", toolOrigin: "default" } };
+      const rawInput = { tool_id: "j6-code::html_render", arguments: args };
+      const kiroMeta = { kiro: { serverName: "j6-code", toolOrigin: "default" } };
       const page = { attachmentId: "kiro-mcp-html-render-page", title: "Probe", height: 120 };
       yield* runKiroScript({
         scenario: "mcp-html-render",
@@ -1292,7 +1292,7 @@ describe("KiroAdapterV2 MCP tools", () => {
           update({
             sessionUpdate: "tool_call",
             toolCallId,
-            title: "@t3-code/html_render",
+            title: "@j6-code/html_render",
             kind: "other",
             status: "pending",
             rawInput,
@@ -1309,7 +1309,7 @@ describe("KiroAdapterV2 MCP tools", () => {
             sessionUpdate: "tool_call_update",
             toolCallId,
             status: "completed",
-            title: "@t3-code/html_render",
+            title: "@j6-code/html_render",
             rawInput,
             rawOutput: { response: "Rendered.", imageBase64Urls: [], message: "Rendered." },
             content: [{ type: "content", content: { type: "text", text: "Rendered." } }],
@@ -1338,7 +1338,7 @@ describe("KiroAdapterV2 MCP tools", () => {
             const completed = items.at(-1);
             assert.deepEqual(
               items.map((item) => item.toolName),
-              items.map(() => "t3-code.html_render"),
+              items.map(() => "j6-code.html_render"),
             );
             assert.equal(completed?.status, "completed");
             assert.deepEqual(completed?.input, args);

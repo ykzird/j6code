@@ -1,4 +1,4 @@
-import { OrchestratorMcpFailure } from "@t3tools/contracts";
+import { OrchestratorMcpFailure } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 
 import { FEEDBACK_CLI_CLIENT_LABEL } from "../../../feedback/FeedbackReport.ts";

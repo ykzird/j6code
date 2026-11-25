@@ -33,20 +33,20 @@ import {
   type ThreadId,
   isRuntimeModeAbove,
   type TurnTokenUsage,
-} from "@t3tools/contracts";
-import { AgentScope, AgentScopeThreadId } from "@t3tools/shared/AgentScope";
-import { parseGrepOutput } from "@t3tools/shared/grepOutput";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { HTML_RENDER_TOOL_NAME } from "@t3tools/shared/htmlRender";
-import { modelSelectionsEqual } from "@t3tools/shared/model";
-import { type SelfInvocation, selfInvocationArgs } from "@t3tools/shared/nodeRuntime";
-import { resolveT3McpToolId } from "@t3tools/shared/t3McpToolPresentation";
+} from "@j6/contracts";
+import { AgentScope, AgentScopeThreadId } from "@j6/shared/AgentScope";
+import { parseGrepOutput } from "@j6/shared/grepOutput";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { HTML_RENDER_TOOL_NAME } from "@j6/shared/htmlRender";
+import { modelSelectionsEqual } from "@j6/shared/model";
+import { type SelfInvocation, selfInvocationArgs } from "@j6/shared/nodeRuntime";
+import { resolveT3McpToolId } from "@j6/shared/t3McpToolPresentation";
 import {
   compactDynamicToolOutput,
   compactT3McpToolOutput,
   htmlRenderFromToolItem,
   mcpToolResultOutput,
-} from "@t3tools/shared/toolOutput";
+} from "@j6/shared/toolOutput";
 import { FILE_HEADERS_ONLY, formatPatch, structuredPatch } from "diff";
 import * as Cause from "effect/Cause";
 import * as Clock from "effect/Clock";
@@ -77,13 +77,13 @@ import {
   formatReadToolLabel,
   formatSearchToolLabel,
   searchToolLabelParts,
-} from "@t3tools/shared/toolActivity";
-import { isWorkspaceImagePreviewPath } from "@t3tools/shared/mediaPreview";
-import * as ProviderHost from "@t3tools/provider-core/server/ProviderHost";
+} from "@j6/shared/toolActivity";
+import { isWorkspaceImagePreviewPath } from "@j6/shared/mediaPreview";
+import * as ProviderHost from "@j6/provider-core/server/ProviderHost";
 import { makeAcpMcpOverAcpBridge, type AcpMcpOverAcpBridge } from "./mcpOverAcpBridge.ts";
-import { mcpToolPresentation } from "@t3tools/provider-core/server/mcpToolPresentation";
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
-import * as McpProviderSession from "@t3tools/provider-core/server/mcpSession";
+import { mcpToolPresentation } from "@j6/provider-core/server/mcpToolPresentation";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
+import * as McpProviderSession from "@j6/provider-core/server/mcpSession";
 import {
   applyAcpAgentTerminalUpdate,
   MAX_AGENT_TERMINAL_OUTPUT_CHARS,
@@ -125,30 +125,30 @@ import * as AcpSessionRuntime from "./AcpSessionRuntime.ts";
 import {
   t3AcpPromptWithInstructions,
   type T3AcpInstructionState,
-} from "@t3tools/provider-core/server/orchestrationInstructions";
-import { buildRuntimeInstructions } from "@t3tools/provider-core/server/runtimeInstructions";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
-import type * as ProviderContinuationRequests from "@t3tools/provider-core/server/ProviderContinuationRequests";
+} from "@j6/provider-core/server/orchestrationInstructions";
+import { buildRuntimeInstructions } from "@j6/provider-core/server/runtimeInstructions";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
+import type * as ProviderContinuationRequests from "@j6/provider-core/server/ProviderContinuationRequests";
 import {
   type BackgroundWork,
   type BackgroundWorkReport,
   backgroundWorkNotification,
-} from "@t3tools/provider-core/server/notification";
+} from "@j6/provider-core/server/notification";
 import {
   makeProviderFailure,
   makeProviderRetryTurnItem,
-} from "@t3tools/provider-core/server/failure";
-import { acpSelectionTransition } from "@t3tools/provider-core/server/selectionTransition";
+} from "@j6/provider-core/server/failure";
+import { acpSelectionTransition } from "@j6/provider-core/server/selectionTransition";
 import {
   isProviderNativeImageAttachment,
   providerMessageTextWithAttachmentPaths,
-} from "@t3tools/provider-core/server/attachmentPrompt";
+} from "@j6/provider-core/server/attachmentPrompt";
 import {
   makeSubagentChildThread,
   makeSubagentConversationArtifacts,
   subagentThreadTitle,
-} from "@t3tools/provider-core/server/subagentProjection";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
+} from "@j6/provider-core/server/subagentProjection";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
 
 export const ACP_PROTOCOL = "acp.ndjson-jsonrpc" as const;
 
@@ -1117,7 +1117,7 @@ function acpMcpContext(
   return {
     servers: [
       {
-        name: "t3-code",
+        name: "j6-code",
         command: self.command,
         args: [...selfInvocationArgs(self, ["acp-mcp-bridge"])],
         env: [
@@ -1127,13 +1127,13 @@ function acpMcpContext(
         ],
       },
     ],
-    acpServers: [{ type: "acp", name: "t3-code", serverId: "t3-code" }],
+    acpServers: [{ type: "acp", name: "j6-code", serverId: "j6-code" }],
     httpServers:
       mcpOverHttp === true
         ? [
             {
               type: "http",
-              name: "t3-code",
+              name: "j6-code",
               url: session.endpoint,
               headers: [
                 { name: "Authorization", value: session.authorizationHeader },
@@ -1151,7 +1151,7 @@ function acpMcpContext(
       // from its shell can find its T3 thread. Claude and Codex sessions set
       // the same variable (PortScanner.AGENT_THREAD_ENV; a string literal here
       // because this package cannot reach apps/server).
-      T3CODE_THREAD_ID: session.threadId,
+      J6CODE_THREAD_ID: session.threadId,
       T3_ACP_MCP_ENDPOINT: session.endpoint,
       T3_ACP_MCP_AUTHORIZATION: session.authorizationHeader,
       T3_ACP_MCP_NODE: self.command,
@@ -3059,7 +3059,7 @@ export const makeAcpAdapterV2 = Effect.fn("makeAcpAdapterV2")(function* (
               elicitation: { form: {}, ...(flavor.onUrlElicitation ? { url: {} } : {}) },
               ...(flavor.clientCapabilitiesMeta ? { _meta: flavor.clientCapabilitiesMeta } : {}),
             },
-            clientInfo: { name: "t3-code", version: "0.0.0" },
+            clientInfo: { name: "j6-code", version: "0.0.0" },
             onTermination: (error) =>
               Effect.sync(() => agentRequests.clear()).pipe(Effect.andThen(onTermination(error))),
             ...(promptInactivityTimeoutMillis === undefined
@@ -9206,7 +9206,7 @@ export const makeAcpAdapterV2 = Effect.fn("makeAcpAdapterV2")(function* (
                 recorded?.failure ??
                   makeProviderFailure({
                     class: "provider_error",
-                    message: `${flavor.runtimeHarness ?? driver} sent nothing for ${minutes} ${minutes === 1 ? "minute" : "minutes"}, so T3 Code stopped the turn and restarted the agent. Send a message to continue.`,
+                    message: `${flavor.runtimeHarness ?? driver} sent nothing for ${minutes} ${minutes === 1 ? "minute" : "minutes"}, so J6 Code stopped the turn and restarted the agent. Send a message to continue.`,
                   }),
                 recorded === undefined
                   ? undefined

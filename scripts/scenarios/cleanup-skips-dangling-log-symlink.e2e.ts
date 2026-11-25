@@ -4,7 +4,7 @@ import * as FileSystem from "effect/FileSystem";
 import * as Schema from "effect/Schema";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { runPromise, test, WEB } from "./t3.ts";
+import { runPromise, test, WEB } from "./j6.ts";
 
 const decodeSettings = Schema.decodeSync(
   Schema.fromJsonString(Schema.Record(Schema.String, Schema.Unknown)),
@@ -13,8 +13,8 @@ const decodeSettings = Schema.decodeSync(
 test(
   "Cleanup removes expired rotated logs even with a dangling symlink in the log directory",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    await t3.project("rotated-log-cleanup");
+  async ({ j6, app, browser, screen }) => {
+    await j6.project("rotated-log-cleanup");
     const settingsPath = `${T3_HOME}/userdata/settings.json`;
     const logFixture = `${T3_HOME}/userdata/logs/00-cleanup-fixture`;
     const expiredLog = `${logFixture}/server.log.1`;
@@ -31,7 +31,7 @@ test(
           ),
         ),
       );
-      await t3.open("/settings/maintenance");
+      await j6.open("/settings/maintenance");
       await screen.getByLabel("Delete old rotated logs in days").waitFor();
 
       const deleteNow = screen.getByRole("button", "Delete now", { exact: true });

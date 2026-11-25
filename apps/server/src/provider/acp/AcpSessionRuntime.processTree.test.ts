@@ -5,11 +5,11 @@ import * as NodeModule from "node:module";
 import * as NodePath from "node:path";
 
 import { describe, expect, it, vi } from "@effect/vitest";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 
-import * as AcpSessionRuntime from "@t3tools/provider-acp/server/AcpSessionRuntime";
+import * as AcpSessionRuntime from "@j6/provider-acp/server/AcpSessionRuntime";
 
 const identity = (
   pid: number,
@@ -82,7 +82,7 @@ describe("terminatePosixOwnedProcessTree", () => {
     ).toHaveLength(2);
   });
 
-  it.live("sweeps empty t3-acp sibling leases owned by dead pids only", () =>
+  it.live("sweeps empty j6-acp sibling leases owned by dead pids only", () =>
     Effect.sync(() => {
       const scratchRoot = NodePath.join(process.cwd(), "tmp");
       NodeFS.mkdirSync(scratchRoot, { recursive: true });
@@ -97,10 +97,10 @@ describe("terminatePosixOwnedProcessTree", () => {
       };
       const deadPid = 2_147_483_646;
       const liveForeignPid = 2_147_483_645;
-      const staleEmpty = writeSibling(`t3-acp-${deadPid}-aaaa`, "0");
-      const currentPidSibling = writeSibling(`t3-acp-${process.pid}-bbbb`, "0");
-      const liveForeignSibling = writeSibling(`t3-acp-${liveForeignPid}-cccc`, "0");
-      const stalePopulated = writeSibling(`t3-acp-${deadPid}-dddd`, "1");
+      const staleEmpty = writeSibling(`j6-acp-${deadPid}-aaaa`, "0");
+      const currentPidSibling = writeSibling(`j6-acp-${process.pid}-bbbb`, "0");
+      const liveForeignSibling = writeSibling(`j6-acp-${liveForeignPid}-cccc`, "0");
+      const stalePopulated = writeSibling(`j6-acp-${deadPid}-dddd`, "1");
       const unrelated = writeSibling("other-lease", "0");
       const isProcessAlive = (pid: number) => pid === process.pid || pid === liveForeignPid;
       try {
@@ -117,7 +117,7 @@ describe("terminatePosixOwnedProcessTree", () => {
         expect(NodeFS.existsSync(liveForeignSibling)).toBe(true);
         expect(NodeFS.existsSync(stalePopulated)).toBe(true);
         expect(NodeFS.existsSync(unrelated)).toBe(true);
-        writeSibling(`t3-acp-${deadPid}-eeee`, null);
+        writeSibling(`j6-acp-${deadPid}-eeee`, null);
         AcpSessionRuntime.sweepStaleLinuxCgroupSiblings(parent, {
           isProcessAlive,
           readPopulated: (path) => populatedByPath.get(path),
@@ -126,7 +126,7 @@ describe("terminatePosixOwnedProcessTree", () => {
             NodeFS.rmdirSync(path);
           },
         });
-        expect(NodeFS.existsSync(NodePath.join(parent, `t3-acp-${deadPid}-eeee`))).toBe(true);
+        expect(NodeFS.existsSync(NodePath.join(parent, `j6-acp-${deadPid}-eeee`))).toBe(true);
         expect(NodeFS.existsSync(currentPidSibling)).toBe(true);
       } finally {
         NodeFS.rmSync(parent, { recursive: true, force: true });
@@ -142,7 +142,7 @@ describe("terminatePosixOwnedProcessTree", () => {
       const scratchRoot = NodePath.join(process.cwd(), "tmp");
       NodeFS.mkdirSync(scratchRoot, { recursive: true });
       const scratch = NodeFS.mkdtempSync(NodePath.join(scratchRoot, "acp-cgroup-wrapper-"));
-      const linkedNode = NodePath.join(scratch, "T3 Code AppImage 'quoted'");
+      const linkedNode = NodePath.join(scratch, "J6 Code AppImage 'quoted'");
       const bareGrok = NodePath.join(scratch, "grok");
       const relativeBin = NodePath.join(scratch, "relative-bin");
       const directoryBin = NodePath.join(scratch, "directory-bin");
@@ -277,7 +277,7 @@ describe("terminatePosixOwnedProcessTree", () => {
 
       const missingTarget = AcpSessionRuntime.wrapCommandForLinuxCgroup(
         lease,
-        "/nonexistent-t3-probe",
+        "/nonexistent-j6-probe",
         [],
       );
       const missingTargetResult = NodeChildProcess.spawnSync(
@@ -294,7 +294,7 @@ describe("terminatePosixOwnedProcessTree", () => {
       });
       if ((missingTargetBash.error as NodeJS.ErrnoException | undefined)?.code !== "ENOENT") {
         expect(missingTargetBash.status, missingTargetBash.stderr).toBe(125);
-        expect(missingTargetBash.stderr).toContain("/nonexistent-t3-probe");
+        expect(missingTargetBash.stderr).toContain("/nonexistent-j6-probe");
       }
     } finally {
       packagedExecPath.mockRestore();
@@ -318,8 +318,8 @@ describe("terminatePosixOwnedProcessTree", () => {
     const lease: AcpSessionRuntime.AcpLinuxCgroupLease = {
       contains: () => true,
       exists: () => true,
-      path: "/test/t3-acp-root",
-      relativePath: "/test/t3-acp-root",
+      path: "/test/j6-acp-root",
+      relativePath: "/test/j6-acp-root",
       kill: () => undefined,
       populated: () => true,
       remove: () => undefined,

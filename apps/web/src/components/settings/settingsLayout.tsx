@@ -1,5 +1,5 @@
 import { SettingsGroup } from "./SettingsGroup";
-import { AuthSettingsWriteScope } from "@t3tools/contracts";
+import { AuthSettingsWriteScope } from "@j6/contracts";
 import { usePrimaryEnvironmentId, usePrimaryEnvironment } from "../../state/environments";
 import { useEnvironmentScope, useEnvironmentsWithScope } from "../../state/session";
 import { useServerConfigs } from "../../state/entities";
@@ -8,7 +8,7 @@ import {
   DEFAULT_SERVER_SETTINGS,
   isManagedSettingPath,
   type ServerSettings,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Equal from "effect/Equal";
 import { useGT } from "gt-react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
@@ -491,8 +491,8 @@ export function SettingsRow({
     ? { state: "mixed", summary: gt("Mixed across selected environments") }
     : source === "project"
       ? { state: "overridden", summary: gt("Overridden for this project") }
-      : source === "t3.json"
-        ? { state: "inherited", summary: gt("Inherited from the repository's t3.json") }
+      : source === "j6.json"
+        ? { state: "inherited", summary: gt("Inherited from the repository's j6.json") }
         : source === "environment" && scopedKeys.length > 0
           ? {
               state: "inherited",

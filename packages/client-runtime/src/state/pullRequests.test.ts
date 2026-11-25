@@ -12,7 +12,7 @@ import {
   type AuthSessionState,
   type PullRequestListInput,
   type PullRequestListEntry,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { expect, it } from "@effect/vitest";
 import * as Schema from "effect/Schema";
 import * as Deferred from "effect/Deferred";

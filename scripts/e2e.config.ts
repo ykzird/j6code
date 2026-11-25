@@ -3,7 +3,7 @@ import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { mobile, type DeviceProvider } from "@e2e-dev/mobile";
 import { web } from "@e2e-dev/web";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import { createAgentDeviceClient } from "agent-device";
 import type { E2EConfig } from "e2e";
 import * as Effect from "effect/Effect";
@@ -18,7 +18,7 @@ const resolved = await Effect.gen(function* () {
   const path = yield* Path.Path;
   const env = yield* HostProcess.Environment;
   const scripts = yield* path.fromFileUrl(new URL(".", import.meta.url));
-  const home = path.resolve(scripts, "../.t3/scenarios");
+  const home = path.resolve(scripts, "../.j6/scenarios");
   // A pooled device reaches this machine over the tailnet, not localhost.
   const host = yield* run("tailscale", ["ip", "-4"]).pipe(
     Effect.map((result) => result.stdout.trim().split("\n")[0] ?? ""),
@@ -47,7 +47,7 @@ const resolved = await Effect.gen(function* () {
 }).pipe(Effect.provide(NodeServices.layer), Effect.runPromise);
 
 export const APP_DIR = resolved.appDir;
-/** T3 homes only scenarios use, recreated on every run. `.t3` is gitignored. */
+/** T3 homes only scenarios use, recreated on every run. `.j6` is gitignored. */
 export const T3_HOME = resolved.home;
 export const MOBILE_T3_HOME = `${T3_HOME}-mobile`;
 export const MOBILE = resolved.mobile;
@@ -95,7 +95,7 @@ const simlock = (device: string): DeviceProvider => {
         cwd: APP_DIR,
       },
     );
-    const scope = { tenant: "t3-scenarios", runId: `${request.runId}-${request.slot}` };
+    const scope = { tenant: "j6-scenarios", runId: `${request.runId}-${request.slot}` };
     // Simlock takes the lease id from the caller: 32 hex characters.
     const leaseId = (yield* (yield* SecureRandom.SecureRandom).uuidV4()).replaceAll("-", "");
     const lease = yield* call(`The pool leased no ${device}`, () =>
@@ -158,7 +158,7 @@ export default {
         // Lets a scenario put an image on the clipboard for a real keyboard paste.
         permissions: { "clipboard-write": "grant" },
         // Vite answers before the server does; this path is proxied to the server.
-        readyUrl: `http://${LOOPBACK}:{port}/.well-known/t3/environment`,
+        readyUrl: `http://${LOOPBACK}:{port}/.well-known/j6/environment`,
         command: {
           executable: resolved.node,
           args: [startApp, "web", T3_HOME, LOOPBACK, "{port}"],
@@ -174,10 +174,10 @@ export default {
       engine: mobile({
         platform: "ios",
         device: simlock("iPhone 18 Pro"),
-        session: "t3-scenarios",
+        session: "j6-scenarios",
       }),
       app: {
-        bundleId: "com.t3tools.t3code.dev",
+        bundleId: "com.ykzird.j6code.dev",
         // Metro starts after the server listens, so it answering means both are up.
         readyUrl: `http://127.0.0.1:${MOBILE.metroPort}/status`,
         command: {

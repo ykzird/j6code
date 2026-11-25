@@ -17,11 +17,11 @@ import {
   type IssueInvolvement,
   type IssueLinkedPullRequest,
   type IssueViewerPermissions,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   IssueTrackerError,
   type IssueTrackerApi,
-} from "@t3tools/source-control-core/server/IssueTracker";
+} from "@j6/source-control-core/server/IssueTracker";
 
 import * as AzureDevOpsCli from "./AzureDevOpsCli.ts";
 import {
@@ -332,7 +332,7 @@ export const make: Effect.Effect<
     const unwritable = (cause: unknown) =>
       refused(input.operation, "Could not write the Azure DevOps request body.", cause);
     const file = yield* fs
-      .makeTempFileScoped({ prefix: "t3-azure-issue-" })
+      .makeTempFileScoped({ prefix: "j6-azure-issue-" })
       .pipe(Effect.mapError(unwritable));
     yield* fs.writeFileString(file, encodeJson(input.body)).pipe(Effect.mapError(unwritable));
     return yield* run({

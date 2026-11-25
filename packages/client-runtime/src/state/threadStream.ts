@@ -2,8 +2,8 @@ import type {
   OrchestrationV2ThreadHistoryPage,
   OrchestrationV2ThreadProjection,
   OrchestrationV2ThreadStreamItem,
-} from "@t3tools/contracts";
-import { boundedSnapshotProjection } from "@t3tools/shared/orchestrationV2BoundedSnapshot";
+} from "@j6/contracts";
+import { boundedSnapshotProjection } from "@j6/shared/orchestrationV2BoundedSnapshot";
 
 import { applyOrchestrationV2ProjectionEvent } from "./orchestrationV2Projection.ts";
 import {

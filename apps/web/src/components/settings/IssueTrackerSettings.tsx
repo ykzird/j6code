@@ -7,8 +7,8 @@ import {
   issueTrackerBindings,
   issueTrackerScopeOptions,
   issueTrackerSummary,
-} from "@t3tools/client-runtime/state/issue-trackers";
-import { squashAtomCommandFailure } from "@t3tools/client-runtime/state/runtime";
+} from "@j6/client-runtime/state/issue-trackers";
+import { squashAtomCommandFailure } from "@j6/client-runtime/state/runtime";
 import { T, useGT, useMessages } from "gt-react";
 import { ChevronDownIcon, ExternalLinkIcon, PlusIcon, XIcon } from "lucide-react";
 import { useState, type ElementType } from "react";
@@ -17,7 +17,7 @@ import type {
   IssueTrackerConnection,
   IssueTrackerConnectionList,
   ProjectId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
 import { useEnvironmentQuery } from "../../state/query";
 import { issueTrackerEnvironment } from "../../state/issueTrackers";

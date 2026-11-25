@@ -10,7 +10,7 @@ import * as Scope from "effect/Scope";
 
 import type * as Electron from "electron";
 
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 
 import * as DesktopEnvironment from "./DesktopEnvironment.ts";
 import { stopChildProcessesBeforeExit, stopZygotesBeforeExit } from "./DesktopExitChildren.ts";
@@ -62,7 +62,7 @@ export class DesktopLifecycle extends Context.Service<
       Scope.Scope | DesktopLifecycleRegistrationServices
     >;
   }
->()("@t3tools/desktop/app/DesktopLifecycle") {}
+>()("@j6/desktop/app/DesktopLifecycle") {}
 
 const { logInfo: logLifecycleInfo, logError: logLifecycleError } =
   makeComponentLogger("desktop-lifecycle");

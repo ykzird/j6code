@@ -21,7 +21,7 @@ export interface ConnectDeviceRevokeRequest {
 }
 
 /**
- * With approval off, a revoked T3 Connect device signs straight back in, so revoking offers to
+ * With approval off, a revoked J6 Connect device signs straight back in, so revoking offers to
  * turn approval on first.
  */
 export function RevokeConnectDeviceDialog({
@@ -82,7 +82,7 @@ function RevokeConnectDeviceDialogPopup({
         <AlertDialogTitle>{request.title}</AlertDialogTitle>
         <AlertDialogDescription>
           <T>
-            Approval for new devices is off, so a revoked device signed in to your T3 Connect
+            Approval for new devices is off, so a revoked device signed in to your J6 Connect
             account can connect again on its own.
           </T>
         </AlertDialogDescription>

@@ -19,12 +19,12 @@ import {
   SecretProviderId,
   SettingsSecretValue,
   type SecretReference,
-} from "@t3tools/contracts";
-import * as ProviderLatestVersions from "@t3tools/provider-core/server/ProviderLatestVersions";
-import { OpenCodeSettings } from "@t3tools/provider-opencode/settings";
-import { PiDriver } from "@t3tools/provider-pi/server";
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+} from "@j6/contracts";
+import * as ProviderLatestVersions from "@j6/provider-core/server/ProviderLatestVersions";
+import { OpenCodeSettings } from "@j6/provider-opencode/settings";
+import { PiDriver } from "@j6/provider-pi/server";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
@@ -46,7 +46,7 @@ import { ClaudeDriver, type ClaudeDriverEnv } from "./Drivers/ClaudeDriver.ts";
 import { CodexDriver, type CodexDriverEnv } from "./Drivers/CodexDriver.ts";
 import * as ModelManifest from "./ModelManifest.ts";
 import * as ResetCreditCoordinator from "./resetCreditCoordinator.ts";
-import * as ProviderEventLoggers from "@t3tools/provider-core/server/ProviderEventLoggers";
+import * as ProviderEventLoggers from "@j6/provider-core/server/ProviderEventLoggers";
 import { makeProviderInstanceRegistry } from "./ProviderInstanceRegistry.ts";
 import { ProviderDriverError } from "./Errors.ts";
 import * as ProviderInstallationGate from "./ProviderInstallationGate.ts";
@@ -54,8 +54,8 @@ import * as ProviderOrchestrationAdapterInfrastructure from "./ProviderOrchestra
 import * as PortScanner from "../preview/PortScanner.ts";
 import * as ProviderHostLive from "./ProviderHostLive.ts";
 import * as SqlitePersistence from "../persistence/Sqlite.ts";
-import * as SecretResolver from "@t3tools/secret-provider-core/server/SecretResolver";
-import type { AnyProviderDriver, ProviderInstance } from "@t3tools/provider-core/server/driver";
+import * as SecretResolver from "@j6/secret-provider-core/server/SecretResolver";
+import type { AnyProviderDriver, ProviderInstance } from "@j6/provider-core/server/driver";
 
 vi.mock("@anthropic-ai/claude-agent-sdk", { spy: true });
 
@@ -126,7 +126,7 @@ const makeTildeProviderFixtures = Effect.fn(
   const homePath = yield* HostProcess.HomeDirectory;
   const fixtureDir = yield* fileSystem.makeTempDirectoryScoped({
     directory: homePath,
-    prefix: ".t3-provider-path-test-",
+    prefix: ".j6-provider-path-test-",
   });
   yield* fileSystem.writeFileString(
     path.join(fixtureDir, "package.json"),

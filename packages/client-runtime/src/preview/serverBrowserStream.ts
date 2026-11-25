@@ -4,7 +4,7 @@ import {
   PREVIEW_STREAM_HOST_SETUP_CLOSE_CODE,
   type PreviewStreamHostSetup,
   type PreviewViewportSetting,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { mFallback, msg } from "gt-i18n";
 import type { MFunctionType } from "gt-i18n/types";
 
@@ -517,7 +517,7 @@ const decodeHostSetup = (reason: string): PreviewStreamHostSetup => {
       return { need: value.need, command: value.command };
     }
   } catch {}
-  return { need: "sandbox", command: "sudo npx t3 browser setup" };
+  return { need: "sandbox", command: "sudo npx j6 browser setup" };
 };
 
 export const previewStreamHostSetupMessage = (

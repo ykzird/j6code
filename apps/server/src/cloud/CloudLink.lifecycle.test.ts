@@ -12,10 +12,10 @@ import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
 import * as TestClock from "effect/testing/TestClock";
 import { HttpClient, HttpClientResponse, HttpServer, type HttpClientRequest } from "effect/http";
-import { RELAY_LINK_PROOF_TYP, signRelayJwt, verifyRelayJwt } from "@t3tools/shared/relayJwt";
+import { RELAY_LINK_PROOF_TYP, signRelayJwt, verifyRelayJwt } from "@j6/shared/relayJwt";
 import * as NetAddress from "effect/net/NetAddress";
 
-import { EnvironmentId } from "@t3tools/contracts";
+import { EnvironmentId } from "@j6/contracts";
 import * as EnvironmentKeys from "./environmentKeys.ts";
 import * as EnvironmentAuth from "../auth/EnvironmentAuth.ts";
 import * as ServerSecretStore from "../auth/ServerSecretStore.ts";
@@ -34,7 +34,7 @@ import * as CliTokenManager from "./CliTokenManager.ts";
 import {
   RelayEnvironmentLinkProofPayload,
   RelayManagedEndpointRecoveryRegistrationRequest,
-} from "@t3tools/contracts/relay";
+} from "@j6/contracts/relay";
 import {
   CLOUD_ENDPOINT_CONFIRMED_ORIGIN,
   CLOUD_ENDPOINT_RUNTIME_CONFIG,
@@ -259,11 +259,11 @@ describe("releaseManagedTunnelOnShutdown", () => {
         ),
 
         Effect.provide([
-          ServerConfigModule.layerTest("/", { prefix: "t3-http-release-test-" }).pipe(
+          ServerConfigModule.layerTest("/", { prefix: "j6-http-release-test-" }).pipe(
             Layer.provideMerge(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
           ),
           ConfigProvider.layer(
-            ConfigProvider.fromEnv({ env: { T3CODE_RELAY_URL: "https://relay.example.test" } }),
+            ConfigProvider.fromEnv({ env: { J6CODE_RELAY_URL: "https://relay.example.test" } }),
           ),
         ]),
         Effect.scoped,
@@ -285,7 +285,7 @@ describe("releaseManagedTunnelOnShutdown", () => {
         );
         const challenge = yield* signRelayJwt({
           privateKey: relayKeys.privateKey,
-          typ: "t3-link-challenge+jwt",
+          typ: "j6-link-challenge+jwt",
           payload: {
             kind: "environment_link_challenge",
             iss: relayIssuer,
@@ -318,7 +318,7 @@ describe("releaseManagedTunnelOnShutdown", () => {
           publicKey: environmentKeys.publicKey,
           token: proof,
           typ: RELAY_LINK_PROOF_TYP,
-          issuer: "t3-env:env_123",
+          issuer: "j6-env:env_123",
           audience: relayIssuer,
         });
 
@@ -770,7 +770,7 @@ describe("releaseManagedTunnelOnShutdown", () => {
       const result = yield* relink.pipe(
         Effect.provide(
           ConfigProvider.layer(
-            ConfigProvider.fromEnv({ env: { T3CODE_RELAY_URL: "https://relay.example.test" } }),
+            ConfigProvider.fromEnv({ env: { J6CODE_RELAY_URL: "https://relay.example.test" } }),
           ),
         ),
         Effect.flip,

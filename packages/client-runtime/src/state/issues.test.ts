@@ -11,7 +11,7 @@ import {
   type IssueDetail,
   type IssueListEntry,
   type IssueListResult,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -342,7 +342,7 @@ describe("createMergedIssueListAtoms", () => {
         return new WeakRef(targets);
       });
       // Let the registry remove all three unmounted queries and the WeakRefs leave their creation job.
-      // oxlint-disable-next-line t3code/no-real-time-wait-in-tests -- a zero-delay macrotask boundary, not a wait for time
+      // oxlint-disable-next-line j6code/no-real-time-wait-in-tests -- a zero-delay macrotask boundary, not a wait for time
       await NodeTimersPromises.setImmediate();
       gc();
 

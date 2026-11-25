@@ -1,16 +1,16 @@
 import type {
   OrchestrationV2ContextHandoff,
   OrchestrationV2ProviderThread,
-} from "@t3tools/contracts";
-import type * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
-import { ContextHandoffBudgetError } from "@t3tools/provider-core/server/failure";
+} from "@j6/contracts";
+import type * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
+import { ContextHandoffBudgetError } from "@j6/provider-core/server/failure";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import {
   historyCost,
   renderHistory,
   selectHistory,
-} from "@t3tools/provider-core/server/handoffBudget";
+} from "@j6/provider-core/server/handoffBudget";
 
 // A first word with a second slash is a path, not a command.
 const SLASH_COMMAND = /^\s*\/[^\s/]+(?:\s|$)/u;

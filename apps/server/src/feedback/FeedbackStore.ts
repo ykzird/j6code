@@ -12,7 +12,7 @@ import {
   type RunId,
   type ThreadId,
   TurnItemId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -75,7 +75,7 @@ export class FeedbackStore extends Context.Service<
       input: AgentFeedbackAnswerInput,
     ) => Effect.Effect<void, AgentFeedbackRequestError>;
   }
->()("t3/feedback/FeedbackStore") {}
+>()("j6/feedback/FeedbackStore") {}
 
 const storageError = (cause: unknown) => new FeedbackStorageError({ cause });
 const TraceJson = Schema.NullOr(Schema.fromJsonString(FeedbackTrace));

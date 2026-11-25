@@ -6,23 +6,23 @@ import {
 } from "./RemoteRequestHeaders.ts";
 
 const packagedPolicy: MainWindowRequestHeaderPolicy = {
-  desktopOrigin: "t3code://app",
+  desktopOrigin: "j6code://app",
   mainWebContentsId: 42,
-  clerkFrontendApiHostname: "clerk.t3.codes",
+  clerkFrontendApiHostname: "clerk.j6.codes",
   isDevelopment: false,
 };
 
 const devPolicy: MainWindowRequestHeaderPolicy = {
-  desktopOrigin: "t3code-dev://app",
+  desktopOrigin: "j6code-dev://app",
   mainWebContentsId: 42,
-  clerkFrontendApiHostname: "clerk.t3.codes",
+  clerkFrontendApiHostname: "clerk.j6.codes",
   devServerOrigin: "http://devbox.internal:5733",
   isDevelopment: true,
 };
 
 describe("RemoteRequestHeaders", () => {
   it.each([
-    "https://remote.example.com/.well-known/t3/environment",
+    "https://remote.example.com/.well-known/j6/environment",
     "http://127.0.0.1:8080/api/auth/bootstrap",
     "ws://127.0.0.1:8080/ws?ticket=abc",
     "wss://remote.example.com/ws?ticket=abc",
@@ -32,7 +32,7 @@ describe("RemoteRequestHeaders", () => {
       webContentsId: 42,
       frame: { parent: null },
       requestHeaders: {
-        Origin: "t3code://app",
+        Origin: "j6code://app",
         "Sec-Fetch-Site": "cross-site",
         "Sec-Fetch-Mode": "cors",
         "Sec-Fetch-Dest": "empty",
@@ -54,7 +54,7 @@ describe("RemoteRequestHeaders", () => {
       webContentsId: 42,
       frame: null,
       requestHeaders: {
-        origin: "t3code://app",
+        origin: "j6code://app",
         "Sec-Fetch-Site": "cross-site",
         Upgrade: "websocket",
       },
@@ -66,13 +66,13 @@ describe("RemoteRequestHeaders", () => {
   });
 
   it("preserves headers for Clerk frontend API requests", () => {
-    for (const url of ["https://clerk.t3.codes/v1/client", "https://CLERK.T3.CODES./v1/client"]) {
+    for (const url of ["https://clerk.j6.codes/v1/client", "https://CLERK.T3.CODES./v1/client"]) {
       const headers = stripDesktopOriginHeaders(packagedPolicy, {
         url,
         webContentsId: 42,
         frame: { parent: null },
         requestHeaders: {
-          Origin: "t3code://app",
+          Origin: "j6code://app",
           "Sec-Fetch-Site": "cross-site",
         },
       });
@@ -96,7 +96,7 @@ describe("RemoteRequestHeaders", () => {
           webContentsId: 42,
           frame: { parent: null },
           requestHeaders: {
-            Origin: "t3code-dev://app",
+            Origin: "j6code-dev://app",
             "Sec-Fetch-Site": "cross-site",
           },
         }),
@@ -113,7 +113,7 @@ describe("RemoteRequestHeaders", () => {
           webContentsId: 42,
           frame: { parent: null },
           requestHeaders: {
-            Origin: "t3code-dev://app",
+            Origin: "j6code-dev://app",
             "Sec-Fetch-Site": "cross-site",
             "Content-Type": "application/json",
           },
@@ -142,7 +142,7 @@ describe("RemoteRequestHeaders", () => {
         webContentsId: 42,
         frame: { parent: {} },
         requestHeaders: {
-          Origin: "t3code://app",
+          Origin: "j6code://app",
           "Sec-Fetch-Site": "cross-site",
         },
       }),
@@ -154,7 +154,7 @@ describe("RemoteRequestHeaders", () => {
         webContentsId: 99,
         frame: { parent: null },
         requestHeaders: {
-          Origin: "t3code://app",
+          Origin: "j6code://app",
           "Sec-Fetch-Site": "cross-site",
         },
       }),
@@ -166,7 +166,7 @@ describe("RemoteRequestHeaders", () => {
         webContentsId: undefined,
         frame: null,
         requestHeaders: {
-          Origin: "t3code://app",
+          Origin: "j6code://app",
           "Sec-Fetch-Site": "cross-site",
         },
       }),

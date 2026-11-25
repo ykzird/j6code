@@ -1,5 +1,5 @@
-import { scopedThreadKey } from "@t3tools/client-runtime/environment";
-import type { ScopedThreadRef, SnapShotSource } from "@t3tools/contracts";
+import { scopedThreadKey } from "@j6/client-runtime/environment";
+import type { ScopedThreadRef, SnapShotSource } from "@j6/contracts";
 
 import type { DraftId } from "../composerDraftStore";
 import { getDesktopSnapShotBridge } from "./desktopSnapShot";

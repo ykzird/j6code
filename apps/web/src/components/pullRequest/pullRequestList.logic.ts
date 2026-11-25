@@ -1,7 +1,7 @@
-import { sourceControlClients } from "@t3tools/client-runtime/source-control-clients";
+import { sourceControlClients } from "@j6/client-runtime/source-control-clients";
 import { msg } from "gt-react";
 
-import { resolvePullRequestAuthorFilter } from "@t3tools/contracts";
+import { resolvePullRequestAuthorFilter } from "@j6/contracts";
 import type {
   EnvironmentId,
   PullRequestListEntry,
@@ -19,10 +19,10 @@ import type {
   PullRequestListState,
   PullRequestState,
   PullRequestSummary,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
-import { isStalePullRequestReply } from "@t3tools/client-runtime/pull-request-reply";
-import { toSortableTimestamp } from "@t3tools/client-runtime/state/thread-sort";
+import { isStalePullRequestReply } from "@j6/client-runtime/pull-request-reply";
+import { toSortableTimestamp } from "@j6/client-runtime/state/thread-sort";
 import type { PullRequestListSort } from "./pullRequestListPreferences";
 
 export interface EnvironmentPullRequestEntry extends PullRequestListEntry {

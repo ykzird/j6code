@@ -1,5 +1,5 @@
 import { assert, it } from "@effect/vitest";
-import { type MilestoneEvent, MilestoneId, ProjectId, RunId, ThreadId } from "@t3tools/contracts";
+import { type MilestoneEvent, MilestoneId, ProjectId, RunId, ThreadId } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as Stream from "effect/Stream";
 import * as TestClock from "effect/testing/TestClock";

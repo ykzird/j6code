@@ -1387,14 +1387,14 @@ describe("extractMcpToolCallIdentity", () => {
       sessionUpdate: "tool_call",
       toolCallId: "exec-f4591587-0754-4bb4-990b-f2767894ba93",
       kind: "execute",
-      title: "mcp.t3-code.orchestrator_capabilities",
+      title: "mcp.j6-code.orchestrator_capabilities",
       status: "in_progress",
-      rawInput: { server: "t3-code", tool: "orchestrator_capabilities", arguments: {} },
+      rawInput: { server: "j6-code", tool: "orchestrator_capabilities", arguments: {} },
       _meta: { is_mcp_tool_call: true },
     });
 
     expect(extractMcpToolCallIdentity(toolCall)).toEqual({
-      server: "t3-code",
+      server: "j6-code",
       tool: "orchestrator_capabilities",
     });
   });
@@ -1433,10 +1433,10 @@ describe("extractMcpToolCallIdentity", () => {
     expect(
       extractMcpToolCallIdentity(toolCall, {
         embeddedTerminalCommands: [
-          '/usr/bin/node /srv/t3/bin.ts acp-mcp-call delegate_task {"task":"x"}',
+          '/usr/bin/node /srv/j6/bin.ts acp-mcp-call delegate_task {"task":"x"}',
         ],
       }),
-    ).toEqual({ server: "t3-code", tool: "delegate_task", input: { task: "x" } });
+    ).toEqual({ server: "j6-code", tool: "delegate_task", input: { task: "x" } });
   });
 
   it("recovers T3 identity from pi-acp title-only fallback execs", () => {
@@ -1458,7 +1458,7 @@ describe("extractMcpToolCallIdentity", () => {
 
     expect(toolCall.title).toBe("Ran command");
     expect(extractMcpToolCallIdentity(toolCall)).toEqual({
-      server: "t3-code",
+      server: "j6-code",
       tool: "orchestrator_capabilities",
       input: {},
     });
@@ -1469,7 +1469,7 @@ describe("extractMcpToolCallIdentity", () => {
       sessionUpdate: "tool_call",
       toolCallId: "chatcmpl-tool-b2a6142ee1a510a5",
       kind: "other",
-      title: "t3-code_orchestrator_capabilities",
+      title: "j6-code_orchestrator_capabilities",
       status: "pending",
       locations: [],
       rawInput: {},
@@ -1484,19 +1484,19 @@ describe("extractMcpToolCallIdentity", () => {
 
     expect(merged.title).toBe(created.title);
     expect(extractMcpToolCallIdentity(merged)).toEqual({
-      server: "t3-code",
+      server: "j6-code",
       tool: "orchestrator_capabilities",
     });
   });
 
   it("recovers T3 identity across the registry agents' naming conventions", () => {
     for (const title of [
-      "t3-code___delegate_task",
-      "t3-code-delegate_task",
+      "j6-code___delegate_task",
+      "j6-code-delegate_task",
       'mcp__t3_code__delegate_task: {"mode":"async"}',
-      't3-code__delegate_task: {"mode":"async"}',
-      "delegate_task_t3-code",
-      "t3-code/delegate_task",
+      'j6-code__delegate_task: {"mode":"async"}',
+      "delegate_task_j6-code",
+      "j6-code/delegate_task",
       "delegate_task",
       'delegate_task: {"mode":"async"}',
       // Kimi retitles with partial JSON and middle-truncates args over 50 characters.
@@ -1504,8 +1504,8 @@ describe("extractMcpToolCallIdentity", () => {
       'delegate_task: {"mode":"async","task":"Ru...cho child-result-42\'"}',
       // Antigravity: "Running <tool>" before agy 1.5.8, "Run mcp_<server>_<tool>" since, "?" on prompts.
       "Running delegate_task",
-      "Run mcp_t3-code_delegate_task",
-      "Run mcp_t3-code_delegate_task?",
+      "Run mcp_j6-code_delegate_task",
+      "Run mcp_j6-code_delegate_task?",
     ]) {
       const toolCall = toolCallFromUpdate({
         sessionUpdate: "tool_call",
@@ -1515,7 +1515,7 @@ describe("extractMcpToolCallIdentity", () => {
         status: "pending",
       });
       expect(extractMcpToolCallIdentity(toolCall), title).toEqual({
-        server: "t3-code",
+        server: "j6-code",
         tool: "delegate_task",
       });
     }
@@ -1535,7 +1535,7 @@ describe("extractMcpToolCallIdentity", () => {
       );
 
     expect(identityFor("mcp__editor_t3_code_f6129534__html_render")).toEqual({
-      server: "t3-code",
+      server: "j6-code",
       tool: "html_render",
     });
     expect(identityFor("mcp__editor_github_1234abcd__html_render")).toEqual({
@@ -1550,11 +1550,11 @@ describe("extractMcpToolCallIdentity", () => {
         sessionUpdate: "tool_call",
         toolCallId: "kiro-1",
         kind: "other",
-        title: `@t3-code/${tool}`,
+        title: `@j6-code/${tool}`,
         status: "pending",
-        rawInput: { tool_id: `t3-code::${tool}`, arguments: { threadId: "thread-1" } },
+        rawInput: { tool_id: `j6-code::${tool}`, arguments: { threadId: "thread-1" } },
       });
-      expect(extractMcpToolCallIdentity(toolCall), tool).toEqual({ server: "t3-code", tool });
+      expect(extractMcpToolCallIdentity(toolCall), tool).toEqual({ server: "j6-code", tool });
     }
   });
 
@@ -1592,7 +1592,7 @@ describe("extractMcpToolCallIdentity", () => {
               args,
               tier: "write",
               inner: {
-                serverName: "t3-code",
+                serverName: "j6-code",
                 mcpToolName: "html_render",
                 rawContent: [{ type: "text", text }],
                 provider: "acp",
@@ -1614,7 +1614,7 @@ describe("extractMcpToolCallIdentity", () => {
       rawInput: { path: "xd://mcp__t3_code_html_render" },
     });
 
-    const expected = { server: "t3-code", tool: "html_render", input: args };
+    const expected = { server: "j6-code", tool: "html_render", input: args };
     expect(extractMcpToolCallIdentity(created), "pending write").toEqual(expected);
     expect(extractMcpToolCallIdentity(completed), "completed write").toEqual(expected);
     expect(extractMcpToolCallIdentity(docRead), "doc read").toBeUndefined();
@@ -1640,14 +1640,14 @@ describe("extractMcpToolCallIdentity", () => {
       status: "in_progress",
       _meta: {
         goose: {
-          toolCall: { toolName: "t3-code__task_status", extensionName: "t3-code" },
+          toolCall: { toolName: "j6-code__task_status", extensionName: "j6-code" },
           messageId: "message-1",
         },
       },
     });
 
     expect(extractMcpToolCallIdentity(toolCall)).toEqual({
-      server: "t3-code",
+      server: "j6-code",
       tool: "task_status",
     });
   });
@@ -1660,11 +1660,11 @@ describe("extractMcpToolCallIdentity", () => {
       kind: "other",
       title: "unrelated display title",
       status: "pending",
-      _meta: { toolName: "mcp::t3-code::t3_thread_send", serverId: "t3-code", provenance: "mcp" },
+      _meta: { toolName: "mcp::j6-code::t3_thread_send", serverId: "j6-code", provenance: "mcp" },
     });
 
     expect(extractMcpToolCallIdentity(toolCall)).toEqual({
-      server: "t3-code",
+      server: "j6-code",
       tool: "t3_thread_send",
     });
   });
@@ -1711,7 +1711,7 @@ describe("extractMcpToolCallIdentity", () => {
       sessionUpdate: "tool_call",
       toolCallId: "foreign-1",
       kind: "other",
-      title: "t3-code_delegate_task",
+      title: "j6-code_delegate_task",
       status: "pending",
       _meta: { toolName: "delegate_task", serverId: "other-orchestrator" },
     });
@@ -1724,9 +1724,9 @@ describe("extractMcpToolCallIdentity", () => {
 
   it("does not brand path-like or unknown-tool titles", () => {
     for (const title of [
-      "t3-code/README.md",
-      "t3-code_not_a_real_tool",
-      "Run mcp_t3-code_not_a_real_tool",
+      "j6-code/README.md",
+      "j6-code_not_a_real_tool",
+      "Run mcp_j6-code_not_a_real_tool",
       "Run manage_task",
     ]) {
       const toolCall = toolCallFromUpdate({
@@ -1780,12 +1780,12 @@ describe("embeddedTerminalIdsFromSessionUpdate", () => {
           toolCallId: "call_1",
           status: "in_progress",
           content: [
-            { type: "terminal", terminalId: "t3-term-9" },
+            { type: "terminal", terminalId: "j6-term-9" },
             { type: "content", content: { type: "text", text: "noise" } },
           ],
         },
       }),
-    ).toEqual({ toolCallId: "call_1", terminalIds: ["t3-term-9"] });
+    ).toEqual({ toolCallId: "call_1", terminalIds: ["j6-term-9"] });
     expect(
       embeddedTerminalIdsFromSessionUpdate({
         sessionId: "session-1",

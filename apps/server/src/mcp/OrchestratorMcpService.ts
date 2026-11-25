@@ -66,13 +66,13 @@ import {
   latestProviderTurnForAttempt,
   resolveProjectProviderInstanceEnabled,
   SECRET_REQUEST_UNSAVED_NOTE,
-} from "@t3tools/contracts";
-import { getProviderOptionCurrentValue, withLegacyUltracodeEffort } from "@t3tools/shared/model";
-import { backgroundWorkHoldsCompletion } from "@t3tools/shared/orchestrationV2PendingBackgroundWork";
-import { runRanAfter } from "@t3tools/shared/orchestrationV2ThreadError";
-import { resolveProjectSettings } from "@t3tools/shared/projectSettings";
-import { formatThreadLink } from "@t3tools/shared/threadLinks";
-import { threadPullRequestUpdatedAtMs } from "@t3tools/shared/threadPullRequests";
+} from "@j6/contracts";
+import { getProviderOptionCurrentValue, withLegacyUltracodeEffort } from "@j6/shared/model";
+import { backgroundWorkHoldsCompletion } from "@j6/shared/orchestrationV2PendingBackgroundWork";
+import { runRanAfter } from "@j6/shared/orchestrationV2ThreadError";
+import { resolveProjectSettings } from "@j6/shared/projectSettings";
+import { formatThreadLink } from "@j6/shared/threadLinks";
+import { threadPullRequestUpdatedAtMs } from "@j6/shared/threadPullRequests";
 import {
   normalizeThreadPullRequestKey,
   visibleThreadPullRequests,
@@ -97,7 +97,7 @@ import {
   subagentStopNotice,
   delegatedTaskProgress,
   delegatedTaskReportRuns,
-} from "@t3tools/provider-core/server/subagentProjection";
+} from "@j6/provider-core/server/subagentProjection";
 import {
   DispatchModeLimit,
   type DispatchModeRefusal,
@@ -243,7 +243,7 @@ export interface OrchestratorMcpServiceShape {
 export class OrchestratorMcpService extends Context.Service<
   OrchestratorMcpService,
   OrchestratorMcpServiceShape
->()("t3/mcp/OrchestratorMcpService") {}
+>()("j6/mcp/OrchestratorMcpService") {}
 
 export const isThreadManagementError = Schema.is(ThreadManagementService.ThreadManagementError);
 

@@ -36,7 +36,7 @@ picker. See [Use multiple accounts](#use-multiple-accounts).
 ## Allow more time for provider checks
 
 If an authenticated Codex installation reports “Timed out while checking Codex
-app-server provider status,” set `T3CODE_CODEX_PROBE_TIMEOUT_MS=60000` in the
+app-server provider status,” set `J6CODE_CODEX_PROBE_TIMEOUT_MS=60000` in the
 J6 server's environment and restart it. See [Provider check timeouts](./install.md#provider-check-timeouts)
 for configuration and other providers.
 

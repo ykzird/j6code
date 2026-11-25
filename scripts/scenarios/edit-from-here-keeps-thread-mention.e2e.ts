@@ -1,15 +1,15 @@
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 test(
   "Edit from here puts a sent message back with its thread mention",
   WEB,
-  async ({ t3, app, screen, browser }) => {
-    const project = await t3.project("demo");
-    await t3.thread({ project, title: "Release notes", messages: ["Draft the notes"] });
-    const thread = await t3.thread({ project, title: "Review work", messages: ["Start"] });
-    await t3.open(thread);
+  async ({ j6, app, screen, browser }) => {
+    const project = await j6.project("demo");
+    await j6.thread({ project, title: "Release notes", messages: ["Draft the notes"] });
+    const thread = await j6.thread({ project, title: "Review work", messages: ["Start"] });
+    await j6.open(thread);
 
     const composer = screen.getByRole("textbox");
     await composer.pressSequentially("Review @Release");

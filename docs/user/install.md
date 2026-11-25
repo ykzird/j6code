@@ -25,8 +25,8 @@ This installs the `j6` command to `~/.local/bin`. If that folder is not on your
 a command to add it. On Windows, `j6` works in the same PowerShell window right
 away; add the folder to your `PATH` for new windows. If a `j6` that the
 installer or the desktop app did not create is already there, it leaves that
-one alone and stops. Set `T3CODE_CHANNEL=nightly` to install the nightly train, or
-`T3CODE_VERSION` to pin an exact version.
+one alone and stops. Set `J6CODE_CHANNEL=nightly` to install the nightly train, or
+`J6CODE_VERSION` to pin an exact version.
 
 | Task                                  | Command                                                                 |
 | ------------------------------------- | ----------------------------------------------------------------------- |
@@ -80,8 +80,8 @@ or use a package manager:
 | Windows (Scoop)    | `scoop install extras/j6code`                                |
 | macOS              | `brew install --cask j6-code`                                |
 | Debian, Ubuntu     | `sudo apt install ./J6-Code-*.deb`                           |
-| Arch Linux         | `yay -S t3code-bin`                                          |
-| Arch Linux nightly | `yay -S t3code-nightly-bin`                                  |
+| Arch Linux         | `yay -S j6code-bin`                                          |
+| Arch Linux nightly | `yay -S j6code-nightly-bin`                                  |
 | Nix                | `nix profile add github:NixOS/nixpkgs/nixos-unstable#j6code` |
 
 ### Linux
@@ -171,7 +171,7 @@ folder paths, so in the web app use **Add project** instead.
 
 Install J6 Code from the
 [App Store](https://apps.apple.com/us/app/j6-code-remote-claude-more/id6787819824) or
-[Google Play](https://play.google.com/store/apps/details?id=com.t3tools.t3code).
+[Google Play](https://play.google.com/store/apps/details?id=com.ykzird.j6code).
 The phone connects to a server on another machine. Follow
 [remote access](./remote-access.md) to link it through J6 Connect or a pairing URL.
 
@@ -257,13 +257,13 @@ allow more time in the J6 server's environment. For example, give Codex and
 Claude readiness checks 60 seconds:
 
 ```bash
-T3CODE_CODEX_PROBE_TIMEOUT_MS=60000 T3CODE_CLAUDE_PROBE_TIMEOUT_MS=60000 j6 serve
+J6CODE_CODEX_PROBE_TIMEOUT_MS=60000 J6CODE_CLAUDE_PROBE_TIMEOUT_MS=60000 j6 serve
 ```
 
 For a remote environment, set these on the machine running the J6 server.
 Keep them in your launcher or service configuration to retain them across
 updates, then restart the server. For systemd, add
-`Environment=T3CODE_CODEX_PROBE_TIMEOUT_MS=60000` under `[Service]` in a service
+`Environment=J6CODE_CODEX_PROBE_TIMEOUT_MS=60000` under `[Service]` in a service
 override, reload systemd, and restart the service. Provider instances can also
 set their own overrides in Settings → Providers.
 
@@ -274,17 +274,17 @@ greater than 2147483647; unset or invalid values keep the defaults.
 
 | Provider            | Environment variable                   |
 | ------------------- | -------------------------------------- |
-| Codex               | `T3CODE_CODEX_PROBE_TIMEOUT_MS`        |
-| Claude              | `T3CODE_CLAUDE_PROBE_TIMEOUT_MS`       |
-| Cursor              | `T3CODE_CURSOR_PROBE_TIMEOUT_MS`       |
-| Antigravity         | `T3CODE_ANTIGRAVITY_PROBE_TIMEOUT_MS`  |
-| Grok                | `T3CODE_GROK_PROBE_TIMEOUT_MS`         |
-| Kiro                | `T3CODE_KIRO_PROBE_TIMEOUT_MS`         |
-| fx                  | `T3CODE_FX_PROBE_TIMEOUT_MS`           |
-| Pi                  | `T3CODE_PI_PROBE_TIMEOUT_MS`           |
-| Muse Code           | `T3CODE_MUSE_PROBE_TIMEOUT_MS`         |
-| OpenCode            | `T3CODE_OPENCODE_PROBE_TIMEOUT_MS`     |
-| ACP Registry agents | `T3CODE_ACP_REGISTRY_PROBE_TIMEOUT_MS` |
+| Codex               | `J6CODE_CODEX_PROBE_TIMEOUT_MS`        |
+| Claude              | `J6CODE_CLAUDE_PROBE_TIMEOUT_MS`       |
+| Cursor              | `J6CODE_CURSOR_PROBE_TIMEOUT_MS`       |
+| Antigravity         | `J6CODE_ANTIGRAVITY_PROBE_TIMEOUT_MS`  |
+| Grok                | `J6CODE_GROK_PROBE_TIMEOUT_MS`         |
+| Kiro                | `J6CODE_KIRO_PROBE_TIMEOUT_MS`         |
+| fx                  | `J6CODE_FX_PROBE_TIMEOUT_MS`           |
+| Pi                  | `J6CODE_PI_PROBE_TIMEOUT_MS`           |
+| Muse Code           | `J6CODE_MUSE_PROBE_TIMEOUT_MS`         |
+| OpenCode            | `J6CODE_OPENCODE_PROBE_TIMEOUT_MS`     |
+| ACP Registry agents | `J6CODE_ACP_REGISTRY_PROBE_TIMEOUT_MS` |
 
 Longer deadlines also take longer to report a stalled check. These overrides
 cover readiness and discovery, including OpenCode server startup. Usage and

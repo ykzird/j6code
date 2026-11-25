@@ -556,7 +556,7 @@ const program = Effect.gen(function* () {
       parameterizedModelPicker = request.capabilities?._meta?.parameterizedModelPicker === true;
       return {
         protocolVersion: 2,
-        info: { name: "t3-acp-mock-agent", version: agentVersion },
+        info: { name: "j6-acp-mock-agent", version: agentVersion },
         ...(omitInitializeModelState ? {} : { _meta: { modelState: modelState() } }),
         capabilities: {
           session: {
@@ -1396,10 +1396,10 @@ const program = Effect.gen(function* () {
             rawOutput: {
               action: {
                 type: "search",
-                query: "t3 code",
+                query: "j6 code",
                 sources: [
-                  { type: "url", url: "https://t3.codes" },
-                  { type: "url", url: "https://t3.codes" },
+                  { type: "url", url: "https://j6.codes" },
+                  { type: "url", url: "https://j6.codes" },
                   { type: "url", url: "https://github.com/pingdotgg/t3code" },
                 ],
               },
@@ -1410,15 +1410,15 @@ const program = Effect.gen(function* () {
           {
             sessionUpdate: "tool_call_update",
             toolCallId: "grok-web-fetch",
-            title: "Fetch: https://t3.codes",
+            title: "Fetch: https://j6.codes",
             kind: "fetch",
             status: "completed",
-            rawInput: { variant: "WebFetch", url: "https://t3.codes" },
+            rawInput: { variant: "WebFetch", url: "https://j6.codes" },
             rawOutput: {
               type: "WebFetch",
-              Content: { url: "https://t3.codes", content: "T3 Code page" },
+              Content: { url: "https://j6.codes", content: "J6 Code page" },
             },
-            content: [{ type: "content", content: { type: "text", text: "T3 Code page" } }],
+            content: [{ type: "content", content: { type: "text", text: "J6 Code page" } }],
           },
           {
             sessionUpdate: "tool_call_update",
@@ -1901,7 +1901,7 @@ const program = Effect.gen(function* () {
             status: "completed",
             rawOutput: {
               exitCode: 0,
-              stdout: '{ "name": "t3" }',
+              stdout: '{ "name": "j6" }',
               stderr: "",
             },
           },

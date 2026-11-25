@@ -2,7 +2,7 @@ import type {
   EnvironmentId,
   ServerSettingsPatch,
   UsageModelPriceOverride,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { msg } from "gt-react";
 
 import { m } from "~/i18n/messages";

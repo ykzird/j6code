@@ -13,7 +13,7 @@ import {
   VcsProcessExitError,
   VcsProcessTimeoutError,
   VcsUnsupportedOperationError,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
@@ -27,7 +27,7 @@ import * as TestClock from "effect/testing/TestClock";
 
 import * as CheckpointStore from "../checkpointing/CheckpointStore.ts";
 import * as CheckpointService from "./CheckpointService.ts";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
 import * as WorkspaceFolders from "../workspace/WorkspaceFolders.ts";
 
 const layerNoTrackedFolders = Layer.merge(
@@ -709,7 +709,7 @@ it.effect("keeps the pre-rewind snapshot of a folder a failed rewind could not p
     scope: { id: CheckpointScopeId.make(`checkpoint-scope:rewind:${name}`), cwd: `/repo/${name}` },
     checkpoint: {
       ordinalWithinScope: 1,
-      ref: CheckpointRef.make(`refs/t3/test/rewind/${name}`),
+      ref: CheckpointRef.make(`refs/j6/test/rewind/${name}`),
       status: "ready" as const,
     },
   }));

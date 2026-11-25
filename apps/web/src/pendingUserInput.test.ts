@@ -1,8 +1,8 @@
-import { EnvironmentId, ThreadId } from "@t3tools/contracts";
+import { EnvironmentId, ThreadId } from "@j6/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import { formatInlineContextReference } from "./lib/composerContextReferences";
 import { threadContextReference } from "./lib/composerContextRecords";
-import { threadContextRecord } from "@t3tools/shared/composerContextReferences";
+import { threadContextRecord } from "@j6/shared/composerContextReferences";
 
 import {
   answerContextRecords,
@@ -25,7 +25,7 @@ describe("projectPendingUserInputAnswer", () => {
   it("sends thread chips as readable links with the actual thread ID", () => {
     const answer = `Compare ${formatInlineContextReference(threadContextReference(record))}`;
     expect(projectPendingUserInputAnswer(answer, [record])).toBe(
-      "Compare [Reference work](t3-thread://v2/env-answer/reference-thread)",
+      "Compare [Reference work](j6-thread://v2/env-answer/reference-thread)",
     );
   });
 

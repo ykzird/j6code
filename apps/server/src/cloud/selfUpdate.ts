@@ -6,8 +6,8 @@ import {
   type ServerSelfUpdateProgressEvent,
   type ServerSelfUpdateProgressStage,
   type ServerSelfUpdateResult,
-} from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+} from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Config from "effect/Config";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -24,7 +24,7 @@ import {
   CLI_RELEASE_BASE_URL_ENV,
   cliReleaseChannelOf,
   crossesReleaseTrack,
-} from "@t3tools/shared/cliRelease";
+} from "@j6/shared/cliRelease";
 
 import packageJson from "../../package.json" with { type: "json" };
 import * as ServerConfig from "../config.ts";
@@ -68,12 +68,12 @@ export class ServerSelfUpdate extends Context.Service<
       onHandoffAccepted?: () => Effect.Effect<void>,
     ) => Effect.Effect<never, ServerSelfUpdateError>;
   }
->()("t3/cloud/selfUpdate/ServerSelfUpdate") {}
+>()("j6/cloud/selfUpdate/ServerSelfUpdate") {}
 
 /**
  * A server starting from the runtime its launcher settled on means runtimes left by earlier
  * updates can go. The boot service says so through its IPC context. The SSH launcher and the
- * install script's `t3` start this home's pinned runtime directly, without one.
+ * install script's `j6` start this home's pinned runtime directly, without one.
  */
 export const pruneRuntimesOnStart = Effect.fn("cloud.server_self_update.prune_on_start")(
   function* (input: { readonly baseDir: string; readonly managed: boolean }) {
@@ -107,7 +107,7 @@ export const pruneRuntimesOnStart = Effect.fn("cloud.server_self_update.prune_on
       references,
     });
     if (removed.length > 0) {
-      yield* Effect.logInfo("Removed unused t3 runtimes.", { versions: removed });
+      yield* Effect.logInfo("Removed unused j6 runtimes.", { versions: removed });
     }
     return removed;
   },
@@ -126,10 +126,10 @@ export function trackSwitchBlockReason(input: {
   if (!crossesReleaseTrack(input.serverVersion, input.targetVersion)) return null;
   const databaseMigration = input.databaseMigration();
   if (input.targetDatabaseMigration === undefined || databaseMigration === undefined) {
-    return `Cannot confirm this database works with t3@${input.targetVersion}. Switch tracks from Settings → About → Update track, which checks it first.`;
+    return `Cannot confirm this database works with j6@${input.targetVersion}. Switch tracks from Settings → About → Update track, which checks it first.`;
   }
   return input.targetDatabaseMigration < databaseMigration
-    ? `This database has changes t3@${input.targetVersion} does not support yet; it stays on this release.`
+    ? `This database has changes j6@${input.targetVersion} does not support yet; it stays on this release.`
     : null;
 }
 
@@ -191,14 +191,14 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* () {
         );
       }
       return yield* failWith(
-        "This server is managed by the T3 Code desktop app on its machine; update the desktop app to update it.",
+        "This server is managed by the J6 Code desktop app on its machine; update the desktop app to update it.",
       );
     }
     // The target must accept the launcher that will run it, which can be older than this server.
     const launcherProtocol = launcher.protocol;
     if (capability === null || launcherProtocol === undefined) {
       return yield* failWith(
-        "Remote updates require the T3 Code background service. Run `t3 service install` on the server machine.",
+        "Remote updates require the J6 Code background service. Run `j6 service install` on the server machine.",
       );
     }
 
@@ -206,7 +206,7 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* () {
     if (unsafeCrossing !== null) return yield* failWith(unsafeCrossing);
     const targetVersion = input.targetVersion.trim();
     if (!isExactServiceVersion(targetVersion)) {
-      return yield* failWith(`'${targetVersion}' is not an exact t3 version.`);
+      return yield* failWith(`'${targetVersion}' is not an exact j6 version.`);
     }
     if (yield* Ref.getAndSet(inFlight, true)) {
       return yield* failWith("A server update is already in progress.");
@@ -240,7 +240,7 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* () {
           }
           if (mirror !== undefined && isUnpublishedRelease(error)) {
             return failWith(
-              `${mirror.organization}'s update mirror has no t3@${targetVersion} for this machine.`,
+              `${mirror.organization}'s update mirror has no j6@${targetVersion} for this machine.`,
               error,
             );
           }
@@ -251,7 +251,7 @@ export const make = Effect.fn("cloud.server_self_update.make")(function* () {
             .filter((part) => part !== undefined)
             .join(" ");
           return failWith(
-            `Could not prepare t3@${targetVersion} while ${error.step}${downloadFailure ? ` (${downloadFailure})` : ""}.`,
+            `Could not prepare j6@${targetVersion} while ${error.step}${downloadFailure ? ` (${downloadFailure})` : ""}.`,
             error,
           );
         }),

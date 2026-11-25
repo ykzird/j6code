@@ -9,7 +9,7 @@ import { assert, it } from "vite-plus/test";
 import desktopConfig from "../vite.config.ts";
 
 it("gives the page's world a function that runs without the preload's scope", async () => {
-  const directory = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-preview-preload-"));
+  const directory = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-preview-preload-"));
   try {
     assert.ok(Array.isArray(desktopConfig.pack));
     const packConfig = desktopConfig.pack.find(

@@ -1,5 +1,5 @@
 import { useAtomValue } from "@effect/atom-react";
-import { EnvironmentId } from "@t3tools/contracts";
+import { EnvironmentId } from "@j6/contracts";
 import { Atom } from "effect/reactivity";
 import { ChevronRightIcon } from "lucide-react";
 import { msg, T, useGT, useMessages } from "gt-react";
@@ -142,7 +142,7 @@ function UpdateEverythingDialogContent({
         <AlertDialogDescription>
           {version !== null ? (
             <>
-              T3 Code <span className="font-mono text-xs">{version}</span>
+              J6 Code <span className="font-mono text-xs">{version}</span>
             </>
           ) : null}
           {version !== null && providerCount > 0 ? " · " : null}
@@ -176,7 +176,7 @@ function UpdateEverythingDialogContent({
               <span role="columnheader">
                 <T>Machine</T>
               </span>
-              <span role="columnheader">T3 Code</span>
+              <span role="columnheader">J6 Code</span>
               <span role="columnheader">
                 <T>Providers</T>
               </span>

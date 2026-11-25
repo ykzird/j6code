@@ -1,4 +1,4 @@
-import type { EnvironmentId, ProviderThreadId, ThreadId } from "@t3tools/contracts";
+import type { EnvironmentId, ProviderThreadId, ThreadId } from "@j6/contracts";
 import { useAtomValue } from "@effect/atom-react";
 import { T, useGT } from "gt-react";
 import { CheckIcon, CopyIcon, ExternalLinkIcon } from "lucide-react";

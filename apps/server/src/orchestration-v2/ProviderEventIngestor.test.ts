@@ -24,7 +24,7 @@ import {
   RunId,
   RuntimeRequestId,
   TurnItemId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
@@ -39,23 +39,23 @@ import * as SqlError from "effect/sql/SqlError";
 import * as Stream from "effect/Stream";
 import * as Tracer from "effect/Tracer";
 
-import { toolOutputImages } from "@t3tools/shared/toolOutput";
+import { toolOutputImages } from "@j6/shared/toolOutput";
 import * as SqlitePersistence from "../persistence/Sqlite.ts";
 import * as ServerConfig from "../config.ts";
 import * as GitVcsDriver from "../vcs/GitVcsDriver.ts";
 import * as EventSink from "./EventSink.ts";
 import * as EventStore from "./EventStore.ts";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
 import * as ProjectionStore from "./ProjectionStore.ts";
 import * as ProviderEventIngestor from "./ProviderEventIngestor.ts";
 
 import * as ThreadCommandExecutor from "./ThreadCommandExecutor.ts";
 import * as ProviderInstanceRegistry from "../provider/ProviderInstanceRegistry.ts";
 import { UsageLimitResetFallback } from "../usage/UsageLimitSources.ts";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
-import type { ProviderInstance } from "@t3tools/provider-core/server/driver";
-import type { ServerProvider } from "@t3tools/contracts";
-import { makeProviderFailure } from "@t3tools/provider-core/server/failure";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
+import type { ProviderInstance } from "@j6/provider-core/server/driver";
+import type { ServerProvider } from "@j6/contracts";
+import { makeProviderFailure } from "@j6/provider-core/server/failure";
 import {
   makeProviderEventRoutingState,
   type ProviderEventRouteIdentity,
@@ -163,7 +163,7 @@ const makeSharedWorktree = Effect.gen(function* () {
     "-m",
     "initial",
   ]);
-  yield* command(repo, ["worktree", "add", "-b", "t3/abcd1234", worktreePath]);
+  yield* command(repo, ["worktree", "add", "-b", "j6/abcd1234", worktreePath]);
   return { repo, worktreePath, command };
 });
 const modelSelection = {
@@ -707,7 +707,7 @@ layer("ProviderEventIngestorV2", (it) => {
                     parentCheckpointId: null,
                     ordinalWithinScope: input.ordinal,
                     appRunOrdinal: input.ordinal,
-                    ref: CheckpointRef.make(`refs/t3/checkpoints/rewound/${input.ordinal}`),
+                    ref: CheckpointRef.make(`refs/j6/checkpoints/rewound/${input.ordinal}`),
                     status: "ready" as const,
                     files: [],
                     capturedAt: now,
@@ -785,7 +785,7 @@ layer("ProviderEventIngestorV2", (it) => {
             createdAt: now,
             updatedAt: now,
           },
-          retainedNativeTurnIds: ["turn-started-outside-t3", "kept-turn"],
+          retainedNativeTurnIds: ["turn-started-outside-j6", "kept-turn"],
         },
       });
 
@@ -1598,7 +1598,7 @@ layer("ProviderEventIngestorV2", (it) => {
         type: "image",
         file: { base64: readBase64, type: "image/png", originalSize: 30_000 },
       });
-      const screenshot = toolItem("turn-item:screenshot", 2, "mcp__t3-code__device_screenshot", {
+      const screenshot = toolItem("turn-item:screenshot", 2, "mcp__j6-code__device_screenshot", {
         content: [
           {
             type: "image",
@@ -1882,17 +1882,17 @@ layer("ProviderEventIngestorV2", (it) => {
   );
 
   it.effect.each([
-    { parentMoved: false, failure: null, temporaryBranch: "t3/abcd1234" },
-    { parentMoved: true, failure: null, temporaryBranch: "t3/abcd1234" },
-    { parentMoved: false, failure: "write", temporaryBranch: "t3/abcd1234" },
-    { parentMoved: false, failure: "git", temporaryBranch: "t3/abcd1234" },
+    { parentMoved: false, failure: null, temporaryBranch: "j6/abcd1234" },
+    { parentMoved: true, failure: null, temporaryBranch: "j6/abcd1234" },
+    { parentMoved: false, failure: "write", temporaryBranch: "j6/abcd1234" },
+    { parentMoved: false, failure: "git", temporaryBranch: "j6/abcd1234" },
     { parentMoved: false, failure: null, temporaryBranch: "my-prefix/abcd1234" },
   ])(
     "rechecks a pending native child's branch after the rename scan: %j",
     ({ parentMoved, failure, temporaryBranch }) =>
       Effect.gen(function* () {
         const { worktreePath, command } = yield* makeSharedWorktree;
-        if (temporaryBranch !== "t3/abcd1234")
+        if (temporaryBranch !== "j6/abcd1234")
           yield* command(worktreePath, ["branch", "-m", temporaryBranch]);
         const git = yield* GitVcsDriver.GitVcsDriver;
         const now = yield* DateTime.now;
@@ -2024,7 +2024,7 @@ layer("ProviderEventIngestorV2", (it) => {
       Effect.gen(function* () {
         const { worktreePath, command } = yield* makeSharedWorktree;
         const git = yield* GitVcsDriver.GitVcsDriver;
-        const branch = scenario === "explicit" ? "child-feature" : "t3/abcd1234";
+        const branch = scenario === "explicit" ? "child-feature" : "j6/abcd1234";
         if (scenario === "explicit") yield* command(worktreePath, ["branch", "-m", branch]);
         if (scenario === "detached") yield* command(worktreePath, ["checkout", "--detach"]);
         const now = yield* DateTime.now;

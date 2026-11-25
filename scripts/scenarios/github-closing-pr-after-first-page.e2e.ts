@@ -1,6 +1,6 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import * as NetService from "@t3tools/shared/Net";
+import * as HostProcess from "@j6/shared/HostProcess";
+import * as NetService from "@j6/shared/Net";
 import { expect } from "e2e";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
@@ -12,7 +12,7 @@ import { FetchHttpClient, HttpClient, HttpClientResponse } from "effect/http";
 import { APP_DIR, T3_HOME } from "../e2e.config.ts";
 import { run, ScenarioError } from "./shell.ts";
 import { prepareHome, start } from "./start-app.ts";
-import { makeState, runPromise, test, WEB } from "./t3.ts";
+import { makeState, runPromise, test, WEB } from "./j6.ts";
 
 const HOST = "github.scenario.invalid";
 const SCOPE = "scenario/demo";
@@ -132,7 +132,7 @@ function startFixtureServer(webOrigin: string) {
           HOME,
           GH_HOST: HOST,
           GH_ENTERPRISE_TOKEN: "scenario-only-token",
-          T3CODE_AUTO_BOOTSTRAP_PROJECT_FROM_CWD: "0",
+          J6CODE_AUTO_BOOTSTRAP_PROJECT_FROM_CWD: "0",
         },
         onLine: (line) => {
           const value = /^Token:\s*(\S+)/.exec(line)?.[1];
@@ -157,8 +157,8 @@ function startFixtureServer(webOrigin: string) {
 test(
   "A closing pull request remains visible after its timeline reference ages out",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    const workspace = await t3.project("Release");
+  async ({ j6, app, browser, screen }) => {
+    const workspace = await j6.project("Release");
     const server = startFixtureServer(app.baseUrl ?? "");
     try {
       const { origin, token } = await server.ready;
@@ -175,7 +175,7 @@ test(
       const projectId = /Added project (\S+) /.exec(added.stdout)?.[1];
       if (!projectId) throw new Error("The fixture project was not added.");
       const { environmentId } = await runPromise(
-        HttpClient.get(`${origin}/.well-known/t3/environment`).pipe(
+        HttpClient.get(`${origin}/.well-known/j6/environment`).pipe(
           Effect.flatMap(HttpClientResponse.filterStatusOk),
           Effect.flatMap(
             HttpClientResponse.schemaBodyJson(Schema.Struct({ environmentId: Schema.String })),
@@ -192,7 +192,7 @@ test(
         selectedProjectId: projectId,
       });
 
-      await t3.open("/settings/connections");
+      await j6.open("/settings/connections");
       await screen.getByRole("button", "Add environment").tap();
       const dialog = screen.getByRole("dialog");
       await dialog.getByPlaceholder("backend.example.com").fill(origin);

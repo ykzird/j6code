@@ -1,4 +1,4 @@
-import { AuthPreviewOperateScope, type EnvironmentId } from "@t3tools/contracts";
+import { AuthPreviewOperateScope, type EnvironmentId } from "@j6/contracts";
 import type { AnyRouter } from "@tanstack/react-router";
 import { msg } from "gt-react";
 
@@ -19,7 +19,7 @@ import {
 import { createScratchProjectActions } from "../hooks/useScratchProject";
 import { getClientSettings } from "../hooks/useSettings";
 import { startNewThreadFromContext } from "../lib/chatThreadActions";
-import { selectProjectGroupingSettings } from "@t3tools/client-runtime/state/project-grouping";
+import { selectProjectGroupingSettings } from "@j6/client-runtime/state/project-grouping";
 import { selectActiveRightPanel, useRightPanelStore } from "../rightPanelStore";
 import { appAtomRegistry } from "../rpc/atomRegistry";
 import { buildSidebarProjectSnapshots } from "../sidebarProjectGrouping";
@@ -174,7 +174,7 @@ export function installChatRouteCommands(router: AnyRouter): () => void {
             stackedThreadToast({
               type: "info",
               title: m(msg("Preview is desktop-only")),
-              description: m(msg("Open T3 Code in the desktop app to use the in-app preview.")),
+              description: m(msg("Open J6 Code in the desktop app to use the in-app preview.")),
             }),
           );
           return;

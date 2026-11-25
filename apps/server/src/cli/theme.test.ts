@@ -5,7 +5,7 @@ import * as NodePath from "node:path";
 
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import * as NetService from "@t3tools/shared/Net";
+import * as NetService from "@j6/shared/Net";
 import { assert, describe, it } from "@effect/vitest";
 import * as ConfigProvider from "effect/ConfigProvider";
 import * as Effect from "effect/Effect";
@@ -15,8 +15,8 @@ import { Command } from "effect/cli";
 import { vi } from "vite-plus/test";
 
 import { cli } from "../binCli.ts";
-import { symlinksSupported } from "@t3tools/shared/testing/symlinks";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import { symlinksSupported } from "@j6/shared/testing/symlinks";
+import * as HostProcess from "@j6/shared/HostProcess";
 
 vi.mock("node:fs", { spy: true });
 
@@ -41,7 +41,7 @@ const runCliIn = (cwd: string, args: ReadonlyArray<string>) =>
     (previous) => Effect.sync(() => process.chdir(previous)),
   );
 
-const makeBaseDir = () => NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "t3code-theme-cli-"));
+const makeBaseDir = () => NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "j6code-theme-cli-"));
 
 const settingsPathFor = (baseDir: string) => NodePath.join(baseDir, "userdata", "settings.json");
 
@@ -63,7 +63,7 @@ const writeSettings = (baseDir: string, settings: Record<string, unknown>) => {
   NodeFS.writeFileSync(settingsPathFor(baseDir), `${JSON.stringify(settings, null, 2)}\n`);
 };
 
-describe("t3 theme", () => {
+describe("j6 theme", () => {
   it.effect("preserves settings it does not recognise", () =>
     Effect.gen(function* () {
       const baseDir = makeBaseDir();
@@ -98,7 +98,7 @@ describe("t3 theme", () => {
   it.effect("sets the theme of a dev server running in the default home", () =>
     Effect.gen(function* () {
       const home = makeBaseDir();
-      const devStateDir = NodePath.join(home, ".t3", "dev");
+      const devStateDir = NodePath.join(home, ".j6", "dev");
       NodeFS.mkdirSync(devStateDir, { recursive: true });
       NodeFS.writeFileSync(
         NodePath.join(devStateDir, "server-runtime.json"),
@@ -119,7 +119,7 @@ describe("t3 theme", () => {
       );
 
       assert.equal(
-        NodeFS.existsSync(NodePath.join(home, ".t3", "userdata", "settings.json")),
+        NodeFS.existsSync(NodePath.join(home, ".j6", "userdata", "settings.json")),
         false,
       );
       if (result._tag === "Success") {

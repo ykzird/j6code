@@ -1,4 +1,4 @@
-import { resolveProviderProbeTimeoutMs } from "@t3tools/provider-core/server/snapshotProbe";
+import { resolveProviderProbeTimeoutMs } from "@j6/provider-core/server/snapshotProbe";
 import type { SDKModel, SDKUser } from "@cursor/sdk";
 import type {
   ModelCapabilities,
@@ -6,9 +6,9 @@ import type {
   ServerProviderAuth,
   ServerProviderModel,
   ServerProviderState,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import type { CursorSettings } from "../settings.ts";
-import { createModelCapabilities } from "@t3tools/shared/model";
+import { createModelCapabilities } from "@j6/shared/model";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -22,7 +22,7 @@ import {
   COMPACT_SLASH_COMMAND,
   providerModelsFromSettings,
   type ServerProviderDraft,
-} from "@t3tools/provider-core/server/snapshotProbe";
+} from "@j6/provider-core/server/snapshotProbe";
 import * as CursorSdkCatalog from "./CursorSdkCatalog.ts";
 
 const CURSOR_PRESENTATION = {
@@ -53,7 +53,7 @@ export const buildInitialCursorProviderSnapshot = Effect.fn(
         version: null,
         status: "warning",
         auth: { status: "unknown" },
-        message: "Cursor is disabled in T3 Code settings.",
+        message: "Cursor is disabled in J6 Code settings.",
       },
     });
   }
@@ -269,7 +269,7 @@ export const checkCursorProviderStatus = Effect.fn("checkCursorProviderStatus")(
         version: null,
         status: "warning",
         auth: { status: "unknown" },
-        message: "Cursor is disabled in T3 Code settings.",
+        message: "Cursor is disabled in J6 Code settings.",
       },
     });
   }
@@ -320,8 +320,8 @@ export const checkCursorProviderStatus = Effect.fn("checkCursorProviderStatus")(
     } else if (failure.planRequired) {
       message =
         authenticationType === "browser"
-          ? "Cursor needs a paid plan to run in T3 Code. Upgrade this account or sign in with a different one."
-          : "Cursor needs a paid plan to run in T3 Code. Upgrade the account that owns CURSOR_API_KEY or use a key from a paid account.";
+          ? "Cursor needs a paid plan to run in J6 Code. Upgrade this account or sign in with a different one."
+          : "Cursor needs a paid plan to run in J6 Code. Upgrade the account that owns CURSOR_API_KEY or use a key from a paid account.";
     }
     return buildServerProvider({
       presentation: CURSOR_PRESENTATION,

@@ -1,6 +1,6 @@
-import { toServerClock } from "@t3tools/client-runtime/clock";
-import type { EnvironmentId } from "@t3tools/contracts";
-import { formatDuration } from "@t3tools/shared/orchestrationTimingCopy";
+import { toServerClock } from "@j6/client-runtime/clock";
+import type { EnvironmentId } from "@j6/contracts";
+import { formatDuration } from "@j6/shared/orchestrationTimingCopy";
 import { msg } from "gt-react";
 import { m } from "~/i18n/messages";
 

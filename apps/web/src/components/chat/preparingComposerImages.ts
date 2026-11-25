@@ -1,5 +1,5 @@
-import { scopedThreadKey } from "@t3tools/client-runtime/environment";
-import type { ScopedThreadRef } from "@t3tools/contracts";
+import { scopedThreadKey } from "@j6/client-runtime/environment";
+import type { ScopedThreadRef } from "@j6/contracts";
 import { useEffect, useRef } from "react";
 import { create } from "zustand";
 
@@ -232,7 +232,7 @@ export function useSubmitAfterPreparingImages(targetKey: string, blocked = false
     readonly cancelGeneration: number;
     readonly submit: () => void;
   } | null>(null);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- sends only after the render where the compressed images joined the draft
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- sends only after the render where the compressed images joined the draft
   useEffect(() => {
     const pending = pendingRef.current;
     if (!pending) return;

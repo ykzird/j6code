@@ -1,7 +1,7 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, describe, it } from "@effect/vitest";
 import type { CursorConfigureOptions } from "@cursor/sdk";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -164,7 +164,7 @@ describe("CursorSdk agent transport", () => {
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const root = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-cursor-cli-config-" });
+      const root = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-cursor-cli-config-" });
       if (file !== undefined) {
         yield* fileSystem.makeDirectory(path.dirname(path.join(root, file)), { recursive: true });
         yield* fileSystem.writeFileString(path.join(root, file), text);

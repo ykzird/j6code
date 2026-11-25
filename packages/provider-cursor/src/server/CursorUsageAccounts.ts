@@ -1,7 +1,7 @@
-import type { ProviderInstanceId } from "@t3tools/contracts";
-import * as ProviderHost from "@t3tools/provider-core/server/ProviderHost";
-import type { ProviderUsageScan } from "@t3tools/provider-core/server/usage";
-import { writeFileStringAtomically } from "@t3tools/shared/atomicWrite";
+import type { ProviderInstanceId } from "@j6/contracts";
+import * as ProviderHost from "@j6/provider-core/server/ProviderHost";
+import type { ProviderUsageScan } from "@j6/provider-core/server/usage";
+import { writeFileStringAtomically } from "@j6/shared/atomicWrite";
 import * as Clock from "effect/Clock";
 import * as Context from "effect/Context";
 import * as Digest from "effect/crypto/Digest";
@@ -50,7 +50,7 @@ export class CursorUsageAccounts extends Context.Service<
     }) => Effect.Effect<ReadonlyArray<ProviderUsageScan>>;
     readonly awaitPersisted: Effect.Effect<void>;
   }
->()("@t3tools/provider-cursor/server/CursorUsageAccounts") {}
+>()("@j6/provider-cursor/server/CursorUsageAccounts") {}
 
 const make = Effect.gen(function* () {
   const fileSystem = yield* FileSystem.FileSystem;

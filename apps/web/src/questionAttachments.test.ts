@@ -1,9 +1,9 @@
 import {
   makeThreadRequestsResolvedAnnouncer,
   userInputDraftKey,
-} from "@t3tools/client-runtime/state/thread-requests";
-import { ApprovalRequestId, EnvironmentId, RuntimeRequestId, ThreadId } from "@t3tools/contracts";
-import { threadContextRecord } from "@t3tools/shared/composerContextReferences";
+} from "@j6/client-runtime/state/thread-requests";
+import { ApprovalRequestId, EnvironmentId, RuntimeRequestId, ThreadId } from "@j6/contracts";
+import { threadContextRecord } from "@j6/shared/composerContextReferences";
 import { beforeEach, expect, it, vi } from "vite-plus/test";
 import { composerTargetKey, useComposerDraftStore } from "./composerDraftStore";
 import {

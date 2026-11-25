@@ -1,4 +1,4 @@
-import { CLOUD_SPEECH_PROVIDER_NAMES, type CloudSpeechProvider } from "@t3tools/contracts";
+import { CLOUD_SPEECH_PROVIDER_NAMES, type CloudSpeechProvider } from "@j6/contracts";
 import { mFallback, msg } from "gt-i18n";
 import type { MFunctionType } from "gt-i18n/types";
 

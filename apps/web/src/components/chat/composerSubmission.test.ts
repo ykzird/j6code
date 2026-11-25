@@ -4,11 +4,11 @@ import {
   MessageId,
   PROVIDER_SEND_TURN_MAX_INPUT_CHARS,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   expandAssistantCitationsForProvider,
   serializeAssistantCitation,
-} from "@t3tools/shared/assistantCitations";
+} from "@j6/shared/assistantCitations";
 import { describe, expect, it, vi } from "vite-plus/test";
 
 import { isComposerSubmissionBlocked, submitComposerDraft } from "./composerSubmission";

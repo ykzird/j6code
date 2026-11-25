@@ -1,7 +1,7 @@
 import { expect, it } from "@effect/vitest";
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import * as Net from "@t3tools/shared/Net";
+import * as Net from "@j6/shared/Net";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -169,7 +169,7 @@ it.effect("preserves installed status after probes and cleans failed agent activ
     expect((yield* host.summary).agentDeviceInstalled).toBe(true);
     // Close releases agent sessions through the forwarded daemon.
     const agentReady = yield* host.current;
-    yield* agentReady!.releaseAgentSession!("t3-session", "device");
+    yield* agentReady!.releaseAgentSession!("j6-session", "device");
     expect(releases).toEqual(["Bearer fixture"]);
     yield* host.stopAgent;
     expect(forwards).toBe(1);

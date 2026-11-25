@@ -1,9 +1,9 @@
 import { m } from "../i18n/messages";
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { msg, T, useGT, useMessages } from "gt-react";
-import { resolvePathLinkTarget } from "@t3tools/shared/fileLinks";
+import { resolvePathLinkTarget } from "@j6/shared/fileLinks";
 import { clientHostEnvironmentAtom } from "../state/clientHostEnvironment";
-import { buildFileLinkParentSuffixByPath, fileLinkLabel } from "@t3tools/shared/fileLinks";
+import { buildFileLinkParentSuffixByPath, fileLinkLabel } from "@j6/shared/fileLinks";
 import {
   isMarkdownFileLinkLabel,
   isWindowsDrivePathHref,
@@ -12,21 +12,21 @@ import {
   extractInlineCodeSpans,
   extractMarkdownLinkHrefs,
   inlineCodeFilePathCandidate,
-} from "@t3tools/shared/markdownLinks";
-import { taskListMarkerOffset } from "@t3tools/shared/markdownTaskEdits";
-import { isHostPath, resolveWorkspaceFilePath } from "@t3tools/shared/path";
+} from "@j6/shared/markdownLinks";
+import { taskListMarkerOffset } from "@j6/shared/markdownTaskEdits";
+import { isHostPath, resolveWorkspaceFilePath } from "@j6/shared/path";
 import { usePullRequestLinking } from "~/hooks/usePullRequestLinking";
 import {
   AuthFilesystemReadScope,
   AuthOrchestrationOperateScope,
   SOURCE_CONTROL_MEDIA_ASSET,
-} from "@t3tools/contracts";
-import { chatMarkdownImageSource } from "@t3tools/shared/markdownHast";
+} from "@j6/contracts";
+import { chatMarkdownImageSource } from "@j6/shared/markdownHast";
 import { useAtomValue } from "@effect/atom-react";
 import {
   COMPOSER_CONTEXT_CLIPBOARD_MIME,
   encodeComposerContextClipboardHtml,
-} from "@t3tools/shared/composerContextClipboard";
+} from "@j6/shared/composerContextClipboard";
 import {
   FileSpreadsheetIcon,
   FileTextIcon,
@@ -52,23 +52,23 @@ import {
   type ScopedThreadRef,
   type ServerProviderSkill,
   type ThreadPullRequestKey,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
-import { scopedThreadKey } from "@t3tools/client-runtime/environment";
+} from "@j6/client-runtime/state/runtime";
+import { scopedThreadKey } from "@j6/client-runtime/environment";
 import type {
   CodexArtifactTemplate,
   CodexArtifactTemplateKind,
-} from "@t3tools/shared/codexArtifactTemplates";
-import { codexArtifactTemplatePresentationLabel } from "@t3tools/shared/codexArtifactTemplatesCopy";
+} from "@j6/shared/codexArtifactTemplates";
+import { codexArtifactTemplatePresentationLabel } from "@j6/shared/codexArtifactTemplatesCopy";
 import {
   classifyMarkdownImageSource,
   markdownImageSourceFragment,
-} from "@t3tools/client-runtime/markdown-images";
-import { mediaUrlReference } from "@t3tools/client-runtime/media-reference";
-import { mediaKindFromPath, mediaMimeTypeFromExtension } from "@t3tools/shared/mediaPreview";
+} from "@j6/client-runtime/markdown-images";
+import { mediaUrlReference } from "@j6/client-runtime/media-reference";
+import { mediaKindFromPath, mediaMimeTypeFromExtension } from "@j6/shared/mediaPreview";
 import { InlineAudioPreview } from "./files/InlineAudioPreview";
 import { HostImageUrlContext } from "./chat/hostImageUrl";
 import * as Cause from "effect/Cause";
@@ -87,12 +87,12 @@ import React, {
   useState,
   type ReactNode,
 } from "react";
-import { parseAssistantCitationHref } from "@t3tools/shared/assistantCitations";
-import { parseComposerContextHref } from "@t3tools/shared/composerContextReferences";
-import { parseThreadLinkHref } from "@t3tools/shared/threadLinks";
+import { parseAssistantCitationHref } from "@j6/shared/assistantCitations";
+import { parseComposerContextHref } from "@j6/shared/composerContextReferences";
+import { parseThreadLinkHref } from "@j6/shared/threadLinks";
 import { AssistantCitationEmbed } from "./chat/AssistantCitationChip";
 import { MarkdownThreadLink } from "./chat/MarkdownThreadLink";
-import { artifactTemplateFromHastProperties } from "@t3tools/shared/codexArtifactTemplates";
+import { artifactTemplateFromHastProperties } from "@j6/shared/codexArtifactTemplates";
 import {
   decodeMarkdownLinkEscapes,
   renderCodexInlineDirectivesAsMarkdown,
@@ -173,13 +173,13 @@ import {
   pickWorkspaceLinkMatch,
   WORKSPACE_BASENAME_LOOKUP_LIMIT,
   workspaceLinkLookupQuery,
-} from "@t3tools/client-runtime/workspace-basename-lookup";
-import { resolvePullRequestPreviewTarget } from "@t3tools/client-runtime/change-request-links";
+} from "@j6/client-runtime/workspace-basename-lookup";
+import { resolvePullRequestPreviewTarget } from "@j6/client-runtime/change-request-links";
 import {
   mayContainStandaloneIssueLink,
   resolveIssueLinkTarget,
-} from "@t3tools/client-runtime/issue-links";
-import { sourceControlClients } from "@t3tools/client-runtime/source-control-clients";
+} from "@j6/client-runtime/issue-links";
+import { sourceControlClients } from "@j6/client-runtime/source-control-clients";
 import { useOpenChangeRequestLink } from "~/lib/openPullRequestLink";
 import { textDirection } from "~/textDirection";
 import { useOpenLink } from "../browser/useOpenLink";
@@ -204,8 +204,8 @@ import {
   withProperties,
 } from "./chat/markdownIslands";
 import type { Element as HastElement } from "hast";
-import { matchInlineSkills } from "@t3tools/shared/inlineSkills";
-import { collectComposerModelMentions } from "@t3tools/client-runtime/composer-model-mentions";
+import { matchInlineSkills } from "@j6/shared/inlineSkills";
+import { collectComposerModelMentions } from "@j6/client-runtime/composer-model-mentions";
 import { splitMarkdownBlocks } from "./chat/markdownStreamBlocks";
 import { MarkdownMermaidCodeBlock } from "./chat/MarkdownMermaidCodeBlock";
 import { MarkdownTable } from "./chat/MarkdownTable";
@@ -622,7 +622,7 @@ function useChatMarkdownState(
     setLocalMedia(null);
   }
   // Layout cleanup blocks stale requests from reaching onImageExpand before paint.
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- layout cleanup invalidates media requests still loading for the old scope before paint
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- layout cleanup invalidates media requests still loading for the old scope before paint
   useLayoutEffect(
     () => () => {
       mediaRequestId.current += 1;
@@ -2057,7 +2057,7 @@ const MarkdownSource = memo(function MarkdownSource({
 }) {
   const render = markdownRenderer(markdown);
   const entry = render.parse(text);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Caching during render would make React Compiler rebuild the element when `cache` flips.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Caching during render would make React Compiler rebuild the element when `cache` flips.
   useEffect(() => {
     if (cache) render.remember(text, entry);
   }, [render, text, entry, cache]);

@@ -1,12 +1,12 @@
 import {
   assistantCitationsToPlainText,
   splitsSurrogatePair,
-} from "@t3tools/shared/assistantCitations";
-import { parseThreadLinkHref } from "@t3tools/shared/threadLinks";
+} from "@j6/shared/assistantCitations";
+import { parseThreadLinkHref } from "@j6/shared/threadLinks";
 import {
   isAttachmentOnlyBootstrapPrompt,
   replaceComposerContextReferences,
-} from "@t3tools/shared/composerContextReferences";
+} from "@j6/shared/composerContextReferences";
 import type { Nodes } from "hast";
 
 import { markdownTree } from "~/markdown/wordsHast";

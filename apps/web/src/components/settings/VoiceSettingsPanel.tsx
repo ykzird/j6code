@@ -1,4 +1,4 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { m } from "~/i18n/messages";
 import {
   cancelEnvironmentSpeechModelDownload,
@@ -10,9 +10,9 @@ import {
   selectEnvironmentSpeechModel,
   updateEnvironmentSpeechAcceleration,
   updateEnvironmentSpeechModelUnloadTimeout,
-} from "@t3tools/client-runtime/voice-input";
-import type { PreparedConnection } from "@t3tools/client-runtime/connection";
-import { openRouterIcon } from "@t3tools/client-runtime/provider-clients";
+} from "@j6/client-runtime/voice-input";
+import type { PreparedConnection } from "@j6/client-runtime/connection";
+import { openRouterIcon } from "@j6/client-runtime/provider-clients";
 import {
   AuthFilesystemReadScope,
   AuthSettingsWriteScope,
@@ -29,14 +29,14 @@ import {
   type SpeechCustomWords,
   type SpeechModelUnloadTimeout,
   type VoiceShortcutMode,
-} from "@t3tools/contracts";
-import { createModelSelection, pickModelSelection } from "@t3tools/shared/model";
-import { resolveSpeechPostProcessingModelSelection } from "@t3tools/shared/serverSettings";
+} from "@j6/contracts";
+import { createModelSelection, pickModelSelection } from "@j6/shared/model";
+import { resolveSpeechPostProcessingModelSelection } from "@j6/shared/serverSettings";
 import {
   cloudSpeechLanguages,
   recommendSpeechModels,
   type SpeechRecommendationRole,
-} from "@t3tools/shared/speech";
+} from "@j6/shared/speech";
 import {
   ArrowDownUpIcon,
   AudioLinesIcon,
@@ -733,7 +733,7 @@ function useVoiceModels(prepared: PreparedConnection | null) {
       }
     },
   );
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- loads the environment's model catalog when its connection becomes available
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- loads the environment's model catalog when its connection becomes available
   useEffect(() => {
     epoch.current += 1;
     if (prepared) void refresh(prepared, "foreground");
@@ -744,7 +744,7 @@ function useVoiceModels(prepared: PreparedConnection | null) {
   const downloading =
     requestedDownload !== null ||
     models.some((model) => model.state === "downloading" || model.state === "verifying");
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- polls progress while a local request or the environment reports an active download
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- polls progress while a local request or the environment reports an active download
   useEffect(() => {
     if (!prepared || !downloading) return;
     let cancelled = false;
@@ -1219,7 +1219,7 @@ function TranscriptionTest(props: {
   const draft = transcript ?? "";
   const [showTranscript, setShowTranscript] = useState(false);
   const draftRef = useRef(draft);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- publishes the committed draft to the asynchronous transcription controller
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- publishes the committed draft to the asynchronous transcription controller
   useEffect(() => {
     draftRef.current = draft;
   }, [draft]);
@@ -1373,7 +1373,7 @@ export function VoiceSettingsPanel() {
       setMicrophones([]);
     }
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- subscribes to microphone device changes while settings are open
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- subscribes to microphone device changes while settings are open
   useEffect(() => {
     queueMicrotask(() => void refreshMicrophones());
     const mediaDevices = navigator.mediaDevices;

@@ -4,7 +4,7 @@ import {
   PeerLinkError,
   peerLinkFailureKind,
   type PeerLinkSummary,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Console from "effect/Console";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -209,7 +209,7 @@ const environmentLinkCommand = Command.make("link", {
   ...authLocationFlags,
   url: Argument.String("url").pipe(
     Argument.withDescription(
-      "Where the other environment answers: its T3 Connect, Tailscale, LAN or loopback address.",
+      "Where the other environment answers: its J6 Connect, Tailscale, LAN or loopback address.",
     ),
     Argument.optional,
   ),
@@ -218,7 +218,7 @@ const environmentLinkCommand = Command.make("link", {
     Flag.atLeast(0),
   ),
   pairingCode: Flag.String("pairing-code").pipe(
-    Flag.withDescription("A pairing code from the other environment (`t3 pair` there)."),
+    Flag.withDescription("A pairing code from the other environment (`j6 pair` there)."),
     Flag.optional,
   ),
   from: Flag.String("from").pipe(
@@ -235,7 +235,7 @@ const environmentLinkCommand = Command.make("link", {
   ),
 }).pipe(
   Command.withDescription(
-    "Link another T3 Code environment, so agents here can work there. It shows up there under Authorized clients in Settings → Sharing & access, where it can be revoked.",
+    "Link another J6 Code environment, so agents here can work there. It shows up there under Authorized clients in Settings → Sharing & access, where it can be revoked.",
   ),
   Command.withHandler((flags) =>
     Effect.gen(function* () {
@@ -294,7 +294,7 @@ const environmentListCommand = Command.make("list", { ...authLocationFlags, json
 const environmentUnlinkCommand = Command.make("unlink", {
   ...authLocationFlags,
   environmentId: Argument.String("environment-id").pipe(
-    Argument.withDescription("The linked environment's id, from `t3 environment list`."),
+    Argument.withDescription("The linked environment's id, from `j6 environment list`."),
   ),
 }).pipe(
   Command.withDescription(
@@ -319,7 +319,7 @@ const environmentUnlinkCommand = Command.make("unlink", {
 );
 
 export const environmentCommand = Command.make("environment").pipe(
-  Command.withDescription("Link other T3 Code environments, so agents here can work there."),
+  Command.withDescription("Link other J6 Code environments, so agents here can work there."),
   Command.withSubcommands([
     environmentLinkCommand,
     environmentListCommand,

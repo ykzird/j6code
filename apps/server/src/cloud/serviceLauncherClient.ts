@@ -1,5 +1,5 @@
-import type { ServerSelfUpdateOutcome } from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import type { ServerSelfUpdateOutcome } from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Context from "effect/Context";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
@@ -47,7 +47,7 @@ export class ServiceLauncherClientError extends Schema.TaggedError<ServiceLaunch
       case "decode-context":
         return "The service launcher supplied invalid startup context.";
       case "version-mismatch":
-        return "The service launcher started a different t3 version.";
+        return "The service launcher started a different j6 version.";
       case "unmanaged":
         return "This server is not managed by the launcher.";
       case "send":
@@ -89,7 +89,7 @@ interface ServiceLauncherProcess {
 }
 
 export const ServiceLauncherHostProcess = Context.Reference<ServiceLauncherProcess>(
-  "t3/cloud/serviceLauncherHostProcess",
+  "j6/cloud/serviceLauncherHostProcess",
   {
     defaultValue: () => ({
       connected: process.connected && process.send !== undefined,
@@ -118,12 +118,12 @@ export class ServiceLauncherClient extends Context.Service<
       readonly targetVersion: string;
       readonly dbPath: string;
     }) => Effect.Effect<string, ServiceLauncherClientError | ServiceLauncherRejectedError>;
-    /** Owned `t3` launchers move to the new runtime only when this start commits the trial. */
+    /** Owned `j6` launchers move to the new runtime only when this start commits the trial. */
     readonly prepareTrial: (input: {
       readonly baseDir: string;
     }) => Effect.Effect<ServerSelfUpdateOutcome | undefined, ServiceLauncherClientError>;
   }
->()("t3/cloud/serviceLauncherClient") {}
+>()("j6/cloud/serviceLauncherClient") {}
 
 const resolveStartup = Effect.fn("cloud.service_launcher_client.resolve_startup")(
   function* (options?: { readonly currentVersion?: string }) {
@@ -162,16 +162,16 @@ export const repointLaunchers = Effect.fn("cloud.service_launcher_client.repoint
     const platform = yield* HostProcess.Platform;
     if (platform !== "linux" && platform !== "darwin") return;
     const installBinDir =
-      environment["T3CODE_INSTALL_BIN_DIR"] ||
+      environment["J6CODE_INSTALL_BIN_DIR"] ||
       (environment["HOME"] ? path.join(environment["HOME"], ".local", "bin") : undefined);
     const candidates = new Set<string>();
-    if (installBinDir !== undefined) candidates.add(path.join(installBinDir, "t3"));
+    if (installBinDir !== undefined) candidates.add(path.join(installBinDir, "j6"));
     const searchPath = environment["PATH"] ?? "";
     const cwd = yield* HostProcess.WorkingDirectory;
     for (const directory of searchPath.split(":")) {
       // Like the shell, an empty entry of a nonempty PATH is the working directory.
       if (directory.length === 0 && searchPath.length === 0) continue;
-      const candidate = path.join(directory || cwd, "t3");
+      const candidate = path.join(directory || cwd, "j6");
       if (directory.length === 0) {
         // The shell passes over a working-directory entry it cannot run and keeps searching.
         const info = yield* fs.stat(candidate).pipe(Effect.option);
@@ -184,7 +184,7 @@ export const repointLaunchers = Effect.fn("cloud.service_launcher_client.repoint
       if (
         yield* fs.exists(candidate).pipe(
           Effect.catch((cause) =>
-            Effect.logWarning("Could not check the t3 command on PATH", {
+            Effect.logWarning("Could not check the j6 command on PATH", {
               launchedAs: candidate,
               cause,
             }).pipe(Effect.as(false)),
@@ -209,7 +209,7 @@ export const repointLaunchers = Effect.fn("cloud.service_launcher_client.repoint
               () => Effect.succeedNone,
             ),
           );
-          // A legacy symlink, or the script install.sh and `t3 update` write.
+          // A legacy symlink, or the script install.sh and `j6 update` write.
           const current = Option.isSome(linkTarget)
             ? path.resolve(path.dirname(launchedAs), linkTarget.value)
             : yield* readPosixLauncherTarget(launchedAs);
@@ -232,7 +232,7 @@ export const repointLaunchers = Effect.fn("cloud.service_launcher_client.repoint
         Effect.catchCause((cause) =>
           Cause.hasInterrupts(cause)
             ? Effect.interrupt
-            : Effect.logWarning("Could not move the t3 command to the updated version", {
+            : Effect.logWarning("Could not move the j6 command to the updated version", {
                 launchedAs,
                 cause,
               }),

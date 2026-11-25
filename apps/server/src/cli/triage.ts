@@ -4,8 +4,8 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import * as NodeReadlinePromises from "node:readline/promises";
 
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { isCommandAvailable, resolveCommandPath, resolveSpawnCommand } from "@t3tools/shared/shell";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { isCommandAvailable, resolveCommandPath, resolveSpawnCommand } from "@j6/shared/shell";
 import * as Config from "effect/Config";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
@@ -169,13 +169,13 @@ export const triageCommand = Command.make("triage", {
   model: modelFlag,
 }).pipe(
   Command.withDescription(
-    "Investigate a T3 Code problem on this machine with Claude Code, Codex, or Antigravity, and help file a good issue.",
+    "Investigate a J6 Code problem on this machine with Claude Code, Codex, or Antigravity, and help file a good issue.",
   ),
   Command.withHandler((flags) =>
     Effect.gen(function* () {
       // Triage is a user-facing feature: always the userdata state, never dev.
       const explicitBaseDir = Option.getOrUndefined(flags.baseDir);
-      const envHome = yield* Config.String("T3CODE_HOME").pipe(Config.option);
+      const envHome = yield* Config.String("J6CODE_HOME").pipe(Config.option);
       const baseDir = yield* resolveBaseDir(explicitBaseDir ?? Option.getOrUndefined(envHome));
       const paths = yield* ServerConfig.deriveServerPaths(baseDir, undefined, {});
 

@@ -1,4 +1,4 @@
-import type { ScopedThreadRef } from "@t3tools/contracts";
+import type { ScopedThreadRef } from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import { AsyncResult } from "effect/reactivity";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
@@ -81,7 +81,7 @@ describe("openTerminalLinkInPreview", () => {
     );
 
     await openTerminalLinkInPreview({
-      url: "https://t3.chat/",
+      url: "https://j6.chat/",
       threadRef,
       openPreview,
       fallbackToBrowser: vi.fn(),

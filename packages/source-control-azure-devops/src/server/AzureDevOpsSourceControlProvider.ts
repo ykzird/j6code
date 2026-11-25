@@ -1,20 +1,20 @@
-import { SourceControlProviderKind } from "@t3tools/contracts";
+import { SourceControlProviderKind } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
-import { SourceControlProviderError, type ChangeRequest } from "@t3tools/contracts";
+import { SourceControlProviderError, type ChangeRequest } from "@j6/contracts";
 
 import * as AzureDevOpsChangeRequestTemplate from "./azureDevOpsChangeRequestTemplate.ts";
-import * as SourceControlHost from "@t3tools/source-control-core/server/SourceControlHost";
+import * as SourceControlHost from "@j6/source-control-core/server/SourceControlHost";
 import * as AzureDevOpsCli from "./AzureDevOpsCli.ts";
 import type { NormalizedAzureDevOpsPullRequestRecord } from "./azureDevOpsPullRequests.ts";
-import * as SourceControlProvider from "@t3tools/source-control-core/server/SourceControlProvider";
+import * as SourceControlProvider from "@j6/source-control-core/server/SourceControlProvider";
 import {
   combinedAuthOutput,
   firstSafeAuthLine,
   providerAuth,
   type SourceControlAuthProbeInput,
   type SourceControlCliDiscoverySpec,
-} from "@t3tools/source-control-core/server/discovery";
+} from "@j6/source-control-core/server/discovery";
 
 function parseAzureAuth(input: SourceControlAuthProbeInput) {
   const account = input.stdout.trim().split(/\r?\n/)[0]?.trim();

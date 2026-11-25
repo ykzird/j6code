@@ -1,7 +1,7 @@
 import { msg } from "gt-react";
 import { m } from "../i18n/messages";
-import { DpopProof } from "@t3tools/client-runtime/relay";
-import { computeDpopJwkThumbprint, DpopPublicJwk } from "@t3tools/shared/dpop";
+import { DpopProof } from "@j6/client-runtime/relay";
+import { computeDpopJwkThumbprint, DpopPublicJwk } from "@j6/shared/dpop";
 import * as Digest from "effect/crypto/Digest";
 import * as SecureRandom from "effect/crypto/SecureRandom";
 import * as Signature from "effect/crypto/Signature";
@@ -22,7 +22,7 @@ export class BrowserDpopError extends Schema.TaggedError<BrowserDpopError>()("Br
 
 const isBrowserDpopError = Schema.is(BrowserDpopError);
 
-const DPOP_DATABASE_NAME = "t3code:cloud-auth";
+const DPOP_DATABASE_NAME = "j6code:cloud-auth";
 const DPOP_DATABASE_VERSION = 1;
 const DPOP_KEY_STORE_NAME = "keys";
 const DPOP_KEY_ID = "relay-dpop-proof-key";

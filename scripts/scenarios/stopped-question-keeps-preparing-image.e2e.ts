@@ -1,7 +1,7 @@
 // @effect-diagnostics nodeBuiltinImport:off -- The scenario starts a local ACP fixture.
 import * as NodePath from "node:path";
 
-import { ProviderDriverKind, ProviderInstanceId } from "@t3tools/contracts";
+import { ProviderDriverKind, ProviderInstanceId } from "@j6/contracts";
 import { expect } from "e2e";
 import * as Effect from "effect/Effect";
 
@@ -12,7 +12,7 @@ import {
   holdImageCompression,
   pasteWideScreenshot,
 } from "./image-compression-hold.ts";
-import { makeState, rpcClient, runPromise, test, WEB } from "./t3.ts";
+import { makeState, rpcClient, runPromise, test, WEB } from "./j6.ts";
 
 const ACP = `
 import { createInterface } from "node:readline";
@@ -57,9 +57,9 @@ for await (const line of createInterface({ input: process.stdin })) {
 test(
   "Stopping an unanswered question keeps a screenshot that is still preparing",
   WEB,
-  async ({ t3, app, browser }) => {
+  async ({ j6, app, browser }) => {
     await holdImageCompression(browser);
-    const project = await t3.project("demo", { "question-agent.mjs": ACP });
+    const project = await j6.project("demo", { "question-agent.mjs": ACP });
     const instanceId = ProviderInstanceId.make("scenario-question-agent");
     await runPromise(
       Effect.gen(function* () {
@@ -104,7 +104,7 @@ test(
       ),
     );
     const { threadId } = JSON.parse(started.stdout) as { threadId: string };
-    await t3.open({ threadId });
+    await j6.open({ threadId });
 
     const composer = browser.locator('[data-chat-composer-form="true"]');
     const question = browser.locator(

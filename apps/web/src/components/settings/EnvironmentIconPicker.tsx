@@ -5,7 +5,7 @@ import {
   resolveEnvironmentMachineKind,
   type EnvironmentId,
   type ServerConfig,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { msg, T, useGT, useMessages } from "gt-react";
 
 import { m, type MessageResolver } from "../../i18n/messages";

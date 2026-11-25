@@ -1,8 +1,8 @@
-import { findErrorTraceId, thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { findErrorTraceId, thrownErrorMessage } from "@j6/client-runtime/errors";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
+} from "@j6/client-runtime/state/runtime";
 import { msg } from "gt-react";
 import { useState } from "react";
 
@@ -33,7 +33,7 @@ function reportFailure(title: string, cause: unknown) {
   });
 }
 
-/** Starts and removes the T3 Chat link that raises the T3 Connect tunnel cap. */
+/** Starts and removes the T3 Chat link that raises the J6 Connect tunnel cap. */
 export function useT3ChatLink() {
   const linkState = useManagedRelayT3ChatLink();
   const createLinkRequest = useAtomCommand(createManagedRelayT3ChatLinkRequestCommand, {

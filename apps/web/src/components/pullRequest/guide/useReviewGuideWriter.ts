@@ -1,5 +1,5 @@
-import type { EnvironmentId, PullRequestRef } from "@t3tools/contracts";
-import { squashAtomCommandFailure } from "@t3tools/client-runtime/state/runtime";
+import type { EnvironmentId, PullRequestRef } from "@j6/contracts";
+import { squashAtomCommandFailure } from "@j6/client-runtime/state/runtime";
 import { useAtomValue } from "@effect/atom-react";
 import { msg } from "gt-react";
 import { useState } from "react";

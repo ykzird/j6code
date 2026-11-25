@@ -47,7 +47,7 @@ Use one of these per machine:
 
 | OS      | Native policy                                                                                        | Policy file                                       |
 | ------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| macOS   | Configuration profile for `com.t3tools.t3code`                                                       | `/Library/Application Support/J6Code/policy.json` |
+| macOS   | Configuration profile for `com.ykzird.j6code`                                                       | `/Library/Application Support/J6Code/policy.json` |
 | Windows | Group Policy template, or a `Policy` JSON value (both under `HKLM\SOFTWARE\Policies\J6\J6Code`) | `C:\Program Files\J6Code\policy.json`             |
 | Linux   |                                                                                                      | `/etc/j6code/policy.json`                         |
 
@@ -58,10 +58,10 @@ refuses to start until you remove one.
 administrators.
 
 **macOS configuration profile.** Add a custom settings payload for the preference domain
-`com.t3tools.t3code`. The payload's keys are the policy's top-level keys (`schemaVersion`,
+`com.ykzird.j6code`. The payload's keys are the policy's top-level keys (`schemaVersion`,
 `organization`, `supportUrl`, `settings`, `limits`); JSON objects become dictionaries and lists
 become arrays. To make the payload from a policy file you checked, run
-`plutil -convert xml1 -o com.t3tools.t3code.plist policy.json` and upload the result, or run
+`plutil -convert xml1 -o com.ykzird.j6code.plist policy.json` and upload the result, or run
 `j6 policy templates <directory> --policy policy.json` to write a complete
 `macos/j6code.mobileconfig`. Install it as
 a device profile, since J6 Code ignores user profiles, and deploy only one profile for this domain.
@@ -227,9 +227,9 @@ desktop app, keep `desktop` in the list, or the app cannot start.
 Without `remote`, the server listens only on a loopback address, creates no pairing links, and
 signs out devices that paired earlier. It does not start with a host other than a loopback
 address or `localhost`. A [background service](./background-service.md) installed before
-`T3CODE_LAN` existed keeps private-network access, so without `remote` it refuses to start.
-Run `j6 up --no-lan` when its `service.env` sets no `T3CODE_HOST`, or set
-`T3CODE_HOST=127.0.0.1` in `service.env`, then run `j6 service restart`. The desktop app starts
+`J6CODE_LAN` existed keeps private-network access, so without `remote` it refuses to start.
+Run `j6 up --no-lan` when its `service.env` sets no `J6CODE_HOST`, or set
+`J6CODE_HOST=127.0.0.1` in `service.env`, then run `j6 service restart`. The desktop app starts
 with network access and Tailscale Serve off, whatever the user chose. That also turns off
 J6 Connect. To keep other remote access but turn off J6 Connect alone, set `"connect": false`.
 
@@ -257,7 +257,7 @@ so restart J6 Code after that.
   [Preview tunnel setting](./remote-access.md#browser-on-a-remote-environment).
 - `worktreeLayoutCommands: false`: J6 Code does not run the
   [worktree layout commands](./multi-repo-projects.md#lay-the-folder-out-yourself) a project's
-  `t3.json` declares, whether or not a user approved them. Such a project gets no new worktree
+  `j6.json` declares, whether or not a user approved them. Such a project gets no new worktree
   threads; existing thread folders are restored as plain checkouts and removed without the
   project's `remove` command.
 `claudeAgent` (Claude), `cursor` (Cursor), `grok` (Grok), `opencode` (OpenCode), `antigravity`

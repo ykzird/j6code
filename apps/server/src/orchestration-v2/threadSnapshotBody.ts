@@ -2,7 +2,7 @@ import {
   OrchestrationV2ProjectedTurnItem,
   OrchestrationV2ThreadDetailSnapshot,
   OrchestrationV2ThreadProjection,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";

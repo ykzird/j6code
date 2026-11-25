@@ -1,4 +1,4 @@
-import type { ServerEventLoopStall } from "@t3tools/contracts";
+import type { ServerEventLoopStall } from "@j6/contracts";
 import { mFallback, msg } from "gt-i18n";
 import type { MFunctionType } from "gt-i18n/types";
 
@@ -33,6 +33,6 @@ export function hostFreezeNotice(
               cpuCount,
             }),
           )
-        : resolve(msg("T3 Code on {host} was too busy to answer.", { host: hostLabel })),
+        : resolve(msg("J6 Code on {host} was too busy to answer.", { host: hostLabel })),
   };
 }

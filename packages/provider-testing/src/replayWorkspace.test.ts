@@ -41,7 +41,7 @@ it.layer(NodeServices.layer)("checkpointWorkspace", (it) => {
       vi.stubEnv("GIT_CONFIG_VALUE_0", "false");
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const root = yield* fs.makeTempDirectoryScoped({ prefix: "t3-replay-workspace-decoy-" });
+      const root = yield* fs.makeTempDirectoryScoped({ prefix: "j6-replay-workspace-decoy-" });
       const repo = path.join(root, "repo");
       const worktree = path.join(root, "worktree");
       yield* fs.makeDirectory(repo);
@@ -72,7 +72,7 @@ it.layer(NodeServices.layer)("checkpointWorkspace", (it) => {
       assert.deepStrictEqual(yield* repositoryState(repo, worktree, worktreeIndex), before);
       assert.strictEqual(
         yield* git(workspace, ["log", "--format=%s%x00%an", "-1"]),
-        "initial\u0000T3 Code Test\n",
+        "initial\u0000J6 Code Test\n",
       );
       assert.strictEqual(
         (yield* git(workspace, ["ls-files"])).trim().split("\n").join(","),

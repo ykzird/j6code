@@ -4,7 +4,7 @@ import {
   ANTIGRAVITY_DEFAULT_MODEL,
   PROVIDER_SEND_TURN_MAX_IMAGE_BYTES,
   type ChatAttachment,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
@@ -84,7 +84,7 @@ describe("Antigravity release gates", () => {
           ? { antigravity: { systemPrompt: { append: "<pull_request_linking/>" } } }
           : undefined,
       );
-      expect(antigravityClientInfo(version).name).toBe(ownName ? "t3-code" : "zed");
+      expect(antigravityClientInfo(version).name).toBe(ownName ? "j6-code" : "zed");
     },
   );
 });
@@ -147,8 +147,8 @@ describe("Antigravity Auto", () => {
         options: [{ optionId: "allow", name: "Allow", kind: "allow_once" }],
       });
       for (const t3Call of [
-        request("Run mcp_t3-code_t3_thread_list?"),
-        request("MCP Tool delegate_task", { ServerName: "t3-code", ToolName: "delegate_task" }),
+        request("Run mcp_j6-code_t3_thread_list?"),
+        request("MCP Tool delegate_task", { ServerName: "j6-code", ToolName: "delegate_task" }),
       ]) {
         expect(antigravityPermissionDisposition(policy, t3Call)).toBe("allow");
         expect(
@@ -166,17 +166,17 @@ describe("Antigravity Auto", () => {
         request("Running preview_status"),
         request("Run mcp_github_create_issue"),
         request("MCP Tool preview_status", { ServerName: "other", ToolName: "preview_status" }),
-        request("Run mcp_t3-code_preview_status", {
-          CommandLine: "Run mcp_t3-code_preview_status",
+        request("Run mcp_j6-code_preview_status", {
+          CommandLine: "Run mcp_j6-code_preview_status",
         }),
         // A directly called tool's rawInput is its own arguments, whatever their names.
         request("Run mcp_github_create_issue", {
-          ServerName: "t3-code",
+          ServerName: "j6-code",
           ToolName: "delegate_task",
         }),
-        request("Running create_issue", { ServerName: "t3-code", ToolName: "delegate_task" }),
+        request("Running create_issue", { ServerName: "j6-code", ToolName: "delegate_task" }),
         // call_mcp_tool is titled for the tool it calls.
-        request("MCP Tool create_issue", { ServerName: "t3-code", ToolName: "delegate_task" }),
+        request("MCP Tool create_issue", { ServerName: "j6-code", ToolName: "delegate_task" }),
       ]) {
         expect(antigravityPermissionDisposition(policy, otherCall)).toBe("ask");
       }
@@ -332,7 +332,7 @@ const makeAttachmentFixture = Effect.fn("AntigravityAcpSupportTest.makeAttachmen
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
     const attachmentsDir = yield* fs.makeTempDirectoryScoped({
-      prefix: "t3-antigravity-attachments-",
+      prefix: "j6-antigravity-attachments-",
     });
     const write = Effect.fn("AntigravityAcpSupportTest.writeAttachment")(function* (
       attachment: ChatAttachment,

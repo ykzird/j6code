@@ -3,7 +3,7 @@ import { expect } from "e2e";
 import * as Effect from "effect/Effect";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { environmentId, rpcClient, runPromise, test, WEB } from "./t3.ts";
+import { environmentId, rpcClient, runPromise, test, WEB } from "./j6.ts";
 
 declare global {
   interface Window {
@@ -14,10 +14,10 @@ declare global {
 test(
   "A second SSH connection check keeps the pending status visible",
   WEB,
-  async ({ t3, app, browser, screen }) => {
+  async ({ j6, app, browser, screen }) => {
     const origin = app.baseUrl ?? "";
     const environment = await runPromise(environmentId(origin));
-    await t3.project("demo");
+    await j6.project("demo");
     await runPromise(
       Effect.gen(function* () {
         const client = yield* rpcClient(T3_HOME, origin);
@@ -60,7 +60,7 @@ test(
       };
     });
 
-    await t3.open(`/settings/devices?machine=${encodeURIComponent(environment)}#device-sources`);
+    await j6.open(`/settings/devices?machine=${encodeURIComponent(environment)}#device-sources`);
     const more = browser.locator("#device-sources").getByRole("button", "More", { exact: true });
     const testConnection = screen.getByRole("menuitem", "Test connection", { exact: true });
     const pending = screen.getByText("Testing connection", { exact: true });

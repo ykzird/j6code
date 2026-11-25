@@ -1,23 +1,23 @@
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { FxSettings } from "@t3tools/provider-fx/settings";
+import { FxSettings } from "@j6/provider-fx/settings";
 import {
   FX_ACP_CANCEL_BEHAVIOR,
   FX_DRIVER_KIND,
   makeFxAdapterV2,
-} from "@t3tools/provider-fx/testing";
-import { ProviderInstanceId } from "@t3tools/contracts";
+} from "@j6/provider-fx/testing";
+import { ProviderInstanceId } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
 import * as Path from "effect/Path";
 import * as Schema from "effect/Schema";
 import * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
-import { resolveSelfInvocation } from "@t3tools/shared/nodeRuntime";
+import { resolveSelfInvocation } from "@j6/shared/nodeRuntime";
 
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
-import * as TestProviderHost from "@t3tools/provider-testing/TestProviderHost";
-import type { ProviderReplayGate } from "@t3tools/provider-testing/replayGate";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
+import * as TestProviderHost from "@j6/provider-testing/TestProviderHost";
+import type { ProviderReplayGate } from "@j6/provider-testing/replayGate";
 import * as ProviderAdapterRegistry from "../ProviderAdapterRegistry.ts";
 import type { OrchestratorV2ProviderReplayHarness } from "../testkit/ProviderReplayHarness.ts";
 import {
@@ -47,7 +47,7 @@ function layerFxProviderAdapterRegistryReplay(
       const replayGate = options.replayGate;
       const replayDir = yield* fileSystem
         .makeTempDirectoryScoped({
-          prefix: `t3-orchestration-v2-fx-replay-${transcript.scenario}-`,
+          prefix: `j6-orchestration-v2-fx-replay-${transcript.scenario}-`,
         })
         .pipe(Effect.orDie);
       const statusPath = path.join(replayDir, "status.json");

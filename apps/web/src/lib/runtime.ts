@@ -3,7 +3,7 @@ import type * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Socket from "effect/socket/Socket";
 
-import { layerRemoteHttpClient } from "@t3tools/client-runtime/rpc";
+import { layerRemoteHttpClient } from "@j6/client-runtime/rpc";
 import * as PrimaryEnvironmentHttpClient from "../environments/primary/httpClient";
 import * as PrimaryEnvironmentHttpLayer from "../environments/primary/httpLayer";
 

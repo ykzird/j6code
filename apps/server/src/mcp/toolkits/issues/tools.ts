@@ -11,7 +11,7 @@ import {
   ThreadId,
   ThreadIssueLinkSource,
   TrimmedNonEmptyString,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Schema from "effect/Schema";
 import * as Tool from "effect/ai/Tool";
 import * as Toolkit from "effect/ai/Toolkit";
@@ -340,7 +340,7 @@ const SetIssueStateTool = Tool.make("set_issue_state", {
 
 const LinkIssueTool = Tool.make("link_issue", {
   description:
-    "Link an issue to a thread so T3 Code shows it beside the thread. Link every issue you work on or file.",
+    "Link an issue to a thread so J6 Code shows it beside the thread. Link every issue you work on or file.",
   parameters: Schema.Struct({ ...IssueTargetInput.fields, ...ThreadTargetInput.fields }),
   success: LinkIssueResult,
   failure: IssueToolError,

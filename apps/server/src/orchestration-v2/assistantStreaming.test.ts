@@ -1,5 +1,5 @@
-import { MessageId, ProviderDriverKind, ThreadId } from "@t3tools/contracts";
-import type * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
+import { MessageId, ProviderDriverKind, ThreadId } from "@j6/contracts";
+import type * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
 import * as DateTime from "effect/DateTime";
 import { assert, describe, expect, it, vi } from "vite-plus/test";
 import { makeAssistantStreamingFilter, splitBufferedAssistantText } from "./assistantStreaming.ts";

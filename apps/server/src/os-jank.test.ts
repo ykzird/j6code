@@ -1,7 +1,7 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { it as effectIt } from "@effect/vitest";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { CommandAvailability, WindowsShellEnvironment } from "@t3tools/shared/shell";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { CommandAvailability, WindowsShellEnvironment } from "@j6/shared/shell";
 import * as Effect from "effect/Effect";
 // @effect-diagnostics-next-line nodeBuiltinImport:off -- Observe the existing synchronous shell probe without launching the user's login shell.
 import * as NodeChildProcess from "node:child_process";
@@ -45,7 +45,7 @@ effectIt.effect("hydrates PATH when the desktop handoff is absent", () =>
     Effect.sync(() =>
       vi
         .spyOn(NodeChildProcess, "execFileSync")
-        .mockReturnValue("__T3CODE_ENV_PATH_START__\n/opt/tools/bin\n__T3CODE_ENV_PATH_END__\n"),
+        .mockReturnValue("__J6CODE_ENV_PATH_START__\n/opt/tools/bin\n__J6CODE_ENV_PATH_END__\n"),
     ),
     (probe) =>
       Effect.gen(function* () {
@@ -73,7 +73,7 @@ effectIt.effect("waits longer for a login shell that times out at startup", () =
       vi.spyOn(NodeChildProcess, "execFileSync").mockImplementation((file, _args, options) => {
         // This profile takes 8 seconds while the machine is under load.
         if ((options?.timeout ?? 0) < 8_000) throw timedOut(String(file));
-        return "__T3CODE_ENV_PATH_START__\n/opt/tools/bin\n__T3CODE_ENV_PATH_END__\n";
+        return "__J6CODE_ENV_PATH_START__\n/opt/tools/bin\n__J6CODE_ENV_PATH_END__\n";
       }),
     ),
     () =>
@@ -124,12 +124,12 @@ effectIt.effect("keeps mise's PATH record with the login shell PATH", () =>
         .spyOn(NodeChildProcess, "execFileSync")
         .mockReturnValue(
           [
-            "__T3CODE_ENV_PATH_START__",
+            "__J6CODE_ENV_PATH_START__",
             "/home/me/.local/bin:/mise/installs/claude/latest:/mise/shims",
-            "__T3CODE_ENV_PATH_END__",
-            "__T3CODE_ENV___MISE_DIFF_START__",
+            "__J6CODE_ENV_PATH_END__",
+            "__J6CODE_ENV___MISE_DIFF_START__",
             "mise-diff",
-            "__T3CODE_ENV___MISE_DIFF_END__",
+            "__J6CODE_ENV___MISE_DIFF_END__",
           ].join("\n"),
         ),
     ),
@@ -158,15 +158,15 @@ effectIt.effect(
           .spyOn(NodeChildProcess, "execFileSync")
           .mockReturnValue(
             [
-              "__T3CODE_ENV_PATH_START__",
+              "__J6CODE_ENV_PATH_START__",
               "/opt/homebrew/bin",
-              "__T3CODE_ENV_PATH_END__",
-              "__T3CODE_ENV_JAVA_HOME_START__",
+              "__J6CODE_ENV_PATH_END__",
+              "__J6CODE_ENV_JAVA_HOME_START__",
               "/opt/homebrew/opt/openjdk@17",
-              "__T3CODE_ENV_JAVA_HOME_END__",
-              "__T3CODE_ENV_T3CODE_FEATURE_FLAGS_START__",
+              "__J6CODE_ENV_JAVA_HOME_END__",
+              "__J6CODE_ENV_J6CODE_FEATURE_FLAGS_START__",
               "tanstack_source",
-              "__T3CODE_ENV_T3CODE_FEATURE_FLAGS_END__",
+              "__J6CODE_ENV_J6CODE_FEATURE_FLAGS_END__",
             ].join("\n"),
           ),
       ),
@@ -177,7 +177,7 @@ effectIt.effect(
             SHELL: "/bin/zsh",
             PATH: "/usr/bin",
             JAVA_HOME: "/custom/jdk",
-            T3CODE_FEATURE_FLAGS: "",
+            J6CODE_FEATURE_FLAGS: "",
           };
 
           for (const env of [missing, explicit]) {
@@ -190,8 +190,8 @@ effectIt.effect(
 
           assert.equal(missing.JAVA_HOME, "/opt/homebrew/opt/openjdk@17");
           assert.equal(explicit.JAVA_HOME, "/custom/jdk");
-          assert.equal(missing.T3CODE_FEATURE_FLAGS, "tanstack_source");
-          assert.equal(explicit.T3CODE_FEATURE_FLAGS, "");
+          assert.equal(missing.J6CODE_FEATURE_FLAGS, "tanstack_source");
+          assert.equal(explicit.J6CODE_FEATURE_FLAGS, "");
         }),
       (probe) => Effect.sync(() => probe.mockRestore()),
     ),

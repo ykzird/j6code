@@ -1,4 +1,4 @@
-import { ProjectId, TaskFolder, TaskFolderError, TaskFolderRepository } from "@t3tools/contracts";
+import { ProjectId, TaskFolder, TaskFolderError, TaskFolderRepository } from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -22,7 +22,7 @@ export class TaskFolderStore extends Context.Service<
     readonly put: (taskFolder: TaskFolder) => Effect.Effect<void, TaskFolderError>;
     readonly remove: (root: string) => Effect.Effect<void, TaskFolderError>;
   }
->()("t3/workspace/TaskFolderStore") {}
+>()("j6/workspace/TaskFolderStore") {}
 
 const TaskFolderRow = Schema.Struct({
   root: Schema.String,

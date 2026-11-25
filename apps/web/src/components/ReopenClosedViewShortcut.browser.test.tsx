@@ -1,5 +1,5 @@
-import type { ResolvedKeybindingsConfig, ScopedThreadRef } from "@t3tools/contracts";
-import { DEFAULT_RESOLVED_KEYBINDINGS } from "@t3tools/shared/keybindings";
+import type { ResolvedKeybindingsConfig, ScopedThreadRef } from "@j6/contracts";
+import { DEFAULT_RESOLVED_KEYBINDINGS } from "@j6/shared/keybindings";
 import {
   createMemoryHistory,
   createRootRoute,

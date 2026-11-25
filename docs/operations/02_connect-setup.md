@@ -1,16 +1,16 @@
 # J6 Connect setup
 
-Deployment and client configuration for J6 Connect. See [J6 Connect](../internals/06_t3-connect.md) for trust boundaries and [infra/relay/README.md](../../infra/relay/README.md#deployment) for relay provisioning.
+Deployment and client configuration for J6 Connect. See [J6 Connect](../internals/06_j6-connect.md) for trust boundaries and [infra/relay/README.md](../../infra/relay/README.md#deployment) for relay provisioning.
 
 ## Public application configuration
 
 J6 Connect is disabled in a fresh clone. Copy `.env.example` to `.env` for production, or set these public identifiers in `.env` / `.env.local` (process env > `.env.local` > `.env`):
 
 ```dotenv
-T3CODE_CLERK_PUBLISHABLE_KEY=<publishable key>
-T3CODE_CLERK_JWT_TEMPLATE=<JWT template name>
-T3CODE_CLERK_CLI_OAUTH_CLIENT_ID=<public OAuth application client ID>
-T3CODE_RELAY_URL=https://relay.example.com
+J6CODE_CLERK_PUBLISHABLE_KEY=<publishable key>
+J6CODE_CLERK_JWT_TEMPLATE=<JWT template name>
+J6CODE_CLERK_CLI_OAUTH_CLIENT_ID=<public OAuth application client ID>
+J6CODE_RELAY_URL=https://relay.example.com
 ```
 
 `CLERK_SECRET_KEY` belongs only in relay secrets, never in client config. Client and bundled-server builds embed these values at build time; EAS preview/production environments need the publishable key, JWT template, and relay URL.
@@ -24,11 +24,11 @@ Create a public OAuth application in Clerk (authorization code + PKCE):
 1. Redirect URI: `http://127.0.0.1:34338/callback`
 2. Scopes: `openid`, `profile`, `email`, `offline_access`
 3. Enable **Device authorization grant** (required for headless/SSH login; Clerk enables it per account on request).
-4. Set `T3CODE_CLERK_CLI_OAUTH_CLIENT_ID` to its public client ID.
+4. Set `J6CODE_CLERK_CLI_OAUTH_CLIENT_ID` to its public client ID.
 
 ### JWT template
 
-Create a Clerk JWT template named `j6-relay` with `{ "aud": "j6-code-relay" }`. Set `T3CODE_CLERK_JWT_TEMPLATE=j6-relay` on clients and `CLERK_JWT_AUDIENCE=j6-code-relay` on the relay.
+Create a Clerk JWT template named `j6-relay` with `{ "aud": "j6-code-relay" }`. Set `J6CODE_CLERK_JWT_TEMPLATE=j6-relay` on clients and `CLERK_JWT_AUDIENCE=j6-code-relay` on the relay.
 
 ### Desktop OAuth redirects
 
@@ -40,9 +40,9 @@ In Clerk **Native applications > Allowlist for mobile SSO redirect**, allow each
 
 | Variant     | Callback                                      |
 | ----------- | --------------------------------------------- |
-| Development | `clerk://com.t3tools.t3code.dev.callback`     |
-| Preview     | `clerk://com.t3tools.t3code.preview.callback` |
-| Production  | `clerk://com.t3tools.t3code.callback`         |
+| Development | `clerk://com.ykzird.j6code.dev.callback`     |
+| Preview     | `clerk://com.ykzird.j6code.preview.callback` |
+| Production  | `clerk://com.ykzird.j6code.callback`         |
 
 ### Restricting sign-ups
 
@@ -56,22 +56,22 @@ Under Clerk **Webhooks**, add an endpoint at `https://<relay domain>/v1/webhooks
 
 The relay sends Android push notifications directly via FCM HTTP v1 (no Expo Push account required):
 
-1. Register each Android package (`com.t3tools.t3code.{dev,preview}` / `com.t3tools.t3code`) in Firebase and download `google-services.json`.
-2. Pass `T3CODE_ANDROID_GOOGLE_SERVICES_FILE=/abs/path/google-services.json` when prebuilding/building locally or as an EAS file variable (available to fingerprint generation as well).
+1. Register each Android package (`com.ykzird.j6code.{dev,preview}` / `com.ykzird.j6code`) in Firebase and download `google-services.json`.
+2. Pass `J6CODE_ANDROID_GOOGLE_SERVICES_FILE=/abs/path/google-services.json` when prebuilding/building locally or as an EAS file variable (available to fingerprint generation as well).
 3. Enable the FCM API and store the Firebase service-account JSON only in the relay's `FCM_SERVICE_ACCOUNT` secret (never in EAS app env or the repo). Set `APNS_ENABLED=false` for an Android-only relay stage.
 4. For local smoke/watch verification without deploying a relay, use `vp run push:android:smoke` and `vp run push:android:watch` from `infra/relay`.
 
 ## Desktop passkeys
 
-For a signed macOS build (`com.t3tools.t3code`):
+For a signed macOS build (`com.ykzird.j6code`):
 
 1. Create an explicit macOS App ID with **Associated Domains** and a matching distribution provisioning profile.
-2. In Clerk Native API settings, add an iOS app with the same Apple Team ID and bundle ID, and verify `https://<frontend-api>/.well-known/apple-app-site-association` includes `<TEAM_ID>.com.t3tools.t3code`.
-3. Configure signing per [Apple signing and notarization](./03_release.md#apple-signing-and-notarization-macos). Local signed builds use `T3CODE_APPLE_TEAM_ID`, `T3CODE_MACOS_PROVISIONING_PROFILE`, and optionally `T3CODE_CLERK_PASSKEY_RP_DOMAINS`. Bump the build version after changing Associated Domains so macOS refreshes cached Shared Web Credentials.
+2. In Clerk Native API settings, add an iOS app with the same Apple Team ID and bundle ID, and verify `https://<frontend-api>/.well-known/apple-app-site-association` includes `<TEAM_ID>.com.ykzird.j6code`.
+3. Configure signing per [Apple signing and notarization](./03_release.md#apple-signing-and-notarization-macos). Local signed builds use `J6CODE_APPLE_TEAM_ID`, `J6CODE_MACOS_PROVISIONING_PROFILE`, and optionally `J6CODE_CLERK_PASSKEY_RP_DOMAINS`. Bump the build version after changing Associated Domains so macOS refreshes cached Shared Web Credentials.
 
 Unsigned `dev:desktop` cannot exercise passkeys. For renderer HMR with passkeys, launch an installed signed build against `vp run dev:web`:
 
 ```sh
-VITE_DEV_SERVER_URL=http://127.0.0.1:5733 T3CODE_PORT=13773 \
+VITE_DEV_SERVER_URL=http://127.0.0.1:5733 J6CODE_PORT=13773 \
   "/Applications/J6 Code (Alpha).app/Contents/MacOS/J6 Code (Alpha)"
 ```

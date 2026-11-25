@@ -35,7 +35,7 @@ paths on one machine, so the same project on another machine has its own. A proj
 
 ### Leave a repository out
 
-To keep a repository inside the project folder out of the project, name it in the `t3.json` in the
+To keep a repository inside the project folder out of the project, name it in the `j6.json` in the
 project folder, relative to that folder:
 
 ```json
@@ -101,7 +101,7 @@ copies. Editing one changes it for every thread.
 
 If the default layout does not suit your project, for example because build output must be per
 thread, workspace metadata has to be generated, or submodules need preparing, the project can
-create the folder with its own command. Add this to the `t3.json` in the project folder:
+create the folder with its own command. Add this to the `j6.json` in the project folder:
 
 ```json
 {
@@ -157,7 +157,7 @@ it was. You can also review, approve, and revoke each command under **Worktree l
 project's settings. Approving needs a client that can use the terminal (`terminal:operate`).
 
 An approval is kept on the environment, not in the repository, and covers the exact text of one
-command for one project. When the text in `t3.json` changes, for example after a pull, the command
+command for one project. When the text in `j6.json` changes, for example after a pull, the command
 stops running until you approve the new text. An approval covers the command text only: when the
 command runs a script file, later changes to that file do not ask again.
 
@@ -207,7 +207,7 @@ restored:
 ## Limits
 
 - One Git action runs in one repository. There is no commit or push across several at once.
-- Only the project folder's `t3.json` is read. Setup scripts and actions inside one of its
+- Only the project folder's `j6.json` is read. Setup scripts and actions inside one of its
   repositories are not picked up.
 - The Diff pane's repository picker and the base branch field for a plain folder are on web and
   desktop only.

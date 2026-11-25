@@ -1,4 +1,4 @@
-/* oxlint-disable t3code/no-global-process-runtime -- Packaging must compare the build host with the executable target. */
+/* oxlint-disable j6code/no-global-process-runtime -- Packaging must compare the build host with the executable target. */
 const { spawnSync } = require("node:child_process");
 const path = require("node:path");
 const fs = require("node:fs");
@@ -11,7 +11,7 @@ module.exports = async ({ appOutDir, electronPlatformName, arch, packager }) => 
     return;
   }
   // Generating the cache runs the bundle, and a PR preview's bundle must never run next to signing secrets.
-  if (process.env.T3CODE_DESKTOP_UNTRUSTED_BUNDLE === "true") {
+  if (process.env.J6CODE_DESKTOP_UNTRUSTED_BUNDLE === "true") {
     console.log("[server-compile-cache] Skipping untrusted bundle");
     return;
   }
@@ -49,10 +49,10 @@ module.exports = async ({ appOutDir, electronPlatformName, arch, packager }) => 
   );
   const env = { ...process.env, ELECTRON_RUN_AS_NODE: "1" };
   for (const name of Object.keys(env)) {
-    if (name.startsWith("NODE_") || name.startsWith("T3CODE_")) delete env[name];
+    if (name.startsWith("NODE_") || name.startsWith("J6CODE_")) delete env[name];
   }
-  const state = fs.mkdtempSync(path.join(os.tmpdir(), "t3-release-cache-"));
-  env.T3CODE_HOME = state;
+  const state = fs.mkdtempSync(path.join(os.tmpdir(), "j6-release-cache-"));
+  env.J6CODE_HOME = state;
   let result;
   try {
     // Run a script file, not -e: -e defines a global __filename of "[eval]", which

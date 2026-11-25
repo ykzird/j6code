@@ -1,5 +1,5 @@
 import { RefreshIcon } from "~/components/ui/refresh-icon";
-import { splitsSurrogatePair } from "@t3tools/shared/assistantCitations";
+import { splitsSurrogatePair } from "@j6/shared/assistantCitations";
 import { T, useGT, Var } from "gt-react";
 import { PlusIcon, SearchIcon } from "lucide-react";
 

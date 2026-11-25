@@ -1,4 +1,4 @@
-import { normalizeHost } from "@t3tools/source-control-core/server/pullRequestUtils";
+import { normalizeHost } from "@j6/source-control-core/server/pullRequestUtils";
 import * as Clock from "effect/Clock";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
@@ -144,7 +144,7 @@ export const make = Effect.gen(function* () {
                 HttpClientRequest.setHeaders({
                   accept: "text/event-stream",
                   "x-github-api-version": "2022-11-28",
-                  "user-agent": "t3code",
+                  "user-agent": "j6code",
                   authorization: `Bearer ${Redacted.value(held.token)}`,
                 }),
               ),

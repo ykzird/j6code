@@ -3,8 +3,8 @@ import { translatableDetail } from "../errors/translatable.ts";
 import type {
   AuthClientPresentationMetadata,
   ExecutionEnvironmentDescriptor,
-} from "@t3tools/contracts";
-import { withRelayClientTracing } from "@t3tools/shared/relayTracing";
+} from "@j6/contracts";
+import { withRelayClientTracing } from "@j6/shared/relayTracing";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -69,7 +69,7 @@ export class ConnectionResolver extends Context.Service<
       ConnectionAttemptError
     >;
   }
->()("@t3tools/client-runtime/connection/resolver/ConnectionResolver") {}
+>()("@j6/client-runtime/connection/resolver/ConnectionResolver") {}
 
 const isBearerProfile = Schema.is(BearerConnectionProfile);
 const isSshProfile = Schema.is(SshConnectionProfile);
@@ -148,7 +148,7 @@ const makeBearerBroker = Effect.fn("clientRuntime.connection.broker.makeBearer")
         actual: profile.environmentId,
       });
     }
-    if (profile.authorization === "t3-connect") {
+    if (profile.authorization === "j6-connect") {
       const authorized = yield* remote.authorizeDpop({
         expectedEnvironmentId: target.environmentId,
         directEndpoint: { httpBaseUrl: profile.httpBaseUrl, wsBaseUrl: profile.wsBaseUrl },

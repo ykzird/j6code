@@ -1,5 +1,5 @@
-import { assistantCitationsToPlainText } from "@t3tools/shared/assistantCitations";
-import { ATTACHMENT_ONLY_BOOTSTRAP_PROMPT } from "@t3tools/shared/composerContextReferences";
+import { assistantCitationsToPlainText } from "@j6/shared/assistantCitations";
+import { ATTACHMENT_ONLY_BOOTSTRAP_PROMPT } from "@j6/shared/composerContextReferences";
 import * as Effect from "effect/Effect";
 import type * as SqlClient from "effect/sql/SqlClient";
 
@@ -84,7 +84,7 @@ export const indexedMessageText = (sql: SqlClient.SqlClient, payload: string) =>
 
 // What the index stores: a message's readable text with apostrophes folded.
 // Migrations 69 and 74 create the triggers before migration 81 adds
-// search_text, and `t3 doctor` can rebuild a database that has not migrated,
+// search_text, and `j6 doctor` can rebuild a database that has not migrated,
 // so those fall back to the stored text.
 const indexedText = Effect.fn("MessageSearchIndex.indexedText")(function* (
   sql: SqlClient.SqlClient,

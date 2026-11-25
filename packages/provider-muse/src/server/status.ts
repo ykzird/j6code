@@ -1,7 +1,7 @@
-import { resolveProviderProbeTimeoutMs } from "@t3tools/provider-core/server/snapshotProbe";
-import { ServerProviderModel } from "@t3tools/contracts";
+import { resolveProviderProbeTimeoutMs } from "@j6/provider-core/server/snapshotProbe";
+import { ServerProviderModel } from "@j6/contracts";
 import { MuseSettings } from "../settings.ts";
-import { resolveSpawnCommand } from "@t3tools/shared/shell";
+import { resolveSpawnCommand } from "@j6/shared/shell";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -25,7 +25,7 @@ import {
   providerProbeEnvironment,
   spawnAndCollect,
   type ProviderProbeResult,
-} from "@t3tools/provider-core/server/snapshotProbe";
+} from "@j6/provider-core/server/snapshotProbe";
 
 const MUSE_PRESENTATION = {
   displayName: "Muse Code",
@@ -53,7 +53,7 @@ export const makePendingMuseProvider = Effect.fn("makePendingMuseProvider")(func
       auth: { status: "unknown" },
       message: settings.enabled
         ? "Checking Muse Code CLI availability..."
-        : "Muse Code is disabled in T3 Code settings.",
+        : "Muse Code is disabled in J6 Code settings.",
     },
   });
 });

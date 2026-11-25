@@ -1,6 +1,6 @@
 import { T, useGT, useLocale, Var } from "gt-react";
-import { formatPercent, formatTokens, formatUsd } from "@t3tools/shared/usageFormat";
-import { isModelCostUnknown, type ModelTotals } from "@t3tools/shared/usageMerge";
+import { formatPercent, formatTokens, formatUsd } from "@j6/shared/usageFormat";
+import { isModelCostUnknown, type ModelTotals } from "@j6/shared/usageMerge";
 
 import { mergeAnsweredUsage, type EnvironmentUsageStatus } from "../../state/usage";
 import { ProviderInstanceIcon } from "../chat/ProviderInstanceIcon";

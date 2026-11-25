@@ -1,16 +1,16 @@
 // @effect-diagnostics nodeBuiltinImport:off - Effect has no incremental digest or free-space query.
-import { expandHomePath } from "@t3tools/provider-core/server/pathExpansion";
+import { expandHomePath } from "@j6/provider-core/server/pathExpansion";
 import * as ModelManifest from "./ModelManifest.ts";
-import { cliArchiveTarCommand } from "@t3tools/shared/cliRelease";
-import { compareSemverVersions } from "@t3tools/shared/semver";
+import { cliArchiveTarCommand } from "@j6/shared/cliRelease";
+import { compareSemverVersions } from "@j6/shared/semver";
 import {
   ProviderDriverKind,
   type ProviderInstallState,
   type ServerProviderCompatibilityAdvisory,
-} from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { resolveNodeExecutable, nodeRuntimeUnavailableMessage } from "@t3tools/shared/nodeRuntime";
-import { resolveCommandPath } from "@t3tools/shared/shell";
+} from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { resolveNodeExecutable, nodeRuntimeUnavailableMessage } from "@j6/shared/nodeRuntime";
+import { resolveCommandPath } from "@j6/shared/shell";
 import * as Clock from "effect/Clock";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
@@ -127,7 +127,7 @@ interface AntigravityInstallationService {
 export class AntigravityInstallation extends Context.Service<
   AntigravityInstallation,
   AntigravityInstallationService
->()("t3/provider/AntigravityInstallation") {
+>()("j6/provider/AntigravityInstallation") {
   static readonly layer = Layer.effect(
     AntigravityInstallation,
     Effect.gen(function* () {
@@ -504,7 +504,7 @@ export const makeAntigravityInstallation = Effect.fn("AntigravityInstallation.ma
         _tag: "repairable" as const,
         error: installationError(
           "resolve",
-          `Antigravity ${record.version} predates the Antigravity CLI and no longer works with this T3 Code release. Update it in Antigravity setup.`,
+          `Antigravity ${record.version} predates the Antigravity CLI and no longer works with this J6 Code release. Update it in Antigravity setup.`,
         ),
       };
     }
@@ -656,7 +656,7 @@ export const makeAntigravityInstallation = Effect.fn("AntigravityInstallation.ma
       if (yield* isWithdrawn(installed.version))
         return yield* installationError(
           "resolve",
-          `Antigravity ${installed.version} no longer works with this T3 Code release. Update it in Antigravity setup.`,
+          `Antigravity ${installed.version} no longer works with this J6 Code release. Update it in Antigravity setup.`,
         );
       return installed;
     }
@@ -747,7 +747,7 @@ export const makeAntigravityInstallation = Effect.fn("AntigravityInstallation.ma
       function* (executable: AntigravityExecutable, expectedVersion: string) {
         const validationScope = yield* Effect.scope;
         const profileDirectory = yield* Effect.acquireRelease(
-          fs.makeTempDirectory({ prefix: "t3-antigravity-validate-" }),
+          fs.makeTempDirectory({ prefix: "j6-antigravity-validate-" }),
           (directory) =>
             fs
               .remove(directory, { recursive: true, force: true })

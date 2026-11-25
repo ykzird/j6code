@@ -1,13 +1,13 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { m } from "~/i18n/messages";
 import { useScopedSettingsWriteAllowed } from "./useScopedSettings";
-import { AuthSettingsWriteScope } from "@t3tools/contracts";
-import { EnvironmentId, type T3ProjectFileScript } from "@t3tools/contracts";
+import { AuthSettingsWriteScope } from "@j6/contracts";
+import { EnvironmentId, type T3ProjectFileScript } from "@j6/contracts";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
-import { DEFAULT_RESOLVED_KEYBINDINGS } from "@t3tools/shared/keybindings";
+} from "@j6/client-runtime/state/runtime";
+import { DEFAULT_RESOLVED_KEYBINDINGS } from "@j6/shared/keybindings";
 import { ChevronDownIcon, PlusIcon } from "lucide-react";
 import { T, useGT } from "gt-react";
 import { useState } from "react";
@@ -146,7 +146,7 @@ export function ProjectActionsSettings() {
                 <MenuPopup align="end">
                   <MenuGroup>
                     <MenuGroupLabel>
-                      <T>Import from t3.json</T>
+                      <T>Import from j6.json</T>
                     </MenuGroupLabel>
                     <p className="px-2 pb-2 text-pretty text-sm text-muted-foreground">
                       <T>Add actions declared by this checkout without editing them first.</T>
@@ -199,9 +199,9 @@ export function ProjectActionsSettings() {
       )}
       {t3File.status === "invalid" ? (
         <SettingsRow
-          title={gt("t3.json is invalid")}
+          title={gt("j6.json is invalid")}
           description={gt(
-            "A t3.json exists in this checkout but fails to parse, so every action and icon it declares is ignored. Check the JSON syntax and icon values.",
+            "A j6.json exists in this checkout but fails to parse, so every action and icon it declares is ignored. Check the JSON syntax and icon values.",
           )}
           className="text-warning"
         />

@@ -1,6 +1,6 @@
-import { formatFilePathPosition, resolvePathLinkTarget } from "@t3tools/shared/fileLinks";
+import { formatFilePathPosition, resolvePathLinkTarget } from "@j6/shared/fileLinks";
 
-import { workspaceRelativeFilePath } from "@t3tools/shared/path";
+import { workspaceRelativeFilePath } from "@j6/shared/path";
 import type { MarkdownFileLinkMeta } from "./markdown-links";
 
 interface MarkdownFileHostPath {

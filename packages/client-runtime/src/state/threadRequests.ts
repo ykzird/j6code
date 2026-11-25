@@ -10,7 +10,7 @@ import type {
   ProviderApprovalDecision,
   ProviderRequestKind,
   RuntimeRequestId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { Atom } from "effect/reactivity";
 import { parseThreadKey, threadKey } from "./entities.ts";
 import { getProjectionArrayReplacementIndex } from "./orchestrationV2Projection.ts";
@@ -78,7 +78,7 @@ export function fullAccessOverrideExplanation(
       )
     : resolve(
         msg(
-          "Full access skips approvals, but the agent still stops for a few safety checks of its own that no setting can skip, such as a delete whose path it can't verify. T3 Code can't turn these off, so check the request and approve it if it's what you expect.",
+          "Full access skips approvals, but the agent still stops for a few safety checks of its own that no setting can skip, such as a delete whose path it can't verify. J6 Code can't turn these off, so check the request and approve it if it's what you expect.",
         ),
       );
 }

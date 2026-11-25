@@ -1,4 +1,4 @@
-import type { EnvironmentId, ProjectId } from "@t3tools/contracts";
+import type { EnvironmentId, ProjectId } from "@j6/contracts";
 import { createContext, type MouseEvent } from "react";
 
 export interface ComposerContextActions {

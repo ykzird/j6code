@@ -1,13 +1,13 @@
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 test(
   "Browser's Search engine is read-only while a project is selected",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    await t3.project("demo");
-    await t3.open("/settings/browser");
+  async ({ j6, app, browser, screen }) => {
+    await j6.project("demo");
+    await j6.open("/settings/browser");
 
     await screen.getByRole("button", "Project scope: All projects").tap();
     await screen.getByRole("menuitemradio").filter({ hasText: "demo" }).tap();

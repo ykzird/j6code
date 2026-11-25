@@ -1,4 +1,4 @@
-import { EnvironmentId, type WorkflowRunReference } from "@t3tools/contracts";
+import { EnvironmentId, type WorkflowRunReference } from "@j6/contracts";
 import { Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { T, useGT } from "gt-react";
 import { FileCode2Icon } from "lucide-react";
@@ -214,7 +214,7 @@ export function WorkflowsPage() {
               >
                 <SelectTrigger
                   size="sm"
-                  aria-label={gt("Environment", { $context: "a T3 Code server to pick" })}
+                  aria-label={gt("Environment", { $context: "a J6 Code server to pick" })}
                 >
                   <SelectValue>
                     {away ??

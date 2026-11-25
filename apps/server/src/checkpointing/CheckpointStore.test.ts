@@ -4,8 +4,8 @@ import * as NodePath from "node:path";
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { it } from "@effect/vitest";
-import { CheckpointRef, ThreadId, type VcsError } from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import { CheckpointRef, ThreadId, type VcsError } from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
@@ -21,11 +21,11 @@ import * as VcsProcess from "../vcs/VcsProcess.ts";
 import * as ServerConfig from "../config.ts";
 
 function checkpointRefForThreadTurn(threadId: ThreadId, turnCount: number): CheckpointRef {
-  return CheckpointRef.make(`refs/t3/checkpoints/${Base64Url.encode(threadId)}/turn/${turnCount}`);
+  return CheckpointRef.make(`refs/j6/checkpoints/${Base64Url.encode(threadId)}/turn/${turnCount}`);
 }
 
 const layerServerConfig = ServerConfig.ServerConfig.layerTest(process.cwd(), {
-  prefix: "t3-checkpoint-store-test-",
+  prefix: "j6-checkpoint-store-test-",
 });
 const layerVcsProcessTest = VcsProcess.layer.pipe(
   Layer.provide(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
@@ -714,8 +714,8 @@ it.layer(layerTest)("CheckpointStore.layer", (it) => {
           yield* initRepoWithCommit(NodePath.join(tmp, clone));
         }
         const refs = {
-          fromCheckpointRef: CheckpointRef.make("refs/t3/test/nested/0"),
-          toCheckpointRef: CheckpointRef.make("refs/t3/test/nested/1"),
+          fromCheckpointRef: CheckpointRef.make("refs/j6/test/nested/0"),
+          toCheckpointRef: CheckpointRef.make("refs/j6/test/nested/1"),
         };
         // Captured before the clone was tracked, so this snapshot holds it as a gitlink.
         yield* checkpointStore.captureCheckpoint({
@@ -760,7 +760,7 @@ it.layer(layerTest)("CheckpointStore.layer", (it) => {
         const head = yield* git(tmp, ["rev-parse", "HEAD"]);
 
         expect(yield* checkpointStore.resolveCleanHead(tmp)).toBe(head);
-        const checkpointRef = CheckpointRef.make("refs/t3/test/clean/head");
+        const checkpointRef = CheckpointRef.make("refs/j6/test/clean/head");
         yield* checkpointStore.captureHeadCheckpoint({ cwd: tmp, checkpointRef, head, seenAt: 1 });
         expect(yield* git(tmp, ["ls-tree", "-r", checkpointRef])).toBe(
           yield* git(tmp, ["ls-tree", "-r", "HEAD"]),
@@ -781,7 +781,7 @@ it.layer(layerTest)("CheckpointStore.layer", (it) => {
         yield* writeTextFile(NodePath.join(tmp, "later.txt"), "later\n");
         yield* git(tmp, ["add", "later.txt"]);
         yield* git(tmp, ["commit", "-m", "later"], { committedAt: "@1000 +0000" });
-        const toCheckpointRef = CheckpointRef.make("refs/t3/test/clean/after");
+        const toCheckpointRef = CheckpointRef.make("refs/j6/test/clean/after");
         yield* checkpointStore.captureCheckpoint({ cwd: tmp, checkpointRef: toCheckpointRef });
         expect(
           yield* checkpointStore.listAuthoredPaths({

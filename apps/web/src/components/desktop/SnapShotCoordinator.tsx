@@ -1,4 +1,4 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import {
   type DesktopBridge,
   type DesktopPendingSnapShot,
@@ -6,7 +6,7 @@ import {
   PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
   PROVIDER_SEND_TURN_MAX_IMAGE_BYTES,
   type ScopedThreadRef,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { msg } from "gt-react";
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 
@@ -23,7 +23,7 @@ import {
   lastUsedProjectKeySchema,
   useHandleNewThread,
 } from "../../hooks/useHandleNewThread";
-import { scopedProjectKey } from "@t3tools/client-runtime/environment";
+import { scopedProjectKey } from "@j6/client-runtime/environment";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { useStableCallback } from "../../hooks/useStableCallback";
 import { getClientSettings, useClientSettings } from "../../hooks/useSettings";
@@ -254,7 +254,7 @@ export function SnapShotCoordinator() {
   const rememberProject = useEffectEvent((projectKey: string) => {
     if (projectKey !== lastUsedProjectKey) setLastUsedProjectKey(projectKey);
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Persist route changes without overwriting project choices from other tabs.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Persist route changes without overwriting project choices from other tabs.
   useEffect(() => {
     if (currentProjectKey) rememberProject(currentProjectKey);
   }, [currentProjectKey]);
@@ -500,7 +500,7 @@ export function SnapShotCoordinator() {
       }
     },
   );
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- subscribes to SnapShot events from the desktop bridge and drains pending ones while enabled
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- subscribes to SnapShot events from the desktop bridge and drains pending ones while enabled
   useEffect(() => {
     const bridge = getDesktopSnapShotBridge();
     if (
@@ -513,7 +513,7 @@ export function SnapShotCoordinator() {
     return bridge.onSnapShotEvent((event) => handleSnapShotEvent(bridge, event));
   }, [enabled, defaultProjectFallbackReady, hasDefaultProject, lastRouteTarget]);
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- attaches window blur, focus and visibilitychange listeners to dismiss or drain SnapShot animations
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- attaches window blur, focus and visibilitychange listeners to dismiss or drain SnapShot animations
   useEffect(() => {
     const dismissOnBlur = () => {
       pendingAnimationStartsRef.current.clear();

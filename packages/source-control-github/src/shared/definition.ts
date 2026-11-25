@@ -1,4 +1,4 @@
-import { makeProviderSettingsSchema, SourceControlProviderKind } from "@t3tools/contracts";
+import { makeProviderSettingsSchema, SourceControlProviderKind } from "@j6/contracts";
 import {
   buildCommitUrl,
   changeRequestUrlBelow,
@@ -13,7 +13,7 @@ import {
   projectChangeRequestHost,
   remoteWebOrigin,
   type SourceControlAppSignIn,
-} from "@t3tools/source-control-core/shared/definition";
+} from "@j6/source-control-core/shared/definition";
 
 import { gitHubMediaUrl, gitHubRawFileUrl } from "./gitHubMedia.ts";
 import { icon } from "./icon.ts";
@@ -47,11 +47,11 @@ function isRepositoryPath(repository: string): boolean {
   );
 }
 
-/** Signing in through the T3 Code for GitHub app lifts the per-user API rate limit to the app's. */
+/** Signing in through the J6 Code for GitHub app lifts the per-user API rate limit to the app's. */
 export const APP_SIGN_IN: SourceControlAppSignIn = {
-  appName: "T3 Code for GitHub",
+  appName: "J6 Code for GitHub",
   hosts: ["github.com"],
-  installUrl: "https://github.com/apps/t3-code-for-github/installations/new",
+  installUrl: "https://github.com/apps/j6-code-for-github/installations/new",
   revokeUrl: "https://github.com/settings/apps/authorizations",
 };
 

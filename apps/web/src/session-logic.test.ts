@@ -18,8 +18,8 @@ import {
   type OrchestrationV2ExecutionNode,
   type OrchestrationV2RunAttempt,
   type OrchestrationV2TurnItem,
-} from "@t3tools/contracts";
-import type { ThreadRuntimeSummary } from "@t3tools/client-runtime/state/shell";
+} from "@j6/contracts";
+import type { ThreadRuntimeSummary } from "@j6/client-runtime/state/shell";
 import { deriveMessagesTimelineRows } from "./components/chat/MessagesTimeline.logic";
 import * as DateTime from "effect/DateTime";
 import { describe, expect, it } from "vite-plus/test";
@@ -439,7 +439,7 @@ describe("V2 session presentation", () => {
         parentCheckpointId: null,
         ordinalWithinScope: ordinal,
         appRunOrdinal,
-        ref: CheckpointRef.make(`refs/t3/${id}`),
+        ref: CheckpointRef.make(`refs/j6/${id}`),
         status: "ready" as const,
         files: [],
         capturedAt: now,
@@ -1372,7 +1372,7 @@ describe("HTML renders in the timeline", () => {
     ...base("render", 2),
     status,
     type: "dynamic_tool",
-    toolName: "mcp__t3-code__html_render",
+    toolName: "mcp__j6-code__html_render",
     input: { title: "Chart", height: 420 },
     ...(output === undefined ? {} : { output }),
   });
@@ -1454,7 +1454,7 @@ describe("HTML renders in the timeline", () => {
       ...base("render", 2),
       status,
       type: "dynamic_tool",
-      toolName: "mcp__t3-code__send_to_user",
+      toolName: "mcp__j6-code__send_to_user",
       input: { message: sentMessage },
       ...(output === undefined ? {} : { output }),
     });

@@ -17,9 +17,9 @@ describe("scrubFeedback", () => {
     ],
     [
       "known values only as whole words",
-      "t3_feedback failed for t3 and Bob, not bobcat",
-      ["t3", "Bob", "x"],
-      "t3_feedback failed for t3 and [redacted], not bobcat",
+      "t3_feedback failed for j6 and Bob, not bobcat",
+      ["j6", "Bob", "x"],
+      "t3_feedback failed for j6 and [redacted], not bobcat",
     ],
     [
       "URLs with credentials before emails inside them",
@@ -59,9 +59,9 @@ describe("scrubFeedback", () => {
     ],
     [
       "nothing that only looks like a path",
-      "See https://github.com/org/repo for t3 thread send and t3_thread_read: 3/10 and/or a / b /mcp /compact /secret.env",
+      "See https://github.com/org/repo for j6 thread send and t3_thread_read: 3/10 and/or a / b /mcp /compact /secret.env",
       [],
-      "See https://github.com/org/repo for t3 thread send and t3_thread_read: 3/10 and/or a / b /mcp /compact /secret.env",
+      "See https://github.com/org/repo for j6 thread send and t3_thread_read: 3/10 and/or a / b /mcp /compact /secret.env",
     ],
     [
       "quoted paths with spaces",
@@ -142,10 +142,10 @@ describe("scrubFeedback", () => {
       'Opened [redacted]\nand "[redacted]" then',
     ],
     [
-      "a two-letter username such as t3",
-      "t3 thread send failed for t3",
-      ["t3"],
-      "t3 thread send failed for t3",
+      "a two-letter username such as j6",
+      "j6 thread send failed for j6",
+      ["j6"],
+      "j6 thread send failed for j6",
     ],
     ["a 1,200-character adversarial path", `/a/b${" x/".repeat(398)}`, [], "[redacted]"],
   ])("scrubs %s", (_, text, sensitive, expected) => {

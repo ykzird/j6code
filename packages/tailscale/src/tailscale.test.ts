@@ -10,7 +10,7 @@ import * as Stream from "effect/Stream";
 import { HttpClient, HttpClientResponse } from "effect/http";
 import * as TestClock from "effect/testing/TestClock";
 import { ChildProcessSpawner } from "effect/process";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 
 import {
   ensureTailscaleServe,
@@ -163,7 +163,7 @@ describe("tailscale", () => {
       Web: {
         "box.tailnet.ts.net:443": {
           Handlers: {
-            "/t3": { Proxy: "http://127.0.0.1:3773" },
+            "/j6": { Proxy: "http://127.0.0.1:3773" },
             "/dashboard": { Proxy: "http://127.0.0.1:9000" },
           },
         },
@@ -195,9 +195,9 @@ describe("tailscale", () => {
         },
       },
       Services: {
-        "svc:t3": {
+        "svc:j6": {
           Web: {
-            "t3.tailnet.ts.net:443": { Handlers: { "/": { Proxy: "http://127.0.0.1:3773" } } },
+            "j6.tailnet.ts.net:443": { Handlers: { "/": { Proxy: "http://127.0.0.1:3773" } } },
           },
         },
       },
@@ -207,7 +207,7 @@ describe("tailscale", () => {
     });
     assert.deepEqual(parseTailscaleServeRoutesTo(status, { host: "127.0.0.1", port: 3773 }), [
       { servePort: 7000 },
-      { servePort: 443, mount: "/t3", host: "box.tailnet.ts.net" },
+      { servePort: 443, mount: "/j6", host: "box.tailnet.ts.net" },
       // `localhost` and `[::]` can dial either loopback, so they might be another service's.
       ...(
         [
@@ -230,7 +230,7 @@ describe("tailscale", () => {
         host: "box.tailnet.ts.net",
         ...(ambiguous === undefined ? {} : { ambiguous }),
       })),
-      { servePort: 443, mount: "/", host: "t3.tailnet.ts.net", owner: "svc:t3" },
+      { servePort: 443, mount: "/", host: "j6.tailnet.ts.net", owner: "svc:j6" },
       { servePort: 9000, ambiguous: "localhost", owner: "foreground" },
     ]);
     assert.deepEqual(
@@ -261,8 +261,8 @@ describe("tailscale", () => {
         "box.tailnet.ts.net:10002": { Handlers: { "/": { Text: "hi" } } },
       },
       Services: {
-        "svc:t3": {
-          Web: { "t3.tailnet.ts.net:10000": { Handlers: { "/": { Proxy: "4003" } } } },
+        "svc:j6": {
+          Web: { "j6.tailnet.ts.net:10000": { Handlers: { "/": { Proxy: "4003" } } } },
         },
       },
     });

@@ -6,7 +6,7 @@ import type {
   OrchestrationV2ThreadStreamItem,
   PeerLinkClientPairingResult,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as Queue from "effect/Queue";
 import * as Result from "effect/Result";

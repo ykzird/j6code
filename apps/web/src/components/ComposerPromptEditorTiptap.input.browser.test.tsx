@@ -12,12 +12,12 @@ import {
   type ComposerContextRecord,
   EnvironmentId,
   type ServerProviderSkill,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   COMPOSER_CONTEXT_CLIPBOARD_MIME,
   encodeComposerContextFragment,
-} from "@t3tools/shared/composerContextClipboard";
-import { formatComposerContextReference } from "@t3tools/shared/composerContextReferences";
+} from "@j6/shared/composerContextClipboard";
+import { formatComposerContextReference } from "@j6/shared/composerContextReferences";
 import type { Editor } from "@tiptap/core";
 import { redoDepth, undoDepth } from "@tiptap/pm/history";
 import { NodeSelection } from "@tiptap/pm/state";
@@ -40,7 +40,7 @@ import {
 vi.mock(import("../state/server"), async (original) => {
   const { Atom } = await import("effect/reactivity");
   const { compileResolvedKeybindingsConfig, DEFAULT_KEYBINDINGS } =
-    await import("@t3tools/shared/keybindings");
+    await import("@j6/shared/keybindings");
   return {
     ...(await original()),
     primaryServerKeybindingsAtom: Atom.make(
@@ -432,7 +432,7 @@ it("lets composition replace selected text without surrounding it", async () => 
 
 // CDP drives Chrome's own IME path, which skips deleting a range bounded by an uneditable chip.
 describe("an IME composition over a selection with a chip", () => {
-  const chip = "[Seed · 2](t3-context://v1/thread/thread_seed)";
+  const chip = "[Seed · 2](j6-context://v1/thread/thread_seed)";
   it.each([
     { range: "text and the chip after it", anchor: 1, head: 6, composed: `あ ${chip} RIGHT` },
     { range: "a chip and the text after it", anchor: 5, head: 7, composed: `LEFTあ${chip} RIGHT` },

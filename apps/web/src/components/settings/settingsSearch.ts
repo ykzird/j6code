@@ -1,14 +1,14 @@
 import { HOSTED_APP_CHANNEL } from "~/branding";
 import { isElectron } from "~/env";
 import { isMacPlatform, isWindowsPlatform, normalizeSearchText } from "~/lib/utils";
-import { STATIC_KEYBINDING_COMMANDS, type KeybindingCommand } from "@t3tools/contracts";
-import type { EnvironmentId } from "@t3tools/contracts";
-import type { EnvironmentConnectionPhase } from "@t3tools/client-runtime/connection";
+import { STATIC_KEYBINDING_COMMANDS, type KeybindingCommand } from "@j6/contracts";
+import type { EnvironmentId } from "@j6/contracts";
+import type { EnvironmentConnectionPhase } from "@j6/client-runtime/connection";
 import {
   sourceControlClients,
   type SourceControlDefinition,
-} from "@t3tools/client-runtime/source-control-clients";
-import { DEFAULT_KEYBINDINGS } from "@t3tools/shared/keybindings";
+} from "@j6/client-runtime/source-control-clients";
+import { DEFAULT_KEYBINDINGS } from "@j6/shared/keybindings";
 import * as Schema from "effect/Schema";
 import { decodeMsg, msg, useMessages } from "gt-react";
 import { TYPOGRAPHY_ADVANCED_STORAGE_KEY } from "../../appearanceFonts";
@@ -556,7 +556,7 @@ export const SETTINGS_SEARCH_ITEMS = [
     title: msg("Guest links"),
     to: "/settings/labs",
     scope: "environment",
-    searchTerms: [msg("beta share guest invite link teammate watch t3 connect tunnel")],
+    searchTerms: [msg("beta share guest invite link teammate watch j6 connect tunnel")],
   },
   {
     id: "linked-environments-beta",
@@ -901,7 +901,7 @@ export const SETTINGS_SEARCH_ITEMS = [
     title: msg("Submodules"),
     to: "/settings/worktrees",
     scope: "project-defaults",
-    searchTerms: [msg("git submodule init recursive top-level none worktree t3.json")],
+    searchTerms: [msg("git submodule init recursive top-level none worktree j6.json")],
   },
   {
     id: "start-from-origin",
@@ -984,7 +984,7 @@ export const SETTINGS_SEARCH_ITEMS = [
   },
   {
     id: "cli-command",
-    title: msg("t3 command"),
+    title: msg("j6 command"),
     to: "/settings/about",
     searchTerms: [msg("cli terminal shell path install command line")],
     desktopOnly: true,
@@ -1029,7 +1029,7 @@ export const SETTINGS_SEARCH_ITEMS = [
     scope: "environment-defaults",
     agentFeedbackOnly: true,
     searchTerms: [
-      msg("report bug problem t3 team send feedback agents tools automatic when i ask"),
+      msg("report bug problem j6 team send feedback agents tools automatic when i ask"),
     ],
   },
   {
@@ -1229,7 +1229,7 @@ export const SETTINGS_SEARCH_ITEMS = [
   },
   {
     id: "pull-request-links-open-in-app",
-    title: msg("Open pull requests in T3 Code"),
+    title: msg("Open pull requests in J6 Code"),
     to: "/settings/diffs",
     searchTerms: [
       `pr commit links ${SOURCE_CONTROL_HOST_LABELS} browser external click default pull request view panel`,
@@ -1360,7 +1360,7 @@ export const SETTINGS_SEARCH_ITEMS = [
     id: "project-actions",
     title: msg("Actions"),
     to: "/settings/projects",
-    searchTerms: [msg("commands scripts setup run dev server checkout worktree t3.json import")],
+    searchTerms: [msg("commands scripts setup run dev server checkout worktree j6.json import")],
   },
   {
     id: "project-repositories",
@@ -1414,12 +1414,12 @@ export const SETTINGS_SEARCH_ITEMS = [
     wslAvailableOnly: true,
   },
   {
-    id: "t3-connect",
+    id: "j6-connect",
     localEnvironmentOnly: true,
-    title: msg("T3 Connect"),
+    title: msg("J6 Connect"),
     to: "/settings/access",
     targetId: "connections-environment",
-    searchTerms: [msg("managed tunnel cloud other devices remote tunnels limit t3 chat")],
+    searchTerms: [msg("managed tunnel cloud other devices remote tunnels limit j6 chat")],
     desktopOnly: true,
     cloudOnly: true,
   },
@@ -1429,7 +1429,7 @@ export const SETTINGS_SEARCH_ITEMS = [
     to: "/settings/access",
     targetId: "connections-environment",
     searchTerms: [
-      msg("t3 connect devices approve deny trust revoke pairing code security account"),
+      msg("j6 connect devices approve deny trust revoke pairing code security account"),
     ],
     cloudOnly: true,
     managedTunnelOnly: true,
@@ -1440,7 +1440,7 @@ export const SETTINGS_SEARCH_ITEMS = [
     title: msg("Hold webhooks while offline"),
     to: "/settings/access",
     targetId: "connections-environment",
-    searchTerms: [msg("webhook automations offline queue mailbox t3 connect")],
+    searchTerms: [msg("webhook automations offline queue mailbox j6 connect")],
     cloudOnly: true,
     managedTunnelOnly: true,
   },
@@ -1484,7 +1484,7 @@ export const SETTINGS_SEARCH_ITEMS = [
     id: "remote-environments",
     title: msg("Environments"),
     to: "/settings/connections",
-    searchTerms: [msg("add pair backend host code ssh config agent tunnel saved t3 connect")],
+    searchTerms: [msg("add pair backend host code ssh config agent tunnel saved j6 connect")],
   },
   {
     id: "load-balancing",

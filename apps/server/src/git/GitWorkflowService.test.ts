@@ -17,7 +17,7 @@ it.layer(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer))("GitWorkflowServi
   it.effect("finds a name among the refs of every namespace", () =>
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
-      const cwd = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-ref-named-" });
+      const cwd = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-ref-named-" });
       const workflow = yield* GitWorkflowService.GitWorkflowService;
       const driver = yield* GitVcsDriver.GitVcsDriver;
       for (const args of [
@@ -30,7 +30,7 @@ it.layer(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer))("GitWorkflowServi
         yield* driver.execute({ operation: "test.setupRepo", cwd, args });
       }
       const found = yield* Effect.forEach(
-        ["main", "feature/topic", "alias", "mirrored", "t3/renamed", "feature/*"],
+        ["main", "feature/topic", "alias", "mirrored", "j6/renamed", "feature/*"],
         (refName) => workflow.hasRefNamed({ cwd, refName }),
       );
       assert.deepEqual(found, [true, true, true, true, false, false]);
@@ -47,7 +47,7 @@ it.layer(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer))("GitWorkflowServi
           Layer.provideMerge(GitVcsDriver.layer),
           Layer.provideMerge(VcsProcess.layer),
           Layer.provideMerge(
-            ServerConfig.layerTest(process.cwd(), { prefix: "t3-ref-named-" }).pipe(
+            ServerConfig.layerTest(process.cwd(), { prefix: "j6-ref-named-" }).pipe(
               Layer.provide(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
             ),
           ),
@@ -60,7 +60,7 @@ it.layer(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer))("GitWorkflowServi
   it.effect("reads no HEAD path from a removed worktree without spawning Git", () =>
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
-      const parent = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-removed-wt-" });
+      const parent = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-removed-wt-" });
       const removed = `${parent}/removed`;
       const workflow = yield* GitWorkflowService.GitWorkflowService;
       assert.strictEqual(yield* workflow.headPath(removed), null);

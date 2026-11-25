@@ -6,7 +6,7 @@ import {
   PullRequestInvolvement,
   PullRequestListFilters,
   PullRequestListState,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
 export const PullRequestListSort = Schema.Literals([
   "ready",
@@ -62,7 +62,7 @@ export const PullRequestListPreferencesSchema = Schema.Struct({
 const decodePullRequestListPreferences = Schema.decodeUnknownOption(
   PullRequestListPreferencesSchema,
 );
-const PULL_REQUEST_LIST_PREFERENCES_STORAGE_KEY = "t3.pullRequests.preferences";
+const PULL_REQUEST_LIST_PREFERENCES_STORAGE_KEY = "j6.pullRequests.preferences";
 type PreferenceStorage = Pick<Storage, "getItem" | "setItem">;
 
 function resolvePreferenceStorage(

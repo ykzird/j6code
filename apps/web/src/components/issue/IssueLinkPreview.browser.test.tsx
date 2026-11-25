@@ -1,4 +1,4 @@
-import { EnvironmentId, IssueTrackerKind, ProjectId } from "@t3tools/contracts";
+import { EnvironmentId, IssueTrackerKind, ProjectId } from "@j6/contracts";
 import { expect, it, vi } from "vite-plus/test";
 import { page, userEvent } from "vite-plus/test/browser";
 

@@ -2,14 +2,14 @@ import { expect } from "e2e";
 
 import { T3_HOME } from "../e2e.config.ts";
 import { SECOND_HOME, startSecondServer } from "./second-server.ts";
-import { makeState, runPromise, test, WEB } from "./t3.ts";
+import { makeState, runPromise, test, WEB } from "./j6.ts";
 
 test(
   "Removing an environment closes the in-app notifications it raised",
   WEB,
-  async ({ t3, app, screen, browser }) => {
-    const project = await t3.project("demo");
-    const primaryThread = await t3.thread({
+  async ({ j6, app, screen, browser }) => {
+    const project = await j6.project("demo");
+    const primaryThread = await j6.thread({
       project,
       title: "Finished here",
       messages: ["first"],
@@ -26,7 +26,7 @@ test(
         messages: ["first"],
       });
 
-      await t3.open("/settings/general");
+      await j6.open("/settings/general");
       await screen.getByRole("switch", "In-app notifications").check();
       await app.open("/settings/connections");
       await screen.getByRole("button", "Add environment").tap();

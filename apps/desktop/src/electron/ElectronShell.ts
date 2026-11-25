@@ -4,7 +4,7 @@ import {
   REMOTE_CAPABLE_EDITOR_IDS,
   remoteSchemeForEditor,
   type SystemSettingsPane,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -21,7 +21,7 @@ const REMOTE_EDITOR_PROTOCOLS = new Set(
   }),
 );
 
-// "Use T3 Code in another app" opens these apps (apps/web/src/components/mcp/mcpApps.ts). Match
+// "Use J6 Code in another app" opens these apps (apps/web/src/components/mcp/mcpApps.ts). Match
 // each exact link shape the wizard sends, never a whole scheme.
 const isAppLaunchUrl = (url: URL) =>
   url.protocol === "grokbot:" &&
@@ -80,7 +80,7 @@ export class ElectronShell extends Context.Service<
     readonly openSystemSettings: (pane: SystemSettingsPane) => Effect.Effect<boolean>;
     readonly copyText: (text: string) => Effect.Effect<void>;
   }
->()("@t3tools/desktop/electron/ElectronShell") {}
+>()("@j6/desktop/electron/ElectronShell") {}
 
 /** @public */
 export const make = ElectronShell.of({

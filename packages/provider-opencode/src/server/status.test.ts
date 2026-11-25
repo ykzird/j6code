@@ -18,11 +18,11 @@ import * as TestClock from "effect/testing/TestClock";
 import * as HttpClient from "effect/http/HttpClient";
 import * as HttpClientResponse from "effect/http/HttpClientResponse";
 import { beforeEach } from "vite-plus/test";
-import { buildProviderOptionSelectionsFromDescriptors } from "@t3tools/shared/model";
-import { settingsSecretLiteral } from "@t3tools/contracts";
+import { buildProviderOptionSelectionsFromDescriptors } from "@j6/shared/model";
+import { settingsSecretLiteral } from "@j6/contracts";
 
 import { OpenCodeSettings } from "../settings.ts";
-import type { ProviderCompatibilityLookup } from "@t3tools/provider-core/server/compatibility";
+import type { ProviderCompatibilityLookup } from "@j6/provider-core/server/compatibility";
 import * as OpenCodeRuntime from "./OpenCodeRuntime.ts";
 import * as OpenCodeServerOwner from "./OpenCodeServerOwner.ts";
 import {
@@ -40,7 +40,7 @@ import {
   OPENCODE_2_RESPONSES,
   replayOpenCodeServer,
 } from "./probeResponses.fixture.ts";
-import { DEFAULT_VARIANT_CHOICE_ID } from "@t3tools/shared/model";
+import { DEFAULT_VARIANT_CHOICE_ID } from "@j6/shared/model";
 const decodeOpenCodeSettings = Schema.decodeSync(OpenCodeSettings);
 
 const DEFAULT_VERSION_STDOUT = "opencode 1.14.19\n";

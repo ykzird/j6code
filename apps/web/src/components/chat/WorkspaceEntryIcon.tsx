@@ -1,5 +1,5 @@
-import type { EnvironmentId } from "@t3tools/contracts";
-import { formatAttachmentSize } from "@t3tools/client-runtime/state/attachments";
+import type { EnvironmentId } from "@j6/contracts";
+import { formatAttachmentSize } from "@j6/client-runtime/state/attachments";
 import { useMessages } from "gt-react";
 
 import { useFileMetadata } from "../../hooks/useFileMetadata";

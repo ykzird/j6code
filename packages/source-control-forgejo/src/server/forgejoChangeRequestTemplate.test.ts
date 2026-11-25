@@ -1,7 +1,7 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, it } from "@effect/vitest";
-import * as SourceControlHost from "@t3tools/source-control-core/server/SourceControlHost";
-import * as TestSourceControlHost from "@t3tools/source-control-testing/TestSourceControlHost";
+import * as SourceControlHost from "@j6/source-control-core/server/SourceControlHost";
+import * as TestSourceControlHost from "@j6/source-control-testing/TestSourceControlHost";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
@@ -15,7 +15,7 @@ const templateRepository = Effect.gen(function* () {
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
   const { git } = yield* SourceControlHost.SourceControlHost;
-  const cwd = yield* fs.makeTempDirectoryScoped({ prefix: "t3-forgejo-pr-template-" });
+  const cwd = yield* fs.makeTempDirectoryScoped({ prefix: "j6-forgejo-pr-template-" });
   const runGit = (args: ReadonlyArray<string>) =>
     git.execute({ operation: "forgejoChangeRequestTemplate.test.git", cwd, args });
   yield* runGit(["init", "--initial-branch=main", "--template="]);

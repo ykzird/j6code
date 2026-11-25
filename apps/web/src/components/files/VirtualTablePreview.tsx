@@ -24,7 +24,7 @@ export default function VirtualTablePreview(props: {
   const widthRef = useRef(0);
   const measureRef = useRef<HTMLTableElement>(null);
   const [measured, setMeasured] = useState<number[] | null>(null);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Measure the viewport before paint and observe container resizes to invalidate column measurements.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Measure the viewport before paint and observe container resizes to invalidate column measurements.
   useLayoutEffect(() => {
     const node = ref.current;
     if (!node) return;
@@ -40,7 +40,7 @@ export default function VirtualTablePreview(props: {
     update();
     return observeResize(node, update);
   }, []);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Read the browser's laid-out table column widths before displaying the virtual table.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Read the browser's laid-out table column widths before displaying the virtual table.
   useLayoutEffect(() => {
     if (!width || !props.header || !measureRef.current || measured) return;
     const widths = [...measureRef.current.querySelectorAll("thead th")].map(
@@ -188,7 +188,7 @@ function RowPage(
   const rows = props.getRows(props.page);
   // A page stays mounted while the worker fills it, preserving the scroll position.
   const { loadPage, page } = props;
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Request this page's rows from the indexing worker when they are missing or incomplete.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Request this page's rows from the indexing worker when they are missing or incomplete.
   useEffect(() => {
     const expected = Math.min(PREVIEW_PAGE_ROWS, props.count - page * PREVIEW_PAGE_ROWS);
     if (!rows || rows.length < expected) loadPage?.(page);
@@ -297,7 +297,7 @@ function ScaledRows(
   // The final mounted rows keep their measured height and scroll natively.
   const nativeTail = first - headerRows === maxFirst;
   const scrollModel = useRef({ scale, maxFirst, heights: [] as number[] });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Measure native tail rows and preserve the DOM scroll position when the virtual track scale changes.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Measure native tail rows and preserve the DOM scroll position when the virtual track scale changes.
   useLayoutEffect(() => {
     const previous = scrollModel.current;
     const heights = nativeTail
@@ -327,7 +327,7 @@ function ScaledRows(
     node.scrollTop = Math.min(maxFirst * 29, logicalTop) * scale + nativeOffset;
     setTop(node.scrollTop);
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Scroll the DOM viewport to a requested line after its virtual track has committed.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Scroll the DOM viewport to a requested line after its virtual track has committed.
   useLayoutEffect(() => {
     const node = ref.current;
     if (props.revealLine == null) {
@@ -358,7 +358,7 @@ function ScaledRows(
     pendingEnd.current = false;
     node.scrollTop += delta * (nativeTail ? 1 : (scale * 29) / rowHeight());
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Install a non-passive native wheel listener so virtual scrolling can prevent the browser's default scroll.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Install a non-passive native wheel listener so virtual scrolling can prevent the browser's default scroll.
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
@@ -375,7 +375,7 @@ function ScaledRows(
     Math.ceil(visibleEnd / PREVIEW_PAGE_ROWS),
     Math.ceil(props.count / PREVIEW_PAGE_ROWS) - page,
   );
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Measure mounted rows across all columns before paint so horizontal column virtualization keeps row heights and vertical scroll position stable.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Measure mounted rows across all columns before paint so horizontal column virtualization keeps row heights and vertical scroll position stable.
   useLayoutEffect(() => {
     const probe = rowProbeRef.current;
     if (!props.hasHorizontalOverflow || !probe) return;
@@ -451,7 +451,7 @@ function ScaledRows(
     props.hasHorizontalOverflow && rowHeights.key.startsWith(`${sizesKey}|`)
       ? rowHeights.heights
       : undefined;
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Measure mounted row offsets and observe content resizes to position the virtual rows against the scroll track.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Measure mounted row offsets and observe content resizes to position the virtual rows against the scroll track.
   useLayoutEffect(() => {
     if (atStart) return;
     const node = contentRef.current;
@@ -470,7 +470,7 @@ function ScaledRows(
     update();
     return observeResize(node, update);
   }, [first, atStart]);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Correct the DOM scroll position once a requested worker row has loaded and its actual bounds are measurable.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Correct the DOM scroll position once a requested worker row has loaded and its actual bounds are measurable.
   useLayoutEffect(() => {
     const pending = pendingReveal.current;
     const node = ref.current;
@@ -510,7 +510,7 @@ function ScaledRows(
     node.scrollTop += delta * (nativeTail ? 1 : (scale * 29) / Math.max(29, bounds.height));
     setTop(node.scrollTop);
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Complete End-key scrolling after the final worker row has loaded and its DOM layout has settled.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Complete End-key scrolling after the final worker row has loaded and its DOM layout has settled.
   useLayoutEffect(() => {
     const node = ref.current;
     const content = contentRef.current;

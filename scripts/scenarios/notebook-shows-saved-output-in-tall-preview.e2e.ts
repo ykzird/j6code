@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 const savedResults = Array.from({ length: 17 }, (_, index) => `Saved result ${index + 1}`);
 const notebook = {
@@ -31,11 +31,11 @@ const lastOutput = '[data-notebook-output="0-17"]';
 test(
   "All saved notebook outputs render when they fit in a tall preview",
   WEB,
-  async ({ t3, app, screen, browser }) => {
-    const project = await t3.project("demo", { "results.ipynb": JSON.stringify(notebook) });
-    const thread = await t3.thread({ project, title: "Review results", messages: ["Start"] });
+  async ({ j6, app, screen, browser }) => {
+    const project = await j6.project("demo", { "results.ipynb": JSON.stringify(notebook) });
+    const thread = await j6.thread({ project, title: "Review results", messages: ["Start"] });
     await browser.setViewport({ width: 1440, height: 1080 });
-    await t3.open(thread);
+    await j6.open(thread);
     await screen.getByText("fixture turn complete", { exact: false }).waitFor();
 
     await browser.keyboard.press("Control+p");

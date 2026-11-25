@@ -1,4 +1,4 @@
-import { ProjectId, TaskFolderError, type WorktreeLayoutCommandKind } from "@t3tools/contracts";
+import { ProjectId, TaskFolderError, type WorktreeLayoutCommandKind } from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as Digest from "effect/crypto/Digest";
 import * as Effect from "effect/Effect";
@@ -12,7 +12,7 @@ import * as SqlSchema from "effect/sql/SqlSchema";
  * Which of a project's `worktreeLayout` commands a person approved, by the hash of the exact
  * text. This side only reads. Recording an approval is `LayoutCommandApprovalWrites`, which only
  * the client RPC that a person's session calls may import
- * (t3code/no-layout-command-approval-writes).
+ * (j6code/no-layout-command-approval-writes).
  */
 export class LayoutCommandApprovals extends Context.Service<
   LayoutCommandApprovals,
@@ -23,7 +23,7 @@ export class LayoutCommandApprovals extends Context.Service<
       readonly command: string;
     }) => Effect.Effect<boolean, TaskFolderError>;
   }
->()("t3/workspace/LayoutCommandApprovals") {}
+>()("j6/workspace/LayoutCommandApprovals") {}
 
 export const failed = (cause: unknown) =>
   new TaskFolderError({

@@ -1,5 +1,5 @@
 // @effect-diagnostics nodeBuiltinImport:off - Exercises the packaging filesystem and readelf.
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as NodeFSP from "node:fs/promises";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
@@ -106,12 +106,12 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("packaged ELF s
   it.each([62, 183])(
     "checks executable, addon and extensionless ELF requirements for machine %s",
     async (machine) => {
-      const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-glibc-"));
+      const root = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-glibc-"));
       try {
         const app = NodePath.join(root, "app");
         const native = NodePath.join(app, "resources/app.asar.unpacked/node_modules/addon");
         await NodeFSP.mkdir(native, { recursive: true });
-        await NodeFSP.writeFile(NodePath.join(app, "t3code"), elfFixture(machine, "2.25"));
+        await NodeFSP.writeFile(NodePath.join(app, "j6code"), elfFixture(machine, "2.25"));
         await NodeFSP.writeFile(NodePath.join(native, "pty.node"), elfFixture(machine, "2.34"));
         await NodeFSP.writeFile(NodePath.join(app, "not-elf"), "GLIBC_2.99");
         await NodeFSP.writeFile(NodePath.join(root, "outside"), elfFixture(machine, "2.99"));

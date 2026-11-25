@@ -19,13 +19,13 @@ import {
   type WorkspaceLayoutCommandsResult,
   type WorktreeLayoutCommandKind,
   T3_PROJECT_FILE_NAME,
-} from "@t3tools/contracts";
-import { resolveProjectSettings } from "@t3tools/shared/projectSettings";
-import { flattenTemporaryWorktreeBranchName, isTemporaryWorktreeBranch } from "@t3tools/shared/git";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { windowsSystem32Path } from "@t3tools/shared/windowsSystem";
-import * as KeyedLock from "@t3tools/shared/KeyedLock";
-import { parseT3ProjectFile } from "@t3tools/shared/t3ProjectFile";
+} from "@j6/contracts";
+import { resolveProjectSettings } from "@j6/shared/projectSettings";
+import { flattenTemporaryWorktreeBranchName, isTemporaryWorktreeBranch } from "@j6/shared/git";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { windowsSystem32Path } from "@j6/shared/windowsSystem";
+import * as KeyedLock from "@j6/shared/KeyedLock";
+import { parseT3ProjectFile } from "@j6/shared/t3ProjectFile";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
 import * as Digest from "effect/crypto/Digest";
@@ -203,12 +203,12 @@ export class TaskFolders extends Context.Service<
       readonly branch: string;
       readonly recreate: (checkout: TaskFolderCheckout) => Effect.Effect<void, E>;
     }) => Effect.Effect<void, TaskFolderError | E>;
-    /** The project's layout commands as its `t3.json` holds them now, and whether each is approved. */
+    /** The project's layout commands as its `j6.json` holds them now, and whether each is approved. */
     readonly layoutCommands: (
       projectId: ProjectId,
     ) => Effect.Effect<WorkspaceLayoutCommandsResult, TaskFolderError>;
   }
->()("t3/workspace/TaskFolders") {}
+>()("j6/workspace/TaskFolders") {}
 
 const isTaskFolderError = Schema.is(TaskFolderError);
 
@@ -257,7 +257,7 @@ export const projectCommandsForAgent = (
 };
 
 /** Only `layoutCommand` makes one, so nothing runs that was not checked there. */
-const cleared: unique symbol = Symbol("t3/workspace/TaskFolders/cleared");
+const cleared: unique symbol = Symbol("j6/workspace/TaskFolders/cleared");
 interface ClearedLayoutCommand {
   readonly [cleared]: true;
   readonly text: string;
@@ -380,7 +380,7 @@ const make = Effect.gen(function* () {
     (cause: unknown): TaskFolderError =>
       new TaskFolderError({ operation, detail: `${prefix}: ${failureDetail(cause)}`, cause });
 
-  // A project that lays its own thread folder out says so in its `t3.json`.
+  // A project that lays its own thread folder out says so in its `j6.json`.
   const projectFile = (projectRoot: string) =>
     fileSystem.readFileString(path.join(projectRoot, T3_PROJECT_FILE_NAME)).pipe(
       Effect.map(parseT3ProjectFile),

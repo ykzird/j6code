@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 const MATCH = "quartzneedle";
 const columns = Array.from({ length: 16 }, (_, index) => `DiagnosticsColumn${index + 1}`);
@@ -15,10 +15,10 @@ const TABLE = [
 test(
   "Find reveals a match in the last column of a wide table",
   WEB,
-  async ({ t3, app, screen, browser }) => {
-    const project = await t3.project("wide-table");
-    const thread = await t3.thread({ project, title: "Diagnostics table", messages: [TABLE] });
-    await t3.open(thread);
+  async ({ j6, app, screen, browser }) => {
+    const project = await j6.project("wide-table");
+    const thread = await j6.thread({ project, title: "Diagnostics table", messages: [TABLE] });
+    await j6.open(thread);
     await screen.getByText("first fixture turn complete", { exact: false }).waitFor({
       timeout: 120_000,
     });
@@ -32,7 +32,7 @@ test(
         .poll(
           () =>
             browser.evaluate((query) => {
-              const active = CSS.highlights.get("t3-thread-find-active");
+              const active = CSS.highlights.get("j6-thread-find-active");
               const match =
                 active &&
                 [...active].find((range) => range instanceof Range && range.toString() === query);

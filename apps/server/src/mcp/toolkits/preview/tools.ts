@@ -20,7 +20,7 @@ import {
   PreviewAutomationStatus,
   PreviewAutomationTabTargetInput,
   PreviewAutomationWaitForInput,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Schema from "effect/Schema";
 import * as FileSystem from "effect/FileSystem";
 import { McpSchema, Tool, Toolkit } from "effect/ai";

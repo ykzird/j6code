@@ -1,7 +1,7 @@
 import { expect } from "e2e";
 import * as Effect from "effect/Effect";
 
-import { runPromise, test, WEB } from "./t3.ts";
+import { runPromise, test, WEB } from "./j6.ts";
 
 interface Fault {
   readonly failConfigStreamWhileInterrupted: () => boolean;
@@ -10,9 +10,9 @@ interface Fault {
 test(
   "The app reconnects after its config stream fails while interrupted",
   WEB,
-  async ({ t3, app, screen, browser }) => {
-    const project = await t3.project("demo");
-    const thread = await t3.thread({
+  async ({ j6, app, screen, browser }) => {
+    const project = await j6.project("demo");
+    const thread = await j6.thread({
       project,
       title: "Earlier work",
       messages: ["Print the JSON"],
@@ -62,7 +62,7 @@ test(
       };
     });
     await browser.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" });
-    await t3.open(thread);
+    await j6.open(thread);
 
     const reply = screen.getByText("The command printed one JSON line.");
     await expect(reply.first()).toBeVisible();

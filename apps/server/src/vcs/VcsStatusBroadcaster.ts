@@ -27,11 +27,11 @@ import type {
   VcsStatusResult,
   VcsStatusStreamEvent,
   VcsStatusSubscriptionInput,
-} from "@t3tools/contracts";
-import { DEFAULT_AUTOMATIC_GIT_FETCH_INTERVAL } from "@t3tools/contracts";
-import { mergeGitStatusParts } from "@t3tools/shared/git";
-import * as KeyedLock from "@t3tools/shared/KeyedLock";
-import { resolveProjectSettings } from "@t3tools/shared/projectSettings";
+} from "@j6/contracts";
+import { DEFAULT_AUTOMATIC_GIT_FETCH_INTERVAL } from "@j6/contracts";
+import { mergeGitStatusParts } from "@j6/shared/git";
+import * as KeyedLock from "@j6/shared/KeyedLock";
+import { resolveProjectSettings } from "@j6/shared/projectSettings";
 
 import * as BackgroundPolicy from "../background/BackgroundPolicy.ts";
 import * as GitWorkflowService from "../git/GitWorkflowService.ts";
@@ -172,7 +172,7 @@ interface ActiveRemotePoller {
 
 export class VcsAutoPullPolicy extends Context.Reference<{
   readonly isEnabled: (cwd: string) => Effect.Effect<boolean, never>;
-}>("t3/vcs/VcsAutoPullPolicy", {
+}>("j6/vcs/VcsAutoPullPolicy", {
   defaultValue: () => ({ isEnabled: () => Effect.succeed(false) }),
 }) {}
 
@@ -244,7 +244,7 @@ export class VcsStatusBroadcaster extends Context.Service<
       input: VcsStatusSubscriptionInput,
     ) => Stream.Stream<VcsStatusStreamEvent, GitManagerServiceError>;
   }
->()("t3/vcs/VcsStatusBroadcaster") {}
+>()("j6/vcs/VcsStatusBroadcaster") {}
 
 function fingerprintStatusPart(status: unknown): string {
   return JSON.stringify(status);
@@ -1099,7 +1099,7 @@ export const make = Effect.gen(function* () {
       ),
   );
 
-  // A checkout outside T3 Code, such as `git switch` in the terminal, calls no refresh RPC.
+  // A checkout outside J6 Code, such as `git switch` in the terminal, calls no refresh RPC.
   // Rereading remote too, without a fetch, sends the new branch with its own PR and counts.
   const publishCheckedOutRef = Effect.fn("VcsStatusBroadcaster.publishCheckedOutRef")(function* (
     cwd: string,

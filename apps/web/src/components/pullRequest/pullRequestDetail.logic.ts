@@ -3,7 +3,7 @@ import {
   pullRequestAnchorMatchesUrl,
   pullRequestLinkCommit,
   resolvePullRequestReviewAnchor,
-} from "@t3tools/shared/pullRequestAnchor";
+} from "@j6/shared/pullRequestAnchor";
 import { stripInlineContextReferences } from "~/lib/composerContextReferences";
 import type { Nodes } from "hast";
 
@@ -11,7 +11,7 @@ import { markdownHtmlComments, markdownTree } from "~/markdown/wordsHast";
 import {
   sourceControlClients,
   type ChangeRequestTerminology,
-} from "@t3tools/client-runtime/source-control-clients";
+} from "@j6/client-runtime/source-control-clients";
 import * as Schema from "effect/Schema";
 import {
   COMPOSER_CONTEXT_REVIEW_TEXT_MAX_CHARS,
@@ -41,13 +41,13 @@ import {
   type ThreadLinkedPullRequest,
   type ThreadPullRequestLink,
   type VcsRef,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   legacyThreadPullRequestKey,
   resolveThreadCurrentPullRequestLink,
   threadPullRequestKeysEqual,
   visibleThreadPullRequests,
-} from "@t3tools/client-runtime/thread-pull-requests";
+} from "@j6/client-runtime/thread-pull-requests";
 
 import { msg } from "gt-react";
 
@@ -968,7 +968,7 @@ function reviewThreadContext(
   return {
     id: `pull-request-finding:${thread.id}`,
     sectionId: `pull-request:${pullRequestNumber}`,
-    // oxlint-disable-next-line t3code/no-untranslated-copy -- context title sent to the agent
+    // oxlint-disable-next-line j6code/no-untranslated-copy -- context title sent to the agent
     sectionTitle: `PR #${pullRequestNumber} review`,
     filePath: thread.path,
     startIndex: lineIndex,
@@ -984,9 +984,9 @@ function reviewThreadContext(
 // A task added to an existing thread's composer has no checkout prepared for it.
 function checkoutInstruction(inThisThread: boolean | undefined): string {
   return inThisThread
-    ? // oxlint-disable-next-line t3code/no-untranslated-copy -- agent prompt
+    ? // oxlint-disable-next-line j6code/no-untranslated-copy -- agent prompt
       "Work on its branch, switching to it or checking it out first if this workspace is not on it"
-    : // oxlint-disable-next-line t3code/no-untranslated-copy -- agent prompt
+    : // oxlint-disable-next-line j6code/no-untranslated-copy -- agent prompt
       "Work in the prepared checkout";
 }
 
@@ -1245,7 +1245,7 @@ function pullRequestContextComment(
     // Use URLs because repositories can share pull request numbers.
     id: `pull-request-context:${input.url}`,
     sectionId: `pull-request:${input.number}`,
-    // oxlint-disable-next-line t3code/no-untranslated-copy -- context title sent to the agent
+    // oxlint-disable-next-line j6code/no-untranslated-copy -- context title sent to the agent
     sectionTitle: `PR #${input.number}`,
     filePath: `PR #${input.number}`,
     startIndex: 0,
@@ -1325,7 +1325,7 @@ export function buildPullRequestCommentContext(
   return {
     id: `pr-comment:${pullRequest.url}:comment:${comment.id}`,
     sectionId: `pull-request:${pullRequestNumber}`,
-    // oxlint-disable-next-line t3code/no-untranslated-copy -- context title sent to the agent
+    // oxlint-disable-next-line j6code/no-untranslated-copy -- context title sent to the agent
     sectionTitle: `PR #${pullRequestNumber} conversation`,
     // The chip wears `filePath rangeLabel`: the file a remark names, or who wrote one that names none.
     filePath: comment.path ?? `@${author}`,
@@ -1501,7 +1501,7 @@ export function buildAskAboutGuideStopHandoff(input: {
       {
         id: `pull-request-guide-stop:${input.url}:${stop.index}`,
         sectionId: `pull-request:${input.number}`,
-        // oxlint-disable-next-line t3code/no-untranslated-copy -- context title sent to the agent
+        // oxlint-disable-next-line j6code/no-untranslated-copy -- context title sent to the agent
         sectionTitle: `PR #${input.number} review guide`,
         filePath: `Guide stop ${stop.index + 1}`,
         startIndex: 0,
@@ -1670,8 +1670,8 @@ const pullRequestDetailSnapshotKey = (
   reference: PullRequestDetailSnapshotRef,
 ) =>
   reference.host
-    ? `t3.pullRequests.detail:${JSON.stringify([environmentId, reference.projectId, reference.host.toLowerCase(), reference.repository.toLowerCase(), reference.number])}`
-    : `t3.pullRequests.detail:${environmentId}:${reference.projectId}:${reference.repository}#${reference.number}`;
+    ? `j6.pullRequests.detail:${JSON.stringify([environmentId, reference.projectId, reference.host.toLowerCase(), reference.repository.toLowerCase(), reference.number])}`
+    : `j6.pullRequests.detail:${environmentId}:${reference.projectId}:${reference.repository}#${reference.number}`;
 
 const decodeDetailSnapshot = Schema.decodeUnknownOption(PullRequestDetail);
 
@@ -1698,7 +1698,7 @@ export function readPullRequestDetailSnapshot(
   }
 }
 
-const PULL_REQUEST_DETAIL_SNAPSHOT_INDEX_KEY = "t3.pullRequests.recentDetails";
+const PULL_REQUEST_DETAIL_SNAPSHOT_INDEX_KEY = "j6.pullRequests.recentDetails";
 const PULL_REQUEST_DETAIL_SNAPSHOT_LIMIT = 20;
 
 function readPullRequestDetailSnapshotIndex(storage: SnapshotStorage): string[] {

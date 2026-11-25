@@ -1,9 +1,9 @@
 import type {
   SourceControlDriver,
   SourceControlDriverInstance,
-} from "@t3tools/source-control-core/server/driver";
-import * as SourceControlRateLimit from "@t3tools/source-control-core/server/SourceControlRateLimit";
-import * as FeatureFlags from "@t3tools/shared/FeatureFlags";
+} from "@j6/source-control-core/server/driver";
+import * as SourceControlRateLimit from "@j6/source-control-core/server/SourceControlRateLimit";
+import * as FeatureFlags from "@j6/shared/FeatureFlags";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -20,7 +20,7 @@ export interface SourceControlDriverEntry {
 export class SourceControlDrivers extends Context.Service<
   SourceControlDrivers,
   ReadonlyArray<SourceControlDriverEntry>
->()("t3/sourceControl/builtInDrivers/SourceControlDrivers") {}
+>()("j6/sourceControl/builtInDrivers/SourceControlDrivers") {}
 
 /** Drivers offered only while their feature flag is on. */
 const FLAGGED_DRIVERS: Readonly<Record<string, "tanstackSource">> = {

@@ -1,12 +1,12 @@
-import type { EnvironmentId } from "@t3tools/contracts";
-import type { TimestampFormat } from "@t3tools/contracts/settings";
+import type { EnvironmentId } from "@j6/contracts";
+import type { TimestampFormat } from "@j6/contracts/settings";
 import { msg } from "gt-react";
 import {
   pickSnoozePreset as pickSharedSnoozePreset,
   resolveSnoozePresets as resolveSharedSnoozePresets,
   snoozeWakeLabel,
   type SnoozePreset,
-} from "@t3tools/client-runtime/state/thread-settled";
+} from "@j6/client-runtime/state/thread-settled";
 
 import { m, type MessageResolver } from "../i18n/messages";
 import { getFormattingLocale } from "../i18n/runtime";

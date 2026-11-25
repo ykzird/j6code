@@ -18,7 +18,7 @@ import {
   ScheduledTaskId,
   ThreadId,
   TurnItemId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
@@ -33,7 +33,7 @@ import * as EventSink from "./EventSink.ts";
 import * as Orchestrator from "./Orchestrator.ts";
 import * as ProviderAdapterRegistry from "./ProviderAdapterRegistry.ts";
 import * as ProviderReplayHarness from "./testkit/ProviderReplayHarness.ts";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
 
 const forkCases = (
   [
@@ -915,7 +915,7 @@ it.effect("resolves an explicit checkpoint fork to its source run", () =>
             parentCheckpointId: null,
             ordinalWithinScope: 1,
             appRunOrdinal: 1,
-            ref: CheckpointRef.make("refs/t3/checkpoint-fork/1"),
+            ref: CheckpointRef.make("refs/j6/checkpoint-fork/1"),
             status: "ready",
             files: [],
             capturedAt: now,

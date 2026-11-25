@@ -5,7 +5,7 @@ import * as NodeUtil from "node:util";
 import { characterEntities } from "character-entities";
 import { SaxesParser } from "saxes";
 import * as Yauzl from "yauzl";
-import { terminalOutputCollapseRedraws } from "@t3tools/shared/terminalOutput";
+import { terminalOutputCollapseRedraws } from "@j6/shared/terminalOutput";
 
 const MAX_INPUT = 16 * 1024 * 1024;
 const MAX_EXPANDED = 32 * 1024 * 1024;

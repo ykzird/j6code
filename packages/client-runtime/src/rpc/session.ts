@@ -5,11 +5,11 @@ import {
   type ServerConfigStreamEvent,
   WsSubscribeServerConfigRpc,
   WS_METHODS,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   joinSocketFrameParts,
   SOCKET_FRAME_PARTS_QUERY_PARAM,
-} from "@t3tools/shared/socketFrameParts";
+} from "@j6/shared/socketFrameParts";
 import * as Cause from "effect/Cause";
 import * as Clock from "effect/Clock";
 import * as Context from "effect/Context";
@@ -82,7 +82,7 @@ export class RpcSessionFactory extends Context.Service<
       connection: PreparedConnection,
     ) => Effect.Effect<RpcSession, ConnectionAttemptError, Scope.Scope>;
   }
->()("@t3tools/client-runtime/rpc/session/RpcSessionFactory") {}
+>()("@j6/client-runtime/rpc/session/RpcSessionFactory") {}
 
 type InitialConfigError = Effect.Error<
   ReturnType<WsRpcProtocolClient[typeof WS_METHODS.serverGetConfig]>
@@ -173,7 +173,7 @@ function mapSessionRpcError(
   }
 }
 
-/** Over T3 Connect the relay already reached the host, so a socket that drops failed between this device and the tunnel. */
+/** Over J6 Connect the relay already reached the host, so a socket that drops failed between this device and the tunnel. */
 function socketFailureLocation(via: "relay" | "direct") {
   return { hop: via === "relay" ? "tunnel" : "server", via } as const;
 }

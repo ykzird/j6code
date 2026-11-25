@@ -1,4 +1,4 @@
-import type { ProjectScript, ResolvedKeybindingsConfig } from "@t3tools/contracts";
+import type { ProjectScript, ResolvedKeybindingsConfig } from "@j6/contracts";
 import { T, useGT } from "gt-react";
 import { SettingsIcon } from "lucide-react";
 import { shortcutLabelForCommand } from "../../keybindings";

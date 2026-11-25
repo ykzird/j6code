@@ -1,4 +1,4 @@
-import { recognizeRemoteWith } from "@t3tools/source-control-core/shared/definition";
+import { recognizeRemoteWith } from "@j6/source-control-core/shared/definition";
 import { describe, expect, it } from "vite-plus/test";
 
 import { definition } from "./definition.ts";
@@ -9,7 +9,7 @@ describe("GitHub change request URLs", () => {
   it("reads a pull request on any host, lower-casing host and repository", () => {
     expect(parse("https://github.com/T3Tools/T3Code/pull/123/files?w=1#diff")).toEqual({
       host: "github.com",
-      repository: "t3tools/t3code",
+      repository: "t3tools/j6code",
       number: 123,
       repositoryUrl: "https://github.com/T3Tools/T3Code",
     });
@@ -23,12 +23,12 @@ describe("GitHub change request URLs", () => {
 
   it("claims only the two-segment pull route", () => {
     for (const url of [
-      "https://github.com/t3tools/t3code/issues/123",
-      "https://github.com/t3tools/t3code/pulls/123",
-      "https://github.com/t3tools/t3code/pull/abc",
-      "https://github.com/t3tools/t3code/pull/0",
+      "https://github.com/t3tools/j6code/issues/123",
+      "https://github.com/t3tools/j6code/pulls/123",
+      "https://github.com/t3tools/j6code/pull/abc",
+      "https://github.com/t3tools/j6code/pull/0",
       "https://github.com/group/sub/repo/pull/1",
-      "ftp://github.com/t3tools/t3code/pull/1",
+      "ftp://github.com/t3tools/j6code/pull/1",
     ]) {
       expect(parse(url), url).toBeNull();
     }

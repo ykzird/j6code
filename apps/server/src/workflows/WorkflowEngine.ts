@@ -30,7 +30,7 @@ import {
   DEFAULT_WORKFLOW_SKIPPED_RUNS_KEPT,
   type WorkflowRunsUpdate,
   workflowQuestionKey,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
 import { checkOutput, rejectionText } from "../orchestration-v2/runOutput.ts";
 import * as ServerSettings from "../serverSettings.ts";

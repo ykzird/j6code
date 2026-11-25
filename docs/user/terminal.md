@@ -2,7 +2,7 @@
 
 ## Choose a shell
 
-Set `T3CODE_TERMINAL_SHELL` in the environment that launches the J6 Code server
+Set `J6CODE_TERMINAL_SHELL` in the environment that launches the J6 Code server
 to choose the executable used for new terminals. Use an executable name or its
 full path, without surrounding quotes or command-line arguments. An unset or
 blank value keeps the platform default. If the executable cannot be started,
@@ -12,7 +12,7 @@ On Windows, to use Git Bash from a standard Git for Windows installation, run
 this in PowerShell:
 
 ```powershell
-[Environment]::SetEnvironmentVariable('T3CODE_TERMINAL_SHELL', 'C:\Program Files\Git\bin\bash.exe', 'User')
+[Environment]::SetEnvironmentVariable('J6CODE_TERMINAL_SHELL', 'C:\Program Files\Git\bin\bash.exe', 'User')
 ```
 
 Fully quit J6 Code, then reopen it from the Start menu and create a new terminal.

@@ -1,6 +1,6 @@
 import { mFallback, msg } from "gt-i18n";
 import type { MFunctionType } from "gt-i18n/types";
-import type { AgentFeedbackPreview, OrchestrationV2TurnItem } from "@t3tools/contracts";
+import type { AgentFeedbackPreview, OrchestrationV2TurnItem } from "@j6/contracts";
 
 export type FeedbackRequestItem = Extract<
   OrchestrationV2TurnItem,

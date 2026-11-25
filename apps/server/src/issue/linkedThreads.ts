@@ -3,8 +3,8 @@ import {
   IssueOperationError,
   threadIssueKeysEqual,
   type ThreadIssueKey,
-} from "@t3tools/contracts";
-import * as NodeSqliteClient from "@t3tools/shared/nodeSqliteClient";
+} from "@j6/contracts";
+import * as NodeSqliteClient from "@j6/shared/nodeSqliteClient";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import * as SqlClient from "effect/sql/SqlClient";

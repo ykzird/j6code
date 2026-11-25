@@ -16,7 +16,7 @@ import {
   type PullRequestReviewGuideResult,
   type ThreadPullRequestLink,
   SourceControlProviderKind,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { describe, expect, it } from "@effect/vitest";
 import * as SecureRandom from "effect/crypto/SecureRandom";
 import * as Effect from "effect/Effect";
@@ -66,7 +66,7 @@ const invocation = (
 
 function makeProject(
   repositoryIdentity: OrchestrationProjectShell["repositoryIdentity"] = {
-    canonicalKey: "github.com/t3tools/t3code",
+    canonicalKey: "github.com/t3tools/j6code",
     locator: {
       source: "git-remote",
       remoteName: "origin",
@@ -120,9 +120,9 @@ function makeLink(
   const { headBranch, baseBranch, ...rest } = overrides;
   return {
     host: "github.com",
-    repository: "t3tools/t3code",
+    repository: "t3tools/j6code",
     number,
-    url: `https://github.com/t3tools/t3code/pull/${number}`,
+    url: `https://github.com/t3tools/j6code/pull/${number}`,
     source: "manual",
     linkedAt: "2026-08-10T00:00:00.000Z",
     snapshot:
@@ -280,7 +280,7 @@ describe("pull request toolkit handlers", () => {
       });
       expect(result).toEqual({
         host: "github.com",
-        repository: "t3tools/t3code",
+        repository: "t3tools/j6code",
         number: 123,
         url: "https://github.com/T3Tools/T3Code/pull/123/files",
         alreadyLinked: false,
@@ -290,7 +290,7 @@ describe("pull request toolkit handlers", () => {
           type: "thread.pull-request.link",
           threadId: THREAD_ID,
           host: "github.com",
-          repository: "t3tools/t3code",
+          repository: "t3tools/j6code",
           number: 123,
           source: "agent",
         },
@@ -311,7 +311,7 @@ describe("pull request toolkit handlers", () => {
         },
       });
       const result = yield* harness.call("link_pull_request", {
-        url: "https://github.com/t3tools/t3code/pull/124",
+        url: "https://github.com/t3tools/j6code/pull/124",
       });
       expect(result).toMatchObject({ number: 124, next: CHILD_PULL_REQUEST_REPORT_NEXT });
     }),
@@ -439,7 +439,7 @@ describe("pull request toolkit handlers", () => {
           command.type === "thread.pull-request.link" ? "already linked" : null,
       });
       const result = yield* harness.call("link_pull_request", {
-        url: "https://github.com/t3tools/t3code/pull/123",
+        url: "https://github.com/t3tools/j6code/pull/123",
       });
       expect(result.alreadyLinked).toBe(true);
     }),
@@ -455,17 +455,17 @@ describe("pull request toolkit handlers", () => {
             : null,
       });
       const linked = yield* harness.call("unlink_pull_request", {
-        repository: "t3tools/t3code",
+        repository: "t3tools/j6code",
         number: 5,
       });
       expect(linked).toEqual({
         host: "github.com",
-        repository: "t3tools/t3code",
+        repository: "t3tools/j6code",
         number: 5,
         wasLinked: true,
       });
       const missing = yield* harness.call("unlink_pull_request", {
-        url: "https://github.com/t3tools/t3code/pull/9",
+        url: "https://github.com/t3tools/j6code/pull/9",
       });
       expect(missing.wasLinked).toBe(false);
       expect(yield* Ref.get(harness.commands)).toMatchObject([
@@ -480,7 +480,7 @@ describe("pull request toolkit handlers", () => {
         thread: makeThread([makeLink(9, { source: "stack-dismissed" })]),
       });
       const result = yield* harness.call("unlink_pull_request", {
-        repository: "t3tools/t3code",
+        repository: "t3tools/j6code",
         number: 9,
       });
       expect(result.wasLinked).toBe(false);
@@ -493,13 +493,13 @@ describe("pull request toolkit handlers", () => {
       const harness = yield* makeHarness({
         thread: makeThread([makeLink(1), { ...makeLink(2), source: "stack-dismissed" }]),
       });
-      const url = (number: number) => `https://github.com/t3tools/t3code/pull/${number}`;
+      const url = (number: number) => `https://github.com/t3tools/j6code/pull/${number}`;
       const result = yield* harness.call("link_pull_requests", {
         urls: [url(1), url(2), url(3), url(3), "https://example.com/not-a-pr"],
       });
       expect(result).toEqual({
-        linked: [{ host: "github.com", repository: "t3tools/t3code", numbers: [2, 3] }],
-        alreadyLinked: [{ host: "github.com", repository: "t3tools/t3code", numbers: [1] }],
+        linked: [{ host: "github.com", repository: "t3tools/j6code", numbers: [2, 3] }],
+        alreadyLinked: [{ host: "github.com", repository: "t3tools/j6code", numbers: [1] }],
         linkedCount: 3,
         invalidUrls: ["https://example.com/not-a-pr"],
       });
@@ -530,8 +530,8 @@ describe("pull request toolkit handlers", () => {
       });
       expect(result).toEqual({
         unlinked: [
-          { host: "github.com", repository: "t3tools/t3code", state: "merged", numbers: [1] },
-          { host: "github.com", repository: "t3tools/t3code", state: "closed", numbers: [3] },
+          { host: "github.com", repository: "t3tools/j6code", state: "merged", numbers: [1] },
+          { host: "github.com", repository: "t3tools/j6code", state: "closed", numbers: [3] },
         ],
         unlinkedCount: 2,
         remaining: 2,
@@ -548,7 +548,7 @@ describe("pull request toolkit handlers", () => {
       makeThread([
         makeLink(42, {
           host: "forge.example",
-          url: "http://forge.example:3000/t3tools/t3code/pulls/42",
+          url: "http://forge.example:3000/t3tools/j6code/pulls/42",
         }),
       ]),
     );
@@ -570,9 +570,9 @@ describe("pull request toolkit handlers", () => {
       expect(result.pullRequests.map((entry) => entry.number)).toEqual([1, 2, 3, 10]);
       expect(result.pullRequests[2]).toEqual({
         host: "github.com",
-        repository: "t3tools/t3code",
+        repository: "t3tools/j6code",
         number: 3,
-        url: "https://github.com/t3tools/t3code/pull/3",
+        url: "https://github.com/t3tools/j6code/pull/3",
         source: "agent",
         watching: false,
         state: "open",
@@ -603,7 +603,7 @@ describe("listThreadPullRequests", () => {
       kind: "native" as const,
       id: "stack-1",
       number: 1,
-      url: "https://github.com/t3tools/t3code/stack/1",
+      url: "https://github.com/t3tools/j6code/stack/1",
       base: "main",
       layers: [
         { number: 1, headBranch: "a", state: "open" as const },
@@ -736,7 +736,7 @@ describe("pull request guide tools", () => {
         const result = yield* harness.call("write_pull_request_guides", {
           pullRequests: [
             { url: "https://github.com/acme/web/pull/7" },
-            { repository: "t3tools/t3code", number: 12 },
+            { repository: "t3tools/j6code", number: 12 },
             { url: "https://github.com/someone/else/pull/1" },
             { url: "https://github.com/someone/web/pull/3" },
           ],
@@ -745,7 +745,7 @@ describe("pull request guide tools", () => {
           result.guides.map((guide) => [guide.repository, guide.number, guide.outcome]),
         ).toEqual([
           ["acme/web", 7, "started"],
-          ["t3tools/t3code", 12, "started"],
+          ["t3tools/j6code", 12, "started"],
           ["someone/else", 1, "failed"],
           ["someone/web", 3, "started"],
         ]);
@@ -766,8 +766,8 @@ describe("pull request guide tools", () => {
       const result = yield* harness.call("write_pull_request_guides", {
         pullRequests: [
           { url: "https://example.com/not-a-pull-request" },
-          { repository: "t3tools/t3code" },
-          { repository: "t3tools/t3code", number: 5 },
+          { repository: "t3tools/j6code" },
+          { repository: "t3tools/j6code", number: 5 },
         ],
       });
       expect(result.guides.map((guide) => guide.outcome)).toEqual(["failed", "failed", "started"]);
@@ -842,9 +842,9 @@ describe("source control tools", () => {
     worktreePath: "/workspace/worktree",
     branchPullRequest: {
       projectId: PROJECT_ID,
-      repository: "t3tools/t3code",
+      repository: "t3tools/j6code",
       number: 42,
-      url: "https://github.com/t3tools/t3code/pull/42",
+      url: "https://github.com/t3tools/j6code/pull/42",
     },
   };
   const detail = {
@@ -921,7 +921,7 @@ describe("source control tools", () => {
       expect(asked[1]).toEqual({
         projectId: PROJECT_ID,
         host: "github.com",
-        repository: "t3tools/t3code",
+        repository: "t3tools/j6code",
         number: 42,
         allowStale: false,
       });
@@ -1019,7 +1019,7 @@ describe("source control tools", () => {
                 entries: [],
                 errors: [],
                 truncated: input.cursors === undefined,
-                nextCursors: input.cursors === undefined ? { "t3tools/t3code": "page-2" } : {},
+                nextCursors: input.cursors === undefined ? { "t3tools/j6code": "page-2" } : {},
               }),
             ),
         },
@@ -1047,7 +1047,7 @@ describe("source control tools", () => {
       yield* harness.call("pull_request_list", { cursor: page.nextCursor! });
       expect(listed.map((input) => input.cursors)).toEqual([
         undefined,
-        { "t3tools/t3code": "page-2" },
+        { "t3tools/j6code": "page-2" },
       ]);
       const invalid = yield* harness
         .call("pull_request_read", { cursor: "not-a-cursor" })
@@ -1246,7 +1246,7 @@ describe("source control tools", () => {
             ).pipe(
               Effect.as({
                 status: "created" as const,
-                url: "https://github.com/t3tools/t3code/pull/43",
+                url: "https://github.com/t3tools/j6code/pull/43",
                 number: 43,
                 baseBranch: "main",
                 headBranch: "tools",

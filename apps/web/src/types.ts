@@ -1,4 +1,4 @@
-import { imageMimeType } from "@t3tools/shared/image";
+import { imageMimeType } from "@j6/shared/image";
 import type {
   ChatFileAttachment as ContractChatFileAttachment,
   ChatImageAttachment as ContractChatImageAttachment,
@@ -16,16 +16,16 @@ import type {
   OrchestrationV2LinkedSender,
   ScheduledTaskId,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import type {
   EnvironmentProject,
   EnvironmentThreadShell,
   ThreadRuntimeSummary,
-} from "@t3tools/client-runtime/state/shell";
-import type { ThreadCheckpointSummary } from "@t3tools/client-runtime/state/thread-checkpoints";
-import { videoMimeType } from "@t3tools/shared/video";
+} from "@j6/client-runtime/state/shell";
+import type { ThreadCheckpointSummary } from "@j6/client-runtime/state/thread-checkpoints";
+import { videoMimeType } from "@j6/shared/video";
 
-export { videoMimeType } from "@t3tools/shared/video";
+export { videoMimeType } from "@j6/shared/video";
 
 export type SessionPhase = "disconnected" | "connecting" | "ready" | "running";
 export const DEFAULT_RUNTIME_MODE: RuntimeMode = "full-access";
@@ -73,7 +73,7 @@ export function isVideoAttachment(attachment: ChatFileAttachment): boolean {
 }
 
 export interface ChatMessage {
-  readonly context?: import("@t3tools/contracts").OrchestrationMessageContext | undefined;
+  readonly context?: import("@j6/contracts").OrchestrationMessageContext | undefined;
   readonly id: MessageId;
   readonly role: "user" | "assistant" | "system";
   readonly text: string;
@@ -85,7 +85,7 @@ export interface ChatMessage {
   readonly scheduledTaskId?: ScheduledTaskId;
   readonly senderThreadId?: ThreadId;
   readonly linkedSender?: OrchestrationV2LinkedSender;
-  readonly idleCompaction?: import("@t3tools/contracts").OrchestrationV2IdleCompaction;
+  readonly idleCompaction?: import("@j6/contracts").OrchestrationV2IdleCompaction;
   readonly createdAt: string;
   readonly updatedAt: string;
   readonly inputIntent?: OrchestrationV2UserMessageInputIntent | undefined;

@@ -1,4 +1,4 @@
-import { createPreviewTunnelUrlReader } from "@t3tools/client-runtime/state/previewTunnel";
+import { createPreviewTunnelUrlReader } from "@j6/client-runtime/state/previewTunnel";
 
 import { connectionAtomRuntime } from "../connection/runtime";
 import { appAtomRegistry } from "../rpc/atomRegistry";

@@ -1,5 +1,5 @@
-import { PrimaryConnectionTarget } from "@t3tools/client-runtime/connection";
-import { EnvironmentId } from "@t3tools/contracts";
+import { PrimaryConnectionTarget } from "@j6/client-runtime/connection";
+import { EnvironmentId } from "@j6/contracts";
 import * as Option from "effect/Option";
 import { expect, it, vi } from "vite-plus/test";
 import { page, userEvent } from "vite-plus/test/browser";
@@ -38,7 +38,7 @@ vi.mock("../../state/environments", async (importOriginal) => ({
 }));
 
 const id = EnvironmentId.make("voice-host");
-const grantKey = "t3code:voice-audio-grant:v1";
+const grantKey = "j6code:voice-audio-grant:v1";
 
 async function withVoicePanel(
   route: (url: URL, request: RequestInfo | URL, init?: RequestInit) => Promise<Response> | null,

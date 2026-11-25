@@ -1,4 +1,4 @@
-import type { DesktopBridge, DesktopCliCommandState } from "@t3tools/contracts";
+import type { DesktopBridge, DesktopCliCommandState } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import { Atom } from "effect/reactivity";
@@ -15,7 +15,7 @@ class DesktopCliCommandUnavailableError extends Schema.TaggedError<DesktopCliCom
   {},
 ) {
   override get message(): string {
-    return m(msg("The t3 command is unavailable."));
+    return m(msg("The j6 command is unavailable."));
   }
 }
 
@@ -24,7 +24,7 @@ class DesktopCliCommandLoadError extends Schema.TaggedError<DesktopCliCommandLoa
   { cause: Schema.Defect() },
 ) {
   override get message(): string {
-    return m(msg("Failed to load the t3 command state."));
+    return m(msg("Failed to load the j6 command state."));
   }
 }
 

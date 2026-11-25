@@ -1,5 +1,5 @@
-import type { EnvironmentServerConfig } from "@t3tools/client-runtime/connection";
-import { EnvironmentId } from "@t3tools/contracts";
+import type { EnvironmentServerConfig } from "@j6/client-runtime/connection";
+import { EnvironmentId } from "@j6/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

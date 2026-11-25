@@ -8,7 +8,7 @@ import * as Schema from "effect/Schema";
 import * as Socket from "effect/socket/Socket";
 import * as TestClock from "effect/testing/TestClock";
 import { HttpRouter, HttpServer, HttpServerRequest, HttpServerResponse } from "effect/http";
-import { SpeechStreamEvent, DEFAULT_SPEECH_TRANSCRIPTION_OPTIONS } from "@t3tools/contracts";
+import { SpeechStreamEvent, DEFAULT_SPEECH_TRANSCRIPTION_OPTIONS } from "@j6/contracts";
 import type { SpeechService, SpeechStream } from "./SpeechService.ts";
 import { runSpeechSocket } from "./stream.ts";
 import type * as NetAddress from "effect/net/NetAddress";

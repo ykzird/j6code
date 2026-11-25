@@ -7,17 +7,17 @@ import * as PlatformError from "effect/PlatformError";
 
 import { clearStaleGpuCaches, resolveUserDataPath } from "./DesktopUserData.ts";
 
-it.effect.each(["t3code", "T3 Code (Alpha)"])(
+it.effect.each(["j6code", "J6 Code (Alpha)"])(
   "preserves Windows credential keys from %s without copying browser databases",
   (sourceName) =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const directory = yield* fs.makeTempDirectoryScoped({ prefix: "t3-v2-profile-" });
+      const directory = yield* fs.makeTempDirectoryScoped({ prefix: "j6-v2-profile-" });
       const source = path.join(directory, sourceName);
-      const destination = path.join(directory, "t3code-v2");
+      const destination = path.join(directory, "j6code-v2");
       const state = '{"os_crypt":{"encrypted_key":"test-encrypted-key"}}';
-      yield* fs.makeDirectory(path.join(directory, "T3 Code (Alpha)"), { recursive: true });
+      yield* fs.makeDirectory(path.join(directory, "J6 Code (Alpha)"), { recursive: true });
       yield* fs.makeDirectory(path.join(source, "IndexedDB"), { recursive: true });
       yield* fs.writeFileString(path.join(source, "Local State"), state);
       yield* fs.writeFileString(path.join(source, "IndexedDB", "LOCK"), "V1 owns this database");
@@ -58,7 +58,7 @@ it.effect.each([
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const userDataPath = yield* fs.makeTempDirectoryScoped({ prefix: "t3-v2-gpu-cache-" });
+    const userDataPath = yield* fs.makeTempDirectoryScoped({ prefix: "j6-v2-gpu-cache-" });
     for (const name of gpuCacheDirectories) {
       yield* fs.makeDirectory(path.join(userDataPath, name), { recursive: true });
       yield* fs.writeFileString(path.join(userDataPath, name, "data_0"), "44.10.0 shaders");
@@ -97,8 +97,8 @@ it.effect("keeps GPU caches built on the first launch of a fresh install", () =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const appData = yield* fs.makeTempDirectoryScoped({ prefix: "t3-v2-fresh-" });
-    const userDataPath = path.join(appData, "t3code-v2");
+    const appData = yield* fs.makeTempDirectoryScoped({ prefix: "j6-v2-fresh-" });
+    const userDataPath = path.join(appData, "j6code-v2");
 
     yield* clearStaleGpuCaches({ userDataPath, electronVersion: "44.10.1" });
     yield* fs.makeDirectory(path.join(userDataPath, "GPUCache"));

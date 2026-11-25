@@ -1,20 +1,20 @@
 import {
   filterFilesystemBrowseEntries,
   getFilesystemBrowsePath,
-} from "@t3tools/client-runtime/state/filesystem";
+} from "@j6/client-runtime/state/filesystem";
 import {
   appendBrowsePathSegment,
   ensureBrowseDirectoryPath,
   getBrowseParentPath,
   suggestedTrackedFolders,
-} from "@t3tools/client-runtime/state/projects";
+} from "@j6/client-runtime/state/projects";
 import {
   AuthOrchestrationOperateScope,
   PROJECT_TRACKED_FOLDERS_MAX,
   type EnvironmentId,
   type ProjectTrackedFolder,
   type WorkspaceFolderState,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { FolderIcon, PlusIcon } from "lucide-react";
 import { msg, T, useGT, useMessages, Var } from "gt-react";
 import { useId, useState } from "react";

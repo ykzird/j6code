@@ -4,9 +4,9 @@
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { writeFakeCli } from "@t3tools/provider-testing/fakeCli";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import * as NetService from "@t3tools/shared/Net";
+import { writeFakeCli } from "@j6/provider-testing/fakeCli";
+import * as HostProcess from "@j6/shared/HostProcess";
+import * as NetService from "@j6/shared/Net";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -44,9 +44,9 @@ const REAL_PROVIDERS = [
 export const SCENARIO_LINEAR_PORT = 13_997;
 
 export const SCENARIO_MACHINE_ENV = {
-  T3CODE_ENVIRONMENT_LABEL: "Scenario",
-  T3CODE_ENVIRONMENT_MACHINE_KIND: "laptop",
-  T3CODE_LINEAR_API_URL: `http://127.0.0.1:${SCENARIO_LINEAR_PORT}/graphql`,
+  J6CODE_ENVIRONMENT_LABEL: "Scenario",
+  J6CODE_ENVIRONMENT_MACHINE_KIND: "laptop",
+  J6CODE_LINEAR_API_URL: `http://127.0.0.1:${SCENARIO_LINEAR_PORT}/graphql`,
 };
 
 const encodeSettings = Schema.encodeEffect(Schema.fromJsonString(Schema.Unknown));
@@ -137,7 +137,7 @@ const startApp = Effect.fn("startApp")(function* (input: {
     PATH: [path.join(input.home, "bin"), hostEnvironment.PATH ?? ""].join(
       (yield* HostProcess.Platform) === "win32" ? ";" : ":",
     ),
-    T3CODE_AUTO_BOOTSTRAP_PROJECT_FROM_CWD: "0",
+    J6CODE_AUTO_BOOTSTRAP_PROJECT_FROM_CWD: "0",
     ...SCENARIO_MACHINE_ENV,
   };
   const devRunner = (mode: string, args: ReadonlyArray<string>) => [
@@ -162,15 +162,15 @@ const startApp = Effect.fn("startApp")(function* (input: {
       mode: 0o600,
     });
     const ports = ["--port", serverPort, "--dev-url", origin];
-    const webEnv = { ...env, T3CODE_PORT_OFFSET: String(Number(webPort) - BASE_WEB_PORT) };
+    const webEnv = { ...env, J6CODE_PORT_OFFSET: String(Number(webPort) - BASE_WEB_PORT) };
     const server = yield* start({
       cwd: checkout,
       command: node,
       args: devRunner("dev:server", ports),
       env: {
         ...webEnv,
-        T3CODE_DEV_ALLOWED_ORIGINS: origin,
-        T3CODE_DEV_AUTH_TOKEN: credential,
+        J6CODE_DEV_ALLOWED_ORIGINS: origin,
+        J6CODE_DEV_AUTH_TOKEN: credential,
       },
       onLine: (line) => (line.includes("pairingUrl:") ? Effect.void : Console.log(line)),
     });
@@ -222,7 +222,7 @@ const startApp = Effect.fn("startApp")(function* (input: {
   const metro = yield* start({
     cwd: path.join(checkout, "apps/mobile"),
     command: "npx",
-    args: ["expo", "start", "--dev-client", "--scheme", "t3code-dev", "--lan", "--port", metroPort],
+    args: ["expo", "start", "--dev-client", "--scheme", "j6code-dev", "--lan", "--port", metroPort],
     env: {
       ...env,
       APP_VARIANT: "development",
@@ -244,7 +244,7 @@ const command = Command.make(
         "web: server and Vite. mobile: server on every interface and Metro.",
       ),
     ),
-    home: Argument.String("t3-home").pipe(Argument.withDescription("T3 home to recreate.")),
+    home: Argument.String("j6-home").pipe(Argument.withDescription("T3 home to recreate.")),
     ports: Argument.String("port").pipe(
       Argument.withDescription(
         "web: <host> <web-port>. mobile: <server-port> <metro-port> <host>.",

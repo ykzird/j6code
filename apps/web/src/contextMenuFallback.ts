@@ -1,4 +1,4 @@
-import type { ContextMenuItem, ContextMenuSource } from "@t3tools/contracts";
+import type { ContextMenuItem, ContextMenuSource } from "@j6/contracts";
 import { msg } from "gt-react";
 
 import { m } from "./i18n/messages";

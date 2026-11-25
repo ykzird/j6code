@@ -6,7 +6,7 @@ import * as Ref from "effect/Ref";
 import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
 
-import * as NetService from "@t3tools/shared/Net";
+import * as NetService from "@j6/shared/Net";
 import * as SecureRandom from "effect/crypto/SecureRandom";
 import * as ElectronApp from "../electron/ElectronApp.ts";
 import * as ElectronDialog from "../electron/ElectronDialog.ts";
@@ -41,7 +41,7 @@ import * as DesktopRemoteUpdates from "../updates/DesktopRemoteUpdates.ts";
 import * as DesktopUpdates from "../updates/DesktopUpdates.ts";
 import * as DesktopSnapShot from "../snapShot/DesktopSnapShot.ts";
 import * as DesktopWslBackend from "../wsl/DesktopWslBackend.ts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import { msg } from "gt-i18n";
 import { m } from "../i18n/messages.ts";
 
@@ -77,7 +77,7 @@ export class DesktopDevelopmentBackendPortRequiredError extends Schema.TaggedErr
   {},
 ) {
   override get message(): string {
-    return "T3CODE_PORT is required in desktop development.";
+    return "J6CODE_PORT is required in desktop development.";
   }
 }
 
@@ -149,7 +149,7 @@ const handleFatalStartupError = Effect.fn("desktop.startup.handleFatalStartupErr
   const wasQuitting = yield* Ref.getAndSet(state.quitting, true);
   if (!wasQuitting) {
     yield* electronDialog.showErrorBox(
-      m(msg("T3 Code failed to start")),
+      m(msg("J6 Code failed to start")),
       `Stage: ${stage}\n${message}${detail}`,
     );
   }
@@ -174,7 +174,7 @@ const stopAllPoolInstances = Effect.fn("desktop.app.stopAllPoolInstances")(
 
 // Spawns the local backend as soon as the protocol, IPC, and legacy storage that every window needs exist.
 /**
- * The server reads T3CODE_FEATURE_FLAGS once at start, from the value cached at the last
+ * The server reads J6CODE_FEATURE_FLAGS once at start, from the value cached at the last
  * discovery. When the login shell now sets different flags, restart it so they apply.
  */
 const restartOnFeatureFlagChange = Effect.fn("desktop.restartOnFeatureFlagChange")(function* (
@@ -182,15 +182,15 @@ const restartOnFeatureFlagChange = Effect.fn("desktop.restartOnFeatureFlagChange
 ) {
   const state = yield* DesktopState.DesktopState;
   const shellEnvironment = yield* DesktopShellEnvironment.DesktopShellEnvironment;
-  let startedWith = (yield* HostProcess.Environment).T3CODE_FEATURE_FLAGS;
+  let startedWith = (yield* HostProcess.Environment).J6CODE_FEATURE_FLAGS;
   yield* shellEnvironment.updates.pipe(
     Stream.filter((snapshot) => snapshot.discovered),
     Stream.runForEach(
       Effect.fnUntraced(function* (snapshot) {
-        const flags = snapshot.environment.T3CODE_FEATURE_FLAGS ?? undefined;
+        const flags = snapshot.environment.J6CODE_FEATURE_FLAGS ?? undefined;
         if (flags === startedWith || (yield* Ref.get(state.quitting))) return;
         startedWith = flags;
-        yield* logBootstrapInfo("restarting backend for changed T3CODE_FEATURE_FLAGS");
+        yield* logBootstrapInfo("restarting backend for changed J6CODE_FEATURE_FLAGS");
         yield* backend.stop();
         yield* backend.start;
       }),
@@ -321,7 +321,7 @@ const bootstrap = Effect.fn("desktop.bootstrap")(function* (backendStarted: bool
   }
 
   yield* snapShot.initialize;
-  // Only the user's own login shell PATH shows every t3 a new terminal runs; a fresh install has
+  // Only the user's own login shell PATH shows every j6 a new terminal runs; a fresh install has
   // no cached one. Without it, the command is left to Settings.
   const installCli = (yield* DesktopCliCommand.DesktopCliCommand).installOnFirstLaunch;
   yield* Effect.forkScoped(
@@ -329,7 +329,7 @@ const bootstrap = Effect.fn("desktop.bootstrap")(function* (backendStarted: bool
       Effect.flatMap((found) =>
         found || environment.platform === "win32"
           ? installCli
-          : logBootstrapInfo("skipped installing the t3 command without the shell PATH"),
+          : logBootstrapInfo("skipped installing the j6 command without the shell PATH"),
       ),
     ),
   );
@@ -340,7 +340,7 @@ const bootstrap = Effect.fn("desktop.bootstrap")(function* (backendStarted: bool
     if (!(yield* Ref.get(state.quitting))) {
       yield* desktopWindow.createMainIfBackendReady;
     }
-    // `t3 <dir>` still reaches the renderer, which opens it on this machine's connected service.
+    // `j6 <dir>` still reaches the renderer, which opens it on this machine's connected service.
     yield* startAppActivation;
     return;
   }

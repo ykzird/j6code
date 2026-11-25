@@ -8,7 +8,7 @@ import * as Path from "effect/Path";
 import type * as Redacted from "effect/Redacted";
 import * as Schema from "effect/Schema";
 
-import type { OtlpEndpointSource } from "@t3tools/contracts";
+import type { OtlpEndpointSource } from "@j6/contracts";
 import { sweepStalePendingAttachments } from "./attachmentStore.ts";
 import { markNoCopyOnWrite } from "./noCopyOnWrite.ts";
 import {
@@ -16,9 +16,9 @@ import {
   nodeProcessRuntimeAttributes,
   processServiceInstanceId,
   type SignalExport,
-} from "@t3tools/shared/observability";
-import * as OtelEnvironment from "@t3tools/shared/otelEnvironment";
-import { type ReleaseChannel, releaseResourceAttributes } from "@t3tools/shared/releaseResource";
+} from "@j6/shared/observability";
+import * as OtelEnvironment from "@j6/shared/otelEnvironment";
+import { type ReleaseChannel, releaseResourceAttributes } from "@j6/shared/releaseResource";
 import packageJson from "../package.json" with { type: "json" };
 
 export const telemetryChannel: ReleaseChannel = "dev";
@@ -109,7 +109,7 @@ export class ServerConfig extends Context.Service<
     readonly tailscaleServeEnabled: boolean;
     readonly tailscaleServePort: number;
   }
->()("t3/config/ServerConfig") {
+>()("j6/config/ServerConfig") {
   static readonly layerTest = (
     cwd: string,
     baseDirOrPrefix: string | { readonly prefix: string },
@@ -122,12 +122,12 @@ export const otlpResource = (
   config: Pick<ServerConfig["Service"], "mode" | "otelEnvironment">,
   hostName: string,
 ) => ({
-  serviceName: "t3code-server",
+  serviceName: "j6code-server",
   serviceVersion: packageJson.version,
   attributes: {
-    "service.namespace": "t3code",
-    "service.runtime": "t3-server",
-    "t3code.server.managed_by": config.mode === "desktop" ? "desktop" : "standalone",
+    "service.namespace": "j6code",
+    "service.runtime": "j6-server",
+    "j6code.server.managed_by": config.mode === "desktop" ? "desktop" : "standalone",
     "service.instance.id": processServiceInstanceId(config.otelEnvironment.resourceAttributes),
     ...releaseResourceAttributes(telemetryChannel, config.otelEnvironment.resourceAttributes),
     "host.name": config.otelEnvironment.resourceAttributes["host.name"] || hostName,

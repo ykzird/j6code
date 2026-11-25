@@ -1,7 +1,7 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, describe, it } from "@effect/vitest";
 import * as Deferred from "effect/Deferred";
-import { DesktopSnapShotId } from "@t3tools/contracts";
+import { DesktopSnapShotId } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import * as Fiber from "effect/Fiber";
@@ -20,7 +20,7 @@ vi.mock("electron", async (importOriginal) => ({
   ...(await importOriginal<typeof import("electron")>()),
   session: {
     fromPartition: vi.fn(() => ({
-      getUserAgent: vi.fn(() => "Mozilla/5.0 Electron/41.5.0 t3code/1.2.3"),
+      getUserAgent: vi.fn(() => "Mozilla/5.0 Electron/41.5.0 j6code/1.2.3"),
       setPermissionRequestHandler: vi.fn(),
       setUserAgent: vi.fn(),
     })),
@@ -83,7 +83,7 @@ function makeFakeBrowserWindow() {
     copyImageAt: vi.fn(),
     focus: vi.fn(),
     isDestroyed: vi.fn(() => false),
-    getURL: vi.fn(() => "t3code-dev://app/"),
+    getURL: vi.fn(() => "j6code-dev://app/"),
     getZoomLevel: vi.fn(() => zoomLevel),
     getZoomFactor: vi.fn(() => 1.2 ** zoomLevel),
     setZoomLevel: vi.fn((level: number) => {
@@ -221,7 +221,7 @@ const layerDesktopEnvironmentFor = (platform: NodeJS.Platform) =>
       Layer.mergeAll(
         NodeServices.layer,
         DesktopConfig.layerTest({
-          T3CODE_PORT: "3773",
+          J6CODE_PORT: "3773",
           VITE_DEV_SERVER_URL: "http://127.0.0.1:5733",
         }),
       ),
@@ -372,8 +372,8 @@ function layerTest(input: {
           getBrowserSession: () => Effect.succeed({} as Electron.Session),
           setMainWindow: input.setPreviewMainWindow ?? (() => Effect.void),
           prepareWebview: () => Effect.void,
-          isBrowserPartition: (partition) => partition.startsWith("persist:t3code-preview-"),
-          getBrowserPartition: () => Effect.succeed("persist:t3code-preview-test"),
+          isBrowserPartition: (partition) => partition.startsWith("persist:j6code-preview-"),
+          getBrowserPartition: () => Effect.succeed("persist:j6code-preview-test"),
           reapplyZoom: () =>
             Effect.sync(() => {
               input.previewZoomReapplies?.push(input.window.webContents.getZoomLevel());
@@ -478,8 +478,8 @@ const makeSplashScenario = (createOutcomes: readonly (Electron.BrowserWindow | n
           Layer.mock(PreviewManager.PreviewManager)({
             getBrowserSession: () => Effect.succeed({} as Electron.Session),
             setMainWindow: () => Effect.void,
-            isBrowserPartition: (partition) => partition.startsWith("persist:t3code-preview-"),
-            getBrowserPartition: () => Effect.succeed("persist:t3code-preview-test"),
+            isBrowserPartition: (partition) => partition.startsWith("persist:j6code-preview-"),
+            getBrowserPartition: () => Effect.succeed("persist:j6code-preview-test"),
           }),
         ),
       ),
@@ -535,7 +535,7 @@ describe("DesktopWindow", () => {
   });
 
   it("rejects renderer navigations whose origin only serializes as null", () => {
-    for (const applicationUrl of ["t3code://app/", "t3code-dev://app/"]) {
+    for (const applicationUrl of ["j6code://app/", "j6code-dev://app/"]) {
       assert.isTrue(
         DesktopWindow.isSameOriginRendererNavigation({
           applicationUrl,
@@ -545,21 +545,21 @@ describe("DesktopWindow", () => {
       );
     }
     for (const navigationUrl of [
-      "t3code://other/",
-      "t3code://app.example/",
-      "t3code://app:8080/",
-      "t3code://user@other/",
-      "t3code:app",
-      "t3code-dev://app/",
+      "j6code://other/",
+      "j6code://app.example/",
+      "j6code://app:8080/",
+      "j6code://user@other/",
+      "j6code:app",
+      "j6code-dev://app/",
       "file:///etc/passwd",
       "data:text/html,<p>hi</p>",
       "javascript:alert(1)",
       "about:blank",
-      "blob:t3code://app/0b5e2c4a",
+      "blob:j6code://app/0b5e2c4a",
     ]) {
       assert.isFalse(
         DesktopWindow.isSameOriginRendererNavigation({
-          applicationUrl: "t3code://app/",
+          applicationUrl: "j6code://app/",
           navigationUrl,
         }),
         navigationUrl,
@@ -1549,7 +1549,7 @@ describe("DesktopWindow", () => {
           }
           const webPreferences: Electron.WebPreferences = {};
           willAttachWebview({ preventDefault: () => {} }, webPreferences, {
-            partition: "persist:t3code-preview-test",
+            partition: "persist:j6code-preview-test",
           });
 
           assert.deepEqual(webPreferences.additionalArguments, expected);
@@ -1580,9 +1580,9 @@ describe("DesktopWindow", () => {
           return yield* Effect.die("will-navigate listener was not registered");
         }
         for (const [url, expectedPrevented] of [
-          ["t3code-dev://app/threads?id=1#latest", false],
-          ["t3code-dev://other/", true],
-          ["t3code://app/", true],
+          ["j6code-dev://app/threads?id=1#latest", false],
+          ["j6code-dev://other/", true],
+          ["j6code://app/", true],
         ] as const) {
           const preventDefault = vi.fn();
           willNavigate({ preventDefault }, url);
@@ -1784,7 +1784,7 @@ describe("DesktopWindow", () => {
         createCount,
         mainWindow,
         onReveal: () => {
-          foreground = "T3 Code";
+          foreground = "J6 Code";
           operations.push("reveal");
         },
       });
@@ -1797,7 +1797,7 @@ describe("DesktopWindow", () => {
         operations.length = 0;
         foreground = "Discord";
         yield* desktopWindow.dispatchSnapShotEvent({ type: "started", id: captureOne });
-        assert.equal(foreground, "T3 Code");
+        assert.equal(foreground, "J6 Code");
         foreground = "Explorer";
         yield* desktopWindow.dispatchSnapShotEvent({ type: "ready", id: captureOne });
         yield* desktopWindow.dispatchSnapShotEvent({ type: "failed", id: captureTwo });

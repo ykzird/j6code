@@ -7,7 +7,7 @@ import {
   type IssueTrackerConnectionList,
   type IssueTrackerProjectBinding,
   type ProjectId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import { Atom } from "effect/reactivity";
 import { mFallback, msg } from "gt-i18n";

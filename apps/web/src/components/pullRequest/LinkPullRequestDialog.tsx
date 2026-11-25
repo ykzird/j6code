@@ -1,11 +1,11 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
-import type { ScopedThreadRef } from "@t3tools/contracts";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
+import type { ScopedThreadRef } from "@j6/contracts";
 import {
   pullRequestLinkProject,
   resolveLinkPullRequestInput,
-} from "@t3tools/client-runtime/pull-request-link-input";
+} from "@j6/client-runtime/pull-request-link-input";
 import { useAtomValue } from "@effect/atom-react";
-import { settlePromise, squashAtomCommandFailure } from "@t3tools/client-runtime/state/runtime";
+import { settlePromise, squashAtomCommandFailure } from "@j6/client-runtime/state/runtime";
 import { msg, T, useGT } from "gt-react";
 import { useRef, useState } from "react";
 import { m } from "~/i18n/messages";

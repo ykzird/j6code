@@ -1,5 +1,5 @@
 import type { LegendListRef } from "@legendapp/list/react";
-import type { AssistantCitation, MessageId, ScopedThreadRef } from "@t3tools/contracts";
+import type { AssistantCitation, MessageId, ScopedThreadRef } from "@j6/contracts";
 import { msg } from "gt-react";
 import { useEffect, useRef, type ReactNode, type RefObject } from "react";
 import {
@@ -17,7 +17,7 @@ const CITATION_HIGHLIGHT_TOTAL_MS =
   1.5 * CITATION_PULSE_DURATION_MS + CITATION_HIGHLIGHT_HOLD_MS + CITATION_HIGHLIGHT_FADE_MS;
 const CITATION_HIGHLIGHT_OPACITY = "--assistant-citation-highlight-opacity";
 const CITATION_HIGHLIGHT_PEAK = 0.45;
-const COMMENT_HIGHLIGHT_NAME = "t3-assistant-citation-comment";
+const COMMENT_HIGHLIGHT_NAME = "j6-assistant-citation-comment";
 
 export function observeAssistantCitationCommentSource({
   anchor,
@@ -134,8 +134,8 @@ function observeAssistantCitationSource({
     selected.range.endContainer === selected.snapshot.endContainer &&
     selected.range.endOffset === selected.snapshot.endOffset;
   const clear = () => {
-    if (highlighted && CSS.highlights.get("t3-assistant-citation") === highlighted) {
-      CSS.highlights.delete("t3-assistant-citation");
+    if (highlighted && CSS.highlights.get("j6-assistant-citation") === highlighted) {
+      CSS.highlights.delete("j6-assistant-citation");
     }
     highlighted = null;
     ownedRange = null;
@@ -228,7 +228,7 @@ function observeAssistantCitationSource({
     }
     if (typeof Highlight !== "undefined" && typeof CSS !== "undefined" && CSS.highlights) {
       highlighted = new Highlight(range);
-      CSS.highlights.set("t3-assistant-citation", highlighted);
+      CSS.highlights.set("j6-assistant-citation", highlighted);
       ownedRange = range;
       root.dataset.citationHighlighted = "true";
     } else {
@@ -275,7 +275,7 @@ function observeAssistantCitationSource({
             ],
         { duration: CITATION_HIGHLIGHT_TOTAL_MS, easing: "ease-in-out" },
       );
-      pulseAnimation.id = "t3-assistant-citation-pulse";
+      pulseAnimation.id = "j6-assistant-citation-pulse";
       pulseAnimation.currentTime = Math.max(0, performance.now() - pulse.startedAt);
       void pulseAnimation.finished.then(finishHighlight, () => {});
     }
@@ -358,7 +358,7 @@ export function AssistantCitationSource({
   children: ReactNode;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- observes this message's DOM for a citation reveal request and scrolls the LegendList to it
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- observes this message's DOM for a citation reveal request and scrolls the LegendList to it
   useEffect(() => {
     const root = rootRef.current;
     const list = listRef.current;

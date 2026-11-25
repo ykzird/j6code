@@ -1,8 +1,8 @@
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime";
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { isCommandAvailable, resolveSpawnCommand } from "@t3tools/shared/shell";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { isCommandAvailable, resolveSpawnCommand } from "@j6/shared/shell";
 import * as Clock from "effect/Clock";
 import * as Console from "effect/Console";
 import * as Context from "effect/Context";
@@ -135,7 +135,7 @@ export const hashBundle = Effect.fn("hashBundle")(function* (root: string) {
 });
 type FileSystemError = import("effect/PlatformError").PlatformError;
 
-const bundleId = "com.t3tools.t3code.dev";
+const bundleId = "com.ykzird.j6code.dev";
 const roots = Effect.gen(function* () {
   const path = yield* Path.Path;
   const repo = yield* path.fromFileUrl(new URL("../", import.meta.url));
@@ -215,7 +215,7 @@ const command = Effect.fn("nativeClient.command")(function* (
         ...(sdk ? { ANDROID_HOME: sdk } : {}),
         APP_VARIANT: "development",
         MOBILE_VERSION_POLICY: "appVersion",
-        T3CODE_IOS_PERSONAL_TEAM: "0",
+        J6CODE_IOS_PERSONAL_TEAM: "0",
         CI: "1",
         EXPO_NO_GIT_STATUS: "1",
         // macOS tar otherwise adds AppleDouble entries that change the extracted bundle.
@@ -472,7 +472,7 @@ const remoteCache = Effect.fn("nativeClient.remoteCache")(
       yield* fs.readFileString(path.join((yield* roots).repo, ".task-cache.json")),
     );
     const credentials = yield* decodeCredentials(
-      yield* fs.readFileString(path.join(home, ".config/t3-task-cache/credentials.json")),
+      yield* fs.readFileString(path.join(home, ".config/j6-task-cache/credentials.json")),
     );
     const login = credentials[endpoint];
     if (!login) return null;
@@ -504,7 +504,7 @@ const sharedSource = Effect.fn("nativeClient.sharedSource")(
       remote.name === "ci-reader"
         ? remote
         : yield* fs
-            .readFileString(path.join(home, ".config/t3-task-cache/ci-reader.json"))
+            .readFileString(path.join(home, ".config/j6-task-cache/ci-reader.json"))
             .pipe(Effect.flatMap(Schema.decodeUnknownEffect(ReaderLogin)));
     const basic = Buffer.from(`${reader.name}:${reader.token}`).toString("base64");
     return { url: `${remote.url}/${key}`, header: `authorization:Basic ${basic}` };
@@ -548,7 +548,7 @@ const download = Effect.fn("nativeClient.download")(function* (
   );
   if (response.status === 404) return false;
   yield* HttpClientResponse.filterStatusOk(response);
-  const expected = response.headers["x-t3-digest"] ?? "";
+  const expected = response.headers["x-j6-digest"] ?? "";
   if (!/^[a-f0-9]{64}$/.test(expected))
     return yield* new NativeClientError({ message: "Cached native client has no digest." });
   yield* Console.error(`Downloading native client ${key} from the shared cache...`);
@@ -570,7 +570,7 @@ const download = Effect.fn("nativeClient.download")(function* (
     if ((yield* hashBundle(staging)) !== expected)
       return yield* new NativeClientError({ message: "Cached native client failed verification." });
     yield* publish(staging, target);
-    const buildMs = Number(response.headers["x-t3-build-ms"] ?? 0);
+    const buildMs = Number(response.headers["x-j6-build-ms"] ?? 0);
     yield* writeBuildMs(target, Number.isSafeInteger(buildMs) ? buildMs : 0);
     return true;
   }).pipe(
@@ -591,8 +591,8 @@ const upload = Effect.fn("nativeClient.upload")(function* (
   const created = yield* client
     .execute(
       authorized(remote, HttpClientRequest.post(`${remote.url}/${key}/uploads`)).pipe(
-        HttpClientRequest.setHeader("x-t3-digest", yield* hashBundle(artifact)),
-        HttpClientRequest.setHeader("x-t3-build-ms", String(yield* readBuildMs(artifact))),
+        HttpClientRequest.setHeader("x-j6-digest", yield* hashBundle(artifact)),
+        HttpClientRequest.setHeader("x-j6-build-ms", String(yield* readBuildMs(artifact))),
       ),
     )
     .pipe(
@@ -603,7 +603,7 @@ const upload = Effect.fn("nativeClient.upload")(function* (
   const uploadUrl = `${remote.url}/${key}/uploads/${encodeURIComponent(created.uploadId)}`;
   yield* Console.error(`Uploading native client ${key} to the shared cache...`);
   yield* Effect.gen(function* () {
-    const directory = yield* fs.makeTempDirectoryScoped({ prefix: "t3-native-upload-" });
+    const directory = yield* fs.makeTempDirectoryScoped({ prefix: "j6-native-upload-" });
     const file =
       platform === "ios"
         ? path.join(directory, "client.tgz")
@@ -735,7 +735,7 @@ const build = Effect.fn("nativeClient.build")(function* (
     if (onEas) {
       yield* buildIosOnEas(staging);
     } else if (platform === "ios") {
-      const output = yield* fs.makeTempDirectoryScoped({ prefix: "t3-native-client-" });
+      const output = yield* fs.makeTempDirectoryScoped({ prefix: "j6-native-client-" });
       yield* command("pod", ["install"], true, path.join(mobile, "ios"));
       // One device-independent arm64 simulator build installs on every iPhone and iPad simulator.
       yield* command(
@@ -984,7 +984,7 @@ export const resolveArtifact = Effect.fn("nativeClient.resolveArtifact")(functio
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
   const key = `${platform}/${abi ? `development-${abi}` : "development"}/${fingerprint}`;
-  const directory = path.join(home, ".cache/t3code/native-clients/artifacts", key);
+  const directory = path.join(home, ".cache/j6code/native-clients/artifacts", key);
   const artifact = { directory, file: path.join(directory, artifactNames[platform]) };
   if (yield* fs.exists(artifact.file)) {
     yield* Console.error(`Using cached client ${key}.`);
@@ -1106,7 +1106,7 @@ const reportTelemetry = Effect.fn("nativeClient.reportTelemetry")(
           arch: yield* HostProcess.Architecture,
           ci: environment.CI === "true" || environment.CI === "1",
           runId: environment.GITHUB_RUN_ID ?? "",
-          tasks: [{ package: "@t3tools/mobile", task, source, savedMs: Math.round(savedMs) }],
+          tasks: [{ package: "@j6/mobile", task, source, savedMs: Math.round(savedMs) }],
         }),
       ),
     );
@@ -1139,7 +1139,7 @@ const installIntoSession = Effect.fn("nativeClient.installIntoSession")(function
   // A session behind a gateway (a device pool) is reachable only with the config that opened it.
   const target = ["--session", session, ...(config ? ["--config", config] : [])];
   // Daemon variables in the shell (a device-pool login) override the config and authenticate
-  // as someone who does not hold this lease; T3 Code's own launcher drops them the same way.
+  // as someone who does not hold this lease; J6 Code's own launcher drops them the same way.
   const agentDeviceEnvironment = config
     ? ["AGENT_DEVICE_DAEMON_BASE_URL", "AGENT_DEVICE_DAEMON_AUTH_TOKEN", "AGENT_DEVICE_CONFIG"]
     : [];
@@ -1193,7 +1193,7 @@ const installIntoSession = Effect.fn("nativeClient.installIntoSession")(function
         agentDevice,
         "open",
         bundleId,
-        `t3code-dev://expo-development-client/?url=${url}&disableOnboarding=1&disableFab=1&disableAutoLaunch=1`,
+        `j6code-dev://expo-development-client/?url=${url}&disableOnboarding=1&disableFab=1&disableAutoLaunch=1`,
         ...target,
       ],
       true,
@@ -1244,7 +1244,7 @@ const main = Command.make(
     ),
     config: Flag.String("config").pipe(
       Flag.withDescription(
-        "With --session, the agent-device config the session was opened with (T3 Code's device_open returns it in targetArgs). Needed for a device pool behind a gateway.",
+        "With --session, the agent-device config the session was opened with (J6 Code's device_open returns it in targetArgs). Needed for a device pool behind a gateway.",
       ),
       Flag.optional,
     ),
@@ -1330,7 +1330,7 @@ const main = Command.make(
       return yield* new NativeClientError({
         message: "HOME or USERPROFILE must be set to store native client records.",
       });
-    const cache = path.join(home, ".cache/t3code/native-clients");
+    const cache = path.join(home, ".cache/j6code/native-clients");
     const recordPath = path.join(cache, platform, `${yield* digest(device)}.json`);
     // An iOS simulator build is arm64 for every device; an APK carries only the device's own ABI.
     const abi = Effect.gen(function* () {

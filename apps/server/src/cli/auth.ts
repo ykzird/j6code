@@ -3,7 +3,7 @@ import {
   AuthRevokePairingLinkInput,
   AuthSessionId,
   AuthStandardClientScopes,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -194,7 +194,7 @@ const connectDeviceListCommand = Command.make("list", {
   json: jsonFlag,
 }).pipe(
   Command.withDescription(
-    "List T3 Connect devices waiting for approval and those already trusted.",
+    "List J6 Connect devices waiting for approval and those already trusted.",
   ),
   Command.withHandler((flags) =>
     runWithEnvironmentAuth(
@@ -220,7 +220,7 @@ const connectDeviceApproveCommand = Command.make("approve", {
   ...authLocationFlags,
   code: verificationCodeArgument,
 }).pipe(
-  Command.withDescription("Approve the waiting T3 Connect device that shows this code."),
+  Command.withDescription("Approve the waiting J6 Connect device that shows this code."),
   Command.withHandler((flags) =>
     runWithEnvironmentAuth(flags, (environmentAuth) =>
       Effect.gen(function* () {
@@ -252,7 +252,7 @@ const connectDeviceRevokeCommand = Command.make("revoke", {
   ...authLocationFlags,
   code: verificationCodeArgument,
 }).pipe(
-  Command.withDescription("Stop trusting a T3 Connect device and end its sessions."),
+  Command.withDescription("Stop trusting a J6 Connect device and end its sessions."),
   Command.withHandler((flags) =>
     runWithEnvironmentAuth(flags, (environmentAuth) =>
       Effect.gen(function* () {
@@ -282,7 +282,7 @@ const connectDeviceRevokeCommand = Command.make("revoke", {
 );
 
 const connectDeviceCommand = Command.make("connect-device").pipe(
-  Command.withDescription("Approve and revoke devices that reach this host through T3 Connect."),
+  Command.withDescription("Approve and revoke devices that reach this host through J6 Connect."),
   Command.withSubcommands([
     connectDeviceListCommand,
     connectDeviceApproveCommand,
@@ -353,7 +353,7 @@ const sessionRevokeCommand = Command.make("revoke", {
   ),
 }).pipe(
   Command.withDescription(
-    "Revoke an active session. A T3 Connect device's session takes the device's trust and other sessions with it; if approval for new devices is off, the device can connect again on its own.",
+    "Revoke an active session. A J6 Connect device's session takes the device's trust and other sessions with it; if approval for new devices is off, the device can connect again on its own.",
   ),
   Command.withHandler((flags) =>
     runWithEnvironmentAuth(flags, (environmentAuth) =>

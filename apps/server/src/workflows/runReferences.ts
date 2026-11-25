@@ -6,7 +6,7 @@ import {
   type IssueState,
   type PullRequestRef,
   WorkflowReferenceKind,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -18,7 +18,7 @@ import type { ReferenceInput, WorkflowStore } from "./WorkflowStore.ts";
 export class StepReferences extends Context.Service<
   StepReferences,
   { readonly note: (reference: ReferenceInput) => Effect.Effect<void> }
->()("t3/workflows/runReferences/StepReferences") {}
+>()("j6/workflows/runReferences/StepReferences") {}
 
 /** Keep that `runId` touched `reference`, from `step` or, with none, from what started it. */
 export const noteFor = (

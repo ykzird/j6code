@@ -48,7 +48,7 @@ export default function ReadOnlySourcePreview(props: {
       version: sourceRevision.version + 1,
     });
   }
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- follows the document's selection, which only it reports
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- follows the document's selection, which only it reports
   useEffect(() => {
     const root = () => wrapper.current?.querySelector("diffs-container")?.shadowRoot;
     const sync = () => {

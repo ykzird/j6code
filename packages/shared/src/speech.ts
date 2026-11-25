@@ -3,7 +3,7 @@ import {
   type SpeechCustomWords,
   type SpeechBenchmarkTier,
   SpeechTranscriptionOptions,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Schema from "effect/Schema";
 import recommendationPolicy from "./speechRecommendationPolicy.json" with { type: "json" };
 

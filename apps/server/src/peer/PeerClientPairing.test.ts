@@ -12,7 +12,7 @@ import {
   type ExecutionEnvironmentDescriptor,
   ProviderInstanceId,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { expect, it } from "@effect/vitest";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -58,7 +58,7 @@ const serveBox = (descriptor: ExecutionEnvironmentDescriptor = box) =>
 /** The laptop: its links, its own clients, and what answers a client asking to pair with a link. */
 const makeLaptop = Effect.gen(function* () {
   const linking = yield* Layer.build(layerLinkingEnvironment(laptop));
-  const authContext = yield* Layer.build(layerEnvironmentAuth("t3-peer-link-here-auth-"));
+  const authContext = yield* Layer.build(layerEnvironmentAuth("j6-peer-link-here-auth-"));
   const auth = Context.get(authContext, EnvironmentAuth.EnvironmentAuth);
   const pairing = yield* PeerClientPairing.layer.pipe(
     Layer.provide(Layer.succeedContext(linking)),

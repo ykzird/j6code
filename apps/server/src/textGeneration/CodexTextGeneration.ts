@@ -12,30 +12,30 @@ import {
   DEFAULT_TEXT_GENERATION_REASONING_EFFORT,
   type ServerProviderModel,
   TextGenerationError,
-} from "@t3tools/contracts";
-import { resolveSpawnCommand } from "@t3tools/shared/shell";
+} from "@j6/contracts";
+import { resolveSpawnCommand } from "@j6/shared/shell";
 
 import { resolveAttachmentPath } from "../attachmentStore.ts";
 import * as ServerConfig from "../config.ts";
-import { expandHomePath } from "@t3tools/provider-core/server/pathExpansion";
+import { expandHomePath } from "@j6/provider-core/server/pathExpansion";
 import {
   codexExecLaunchArgs,
   codexMcpListLaunchArgs,
   resolveCodexLaunchArgs,
 } from "../provider/codexLaunchArgs.ts";
 import { codexAppServerEnvironment } from "../provider/CodexProvider.ts";
-import * as TextGenerationOperations from "@t3tools/provider-core/server/textGenerationOperations";
+import * as TextGenerationOperations from "@j6/provider-core/server/textGenerationOperations";
 import {
   normalizeCliError,
   toJsonSchemaObject,
-} from "@t3tools/provider-core/server/textGenerationUtils";
+} from "@j6/provider-core/server/textGenerationUtils";
 import {
   codexModelFamily,
   getModelSelectionStringOptionValue,
   readCustomModelEntries,
-} from "@t3tools/shared/model";
+} from "@j6/shared/model";
 import { getCodexServiceTierOptionValue } from "../codexModelOptions.ts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 
 const CODEX_TIMEOUT_MS = 180_000;
 const CODEX_MCP_LIST_TIMEOUT_MS = 10_000;
@@ -71,7 +71,7 @@ export const makeCodexTextGeneration = Effect.fn("makeCodexTextGeneration")(func
   getModels: Effect.Effect<ReadonlyArray<ServerProviderModel>> = Effect.succeed([]),
   resolveRuntime?: Effect.Effect<
     import("../provider/CodexManagedRuntime.ts").CodexEffectiveRuntime,
-    import("@t3tools/contracts").ProviderSetupError,
+    import("@j6/contracts").ProviderSetupError,
     Scope.Scope
   >,
 ) {
@@ -107,7 +107,7 @@ export const makeCodexTextGeneration = Effect.fn("makeCodexTextGeneration")(func
   ): Effect.Effect<string, TextGenerationError> =>
     fileSystem
       .makeTempFile({
-        prefix: `t3code-${prefix}-${process.pid}-`,
+        prefix: `j6code-${prefix}-${process.pid}-`,
       })
       .pipe(
         Effect.tap((filePath) =>

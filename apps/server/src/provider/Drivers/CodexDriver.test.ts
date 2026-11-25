@@ -7,8 +7,8 @@ import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as NodePath from "node:path";
 import { expect, it } from "@effect/vitest";
-import { EnvironmentId, ProviderInstanceId, ProviderSessionId, ThreadId } from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import { EnvironmentId, ProviderInstanceId, ProviderSessionId, ThreadId } from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import * as Deferred from "effect/Deferred";
@@ -30,25 +30,25 @@ import * as BackgroundPolicy from "../../background/BackgroundPolicy.ts";
 import * as ServerConfig from "../../config.ts";
 import * as ServerSettings from "../../serverSettings.ts";
 import * as ResetCreditCoordinator from "../resetCreditCoordinator.ts";
-import * as ProviderLatestVersions from "@t3tools/provider-core/server/ProviderLatestVersions";
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
-import * as ProviderEventLoggers from "@t3tools/provider-core/server/ProviderEventLoggers";
+import * as ProviderLatestVersions from "@j6/provider-core/server/ProviderLatestVersions";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
+import * as ProviderEventLoggers from "@j6/provider-core/server/ProviderEventLoggers";
 import * as ModelManifest from "../ModelManifest.ts";
 import {
   createProviderVersionAdvisory,
   resolveLatestProviderVersion,
-} from "@t3tools/provider-core/server/maintenanceResolver";
+} from "@j6/provider-core/server/maintenanceResolver";
 import { codexAppServerArgs } from "../codexLaunchArgs.ts";
 import { CodexDriver } from "./CodexDriver.ts";
 import * as CodexAdapterV2 from "../../orchestration-v2/Adapters/CodexAdapterV2.ts";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
 import * as PortScanner from "../../preview/PortScanner.ts";
 import * as ProviderCredentialStore from "../ProviderCredentialStore.ts";
 import * as ProviderHostLive from "../ProviderHostLive.ts";
 
 const layerDeps = ServerConfig.layerTest(process.cwd(), {
-  prefix: "t3-codex-driver-maintenance-",
+  prefix: "j6-codex-driver-maintenance-",
 }).pipe(
   Layer.provideMerge(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
   Layer.provideMerge(IdAllocator.layer),
@@ -348,7 +348,7 @@ it.layer(layerTest)("CodexDriver", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const tempDir = yield* fs
-          .makeTempDirectoryScoped({ prefix: "t3-codex-driver-" })
+          .makeTempDirectoryScoped({ prefix: "j6-codex-driver-" })
           .pipe(Effect.flatMap((directory) => fs.realPath(directory)));
         const sharedHome = NodePath.join(tempDir, "codex-home");
         const shadowHome = NodePath.join(tempDir, "codex-shadow");
@@ -383,7 +383,7 @@ it.layer(layerTest)("CodexDriver", (it) => {
   it.effect("points a shadow home's bundled marketplace at the shadow CODEX_HOME", () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const tempDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-codex-driver-" });
+      const tempDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-codex-driver-" });
       const sharedHome = NodePath.join(tempDir, "codex home");
       const shadowHome = NodePath.join(tempDir, "codex shadow");
       const launches: Array<
@@ -452,7 +452,7 @@ it.layer(layerTest)("CodexDriver", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const tempDir = yield* fs
-          .makeTempDirectoryScoped({ prefix: "t3-codex-driver-" })
+          .makeTempDirectoryScoped({ prefix: "j6-codex-driver-" })
           .pipe(Effect.flatMap((directory) => fs.realPath(directory)));
         // One standalone install, linked onto PATH and used by two account homes.
         // `İ` gets longer when lowercased, so the home must not be sliced from a
@@ -504,7 +504,7 @@ it.layer(layerTest)("CodexDriver", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const tempDir = yield* fs
-        .makeTempDirectoryScoped({ prefix: "t3-codex-update-home-" })
+        .makeTempDirectoryScoped({ prefix: "j6-codex-update-home-" })
         .pipe(Effect.flatMap((directory) => fs.realPath(directory)));
       const linkedInstallHome = NodePath.join(tempDir, "install");
       const fixtures = [
@@ -551,7 +551,7 @@ it.layer(layerTest)("CodexDriver", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const tempDir = yield* fs
-          .makeTempDirectoryScoped({ prefix: "t3-codex-driver-" })
+          .makeTempDirectoryScoped({ prefix: "j6-codex-driver-" })
           .pipe(Effect.flatMap((directory) => fs.realPath(directory)));
         const home = NodePath.join(tempDir, "codex-home");
         const binaryPath = NodePath.join(home, "packages", "standalone", "current", "bin", "codex");
@@ -625,7 +625,7 @@ it.layer(layerTest)("CodexDriver", (it) => {
   it.effect("uses each instance's environment CODEX_HOME for continuation", () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const tempDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-codex-driver-" });
+      const tempDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-codex-driver-" });
       for (const [index, account] of ["work", "personal", "work "].entries()) {
         const codexHome = NodePath.join(tempDir, account);
         const instance = yield* CodexDriver.create({
@@ -646,7 +646,7 @@ it.layer(layerTest)("CodexDriver", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const tempDir = yield* fs
-          .makeTempDirectoryScoped({ prefix: "t3-codex-driver-" })
+          .makeTempDirectoryScoped({ prefix: "j6-codex-driver-" })
           .pipe(Effect.flatMap((directory) => fs.realPath(directory)));
         const codexHome = NodePath.join(tempDir, "custom-codex");
         const shadowHome = NodePath.join(tempDir, "shadow");
@@ -695,7 +695,7 @@ it.layer(layerTest)("CodexDriver", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const tempDir = yield* fs
-          .makeTempDirectoryScoped({ prefix: "t3-codex-installer-" })
+          .makeTempDirectoryScoped({ prefix: "j6-codex-installer-" })
           .pipe(Effect.flatMap((directory) => fs.realPath(directory)));
         const installPath = NodePath.join(tempDir, ...fixture.installSegments);
         const realBinaryPath = NodePath.join(
@@ -788,7 +788,7 @@ it.layer(layerTest)("CodexDriver", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const tempDir = yield* fs
-          .makeTempDirectoryScoped({ prefix: "t3-codex-mise-shim-" })
+          .makeTempDirectoryScoped({ prefix: "j6-codex-mise-shim-" })
           .pipe(Effect.flatMap((directory) => fs.realPath(directory)));
         const brewPrefix = NodePath.join(tempDir, "homebrew");
         const brewPath = NodePath.join(brewPrefix, "bin", "brew");
@@ -907,7 +907,7 @@ it.layer(layerTest)("CodexDriver", (it) => {
   it.effect("probes again when auth.json in the Codex home changes", () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const codexHome = yield* fs.makeTempDirectoryScoped({ prefix: "t3-codex-auth-watch-" });
+      const codexHome = yield* fs.makeTempDirectoryScoped({ prefix: "j6-codex-auth-watch-" });
       const watchedPath = yield* Deferred.make<string>();
       const homeEvents = yield* Queue.unbounded<FileSystem.WatchEvent>();
       const probes = yield* Queue.unbounded<void>();

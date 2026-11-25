@@ -3,7 +3,7 @@ import {
   type KeybindingCommand,
   type KeybindingRule,
   type ResolvedKeybindingsConfig,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Schema from "effect/Schema";
 import { msg } from "gt-react";
 

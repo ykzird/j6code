@@ -1,4 +1,4 @@
-import { backgroundWorkHoldsCompletion } from "@t3tools/shared/orchestrationV2PendingBackgroundWork";
+import { backgroundWorkHoldsCompletion } from "@j6/shared/orchestrationV2PendingBackgroundWork";
 import { threadPullRequestsOf } from "../threadPullRequests.ts";
 import type {
   ThreadLinkedPullRequest,
@@ -16,7 +16,7 @@ import type {
   ProviderInstanceId,
   RunId,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 import { mFallback, msg } from "gt-i18n";
 import type { MFunctionType } from "gt-i18n/types";
@@ -198,16 +198,16 @@ export interface EnvironmentThreadShell {
   readonly unsettledAt: string | null;
   readonly snoozedUntil: string | null;
   readonly snoozedAt: string | null;
-  readonly limitRecovery?: import("@t3tools/contracts").OrchestrationV2LimitRecovery | null;
+  readonly limitRecovery?: import("@j6/contracts").OrchestrationV2LimitRecovery | null;
   readonly pinnedAt: string | null;
   readonly autoSettleDisabledAt?: string | null;
   readonly pinOrderKey: string | null;
   readonly activeOrderKey: string | null;
-  readonly pullRequests: ReadonlyArray<import("@t3tools/contracts").ThreadPullRequestLink>;
+  readonly pullRequests: ReadonlyArray<import("@j6/contracts").ThreadPullRequestLink>;
   readonly linkedPullRequest?: ThreadLinkedPullRequest | null;
   readonly branchPullRequest?: ThreadLinkedPullRequest | null;
   /** Absent from rows built before issue linking; the server sends an empty list. */
-  readonly issues?: ReadonlyArray<import("@t3tools/contracts").ThreadIssueLink>;
+  readonly issues?: ReadonlyArray<import("@j6/contracts").ThreadIssueLink>;
   /**
    * Server-tracked visited watermark. `undefined` means the environment's
    * server predates visited tracking and clients should fall back to any
@@ -215,7 +215,7 @@ export interface EnvironmentThreadShell {
    */
   readonly lastVisitedAt?: string | null;
   /** Server-tracked open history for search ranking. */
-  readonly opens?: import("@t3tools/contracts").OrchestrationV2ThreadOpens | null;
+  readonly opens?: import("@j6/contracts").OrchestrationV2ThreadOpens | null;
   readonly titleRegeneration?: { readonly requestId: string; readonly startedAt: string } | null;
   readonly deletedAt: string | null;
   readonly source: OrchestrationV2ThreadShell;

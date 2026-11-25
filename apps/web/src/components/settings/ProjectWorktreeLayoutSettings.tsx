@@ -1,10 +1,10 @@
-import { managedCapabilityDenial } from "@t3tools/client-runtime/contract-labels";
-import { squashAtomCommandFailure } from "@t3tools/client-runtime/state/runtime";
+import { managedCapabilityDenial } from "@j6/client-runtime/contract-labels";
+import { squashAtomCommandFailure } from "@j6/client-runtime/state/runtime";
 import {
   AuthTerminalOperateScope,
   type WorktreeLayoutCommand,
   type WorktreeLayoutCommandKind,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { msg, T, useGT, useMessages } from "gt-react";
 import { useState } from "react";
 
@@ -26,7 +26,7 @@ const COMMAND_TITLES: Record<WorktreeLayoutCommandKind, string> = {
   remove: msg("Remove command"),
 };
 
-/** The `worktreeLayout` commands each checkout's `t3.json` declares, and whether they may run. */
+/** The `worktreeLayout` commands each checkout's `j6.json` declares, and whether they may run. */
 export function ProjectWorktreeLayoutSettings({
   members,
 }: {
@@ -119,7 +119,7 @@ function CheckoutWorktreeLayout({
       <p className="px-3 py-2.5 text-xs text-muted-foreground sm:px-4">
         {policyDenial ?? (
           <T>
-            This project's <code>t3.json</code> sets up worktree threads with its own commands. They
+            This project's <code>j6.json</code> sets up worktree threads with its own commands. They
             run on this environment's machine with your permissions, and only as approved here: a
             command whose text changes needs approval again.
           </T>

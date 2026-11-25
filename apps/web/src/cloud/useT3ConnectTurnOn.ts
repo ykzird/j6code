@@ -3,7 +3,7 @@ import {
   AuthRelayWriteScope,
   type EnvironmentId,
   managedCapabilityDenial,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
 import { useManagedPolicy } from "../state/managedPolicy";
 import { useEnvironmentCanConfigureRelay, useEnvironmentScope } from "../state/session";
@@ -11,7 +11,7 @@ import { useCloudLinkState } from "./cloudLinkState";
 import { hasCloudPublicConfig } from "./publicConfig";
 import { resolveT3ConnectTurnOn } from "./t3ConnectState";
 
-/** Whether this client can turn on T3 Connect for `environmentId`, and if not, why. */
+/** Whether this client can turn on J6 Connect for `environmentId`, and if not, why. */
 export function useT3ConnectTurnOn(environmentId: EnvironmentId | null) {
   const canReadRelay = useEnvironmentScope(environmentId, AuthRelayReadScope);
   const canWriteRelay = useEnvironmentScope(environmentId, AuthRelayWriteScope);

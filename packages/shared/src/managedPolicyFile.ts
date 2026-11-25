@@ -2,7 +2,7 @@ import {
   ManagedPolicyClient,
   ManagedPolicyDocument,
   SERVER_EXIT_CODE_MANAGED_POLICY,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
 import * as Duration from "effect/Duration";
@@ -28,7 +28,7 @@ export class ManagedPolicyFileError extends Schema.TaggedError<ManagedPolicyFile
   override readonly [Runtime.errorExitCode] = SERVER_EXIT_CODE_MANAGED_POLICY;
 
   override get message(): string {
-    return `T3 Code cannot use the managed policy at ${this.path}: ${this.reason}. It will not start until an administrator fixes this.`;
+    return `J6 Code cannot use the managed policy at ${this.path}: ${this.reason}. It will not start until an administrator fixes this.`;
   }
 }
 
@@ -42,7 +42,7 @@ export function managedPolicyPath(platform: NodeJS.Platform): string {
       // %ProgramFiles%, which a user can point somewhere they write.
       return "C:\\Program Files\\T3Code\\policy.json";
     default:
-      return "/etc/t3code/policy.json";
+      return "/etc/j6code/policy.json";
   }
 }
 
@@ -96,7 +96,7 @@ export const readManagedPolicyFile = Effect.fn("readManagedPolicyFile")(function
 
 /** Where a configuration profile's managed preferences land on macOS. */
 export const MACOS_MANAGED_PREFERENCES_PATH =
-  "/Library/Managed Preferences/com.t3tools.t3code.plist";
+  "/Library/Managed Preferences/com.ykzird.j6code.plist";
 const WINDOWS_POLICY_SUBKEY = "SOFTWARE\\Policies\\T3Tools\\T3Code";
 /**
  * The registry key Group Policy and Intune write to on Windows. It holds either the Group Policy
@@ -174,7 +174,7 @@ export class WindowsRegistry extends Context.Service<
       subkey: string,
     ) => Effect.Effect<RegistryKey | undefined, WindowsRegistryError>;
   }
->()("@t3tools/shared/managedPolicyFile/WindowsRegistry") {}
+>()("@j6/shared/managedPolicyFile/WindowsRegistry") {}
 
 // (HKEY)(LONG)0x80000002, sign-extended to 64 bits.
 const HKEY_LOCAL_MACHINE = -0x7ffffffen;
@@ -215,14 +215,14 @@ export const layerWindowsRegistry = (loadFfi: () => Promise<typeof import("ffi-r
               throw new Error(`no registry access on ${architecture}`);
             }
             const { DataType, load, open } = await loadFfi();
-            open({ library: "t3-advapi32", path: "advapi32.dll" });
+            open({ library: "j6-advapi32", path: "advapi32.dll" });
             const call = (
               funcName: string,
               paramsType: Array<(typeof DataType)[keyof typeof DataType]>,
               paramsValue: Array<unknown>,
             ): number =>
               load({
-                library: "t3-advapi32",
+                library: "j6-advapi32",
                 funcName,
                 retType: DataType.I32,
                 paramsType,
@@ -429,7 +429,7 @@ function windowsPolicyDocument(
     }
     if (Object.hasOwn(WINDOWS_POLICY_GROUPS, value.name)) continue;
     if (!Object.hasOwn(WINDOWS_POLICY_VALUES, value.name)) {
-      return { error: `${value.name} is not a T3 Code policy value` };
+      return { error: `${value.name} is not a J6 Code policy value` };
     }
     const field = WINDOWS_POLICY_VALUES[value.name as keyof typeof WINDOWS_POLICY_VALUES];
     if (field.type === "boolean") {
@@ -456,7 +456,7 @@ function windowsPolicyDocument(
   if (Object.keys(document).length === 1) return { document: undefined };
   // The schema would name `["organization"]`, which an admin cannot map to a Group Policy setting.
   if (document.organization === undefined) {
-    return { error: "set the Organization policy whenever another T3 Code policy is set" };
+    return { error: "set the Organization policy whenever another J6 Code policy is set" };
   }
   return { document };
 }
@@ -530,7 +530,7 @@ const readPlatformPolicy = Effect.fnUntraced(function* (
               path,
               reason:
                 cause.code === undefined
-                  ? "this T3 Code install cannot load its registry reader; reinstall T3 Code"
+                  ? "this J6 Code install cannot load its registry reader; reinstall J6 Code"
                   : `the registry cannot be read (${cause.message})`,
               cause,
             }),
@@ -563,11 +563,11 @@ const readPlatformPolicy = Effect.fnUntraced(function* (
       const list = Object.keys(WINDOWS_POLICY_LISTS).find(
         (name) => name.toLowerCase() === subkey.toLowerCase(),
       );
-      if (list === undefined) return yield* refuse(`${subkey} is not a T3 Code policy key`);
+      if (list === undefined) return yield* refuse(`${subkey} is not a J6 Code policy key`);
       const checkboxes = yield* readKey(`${WINDOWS_POLICY_SUBKEY}\\${subkey}`);
       if (checkboxes === undefined) continue;
       if (checkboxes.subkeys.length > 0) {
-        return yield* refuse(`${subkey}\\${checkboxes.subkeys[0]} is not a T3 Code policy key`);
+        return yield* refuse(`${subkey}\\${checkboxes.subkeys[0]} is not a J6 Code policy key`);
       }
       values.push(...checkboxes.values.map((value) => ({ ...value, key: list })));
     }

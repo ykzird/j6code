@@ -1,4 +1,4 @@
-import { secondTick } from "@t3tools/client-runtime/clock";
+import { secondTick } from "@j6/client-runtime/clock";
 import { useSyncExternalStore } from "react";
 
 export function useNowSecond(): number {

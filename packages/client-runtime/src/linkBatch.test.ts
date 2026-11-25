@@ -1,4 +1,4 @@
-import { EnvironmentId, PeerLinkError } from "@t3tools/contracts";
+import { EnvironmentId, PeerLinkError } from "@j6/contracts";
 import * as Result from "effect/Result";
 import { describe, expect, it } from "vite-plus/test";
 

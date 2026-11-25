@@ -1,6 +1,6 @@
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 
 const DEFAULT_POLL_INTERVAL = Duration.seconds(2);
 // The desktop's SIGTERM grace before it escalates to SIGKILL; a lost launcher cannot escalate.

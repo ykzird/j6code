@@ -1,18 +1,18 @@
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
 import {
   AntigravitySettings,
   ProviderDriverKind,
   ProviderSetupError,
   RuntimeMode,
   settingsSecretLiteral,
-} from "@t3tools/contracts";
-import { writeFileStringAtomically } from "@t3tools/shared/atomicWrite";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { resolveSelfInvocation } from "@t3tools/shared/nodeRuntime";
+} from "@j6/contracts";
+import { writeFileStringAtomically } from "@j6/shared/atomicWrite";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { resolveSelfInvocation } from "@j6/shared/nodeRuntime";
 import {
   NodeRuntimeUnavailableError,
   nodeRuntimeUnavailableMessage,
-} from "@t3tools/shared/nodeRuntime";
+} from "@j6/shared/nodeRuntime";
 import * as Digest from "effect/crypto/Digest";
 import * as SecureRandom from "effect/crypto/SecureRandom";
 import * as Deferred from "effect/Deferred";
@@ -30,7 +30,7 @@ import * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
 import { HttpClient } from "effect/http";
 import * as AcpErrors from "effect-acp/errors";
 
-import * as ProviderHost from "@t3tools/provider-core/server/ProviderHost";
+import * as ProviderHost from "@j6/provider-core/server/ProviderHost";
 import {
   isAntigravityTextGenerationAvailable,
   makeAntigravityTextGeneration,
@@ -56,31 +56,31 @@ import {
   makeAntigravityAcpRuntime,
   type AntigravityAcpRuntimeInput,
 } from "../acp/AntigravityAcpSupport.ts";
-import type * as AcpSessionRuntime from "@t3tools/provider-acp/server/AcpSessionRuntime";
-import type { ServerProviderDraft } from "@t3tools/provider-core/server/snapshotProbe";
+import type * as AcpSessionRuntime from "@j6/provider-acp/server/AcpSessionRuntime";
+import type { ServerProviderDraft } from "@j6/provider-core/server/snapshotProbe";
 import {
   removeAntigravitySessionFiles,
   retireAntigravityRuntimeTempDirs,
 } from "../acp/AntigravitySessionFiles.ts";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
-import * as ProviderContinuationRequests from "@t3tools/provider-core/server/ProviderContinuationRequests";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
+import * as ProviderContinuationRequests from "@j6/provider-core/server/ProviderContinuationRequests";
 import {
   makeAntigravityAdapterV2,
   type AntigravityAdapterV2RuntimeInput,
 } from "../../orchestration-v2/Adapters/AntigravityAdapterV2.ts";
-import { makeAcpNativeLoggerFactory } from "@t3tools/provider-acp/server/nativeLogging";
+import { makeAcpNativeLoggerFactory } from "@j6/provider-acp/server/nativeLogging";
 import { ProviderDriverError } from "../Errors.ts";
 import { makeAntigravityProvider } from "../AntigravityProvider.ts";
 import { makeAntigravityUsageProbe } from "../antigravityUsageLimits.ts";
-import * as ProviderEventLoggers from "@t3tools/provider-core/server/ProviderEventLoggers";
-import * as ModelCatalog from "@t3tools/provider-core/server/ModelCatalog";
+import * as ProviderEventLoggers from "@j6/provider-core/server/ProviderEventLoggers";
+import * as ModelCatalog from "@j6/provider-core/server/ModelCatalog";
 import {
   defaultProviderContinuationIdentity,
   type ProviderDriver,
   type ProviderInstance,
-} from "@t3tools/provider-core/server/driver";
-import { mergeProviderInstanceEnvironment } from "@t3tools/provider-core/server/instanceEnvironment";
-import { withInstanceIdentity } from "@t3tools/provider-core/server/instanceIdentity";
+} from "@j6/provider-core/server/driver";
+import { mergeProviderInstanceEnvironment } from "@j6/provider-core/server/instanceEnvironment";
+import { withInstanceIdentity } from "@j6/provider-core/server/instanceIdentity";
 import { discoverAntigravitySkills, resolveAntigravityUserHome } from "./AntigravitySkills.ts";
 
 const DRIVER = ProviderDriverKind.make("antigravity");
@@ -187,7 +187,7 @@ export const AntigravityDriver: ProviderDriver<
     );
     const profileDirectory = directories.profile;
     // Only a session reports whether agy offers Auto, so keep the last answer across restarts.
-    const runtimeModesPath = path.join(profileDirectory, "t3-runtime-modes.json");
+    const runtimeModesPath = path.join(profileDirectory, "j6-runtime-modes.json");
     const rememberedRuntimeModes = yield* fileSystem.readFileString(runtimeModesPath).pipe(
       Effect.map((contents) =>
         decodeRememberedRuntimeModes(contents).pipe(
@@ -379,7 +379,7 @@ export const AntigravityDriver: ProviderDriver<
       input: Pick<AntigravityAcpRuntimeInput, "onAuthorizationUrl">,
     ) {
       const cwd = yield* fileSystem
-        .makeTempDirectoryScoped({ prefix: "t3-antigravity-setup-" })
+        .makeTempDirectoryScoped({ prefix: "j6-antigravity-setup-" })
         .pipe(
           Effect.mapError(
             () =>
@@ -426,7 +426,7 @@ export const AntigravityDriver: ProviderDriver<
     }) {
       if (auth.authMethod !== "oauth-personal") return undefined;
       const cwd = yield* fileSystem
-        .makeTempDirectoryScoped({ prefix: "t3-antigravity-login-" })
+        .makeTempDirectoryScoped({ prefix: "j6-antigravity-login-" })
         .pipe(
           Effect.mapError(
             () =>

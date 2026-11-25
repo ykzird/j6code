@@ -4,7 +4,7 @@ import { expect } from "e2e";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 
-import { runPromise, test, WEB } from "./t3.ts";
+import { runPromise, test, WEB } from "./j6.ts";
 
 // A raw-mode program that turns on bracketed paste, logs every byte it receives to `received`,
 // and exits once the paste's closing marker arrives.
@@ -45,10 +45,10 @@ const compare = (received: Uint8Array) => ({
 test(
   "A web terminal paste larger than one write reaches the program intact",
   WEB,
-  async ({ t3, app, browser, screen }) => {
+  async ({ j6, app, browser, screen }) => {
     await browser.emulateMedia({ colorScheme: "dark" });
-    const project = await t3.project("demo", { "paste-probe.mjs": PROBE });
-    const thread = await t3.thread({ project, title: "Paste", messages: ["hello"] });
+    const project = await j6.project("demo", { "paste-probe.mjs": PROBE });
+    const thread = await j6.thread({ project, title: "Paste", messages: ["hello"] });
     const read = (file: string) =>
       runPromise(
         Effect.gen(function* () {
@@ -63,7 +63,7 @@ test(
           return compare(yield* fs.readFile(`${project}/received`));
         }).pipe(Effect.orElseSucceed(() => compare(new Uint8Array()))),
       );
-    await t3.open(thread);
+    await j6.open(thread);
 
     await screen.getByRole("button", "Toggle terminal drawer").tap();
     const terminal = screen.getByLabel("Terminal input");

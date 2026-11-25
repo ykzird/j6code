@@ -1,4 +1,4 @@
-import type { IssueDetail, IssueState } from "@t3tools/contracts";
+import type { IssueDetail, IssueState } from "@j6/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { issueWriteAccess } from "./issuePresentation.ts";

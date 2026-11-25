@@ -47,13 +47,13 @@ import {
   ThreadId,
   SERVER_BROWSER_AUTOMATION_CLIENT_ID,
   type PreviewAppearancePreference,
-} from "@t3tools/contracts";
-import { AgentScope, agentScopeLauncherScript } from "@t3tools/shared/AgentScope";
-import { writeFileStringAtomically } from "@t3tools/shared/atomicWrite";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { appLinkUrl } from "@t3tools/shared/appLinks";
-import { normalizePreviewUrl } from "@t3tools/shared/preview";
-import { resolvePreviewViewport } from "@t3tools/shared/previewViewport";
+} from "@j6/contracts";
+import { AgentScope, agentScopeLauncherScript } from "@j6/shared/AgentScope";
+import { writeFileStringAtomically } from "@j6/shared/atomicWrite";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { appLinkUrl } from "@j6/shared/appLinks";
+import { normalizePreviewUrl } from "@j6/shared/preview";
+import { resolvePreviewViewport } from "@j6/shared/previewViewport";
 import * as NodeCrypto from "node:crypto";
 import * as NodeFSP from "node:fs/promises";
 import * as NodePath from "node:path";
@@ -405,7 +405,7 @@ export class ServerBrowser extends Context.Service<
 
     readonly profileReporter: Effect.Effect<ProfileReporter, never, Scope.Scope>;
   }
->()("t3/preview/ServerBrowser") {}
+>()("j6/preview/ServerBrowser") {}
 
 interface ViewerState {
   readonly id: string;
@@ -603,7 +603,7 @@ const editingCommand = (key: string, modifiers: number) => {
 };
 
 const TITLE_LIMIT = 512;
-const TITLE_WORLD = "t3-preview-title";
+const TITLE_WORLD = "j6-preview-title";
 // Observe root replacement without subscribing to body subtree mutations.
 const titleChange = (reported: string) => `new Promise((resolve) => {
   const changed = () => document.title.slice(0, ${TITLE_LIMIT}) !== ${JSON.stringify(reported)};
@@ -638,7 +638,7 @@ const titleChange = (reported: string) => `new Promise((resolve) => {
 })`;
 
 const CLIPBOARD_TEXT_LIMIT = 1024 * 1024;
-const CLIPBOARD_WORLD = "t3-preview-clipboard";
+const CLIPBOARD_WORLD = "j6-preview-clipboard";
 // Chromium shares its clipboard across contexts; capture real copy/cut keys in a page-inaccessible world instead.
 const CLIPBOARD_SCRIPT = `(() => {
   let keying = false;
@@ -957,7 +957,7 @@ const make = Effect.gen(function* () {
       const { frameTree } = await tab.cdp.send("Page.getFrameTree");
       const { executionContextId } = await tab.cdp.send("Page.createIsolatedWorld", {
         frameId: frameTree.frame.id,
-        worldName: "t3-preview-viewport",
+        worldName: "j6-preview-viewport",
       });
       const { result } = await tab.cdp.send("Runtime.evaluate", {
         expression: "({ width: innerWidth, height: innerHeight })",
@@ -2998,7 +2998,7 @@ const make = Effect.gen(function* () {
           throw new ServerBrowserPage.ServerBrowserOperationError({
             tag: "PreviewAutomationExecutionError",
             message:
-              "The desktop did not draw the page at the new size. Show or restore the T3 Code window and try again.",
+              "The desktop did not draw the page at the new size. Show or restore the J6 Code window and try again.",
           });
         }
         // Only a read after the draw, with no page resize or load during it, measures this resize.

@@ -2,9 +2,9 @@ import type {
   EnvironmentId,
   OrchestrationV2PendingBackgroundTask,
   ThreadId,
-} from "@t3tools/contracts";
-import type { ThreadStructure } from "@t3tools/client-runtime/state/shell";
-import { backgroundWorkHoldsCompletion } from "@t3tools/shared/orchestrationV2PendingBackgroundWork";
+} from "@j6/contracts";
+import type { ThreadStructure } from "@j6/client-runtime/state/shell";
+import { backgroundWorkHoldsCompletion } from "@j6/shared/orchestrationV2PendingBackgroundWork";
 import { T, useGT } from "gt-react";
 import { useState } from "react";
 

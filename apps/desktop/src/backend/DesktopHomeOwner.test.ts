@@ -25,7 +25,7 @@ const withTempHome = <A, E>(
 ) =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
-    const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-desktop-home-owner-" });
+    const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-desktop-home-owner-" });
     yield* fs.makeDirectory(`${home}/userdata`, { recursive: true });
     return yield* run(`${home}/userdata`).pipe(
       Effect.provide(
@@ -41,7 +41,7 @@ const withTempHome = <A, E>(
           runningUnderArm64Translation: false,
         }).pipe(
           Layer.provide(
-            Layer.mergeAll(NodeServices.layer, DesktopConfig.layerTest({ T3CODE_HOME: home })),
+            Layer.mergeAll(NodeServices.layer, DesktopConfig.layerTest({ J6CODE_HOME: home })),
           ),
         ),
       ),

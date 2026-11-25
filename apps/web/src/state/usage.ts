@@ -7,14 +7,14 @@ import {
   type UsageSummary,
   type UsageProviderKind,
   type UsageSummaryInput,
-} from "@t3tools/contracts";
-import { refreshUsage, usageSummaryInput } from "@t3tools/client-runtime/state/usage";
-import { resolveUsageAccess } from "@t3tools/client-runtime/state/usage-access";
+} from "@j6/contracts";
+import { refreshUsage, usageSummaryInput } from "@j6/client-runtime/state/usage";
+import { resolveUsageAccess } from "@j6/client-runtime/state/usage-access";
 import { AsyncResult, Atom } from "effect/reactivity";
 import { msg } from "gt-react";
 import { useState } from "react";
 
-import { mergeUsage, type EnvironmentUsage, type MergedUsage } from "@t3tools/shared/usageMerge";
+import { mergeUsage, type EnvironmentUsage, type MergedUsage } from "@j6/shared/usageMerge";
 import { appAtomRegistry } from "../rpc/atomRegistry";
 import { environmentPresentations } from "./presentation";
 import { serverEnvironment } from "./server";

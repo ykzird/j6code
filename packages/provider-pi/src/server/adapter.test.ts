@@ -18,7 +18,7 @@ import {
   type OrchestrationV2ProviderThread,
   OrchestrationV2UserInputQuestion,
   type OrchestrationV2ProviderTurn,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as PlatformError from "effect/PlatformError";
 import * as DateTime from "effect/DateTime";
@@ -39,16 +39,16 @@ import * as TestClock from "effect/testing/TestClock";
 import * as ChildProcess from "effect/process/ChildProcess";
 import * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
 
-import * as TestProviderHost from "@t3tools/provider-testing/TestProviderHost";
-import * as ProviderContinuationRequests from "@t3tools/provider-core/server/ProviderContinuationRequests";
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
-import * as ProviderHost from "@t3tools/provider-core/server/ProviderHost";
-import { handoffBudget } from "@t3tools/provider-core/server/handoffBudget";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { AgentScope } from "@t3tools/shared/AgentScope";
-import { toolOutputImages, compactDynamicToolOutput } from "@t3tools/shared/toolOutput";
+import * as TestProviderHost from "@j6/provider-testing/TestProviderHost";
+import * as ProviderContinuationRequests from "@j6/provider-core/server/ProviderContinuationRequests";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
+import * as ProviderHost from "@j6/provider-core/server/ProviderHost";
+import { handoffBudget } from "@j6/provider-core/server/handoffBudget";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { AgentScope } from "@j6/shared/AgentScope";
+import { toolOutputImages, compactDynamicToolOutput } from "@j6/shared/toolOutput";
 import {
   makePiAdapterV2,
   PiAdapterV2Driver,
@@ -2092,7 +2092,7 @@ describe("PiAdapterV2", () => {
         Effect.provideService(AgentScope, {
           ...AgentScope.defaultValue(),
           wrap: ({ command, args }) =>
-            Effect.succeed({ command, args, unit: "t3code-pi-test.scope" }),
+            Effect.succeed({ command, args, unit: "j6code-pi-test.scope" }),
           stop: (unit) =>
             Effect.sync(() => void stopped.push({ unit, processReleased })).pipe(
               Effect.andThen(Deferred.succeed(scopeStopped, undefined)),
@@ -2101,7 +2101,7 @@ describe("PiAdapterV2", () => {
         }),
       );
       assert.deepStrictEqual(stopped, [
-        { unit: "t3code-pi-test.scope", processReleased: exit === "session" },
+        { unit: "j6code-pi-test.scope", processReleased: exit === "session" },
       ]);
     }).pipe(Effect.provide(layerTest)),
   );
@@ -2236,11 +2236,11 @@ describe("PiAdapterV2", () => {
       // A thread's long-lived process keeps Pi's startup model refresh unless the user opts out.
       assert.notInclude(spawn.args, "--offline");
       assert.isUndefined(spawn.env.PI_OFFLINE);
-      assert.isTrue(extensions.some((path) => path?.endsWith("pi-t3-mcp-extension.ts")));
+      assert.isTrue(extensions.some((path) => path?.endsWith("pi-j6-mcp-extension.ts")));
       assert.equal(spawn.env.T3_MCP_URL, "http://127.0.0.1:43123/mcp");
       assert.equal(spawn.env.T3_MCP_BEARER_TOKEN, "secret-pi-token");
       assert.equal(spawn.env.T3_PI_RUNTIME_MODE, "full-access");
-      assert.equal(spawn.env.T3CODE_THREAD_ID, THREAD_ID);
+      assert.equal(spawn.env.J6CODE_THREAD_ID, THREAD_ID);
     }).pipe(Effect.scoped, Effect.provide(layerTest)),
   );
 
@@ -3511,11 +3511,11 @@ describe("PiAdapterV2", () => {
             expected: { content, structuredContent: structured },
           },
           {
-            toolName: "mcp__t3-code__preview_snapshot",
+            toolName: "mcp__j6-code__preview_snapshot",
             result: {
               content,
               structuredContent: scriptResult,
-              details: { server: "t3-code", tool: "preview_snapshot" },
+              details: { server: "j6-code", tool: "preview_snapshot" },
             },
             expected: { content, structuredContent: { threadId: "child-thread" } },
           },
@@ -3530,7 +3530,7 @@ describe("PiAdapterV2", () => {
             expected: { content, structuredContent: { content: ["domain content"], ready: true } },
           },
           {
-            toolName: "mcp__t3-code__preview_snapshot",
+            toolName: "mcp__j6-code__preview_snapshot",
             result: {
               content: [
                 { type: "text", text: "first" },
@@ -3542,7 +3542,7 @@ describe("PiAdapterV2", () => {
                   { type: "text", text: "second" },
                 ],
               },
-              details: { server: "t3-code", tool: "preview_snapshot" },
+              details: { server: "j6-code", tool: "preview_snapshot" },
             },
             expected: {
               content: [
@@ -3716,7 +3716,7 @@ describe("PiAdapterV2", () => {
           const bridge = yield* Effect.promise(() =>
             loadMcpBridge({ modern: true, result: { content, structuredContent: metadata } }),
           );
-          const tool = bridge.tools.find((tool) => tool.name === "mcp__t3-code__preview_snapshot")!;
+          const tool = bridge.tools.find((tool) => tool.name === "mcp__j6-code__preview_snapshot")!;
           const result = yield* Effect.promise(() => tool.execute("screenshot", {}));
           assert.deepEqual(result.structuredContent, { content, structuredContent: metadata });
           yield* fake.emit(
@@ -7509,7 +7509,7 @@ describe("PiAdapterV2", () => {
               yield* fake.takeRequest("get_state");
             }
             yield* fake.emit({
-              type: "t3.settle_probe",
+              type: "j6.settle_probe",
               providerTurnId,
               settleProbeGeneration: 2,
               data: { isStreaming: false, isCompacting: false, pendingMessageCount: 0 },

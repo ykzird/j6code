@@ -1,4 +1,4 @@
-import type { OrchestrationV2Run, OrchestrationV2TurnItem } from "@t3tools/contracts";
+import type { OrchestrationV2Run, OrchestrationV2TurnItem } from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 
 import { FEEDBACK_TRACE_TURNS, type FeedbackTrace, resolveT3ToolName } from "./FeedbackReport.ts";
@@ -37,8 +37,8 @@ const toolName = (
   if (item.type === "command_execution") return "shell";
   if (item.type !== "dynamic_tool") return item.type;
   const name = item.toolName ?? "";
-  const t3 = resolveT3ToolName(name, t3Tools);
-  if (t3 !== undefined) return t3;
+  const j6 = resolveT3ToolName(name, t3Tools);
+  if (j6 !== undefined) return j6;
   return namesBuiltIns &&
     item.toolSource?.kind !== "integration" &&
     !/^mcp/iu.test(name) &&

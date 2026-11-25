@@ -25,7 +25,7 @@ const makeRelay = (target: CdpRelayTarget, write: (raw: string) => void) =>
   createCdpRelayConnection(target, write, () => {});
 
 // Each relay reply resolves after a few microtasks; one macrotask lets them all land.
-// oxlint-disable-next-line t3code/no-real-time-wait-in-tests -- a zero-delay macrotask boundary, not a wait for time
+// oxlint-disable-next-line j6code/no-real-time-wait-in-tests -- a zero-delay macrotask boundary, not a wait for time
 const settle = () => new Promise<void>((resolve) => setImmediate(resolve));
 
 describe("CDP relay", () => {
@@ -41,7 +41,7 @@ describe("CDP relay", () => {
       {
         method: "Target.attachedToTarget",
         params: expect.objectContaining({
-          sessionId: "t3-preview-page",
+          sessionId: "j6-preview-page",
           targetInfo: expect.objectContaining({ targetId: "GUEST-TARGET", type: "page" }),
         }),
       },
@@ -61,7 +61,7 @@ describe("CDP relay", () => {
     const written: Array<Record<string, unknown>> = [];
     const relay = makeRelay(makeTarget(send), (raw) => written.push(JSON.parse(raw)));
     relay.receive(
-      JSON.stringify({ id: 5, method: "Page.captureScreenshot", sessionId: "t3-preview-page" }),
+      JSON.stringify({ id: 5, method: "Page.captureScreenshot", sessionId: "j6-preview-page" }),
     );
     relay.receive(JSON.stringify({ id: 6, method: "DOM.enable", sessionId: "iframe-session" }));
     pending[1]!();
@@ -76,7 +76,7 @@ describe("CDP relay", () => {
     expect(written.at(-1)).toEqual({
       id: 5,
       result: { method: "Page.captureScreenshot" },
-      sessionId: "t3-preview-page",
+      sessionId: "j6-preview-page",
     });
   });
 
@@ -87,7 +87,7 @@ describe("CDP relay", () => {
       JSON.stringify({
         id: 1,
         method: "Runtime.runIfWaitingForDebugger",
-        sessionId: "t3-preview-page",
+        sessionId: "j6-preview-page",
       }),
     );
     relay.receive(
@@ -114,11 +114,11 @@ describe("CDP relay", () => {
         id: 1,
         method: "Emulation.setFocusEmulationEnabled",
         params: { enabled: true },
-        sessionId: "t3-preview-page",
+        sessionId: "j6-preview-page",
       }),
     );
     await settle();
-    expect(written).toEqual([{ id: 1, result: {}, sessionId: "t3-preview-page" }]);
+    expect(written).toEqual([{ id: 1, result: {}, sessionId: "j6-preview-page" }]);
     expect(send).not.toHaveBeenCalled();
   });
 
@@ -132,7 +132,7 @@ describe("CDP relay", () => {
     relay.event("Page.loadEventFired", { timestamp: 1 }, "");
     relay.event("Runtime.consoleAPICalled", {}, "iframe-session");
     expect(written.slice(-2)).toEqual([
-      { method: "Page.loadEventFired", params: { timestamp: 1 }, sessionId: "t3-preview-page" },
+      { method: "Page.loadEventFired", params: { timestamp: 1 }, sessionId: "j6-preview-page" },
       { method: "Runtime.consoleAPICalled", params: {}, sessionId: "iframe-session" },
     ]);
   });
@@ -196,7 +196,7 @@ describe("CDP relay extra sessions", () => {
     };
     frame(1);
     expect(delivered()).toEqual([
-      ["t3-preview-page", 1],
+      ["j6-preview-page", 1],
       [extra, 1],
     ]);
     // A session that has not acknowledged its frame gets only the newest one, on its ack.
@@ -232,7 +232,7 @@ describe("CDP relay extra sessions", () => {
     expect(delivered()).toEqual([[extra, 102]]);
     // Other events still reach a session while its frame is unacknowledged.
     relay.event("Page.loadEventFired", { timestamp: 1 }, undefined);
-    expect(delivered().map(([session]) => session)).toEqual(["t3-preview-page", extra]);
+    expect(delivered().map(([session]) => session)).toEqual(["j6-preview-page", extra]);
   });
 });
 
@@ -252,7 +252,7 @@ describe("CDP relay downloads", () => {
         method: "Browser.setDownloadBehavior",
         params: {
           behavior: "allowAndName",
-          browserContextId: "t3-preview",
+          browserContextId: "j6-preview",
           downloadPath: "/srv/artifacts",
           eventsEnabled: true,
         },
@@ -378,10 +378,10 @@ describe("CDP relay payload budget", () => {
     const written: Array<Record<string, unknown>> = [];
     const relay = makeRelay(makeTarget(send), (raw) => written.push(JSON.parse(raw)));
     relay.receive(
-      JSON.stringify({ id: 1, method: "DOM.getDocument", sessionId: "t3-preview-page" }),
+      JSON.stringify({ id: 1, method: "DOM.getDocument", sessionId: "j6-preview-page" }),
     );
     relay.receive(
-      JSON.stringify({ id: 2, method: "Page.captureScreenshot", sessionId: "t3-preview-page" }),
+      JSON.stringify({ id: 2, method: "Page.captureScreenshot", sessionId: "j6-preview-page" }),
     );
     await settle();
 
@@ -444,7 +444,7 @@ describe("CDP relay reconnects", () => {
       current.receive(JSON.stringify({ id: 1, method: "Target.setAutoAttach", params: {} }));
       await settle();
       current.receive(
-        JSON.stringify({ id: 2, method: "Runtime.enable", sessionId: "t3-preview-page" }),
+        JSON.stringify({ id: 2, method: "Runtime.enable", sessionId: "j6-preview-page" }),
       );
       await settle();
       return written.filter((m) => m["method"] === "Runtime.executionContextCreated");
@@ -453,7 +453,7 @@ describe("CDP relay reconnects", () => {
       {
         method: "Runtime.executionContextCreated",
         params: context,
-        sessionId: "t3-preview-page",
+        sessionId: "j6-preview-page",
       },
     ];
     expect(await connect()).toEqual(expected);

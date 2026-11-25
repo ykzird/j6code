@@ -23,7 +23,7 @@ import * as NodeOS from "node:os";
 
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Clock from "effect/Clock";
 import * as Config from "effect/Config";
 import * as Console from "effect/Console";
@@ -251,7 +251,7 @@ const override = Effect.fn("checkChanged.override")(function* (
 
 // Tests that read a doc; a changed doc has no test beside it to select them.
 export const docReaderTests = (files: ReadonlyArray<string>) =>
-  files.includes("docs/user/t3-connect-troubleshooting.md")
+  files.includes("docs/user/j6-connect-troubleshooting.md")
     ? ["apps/server/src/cloud/ConnectReachability.test.ts"]
     : [];
 
@@ -365,7 +365,7 @@ const checkChanged = Effect.fn("checkChanged")(function* (input: {
   }
   for (const test of docReaderTests(files)) tests.add(test);
   // It reads files other than the ones beside it, so no changed file selects it.
-  if (affected.includes("t3")) tests.add("apps/server/src/provider/AgentContextBudget.test.ts");
+  if (affected.includes("j6")) tests.add("apps/server/src/provider/AgentContextBudget.test.ts");
   const { vitestTests, nodeTests } = splitTests(tests);
 
   // React Compiler coverage compiles every client source file, so run only the
@@ -464,7 +464,7 @@ const checkChanged = Effect.fn("checkChanged")(function* (input: {
   // Cached registry metadata limits this to patches stranded by local changes, not registry drift.
   const checkPatches = Effect.scoped(
     Effect.gen(function* () {
-      const temp = yield* fs.makeTempDirectoryScoped({ prefix: "t3-patch-check-" });
+      const temp = yield* fs.makeTempDirectoryScoped({ prefix: "j6-patch-check-" });
       const copy = Effect.fnUntraced(function* (relative: string) {
         const dest = path.join(temp, relative);
         yield* fs.makeDirectory(path.dirname(dest), { recursive: true });

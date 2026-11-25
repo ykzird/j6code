@@ -7,8 +7,8 @@
 // which are approximate when other clients spend the same token's quota.
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import * as SourceControlRateLimit from "@t3tools/source-control-core/server/SourceControlRateLimit";
-import * as TestSourceControlHost from "@t3tools/source-control-testing/TestSourceControlHost";
+import * as SourceControlRateLimit from "@j6/source-control-core/server/SourceControlRateLimit";
+import * as TestSourceControlHost from "@j6/source-control-testing/TestSourceControlHost";
 import * as Effect from "effect/Effect";
 import * as Console from "effect/Console";
 import * as Layer from "effect/Layer";
@@ -21,7 +21,7 @@ import * as GitHubAppAccess from "../src/server/GitHubAppAccess.ts";
 import * as GitHubPullRequestApi from "../src/server/GitHubPullRequestApi.ts";
 import * as GitHubPullRequestProvider from "../src/server/GitHubPullRequestProvider.ts";
 import * as GitHubRest from "../src/server/GitHubRest.ts";
-import * as FeatureFlags from "@t3tools/shared/FeatureFlags";
+import * as FeatureFlags from "@j6/shared/FeatureFlags";
 
 const repeatsFlag = process.argv.find((arg) => arg.startsWith("--repeats="));
 const repeats = repeatsFlag === undefined ? 1 : Number(repeatsFlag.slice("--repeats=".length));

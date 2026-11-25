@@ -251,7 +251,7 @@ credentials, and agent work stay on the remote machine.
 
 The remote host must be Linux or an Apple Silicon Mac with `curl` or `wget`,
 `tar`, `sha256sum` or `shasum`, and [provider setup](./install.md#providers).
-The first launch downloads J6 Code's server to `~/.t3/runtime` on the host, so
+The first launch downloads J6 Code's server to `~/.j6/runtime` on the host, so
 it takes longer than later ones.
 Provider CLIs must be on the `PATH` of a non-interactive login shell there;
 check with:
@@ -366,7 +366,7 @@ listed port opens as `http://localhost:<port>` and might not be a web page. For
 an HTTPS server or a specific path, set the **Preview URL** on the project
 script that starts it; J6 Code checks that address and opens it as written.
 
-To stop listing ports, set `T3CODE_PORT_DISCOVERY=0` in the environment that
+To stop listing ports, set `J6CODE_PORT_DISCOVERY=0` in the environment that
 starts the J6 Code server, such as
 [`service.env`](./background-service.md#configure-the-service-environment) for
 the background service, and restart it. Script preview URLs still appear.
@@ -397,14 +397,14 @@ as root. If your J6 server runs as root, run it as a nonroot user to keep
 sandboxing enabled. `j6 browser setup` does not fix this root restriction.
 
 If you need to run as root, or cannot enable the sandbox on your host, set
-`T3CODE_SERVER_BROWSER_SANDBOX=0` in the **J6 server's environment** and restart
+`J6CODE_SERVER_BROWSER_SANDBOX=0` in the **J6 server's environment** and restart
 the server. This disables Chrome's sandbox. For a manual launch:
 
 ```sh
-T3CODE_SERVER_BROWSER_SANDBOX=0 j6 serve
+J6CODE_SERVER_BROWSER_SANDBOX=0 j6 serve
 ```
 
-For a systemd service, add `Environment=T3CODE_SERVER_BROWSER_SANDBOX=0` under
+For a systemd service, add `Environment=J6CODE_SERVER_BROWSER_SANDBOX=0` under
 `[Service]` in its configuration, run `sudo systemctl daemon-reload`, then restart
 your J6 service. Setting the variable in an agent's terminal does not change the
 environment of an already running J6 server.
@@ -425,7 +425,7 @@ Linked environments is a beta. Turn it on for both machines in **Settings →
 Labs**; on mobile, **Settings → Labs** lists each connected machine. On a
 headless server, open its address in a browser and pair to reach its **Settings
 → Labs**, or add `"linkedEnvironmentsEnabled": true` to `settings.json` in its
-`userdata` directory, such as `~/.t3/userdata/settings.json`; a running server
+`userdata` directory, such as `~/.j6/userdata/settings.json`; a running server
 picks it up. While it is
 off on either machine, agents start nothing over a link between them. A task
 already running on the other machine still finishes, and if that machine has it
@@ -673,7 +673,7 @@ screenshots, logs, or bug reports.
 ## J6 Connect troubleshooting
 
 When a J6 Connect connection fails, see
-[J6 Connect troubleshooting](./t3-connect-troubleshooting.md). It explains each
+[J6 Connect troubleshooting](./j6-connect-troubleshooting.md). It explains each
 error, where the problem is, and how to fix it.
 
 ## Using the Desktop App as a Remote Only

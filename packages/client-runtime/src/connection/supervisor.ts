@@ -1,6 +1,6 @@
 import { msg } from "gt-i18n";
 import { translatableDetail } from "../errors/translatable.ts";
-import { withRelayClientTracing } from "@t3tools/shared/relayTracing";
+import { withRelayClientTracing } from "@j6/shared/relayTracing";
 import * as Cause from "effect/Cause";
 import * as Clock from "effect/Clock";
 import * as Context from "effect/Context";
@@ -272,7 +272,7 @@ export class EnvironmentSupervisor extends Context.Service<
     readonly disconnect: Effect.Effect<void>;
     readonly retryNow: Effect.Effect<void>;
   }
->()("@t3tools/client-runtime/connection/supervisor/EnvironmentSupervisor") {}
+>()("@j6/client-runtime/connection/supervisor/EnvironmentSupervisor") {}
 
 export const make = Effect.fn("EnvironmentSupervisor.make")(function* (
   entry: ConnectionCatalogEntry,
@@ -685,7 +685,7 @@ export const make = Effect.fn("EnvironmentSupervisor.make")(function* (
       yield* Ref.set(preferredRouteId, Option.some(next.routeId));
       return "reset" as const;
     }
-    // Only a session over T3 Connect holds the old account's credential.
+    // Only a session over J6 Connect holds the old account's credential.
     if (next._tag === "Wakeup" && next.reason === "credentials-changed" && isRelayLease(lease)) {
       yield* logManagedRelayAccountChange;
       return "end" as const;

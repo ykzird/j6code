@@ -1,8 +1,8 @@
 import {
   formatProviderSubagentStatus,
   type ProviderSubagentStatus,
-} from "@t3tools/client-runtime/state/thread-execution";
-import { isOrchestrationV2WorkActive } from "@t3tools/contracts";
+} from "@j6/client-runtime/state/thread-execution";
+import { isOrchestrationV2WorkActive } from "@j6/contracts";
 import { T, useGT, useMessages } from "gt-react";
 import { ArrowUpLeftIcon } from "lucide-react";
 import type { ReactNode } from "react";

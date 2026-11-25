@@ -1,7 +1,7 @@
 import { assert, it } from "@effect/vitest";
-import { EnvironmentId, MessageId, ThreadId } from "@t3tools/contracts";
-import { serializeAssistantCitation } from "@t3tools/shared/assistantCitations";
-import * as NodeSqliteClient from "@t3tools/shared/nodeSqliteClient";
+import { EnvironmentId, MessageId, ThreadId } from "@j6/contracts";
+import { serializeAssistantCitation } from "@j6/shared/assistantCitations";
+import * as NodeSqliteClient from "@j6/shared/nodeSqliteClient";
 import * as Effect from "effect/Effect";
 import * as SqlClient from "effect/sql/SqlClient";
 
@@ -48,7 +48,7 @@ it.layer(NodeSqliteClient.layer({ filename: ":memory:" }))(
         `;
         yield* insertMessage("quoted", `${quote} quiet silver lantern`);
         yield* insertMessage("plain", "quiet silver lantern");
-        yield* insertMessage("invalid", "[Assistant quote](t3-citation://v1/not-a-citation)");
+        yield* insertMessage("invalid", "[Assistant quote](j6-citation://v1/not-a-citation)");
         yield* insertMessage("unreadable", 20261001);
         yield* insertMessage(
           "accented",

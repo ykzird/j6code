@@ -10,7 +10,7 @@ import {
   OrchestratorMcpThreadWaitResult,
   type PeerLinkError,
   RuntimeMode,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as Digest from "effect/crypto/Digest";
 import * as DateTime from "effect/DateTime";
@@ -29,7 +29,7 @@ import * as ThreadManagement from "../orchestration-v2/ThreadManagementService.t
 import * as PeerLinks from "./PeerLinks.ts";
 import * as PeerMcpClient from "./PeerMcpClient.ts";
 
-// Match local waits: return before MCP client timeouts and T3 Connect's ~100 s idle drop.
+// Match local waits: return before MCP client timeouts and J6 Connect's ~100 s idle drop.
 const DEFAULT_WAIT_TIMEOUT_MS = 30_000;
 const MAX_WAIT_TIMEOUT_MS = 45_000;
 
@@ -77,7 +77,7 @@ export class PeerForwarding extends Context.Service<
       scope: Scope,
     ) => Effect.Effect<OrchestratorMcpEnvironmentLinksResult, OrchestratorMcpFailure>;
   }
->()("t3/peer/PeerForwarding") {}
+>()("j6/peer/PeerForwarding") {}
 
 /** What an agent hears when it names another machine while the beta is off here. */
 export const linkedEnvironmentsOff = new OrchestratorMcpFailure({

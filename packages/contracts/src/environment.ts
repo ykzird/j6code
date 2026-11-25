@@ -13,7 +13,7 @@ import { SourceControlProviderKind } from "./sourceControl.ts";
 export const ORCHESTRATION_PROTOCOL_VERSION = 2;
 export const ORCHESTRATION_PROTOCOL_VERSION_TEXT = "2";
 export const ORCHESTRATION_PROTOCOL_QUERY_PARAM = "orchestrationProtocol";
-export const ORCHESTRATION_PROTOCOL_HEADER = "x-t3-orchestration-protocol";
+export const ORCHESTRATION_PROTOCOL_HEADER = "x-j6-orchestration-protocol";
 
 /** Wire shapes a client understands, comma-separated; a client that omits one gets the older shape. */
 export const CLIENT_CAPABILITIES_QUERY_PARAM = "clientCapabilities";
@@ -69,9 +69,9 @@ const InstalledPath = Schema.String.check(Schema.isNonEmpty());
 export const ServerInstallation = Schema.Union([
   Schema.Struct({ kind: Schema.Literals(["npx", "pnpm-dlx", "bunx"]) }),
   Schema.Struct({ kind: Schema.Literal("npm-global"), prefix: TrimmedNonEmptyString }),
-  // A launcher (script, or a legacy symlink) into a downloaded runtime, as the install script and `t3 update` leave.
+  // A launcher (script, or a legacy symlink) into a downloaded runtime, as the install script and `j6 update` leave.
   Schema.Struct({
-    kind: Schema.Literal("t3-launcher"),
+    kind: Schema.Literal("j6-launcher"),
     launcher: InstalledPath,
     baseDir: InstalledPath,
   }),
@@ -201,7 +201,7 @@ export const ExecutionEnvironmentCapabilities = Schema.Struct({
   /** Mints pairing codes that approve one agent sign-in at a set level (`AUTO-…`). */
   mcpApprovalCodes: Schema.optionalKey(Schema.Boolean),
   peerLinkPairingCodes: Schema.optionalKey(Schema.Boolean),
-  /** Agent sign-ins on its T3 Connect address are approved on the hosted app, without a code. */
+  /** Agent sign-ins on its J6 Connect address are approved on the hosted app, without a code. */
   mcpHostedApproval: Schema.optionalKey(Schema.Boolean),
   /** Server answers server.prepareTriage. */
   triage: Schema.optionalKey(Schema.Boolean),

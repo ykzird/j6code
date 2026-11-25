@@ -8,7 +8,7 @@ import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
 import * as Path from "effect/Path";
 import { ChildProcessSpawner } from "effect/process";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 
 import * as ServerConfig from "../config.ts";
 import * as NativeAppIconResolver from "./NativeAppIconResolver.ts";
@@ -17,7 +17,7 @@ it.effect("resolves the exact bundle path without Spotlight and caches the conve
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const root = yield* fs.makeTempDirectoryScoped({ prefix: "t3-bundle-icon-" });
+    const root = yield* fs.makeTempDirectoryScoped({ prefix: "j6-bundle-icon-" });
     const bundle = path.join(root, "Build Output", "My App.app");
     const resources = path.join(bundle, "Contents", "Resources");
     yield* fs.makeDirectory(resources, { recursive: true });
@@ -70,7 +70,7 @@ it.effect("resolves the exact bundle path without Spotlight and caches the conve
       Effect.provide(
         Layer.mergeAll(
           spawner,
-          ServerConfig.ServerConfig.layerTest(root, { prefix: "t3-native-icon-config-" }),
+          ServerConfig.ServerConfig.layerTest(root, { prefix: "j6-native-icon-config-" }),
         ),
       ),
       Effect.provideService(HostProcess.Platform, "darwin"),

@@ -1,4 +1,4 @@
-import { MCP_APP_DOCUMENT_MESSAGE } from "@t3tools/shared/mcpApp";
+import { MCP_APP_DOCUMENT_MESSAGE } from "@j6/shared/mcpApp";
 
 const MAX_UNCONFIRMED_MESSAGES = 256;
 
@@ -39,7 +39,7 @@ export function attachMcpAppDocumentLink(
       if (event.source === null || event.source !== frame.contentWindow) return;
       if (current.link === false) return;
       if (current.link === null) {
-        const port = event.data?.t3 === MCP_APP_DOCUMENT_MESSAGE ? (event.ports[0] ?? null) : null;
+        const port = event.data?.j6 === MCP_APP_DOCUMENT_MESSAGE ? (event.ports[0] ?? null) : null;
         if (port === null) {
           current.link = false;
           current.onMissing();

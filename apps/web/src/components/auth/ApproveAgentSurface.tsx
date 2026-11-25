@@ -1,11 +1,11 @@
 import { useAuth, useClerk } from "@clerk/react";
 import { useAtomValue } from "@effect/atom-react";
-import { managedRelaySessionAtom } from "@t3tools/client-runtime/relay";
+import { managedRelaySessionAtom } from "@j6/client-runtime/relay";
 import {
   type ConnectMcpApprovalCall,
   ConnectMcpApprovalUnavailableError,
-} from "@t3tools/client-runtime/state/connectMcpApproval";
-import { type AuthMcpApprovalDetails, EnvironmentId } from "@t3tools/contracts";
+} from "@j6/client-runtime/state/connectMcpApproval";
+import { type AuthMcpApprovalDetails, EnvironmentId } from "@j6/contracts";
 import * as Result from "effect/Result";
 import * as Schema from "effect/Schema";
 import { msg, T, useGT } from "gt-react";
@@ -34,7 +34,7 @@ function readEnvironmentId(): EnvironmentId | null {
   return value ? EnvironmentId.make(value) : null;
 }
 
-/** Sends each call with the owner's T3 Connect session and remembers where the environment is. */
+/** Sends each call with the owner's J6 Connect session and remembers where the environment is. */
 function connectTransport(
   environmentId: EnvironmentId,
   onEnvironment: (environment: { readonly url: string; readonly label: string }) => void,
@@ -73,8 +73,8 @@ function connectTransport(
 }
 
 /**
- * The consent screen for an agent sign-in on a T3 Connect environment: the owner signs in to
- * T3 Connect here and approves with that session, so no sign-in code is needed.
+ * The consent screen for an agent sign-in on a J6 Connect environment: the owner signs in to
+ * J6 Connect here and approves with that session, so no sign-in code is needed.
  */
 export function ApproveAgentSurface() {
   const gt = useGT();
@@ -99,7 +99,7 @@ export function ApproveAgentSurface() {
     clerk.openSignIn(resolveClerkSignInProps(window.location.href, isElectron));
   const openSignInOnLoad = useEffectEvent(openSignIn);
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- opens Clerk sign-in once Clerk has loaded and nobody is signed in
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- opens Clerk sign-in once Clerk has loaded and nobody is signed in
   useEffect(() => {
     if (!isLoaded || isSignedIn || signInOpened.current || framed) return;
     signInOpened.current = true;
@@ -128,7 +128,7 @@ export function ApproveAgentSurface() {
     return (
       <Message
         title={gt("Could not load sign-in")}
-        description={gt("T3 Connect sign-in did not load. Check your connection, then try again.")}
+        description={gt("J6 Connect sign-in did not load. Check your connection, then try again.")}
       >
         <div className="mt-6">
           <Button type="button" onClick={retryClerkLoad}>
@@ -144,7 +144,7 @@ export function ApproveAgentSurface() {
       <StandalonePage>
         <StandalonePageHeader
           context={gt("Agent sign-in")}
-          title={gt("Connecting to T3 Connect")}
+          title={gt("Connecting to J6 Connect")}
           description={gt("One moment while your account loads.")}
         />
         <Spinner className="mt-6" size="lg" tone="muted" />
@@ -156,7 +156,7 @@ export function ApproveAgentSurface() {
     return (
       <Message
         title={gt("Sign in to approve")}
-        description={gt("Sign in to T3 Connect with the account this environment is linked to.")}
+        description={gt("Sign in to J6 Connect with the account this environment is linked to.")}
       >
         <div className="mt-6">
           <Button type="button" onClick={openSignIn}>

@@ -14,7 +14,7 @@ import {
   TurnItemId,
   type OrchestrationV2DomainEvent,
   type OrchestrationV2TurnItem,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

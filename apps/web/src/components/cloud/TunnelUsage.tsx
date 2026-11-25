@@ -1,4 +1,4 @@
-import { T3CHAT_PLAN_TUNNEL_LIMITS } from "@t3tools/contracts/relay";
+import { T3CHAT_PLAN_TUNNEL_LIMITS } from "@j6/contracts/relay";
 import { TriangleAlertIcon } from "lucide-react";
 import { msg, T, useGT } from "gt-react";
 import type { ReactNode } from "react";
@@ -12,7 +12,7 @@ import { Button } from "../ui/button";
 // Above this, one slot per tunnel is too thin to read, so the bar fills instead.
 const MAX_SEGMENTS = 10;
 
-export const T3CHAT_SUBSCRIPTION_URL = "https://t3.chat/settings/subscription";
+export const T3CHAT_SUBSCRIPTION_URL = "https://j6.chat/settings/subscription";
 
 /** Components pass `useMessages()` so the copy follows a language switch. */
 export function tunnelUpgradeCopy(
@@ -65,7 +65,7 @@ export function TunnelUsageMeter({
       </div>
       <div
         role="meter"
-        aria-label={gt("T3 Connect tunnels in use")}
+        aria-label={gt("J6 Connect tunnels in use")}
         aria-valuemin={0}
         aria-valuemax={limit}
         aria-valuenow={used}

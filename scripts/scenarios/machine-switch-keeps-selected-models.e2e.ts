@@ -6,12 +6,12 @@ import * as Path from "effect/Path";
 import { T3_HOME } from "../e2e.config.ts";
 import { SECOND_HOME, startSecondServer } from "./second-server.ts";
 import { run } from "./shell.ts";
-import { makeState, runPromise, test, WEB } from "./t3.ts";
+import { makeState, runPromise, test, WEB } from "./j6.ts";
 
 test(
   "A new draft keeps its selected models when it moves to another machine",
   WEB,
-  async ({ t3, app, screen, browser }) => {
+  async ({ j6, app, screen, browser }) => {
     const primary = makeState(T3_HOME);
     const second = makeState(SECOND_HOME);
     // Machines share a project through its repository, which needs a remote to be named by.
@@ -48,7 +48,7 @@ test(
       const { host, token } = await server.ready;
       await runPromise(second.cli(["project", "add", workspace, "--title", "demo"]));
 
-      await t3.open("/settings/connections");
+      await j6.open("/settings/connections");
       await screen.getByRole("button", "Add environment").tap();
       const dialog = screen.getByRole("dialog");
       await dialog.getByPlaceholder("backend.example.com").fill(host);

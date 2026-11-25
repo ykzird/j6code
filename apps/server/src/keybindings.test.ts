@@ -1,4 +1,4 @@
-import { KeybindingCommand, KeybindingRule, KeybindingsConfig } from "@t3tools/contracts";
+import { KeybindingCommand, KeybindingRule, KeybindingsConfig } from "@j6/contracts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, it } from "@effect/vitest";
 import { assertFailure } from "@effect/vitest/utils";
@@ -12,8 +12,8 @@ import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
 import * as ServerConfig from "./config.ts";
 import * as Keybindings from "./keybindings.ts";
-import * as SharedKeybindings from "@t3tools/shared/keybindings";
-import { KeybindingsConfigError, MAX_KEYBINDINGS_COUNT } from "@t3tools/contracts";
+import * as SharedKeybindings from "@j6/shared/keybindings";
+import { KeybindingsConfigError, MAX_KEYBINDINGS_COUNT } from "@j6/contracts";
 
 const KeybindingsConfigJson = Schema.fromJsonString(KeybindingsConfig);
 const encodeKeybindingsConfigJson = Schema.encodeEffect(KeybindingsConfigJson);
@@ -23,7 +23,7 @@ const layerKeybindings = () => {
     Layer.provideMerge(
       Layer.fresh(
         ServerConfig.layerTest(process.cwd(), {
-          prefix: "t3code-keybindings-test-",
+          prefix: "j6code-keybindings-test-",
         }),
       ),
     ),

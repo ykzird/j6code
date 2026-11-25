@@ -1,5 +1,5 @@
 import { assert, describe, it } from "@effect/vitest";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -79,7 +79,7 @@ describe("DesktopPreReadyPlatform", () => {
   });
 
   it.effect("persists Linux scaling synchronously across relaunches and settings rewrites", () => {
-    vi.stubEnv("T3CODE_HOME", "/isolated");
+    vi.stubEnv("J6CODE_HOME", "/isolated");
     vi.stubEnv("VITE_DEV_SERVER_URL", "");
     const settingsPath = "/isolated/userdata/desktop-settings.json";
     const files = new Map([[settingsPath, "{}"]]);
@@ -130,11 +130,11 @@ describe("DesktopPreReadyPlatform", () => {
   ])("prepares a $label Linux desktop entry before startup yields", ({ previousEntry }) => {
     vi.stubEnv("VITE_DEV_SERVER_URL", "");
     getSwitchValueMock.mockReturnValue("");
-    let desktopName = "t3code.desktop";
+    let desktopName = "j6code.desktop";
     let desktopEntry = previousEntry;
     let iconInstalled = false;
     const iconSource = "/tmp/.mount_T3/resources/app.asar/apps/desktop/prod-resources/icon.png";
-    const iconPath = "/xdg/icons/com.t3tools.T3Code.desktop.png";
+    const iconPath = "/xdg/icons/com.ykzird.J6Code.desktop.png";
     const iconBytes = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
     readFileSyncMock.mockImplementation((path: string) => {
       if (path === iconSource) return iconBytes;
@@ -144,7 +144,7 @@ describe("DesktopPreReadyPlatform", () => {
       desktopName = name;
     });
     writeFileSyncMock.mockImplementation((path: string, contents: string | Buffer) => {
-      if (path === "/xdg/applications/com.t3tools.T3Code.desktop") desktopEntry = String(contents);
+      if (path === "/xdg/applications/com.ykzird.J6Code.desktop") desktopEntry = String(contents);
       if (path === iconPath) iconInstalled = Buffer.compare(Buffer.from(contents), iconBytes) === 0;
     });
 
@@ -167,13 +167,13 @@ describe("DesktopPreReadyPlatform", () => {
           ),
         );
         const identity = yield* Effect.promise(() => portalIdentity);
-        assert.equal(identity.desktopName, "com.t3tools.T3Code.desktop");
+        assert.equal(identity.desktopName, "com.ykzird.J6Code.desktop");
         assert.include(identity.desktopEntry ?? "", "Exec=/Applications/current.AppImage %U");
-        assert.include(identity.desktopEntry ?? "", "Name=T3 Code (Beta)");
-        assert.include(identity.desktopEntry ?? "", "MimeType=x-scheme-handler/t3code;");
+        assert.include(identity.desktopEntry ?? "", "Name=J6 Code (Beta)");
+        assert.include(identity.desktopEntry ?? "", "MimeType=x-scheme-handler/j6code;");
         assert.include(
           identity.desktopEntry ?? "",
-          "Icon=/xdg/icons/com.t3tools.T3Code.desktop.png",
+          "Icon=/xdg/icons/com.ykzird.J6Code.desktop.png",
         );
         assert.equal(
           copyFileSyncMock.mock.calls.length,
@@ -193,7 +193,7 @@ describe("DesktopPreReadyPlatform", () => {
     ({ relaunchedByUpdater, restored }) => {
       vi.stubEnv("VITE_DEV_SERVER_URL", "");
       getSwitchValueMock.mockReturnValue("");
-      const entryPath = "/xdg/applications/com.t3tools.T3Code.desktop";
+      const entryPath = "/xdg/applications/com.ykzird.J6Code.desktop";
       const files = new Map([[entryPath, "Exec=/Applications/T3-Code-0.1.8-x86_64.AppImage %U\n"]]);
       readFileSyncMock.mockImplementation((path: string) => files.get(path) ?? "{}");
       writeFileSyncMock.mockImplementation((path: string, contents: string | Buffer) => {
@@ -239,15 +239,15 @@ describe("DesktopPreReadyPlatform", () => {
               DesktopConfig.layerTest({
                 XDG_DATA_HOME: "/xdg",
                 APPIMAGE: "/Applications/current.AppImage",
-                T3CODE_DESKTOP_LAUNCHER_PATH: " /opt/T3 Code/t3code ",
+                J6CODE_DESKTOP_LAUNCHER_PATH: " /opt/J6 Code/j6code ",
               }),
             ),
           ),
         );
         const entry = writeFileSyncMock.mock.calls.find(
-          ([path]) => path === "/xdg/applications/com.t3tools.T3Code.desktop",
+          ([path]) => path === "/xdg/applications/com.ykzird.J6Code.desktop",
         )?.[1];
-        assert.include(entry, 'Exec="/opt/T3 Code/t3code" %U');
+        assert.include(entry, 'Exec="/opt/J6 Code/j6code" %U');
       }),
     ).pipe(Effect.ensuring(Effect.sync(() => vi.unstubAllEnvs())));
   });
@@ -257,7 +257,7 @@ describe("DesktopPreReadyPlatform", () => {
     () =>
       Effect.gen(function* () {
         class ClerkShaped extends Context.Service<ClerkShaped, { readonly ready: true }>()(
-          "@t3tools/desktop/app/DesktopPreReadyPlatform.test/ClerkShaped",
+          "@j6/desktop/app/DesktopPreReadyPlatform.test/ClerkShaped",
         ) {}
 
         const events: Array<string> = [];

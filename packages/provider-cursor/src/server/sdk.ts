@@ -10,7 +10,7 @@ export function loadCursorSdk(): typeof import("@cursor/sdk") {
   if (sdk !== undefined) return sdk;
   const start = performance.now();
   sdk = requireCursorSdk("@cursor/sdk") as typeof import("@cursor/sdk");
-  if (process.env.T3CODE_STARTUP_PROFILE_DIR) {
+  if (process.env.J6CODE_STARTUP_PROFILE_DIR) {
     performance.measure("provider.cursor.importSdk", { start });
   }
   return sdk;
@@ -20,7 +20,7 @@ export function loadCursorSqlite(): typeof import("@cursor/sdk/sqlite") {
   if (sqlite !== undefined) return sqlite;
   const start = performance.now();
   sqlite = requireCursorSdk("@cursor/sdk/sqlite") as typeof import("@cursor/sdk/sqlite");
-  if (process.env.T3CODE_STARTUP_PROFILE_DIR) {
+  if (process.env.J6CODE_STARTUP_PROFILE_DIR) {
     performance.measure("provider.cursor.importSqliteStore", { start });
   }
   return sqlite;
@@ -28,7 +28,7 @@ export function loadCursorSqlite(): typeof import("@cursor/sdk/sqlite") {
 
 export type CursorSdkErrorKind = "AuthenticationError" | "ConfigurationError" | "CursorSdkError";
 
-const CURSOR_SDK_ERROR_KIND = Symbol.for("@t3tools/provider-cursor/sdkErrorKind");
+const CURSOR_SDK_ERROR_KIND = Symbol.for("@j6/provider-cursor/sdkErrorKind");
 
 export function tagCursorSdkError(error: Error, kind: CursorSdkErrorKind): Error {
   Reflect.set(error, CURSOR_SDK_ERROR_KIND, kind);

@@ -1,14 +1,14 @@
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 test(
   "Thread search finds a curly apostrophe next to a two-character Chinese word",
   WEB,
-  async ({ t3, app, screen }) => {
-    const project = await t3.project("demo");
-    const thread = await t3.thread({ project, title: "Weekly notes", messages: ["Start"] });
-    await t3.open(thread);
+  async ({ j6, app, screen }) => {
+    const project = await j6.project("demo");
+    const thread = await j6.thread({ project, title: "Weekly notes", messages: ["Start"] });
+    await j6.open(thread);
 
     // Search reads what the user wrote; messages the CLI sends count as an agent's.
     const composer = screen.getByRole("textbox");

@@ -8,7 +8,7 @@ import {
   THREAD_JUMP_KEYBINDING_COMMANDS,
   type ModelPickerJumpKeybindingCommand,
   type ThreadJumpKeybindingCommand,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   isMacPlatform,
   matchesKeybindingShortcut,
@@ -19,13 +19,13 @@ import {
   type ShortcutModifierStateLike,
   type ShortcutKeyboardLayoutMap,
   shortcutKeyFromEvent as sharedShortcutKeyFromEvent,
-} from "@t3tools/shared/keybindings";
+} from "@j6/shared/keybindings";
 import { isElectron } from "./env";
 import { isEditableFocused } from "./lib/editableFocus";
 import { projectScriptIdFromCommand } from "./projectScripts";
 import { getKeyboardLayoutMap } from "./keyboardLayout";
 
-export type { ShortcutModifierStateLike } from "@t3tools/shared/keybindings";
+export type { ShortcutModifierStateLike } from "@j6/shared/keybindings";
 export function shortcutKeyFromEvent(
   event: Pick<ShortcutEventLike, "key" | "code" | "shiftKey" | "altKey">,
   platform: string,

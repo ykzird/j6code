@@ -1,6 +1,6 @@
 import * as NodeOS from "node:os";
-import type { HostResourcesSnapshot } from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import type { HostResourcesSnapshot } from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Cache from "effect/Cache";
 import * as Clock from "effect/Clock";
 import * as Context from "effect/Context";
@@ -13,7 +13,7 @@ import { ChildProcess, ChildProcessSpawner } from "effect/process";
 export class HostResources extends Context.Service<
   HostResources,
   { readonly read: Effect.Effect<HostResourcesSnapshot> }
->()("t3/resourceTelemetry/HostResources") {}
+>()("j6/resourceTelemetry/HostResources") {}
 
 // Linux CPU list syntax, as in Cpus_allowed_list: "0-3,8,10-11".
 function parseCpuList(list: string): ReadonlySet<number> | null {

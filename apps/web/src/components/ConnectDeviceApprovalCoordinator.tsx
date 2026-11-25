@@ -1,12 +1,12 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { useNavigate } from "@tanstack/react-router";
 import {
   type AtomCommandResult,
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
-import { AuthAccessWriteScope, type EnvironmentId } from "@t3tools/contracts";
-import { unseenConnectDevices } from "@t3tools/client-runtime/connect-device-notices";
+} from "@j6/client-runtime/state/runtime";
+import { AuthAccessWriteScope, type EnvironmentId } from "@j6/contracts";
+import { unseenConnectDevices } from "@j6/client-runtime/connect-device-notices";
 import * as DateTime from "effect/DateTime";
 import * as Schema from "effect/Schema";
 import { useEffect, useRef, useState } from "react";
@@ -24,7 +24,7 @@ import { toastManager } from "./ui/toast";
 import { stackedThreadToast } from "./ui/toastHelpers";
 
 /**
- * Asks whoever can approve to look at T3 Connect devices waiting on an environment, and tells
+ * Asks whoever can approve to look at J6 Connect devices waiting on an environment, and tells
  * them about devices that got in without approval.
  */
 export function ConnectDeviceApprovalCoordinator() {
@@ -59,7 +59,7 @@ function EnvironmentConnectDevices({
   );
 }
 
-const CONNECT_DEVICES_SEEN_KEY = "t3code:connect-devices-seen-through";
+const CONNECT_DEVICES_SEEN_KEY = "j6code:connect-devices-seen-through";
 const ConnectDevicesSeenThrough = Schema.Record(Schema.String, Schema.Number);
 
 /** Devices approved by hand are already known, so only `announce` hosts that skip approval. */
@@ -79,7 +79,7 @@ function NewConnectDeviceToast({
     access.data?.type === "snapshot" ? (access.data.payload.connectDevices ?? null) : null;
   const shown = useRef<{ toastId: string; renderedKey: string } | null>(null);
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- opens, updates and closes an imperative toastManager toast to match devices this client has not announced
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- opens, updates and closes an imperative toastManager toast to match devices this client has not announced
   useEffect(() => {
     if (devices === null) return;
     const seenThrough = readLocalStorageValue(
@@ -118,13 +118,13 @@ function NewConnectDeviceToast({
           ? m(
               msg("{device} connected through {product}. Not you? Review it.", {
                 device: describeConnectDeviceClient(first),
-                product: "T3 Connect",
+                product: "J6 Connect",
               }),
             )
           : m(
               msg(
                 "{count, plural, one {{count} device} other {{count} devices}} connected through {product}. Not you? Review them.",
-                { count: unseen.length, product: "T3 Connect" },
+                { count: unseen.length, product: "J6 Connect" },
               ),
             ),
       timeout: 0,
@@ -153,7 +153,7 @@ function NewConnectDeviceToast({
     }
   });
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- closes this environment's imperative toast when it goes away
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- closes this environment's imperative toast when it goes away
   useEffect(
     () => () => {
       if (shown.current) toastManager.close(shown.current.toastId);
@@ -213,7 +213,7 @@ function ConnectDeviceRequestToasts({
         )
       : null;
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- opens, updates and closes imperative toastManager toasts to match the pending requests
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- opens, updates and closes imperative toastManager toasts to match the pending requests
   useEffect(() => {
     if (requests === null) return;
     // The server publishes no event when a request expires, so the toast ends itself then.
@@ -294,7 +294,7 @@ function ConnectDeviceRequestToasts({
     }
   });
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- closes this environment's imperative toasts when it stops needing approval
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- closes this environment's imperative toasts when it stops needing approval
   useEffect(() => {
     const tracked = toasts.current;
     return () => {

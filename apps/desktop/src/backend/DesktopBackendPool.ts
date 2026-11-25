@@ -1,7 +1,7 @@
 import {
   DESKTOP_UPDATE_IN_PROGRESS_MARKER_FILE,
   DESKTOP_UPDATE_IN_PROGRESS_TTL_MS,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as Deferred from "effect/Deferred";
 import * as Duration from "effect/Duration";
@@ -108,7 +108,7 @@ export class DesktopBackendPool extends Context.Service<
       id: BackendInstanceId,
     ) => Effect.Effect<void, DesktopBackendPoolCannotUnregisterPrimaryError>;
   }
->()("@t3tools/desktop/backend/DesktopBackendPool") {}
+>()("@j6/desktop/backend/DesktopBackendPool") {}
 
 export type BackendInstanceFactoryRequirements =
   | FileSystem.FileSystem
@@ -218,7 +218,7 @@ export const layer = Layer.effect(
           );
           yield* electronDialog.showErrorBox(
             m(msg("WSL backend is still unavailable")),
-            `${reason}\n\n${m(msg("T3 Code will use the Windows backend for this launch and retry WSL the next time the app starts."))}`,
+            `${reason}\n\n${m(msg("J6 Code will use the Windows backend for this launch and retry WSL the next time the app starts."))}`,
           );
           yield* appSettings.applyWslWindowsFallbackInMemory;
           return true;
@@ -229,7 +229,7 @@ export const layer = Layer.effect(
         });
         yield* electronDialog.showErrorBox(
           m(msg("WSL backend couldn't start")),
-          `${reason}\n\n${m(msg("Falling back to the Windows backend so T3 Code can open. Re-enable the WSL backend from Settings > Sharing & access once the WSL distro is fixed."))}`,
+          `${reason}\n\n${m(msg("Falling back to the Windows backend so J6 Code can open. Re-enable the WSL backend from Settings > Sharing & access once the WSL distro is fixed."))}`,
         );
         // Clear wslOnly too so enabling WSL cannot restore a failed mode.
         // Keep the in-memory fallback if persistence fails.

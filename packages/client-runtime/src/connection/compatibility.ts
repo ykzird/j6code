@@ -7,7 +7,7 @@ import {
   ORCHESTRATION_PROTOCOL_VERSION,
   SETTINGS_SECRET_REFERENCES_CAPABILITY,
   type ExecutionEnvironmentDescriptor,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
 import { ConnectionBlockedError } from "./model.ts";
 
@@ -32,7 +32,7 @@ export function orchestrationProtocolCompatibilityError(
     : new ConnectionBlockedError({
         reason: "unsupported",
         ...translatableDetail(
-          msg("This client requires a newer server. Update T3 Code on {host} to connect.", {
+          msg("This client requires a newer server. Update J6 Code on {host} to connect.", {
             host: descriptor.label,
           }),
         ),

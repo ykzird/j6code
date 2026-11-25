@@ -1,11 +1,11 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
-import { scopeProjectRef } from "@t3tools/client-runtime/environment";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
+import { scopeProjectRef } from "@j6/client-runtime/environment";
 import {
   type AtomCommandResult,
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
-import type { EnvironmentId } from "@t3tools/contracts";
+} from "@j6/client-runtime/state/runtime";
+import type { EnvironmentId } from "@j6/contracts";
 import { useRouter } from "@tanstack/react-router";
 import { msg } from "gt-react";
 
@@ -19,7 +19,7 @@ import { writeTextToClipboard } from "./useCopyToClipboard";
 import { useNewThreadHandler } from "./useHandleNewThread";
 import { useScratchProject } from "./useScratchProject";
 
-export const TRIAGE_CLI_COMMAND = "npx t3 triage";
+export const TRIAGE_CLI_COMMAND = "npx j6 triage";
 
 const copyTriageCliCommand = () =>
   writeTextToClipboard(TRIAGE_CLI_COMMAND, {
@@ -34,7 +34,7 @@ const copyTriageCliCommand = () =>
   );
 
 /**
- * In-app `t3 triage`: the server writes the session files and starts cloning
+ * In-app `j6 triage`: the server writes the session files and starts cloning
  * the matching source, then a No project draft opens with the playbook linked.
  * The draft hero explains the rest; the user picks a provider and describes
  * the problem.
@@ -89,7 +89,7 @@ export function useStartTriage() {
     // A null result means the user went elsewhere; only a throw is a failure.
     await handleNewThread(scopeProjectRef(project.value.environmentId, project.value.id), {
       prompt: prepared.value.prompt,
-    }).catch(() => fail(m(msg("T3 Code could not open a new thread."))));
+    }).catch(() => fail(m(msg("J6 Code could not open a new thread."))));
   };
 
   return async (environmentId: EnvironmentId) => {

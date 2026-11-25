@@ -1,13 +1,13 @@
 import { expect } from "e2e";
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 test(
   "Moving the caret onto /mod leaves editing keys with the text",
   WEB,
-  async ({ t3, app, screen, browser }) => {
-    const project = await t3.project("demo");
-    const thread = await t3.thread({ project, title: "Caret control", messages: ["Hello"] });
-    await t3.open(thread);
+  async ({ j6, app, screen, browser }) => {
+    const project = await j6.project("demo");
+    const thread = await j6.thread({ project, title: "Caret control", messages: ["Hello"] });
+    await j6.open(thread);
     const composer = screen.getByRole("textbox");
 
     await composer.pressSequentially("/mod ab");

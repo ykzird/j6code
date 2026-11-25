@@ -6,11 +6,11 @@ import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 import * as SecureRandom from "effect/crypto/SecureRandom";
 import * as SqlClient from "effect/sql/SqlClient";
-import { IssueTrackerKind, type ProjectId } from "@t3tools/contracts";
+import { IssueTrackerKind, type ProjectId } from "@j6/contracts";
 import {
   IssueTrackerError,
   type StandaloneIssueTrackerApi,
-} from "@t3tools/source-control-core/server/IssueTracker";
+} from "@j6/source-control-core/server/IssueTracker";
 
 import * as ServerSecretStore from "../auth/ServerSecretStore.ts";
 import * as IssueTrackerBindings from "../persistence/IssueTrackerBindings.ts";

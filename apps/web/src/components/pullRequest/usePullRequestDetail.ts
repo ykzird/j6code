@@ -1,13 +1,13 @@
 import { useAtomValue } from "@effect/atom-react";
-import { resolvePullRequestDetailChecks } from "@t3tools/client-runtime/pull-request-checks";
-import { pullRequestPendingEditsFor } from "@t3tools/client-runtime/state/pull-requests";
+import { resolvePullRequestDetailChecks } from "@j6/client-runtime/pull-request-checks";
+import { pullRequestPendingEditsFor } from "@j6/client-runtime/state/pull-requests";
 import {
   AuthSourceControlWriteScope,
   type EnvironmentId,
   type PullRequestListEntry,
   type PullRequestRef,
   type ProjectId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { useState } from "react";
 
 import { usePullRequestChecksRefresh } from "~/hooks/usePullRequestChecksRefresh";

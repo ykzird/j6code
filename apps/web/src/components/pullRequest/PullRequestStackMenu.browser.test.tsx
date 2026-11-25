@@ -1,12 +1,12 @@
-import { sourceControlClients } from "@t3tools/client-runtime/source-control-clients";
-import { EnvironmentId, ProjectId } from "@t3tools/contracts";
+import { sourceControlClients } from "@j6/client-runtime/source-control-clients";
+import { EnvironmentId, ProjectId } from "@j6/contracts";
 import { expect, it, vi } from "vite-plus/test";
 import { page } from "vite-plus/test/browser";
 
 const state = vi.hoisted(() => ({ detail: "", sent: [] as unknown[] }));
 
 vi.mock(import("~/state/use-atom-command"), async () => {
-  const { PullRequestOperationError } = await import("@t3tools/contracts");
+  const { PullRequestOperationError } = await import("@j6/contracts");
   const { Cause } = await import("effect");
   const { AsyncResult } = await import("effect/reactivity");
   return {

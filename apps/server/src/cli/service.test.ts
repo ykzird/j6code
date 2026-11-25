@@ -1,7 +1,7 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { expect, it } from "@effect/vitest";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import * as NetService from "@t3tools/shared/Net";
+import * as HostProcess from "@j6/shared/HostProcess";
+import * as NetService from "@j6/shared/Net";
 import * as ConfigProvider from "effect/ConfigProvider";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -21,8 +21,8 @@ const status = {
   supported: true,
   installed: true,
   current: true,
-  unitPath: "/home/me/.config/systemd/user/t3code.service",
-  logPath: "/home/me/.t3/userdata/logs/boot-service.log",
+  unitPath: "/home/me/.config/systemd/user/j6code.service",
+  logPath: "/home/me/.j6/userdata/logs/boot-service.log",
 } as const;
 
 const newerServiceStatus = { ...status, current: false, installedVersion: "999.0.0" };
@@ -45,8 +45,8 @@ function makeTestService(
       Effect.sync(() => {
         installOptions.push(options);
         return {
-          program: ["/test/t3/runtime/versions/1.0.0/t3", "__service-launcher"],
-          baseDir: "/test/t3",
+          program: ["/test/j6/runtime/versions/1.0.0/j6", "__service-launcher"],
+          baseDir: "/test/j6",
           unitPath: serviceStatus.unitPath,
           logPath: serviceStatus.logPath,
         };
@@ -76,8 +76,8 @@ it.layer(Layer.mergeAll(NodeServices.layer, NetService.layer))("service commands
       {
         command,
         label: "another home's service",
-        status: { ...newerServiceStatus, otherBaseDir: "/srv/t3" },
-        error: { _tag: "BootServiceOtherBaseDirError", installedBaseDir: "/srv/t3" },
+        status: { ...newerServiceStatus, otherBaseDir: "/srv/j6" },
+        error: { _tag: "BootServiceOtherBaseDirError", installedBaseDir: "/srv/j6" },
       },
     ]),
   )(
@@ -85,7 +85,7 @@ it.layer(Layer.mergeAll(NodeServices.layer, NetService.layer))("service commands
     ({ command, status: serviceStatus, error: expected }) =>
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
-        const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-service-cli-test-" });
+        const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-service-cli-test-" });
         const { service, installOptions } = makeTestService(serviceStatus);
         vi.spyOn(BootService, "layer").mockReturnValue(
           Layer.succeed(BootService.BootService, service),
@@ -107,25 +107,25 @@ it.layer(Layer.mergeAll(NodeServices.layer, NetService.layer))("service commands
   );
 
   it.effect.each([
-    { label: "a new service", installed: false, env: "", expected: "T3CODE_LAN=false\n" },
-    // Services installed before T3CODE_LAN existed keep listening on the local network.
+    { label: "a new service", installed: false, env: "", expected: "J6CODE_LAN=false\n" },
+    // Services installed before J6CODE_LAN existed keep listening on the local network.
     { label: "an older service", installed: true, env: "", expected: "" },
     {
       label: "a set host",
       installed: false,
-      env: "T3CODE_HOST=::\n",
-      expected: "T3CODE_HOST=::\n",
+      env: "J6CODE_HOST=::\n",
+      expected: "J6CODE_HOST=::\n",
     },
     {
       label: "a quoted multiline value",
       installed: false,
-      env: 'CUSTOM="first\nT3CODE_LAN=example\nlast"\n',
-      expected: 'CUSTOM="first\nT3CODE_LAN=example\nlast"\nT3CODE_LAN=false\n',
+      env: 'CUSTOM="first\nJ6CODE_LAN=example\nlast"\n',
+      expected: 'CUSTOM="first\nJ6CODE_LAN=example\nlast"\nJ6CODE_LAN=false\n',
     },
   ])("install keeps $label off the local network only when it is new", (input) =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-service-cli-test-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-service-cli-test-" });
       yield* fs.writeFileString(`${baseDir}/service.env`, input.env);
       const { service } = makeTestService({
         ...status,
@@ -162,8 +162,8 @@ it.layer(Layer.mergeAll(NodeServices.layer, NetService.layer))("service commands
   it.effect("protect refuses root before creating any T3 directories", () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const parent = yield* fs.makeTempDirectoryScoped({ prefix: "t3-service-cli-test-" });
-      const baseDir = `${parent}/t3`;
+      const parent = yield* fs.makeTempDirectoryScoped({ prefix: "j6-service-cli-test-" });
+      const baseDir = `${parent}/j6`;
       vi.spyOn(BootService, "layer").mockReturnValue(
         Layer.succeed(BootService.BootService, makeTestService(status).service),
       );
@@ -196,13 +196,13 @@ it.layer(Layer.mergeAll(NodeServices.layer, NetService.layer))("service commands
     (command) =>
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
-        const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-service-cli-test-" });
+        const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-service-cli-test-" });
         const { service, installOptions } = makeTestService(status);
         vi.spyOn(BootService, "layer").mockReturnValue(
           Layer.succeed(BootService.BootService, service),
         );
         const node = "/home/me/.nvm/versions/node/v26.8.2/bin/node";
-        const script = "/home/me/.nvm/versions/node/v26.8.2/lib/node_modules/t3/dist/bin.mjs";
+        const script = "/home/me/.nvm/versions/node/v26.8.2/lib/node_modules/j6/dist/bin.mjs";
 
         const output = yield* Command.runWith(serviceCommand, { version: packageJson.version })([
           command,
@@ -222,7 +222,7 @@ it.layer(Layer.mergeAll(NodeServices.layer, NetService.layer))("service commands
             ),
           ),
         );
-        expect(output).toContain(`t3@${packageJson.version}`);
+        expect(output).toContain(`j6@${packageJson.version}`);
         expect(output).toContain(script);
         expect(installOptions).toEqual([]);
       }),
@@ -251,7 +251,7 @@ it.layer(Layer.mergeAll(NodeServices.layer, NetService.layer))("service commands
   ])("status of $label names its next step with --base-dir", (input) =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-service-cli-test-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-service-cli-test-" });
       vi.spyOn(BootService, "layer").mockReturnValue(
         Layer.succeed(BootService.BootService, makeTestService(input.status).service),
       );
@@ -284,11 +284,11 @@ it.layer(Layer.mergeAll(NodeServices.layer, NetService.layer))("service commands
   ])("uninstall removes only $label", (input) =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-service-cli-test-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-service-cli-test-" });
       const { service, uninstalls } = makeTestService({
         ...status,
-        installedBaseDir: input.otherHome ? "/home/me/.t3" : baseDir,
-        ...(input.otherHome ? { otherBaseDir: "/home/me/.t3" } : {}),
+        installedBaseDir: input.otherHome ? "/home/me/.j6" : baseDir,
+        ...(input.otherHome ? { otherBaseDir: "/home/me/.j6" } : {}),
       });
       vi.spyOn(BootService, "layer").mockReturnValue(
         Layer.succeed(
@@ -318,7 +318,7 @@ it.layer(Layer.mergeAll(NodeServices.layer, NetService.layer))("service commands
         ),
       );
       expect(uninstalls).toEqual(input.removed);
-      expect(output).toContain(input.otherHome ? "--base-dir '/home/me/.t3'" : "Removed");
+      expect(output).toContain(input.otherHome ? "--base-dir '/home/me/.j6'" : "Removed");
     }),
   );
 });

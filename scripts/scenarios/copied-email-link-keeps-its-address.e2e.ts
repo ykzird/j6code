@@ -2,17 +2,17 @@
 // The DOM lib types the function this scenario runs in the page.
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 const MESSAGE = "Contact [Support](mailto:support@example.com?subject=Help) for help.";
 
 test(
   "A copied message pastes its labelled email link with the address",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    const project = await t3.project("demo");
-    const thread = await t3.thread({ project, title: "Support", messages: [MESSAGE] });
-    await t3.open(thread);
+  async ({ j6, app, browser, screen }) => {
+    const project = await j6.project("demo");
+    const thread = await j6.thread({ project, title: "Support", messages: [MESSAGE] });
+    await j6.open(thread);
     // A message sent through the CLI shows collapsed under its sender.
     await screen.getByRole("button", /^Agent Contact/).tap();
     await expect(screen.getByRole("link", "Support")).toBeVisible();

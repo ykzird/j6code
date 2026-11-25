@@ -1,12 +1,12 @@
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, describe, it } from "@effect/vitest";
-import { ProviderInstanceId } from "@t3tools/contracts";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
-import * as ProviderEventLoggers from "@t3tools/provider-core/server/ProviderEventLoggers";
-import * as TestProviderHost from "@t3tools/provider-testing/TestProviderHost";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import { ProviderInstanceId } from "@j6/contracts";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
+import * as ProviderEventLoggers from "@j6/provider-core/server/ProviderEventLoggers";
+import * as TestProviderHost from "@j6/provider-testing/TestProviderHost";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Path from "effect/Path";

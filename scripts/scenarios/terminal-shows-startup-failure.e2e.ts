@@ -8,7 +8,7 @@ import * as Schema from "effect/Schema";
 
 import { APP_DIR, T3_HOME } from "../e2e.config.ts";
 import { run } from "./shell.ts";
-import { runPromise, test, WEB } from "./t3.ts";
+import { runPromise, test, WEB } from "./j6.ts";
 
 const decodeRuntime = Schema.decodeUnknownEffect(
   Schema.fromJsonString(Schema.Struct({ pid: Schema.Int })),
@@ -53,10 +53,10 @@ const exhaustFileDescriptors = Effect.fn("scenario.exhaustFileDescriptors")(func
 test(
   "A terminal whose shell cannot start says why, also after its drawer reopens",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    const project = await t3.project("demo");
-    const thread = await t3.thread({ project, title: "Shell", messages: ["hello"] });
-    await t3.open(thread);
+  async ({ j6, app, browser, screen }) => {
+    const project = await j6.project("demo");
+    const thread = await j6.thread({ project, title: "Shell", messages: ["hello"] });
+    await j6.open(thread);
     const pid = await runPromise(scenarioServerPid);
 
     const toggle = screen.getByRole("button", "Toggle terminal drawer");

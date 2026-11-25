@@ -1,5 +1,5 @@
 import { vi } from "vite-plus/test";
-import { historyResponseItems } from "@t3tools/provider-core/server/handoffBudget";
+import { historyResponseItems } from "@j6/provider-core/server/handoffBudget";
 import { assert, describe, it } from "@effect/vitest";
 import {
   CommandId,
@@ -24,8 +24,8 @@ import {
   ThreadId,
   TurnItemId,
   ProviderDriverKind,
-} from "@t3tools/contracts";
-import { derivePendingBackgroundWork } from "@t3tools/shared/orchestrationV2PendingBackgroundWork";
+} from "@j6/contracts";
+import { derivePendingBackgroundWork } from "@j6/shared/orchestrationV2PendingBackgroundWork";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
@@ -49,7 +49,7 @@ import {
   CodexProviderCapabilitiesV2,
   canReuseCodexContextUsage,
 } from "../Adapters/CodexAdapterV2.ts";
-import { AcpProviderCapabilitiesV2 } from "@t3tools/provider-acp/server/adapter";
+import { AcpProviderCapabilitiesV2 } from "@j6/provider-acp/server/adapter";
 import * as EventSink from "../EventSink.ts";
 import * as EventStore from "../EventStore.ts";
 import * as LegacyV1ThreadImporter from "../legacy/LegacyV1ThreadImporter.ts";
@@ -60,15 +60,15 @@ import * as ProjectionReplay from "./ProjectionReplay.ts";
 import * as ProjectionStore from "../ProjectionStore.ts";
 import * as ProviderAdapterRegistry from "../ProviderAdapterRegistry.ts";
 import * as ProviderSessionManager from "../ProviderSessionManager.ts";
-import { makeProviderFailure } from "@t3tools/provider-core/server/failure";
+import { makeProviderFailure } from "@j6/provider-core/server/failure";
 import {
   CLAUDE_MODEL_SELECTION,
   CODEX_MODEL_SELECTION,
   GROK_MODEL_SELECTION,
 } from "./fixtures/shared.ts";
 import * as ProviderReplayHarness from "./ProviderReplayHarness.ts";
-import { checkpointWorkspace } from "@t3tools/provider-testing/replayWorkspace";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
+import { checkpointWorkspace } from "@j6/provider-testing/replayWorkspace";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
 
 const encodeJson = Schema.encodeEffect(Schema.fromJsonString(Schema.Unknown));
 
@@ -3149,7 +3149,7 @@ describe("orchestration v2 provider switching", () => {
           holdFirstTurn: started,
           heldRunningToolCall: {
             id: toolCallId,
-            toolName: "mcp__t3-code__t3_worktree_handoff",
+            toolName: "mcp__j6-code__t3_worktree_handoff",
           },
           backgroundTasksEndWithProcess: true,
         }),
@@ -3215,7 +3215,7 @@ describe("orchestration v2 provider switching", () => {
           type: "thread.metadata.update",
           commandId: CommandId.make(`command:${key}:release`),
           threadId: scenarioThreadId,
-          branch: `t3/${key}`,
+          branch: `j6/${key}`,
           worktreePath,
           expectedWorktreePath: null,
         });

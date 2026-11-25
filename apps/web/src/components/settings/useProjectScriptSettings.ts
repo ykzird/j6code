@@ -1,21 +1,21 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
-import { AuthSettingsWriteScope, EnvironmentAuthorizationError } from "@t3tools/contracts";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
+import { AuthSettingsWriteScope, EnvironmentAuthorizationError } from "@j6/contracts";
 import { readEnvironmentScope } from "../../state/session";
 import {
   isAtomCommandInterrupted,
   mapAtomCommandResult,
   squashAtomCommandFailure,
   type AtomCommandResult,
-} from "@t3tools/client-runtime/state/runtime";
+} from "@j6/client-runtime/state/runtime";
 import {
   type EnvironmentId,
   type ProjectId,
   type ProjectScript,
   type ResolvedKeybindingsConfig,
   type ServerSettings,
-} from "@t3tools/contracts";
-import { resolveProjectScripts } from "@t3tools/shared/projectScripts";
-import { clearProjectSettingsOverrides } from "@t3tools/shared/projectSettings";
+} from "@j6/contracts";
+import { resolveProjectScripts } from "@j6/shared/projectScripts";
+import { clearProjectSettingsOverrides } from "@j6/shared/projectSettings";
 import * as Cause from "effect/Cause";
 import { AsyncResult } from "effect/reactivity";
 import { msg } from "gt-react";

@@ -1,5 +1,5 @@
 import * as Effect from "effect/Effect";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import { app } from "electron";
 import { expect, vi } from "vite-plus/test";
 import { it } from "@effect/vitest";

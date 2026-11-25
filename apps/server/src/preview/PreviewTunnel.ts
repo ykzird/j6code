@@ -2,7 +2,7 @@
 // connection per WebSocket. Raw bytes, so pages keep their own origin, HMR sockets and TLS.
 import * as NodeHttpServerRequest from "@effect/platform-node/NodeHttpServerRequest";
 import * as NodeSocket from "@effect/platform-node/NodeSocket";
-import { allowsPreviewTunnel, AuthTerminalOperateScope } from "@t3tools/contracts";
+import { allowsPreviewTunnel, AuthTerminalOperateScope } from "@j6/contracts";
 import type * as NodeNet from "node:net";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -24,9 +24,9 @@ const PREVIEW_TUNNEL_ROUTE = "/api/preview/tunnel";
  * Marks a refusal about the port itself, so a client can tell "nothing listens there" from a proxy
  * in front of the environment answering 502 because the environment is down.
  */
-export const PREVIEW_TUNNEL_PORT_REFUSED_HEADER = "x-t3-tunnel-port-refused";
+export const PREVIEW_TUNNEL_PORT_REFUSED_HEADER = "x-j6-tunnel-port-refused";
 /** Marks a refusal because the tunnel is switched off here, by the setting or by policy. */
-export const PREVIEW_TUNNEL_DISABLED_HEADER = "x-t3-tunnel-disabled";
+export const PREVIEW_TUNNEL_DISABLED_HEADER = "x-j6-tunnel-disabled";
 
 const CONNECT_TIMEOUT = "5 seconds";
 
@@ -35,7 +35,7 @@ export class PreviewTunnelPortRefusedError extends Schema.TaggedError<PreviewTun
   { port: Schema.Number },
 ) {
   override get message(): string {
-    return `Port ${this.port} is this T3 Code server's own port.`;
+    return `Port ${this.port} is this J6 Code server's own port.`;
   }
 }
 
@@ -44,7 +44,7 @@ export class PreviewTunnelDisabledError extends Schema.TaggedError<PreviewTunnel
   {},
 ) {
   override get message(): string {
-    return "The preview tunnel is turned off on this T3 Code server.";
+    return "The preview tunnel is turned off on this J6 Code server.";
   }
 }
 
@@ -75,7 +75,7 @@ export class PreviewTunnel extends Context.Service<
      */
     readonly watchTurnedOff: Effect.Effect<Effect.Effect<void>, never, Scope.Scope>;
   }
->()("t3/preview/PreviewTunnel") {}
+>()("j6/preview/PreviewTunnel") {}
 
 const make = Effect.gen(function* () {
   const serverSettings = yield* ServerSettingsService;
@@ -202,7 +202,7 @@ const handler = Effect.gen(function* () {
         Effect.succeed(
           HttpServerResponse.text(error.message, { status: 403, headers: PORT_REFUSED_HEADERS }),
         ),
-      // Not 502: Cloudflare, in front of T3 Connect, swaps an origin 502 for its own page.
+      // Not 502: Cloudflare, in front of J6 Connect, swaps an origin 502 for its own page.
       PreviewTunnelConnectError: (error) =>
         Effect.succeed(
           HttpServerResponse.text(error.message, { status: 403, headers: PORT_REFUSED_HEADERS }),

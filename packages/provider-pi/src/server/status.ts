@@ -1,18 +1,18 @@
-import { resolveProviderProbeTimeoutMs } from "@t3tools/provider-core/server/snapshotProbe";
+import { resolveProviderProbeTimeoutMs } from "@j6/provider-core/server/snapshotProbe";
 import {
   ProviderDriverKind,
   type CustomModelSetting,
   type ServerProvider,
   type ServerProviderModel,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import type { PiSettings } from "../settings.ts";
-import { causeErrorTag } from "@t3tools/shared/observability";
-import { resolveSpawnCommand } from "@t3tools/shared/shell";
+import { causeErrorTag } from "@j6/shared/observability";
+import { resolveSpawnCommand } from "@j6/shared/shell";
 import {
   brokenVersionDetail,
   noCompatibilityPolicy,
   type ProviderCompatibilityLookup,
-} from "@t3tools/provider-core/server/compatibility";
+} from "@j6/provider-core/server/compatibility";
 import * as Cause from "effect/Cause";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -34,7 +34,7 @@ import {
   piRecordField as recordField,
   piRecordString as recordString,
 } from "./rpc.ts";
-import * as ProviderLatestVersions from "@t3tools/provider-core/server/ProviderLatestVersions";
+import * as ProviderLatestVersions from "@j6/provider-core/server/ProviderLatestVersions";
 import {
   buildServerProvider,
   DEFAULT_TIMEOUT_MS,
@@ -44,11 +44,11 @@ import {
   providerProbeEnvironment,
   spawnAndCollect,
   type ServerProviderDraft,
-} from "@t3tools/provider-core/server/snapshotProbe";
+} from "@j6/provider-core/server/snapshotProbe";
 import {
   enrichProviderSnapshotWithVersionAdvisory,
   type ProviderMaintenanceCapabilities,
-} from "@t3tools/provider-core/server/maintenanceResolver";
+} from "@j6/provider-core/server/maintenanceResolver";
 import { EMPTY_PI_MODEL_CAPABILITIES, piModelCapabilities } from "./modelCapabilities.ts";
 import {
   parsePiDiscoveredCommands,
@@ -413,7 +413,7 @@ export const buildInitialPiProviderSnapshot = Effect.fn(
         version: null,
         status: "warning",
         auth: { status: "unknown" },
-        message: "Pi is disabled in T3 Code settings.",
+        message: "Pi is disabled in J6 Code settings.",
       },
     });
   }
@@ -452,7 +452,7 @@ export const checkPiProviderStatus = Effect.fn("checkPiProviderStatus")(function
         version: null,
         status: "warning",
         auth: { status: "unknown" },
-        message: "Pi is disabled in T3 Code settings.",
+        message: "Pi is disabled in J6 Code settings.",
       },
     });
   }
@@ -530,7 +530,7 @@ export const checkPiProviderStatus = Effect.fn("checkPiProviderStatus")(function
         version: null,
         status: "error",
         auth: { status: "unknown" },
-        message: "T3 Code could not determine the Pi version. Update Pi, then refresh its status.",
+        message: "J6 Code could not determine the Pi version. Update Pi, then refresh its status.",
       },
     });
   }
@@ -605,7 +605,7 @@ export const checkPiProviderStatus = Effect.fn("checkPiProviderStatus")(function
         status: "ready",
         auth: { status: "unknown" },
         message:
-          "Pi is available, but T3 Code could not refresh its models and commands. The live session will retry startup.",
+          "Pi is available, but J6 Code could not refresh its models and commands. The live session will retry startup.",
       },
     });
   }

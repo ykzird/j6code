@@ -1,7 +1,7 @@
 // @effect-diagnostics-next-line nodeBuiltinImport:off -- The fixture holds Git's HTTP request open.
 import * as NodeHttp from "node:http";
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
-import { ProjectId } from "@t3tools/contracts";
+import { ProjectId } from "@j6/contracts";
 import { expect } from "e2e";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -9,14 +9,14 @@ import * as SecureRandom from "effect/crypto/SecureRandom";
 import * as Stream from "effect/Stream";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { rpcClient, runPromise, test, WEB } from "./t3.ts";
+import { rpcClient, runPromise, test, WEB } from "./j6.ts";
 
 test(
   "Dismissing clone progress leaves the later failure notification visible",
   WEB,
-  async ({ t3, app, screen, browser }) => {
-    const project = await t3.project("demo");
-    const thread = await t3.thread({ project, title: "Other work", messages: ["Start"] });
+  async ({ j6, app, screen, browser }) => {
+    const project = await j6.project("demo");
+    const thread = await j6.thread({ project, title: "Other work", messages: ["Start"] });
     const gitRequest = Promise.withResolvers<NodeHttp.ServerResponse>();
     const remote = NodeHttp.createServer((_request, response) => {
       gitRequest.resolve(response);
@@ -36,7 +36,7 @@ test(
       );
       const name = "pending-clone";
       const origin = app.baseUrl ?? "";
-      await t3.open(thread);
+      await j6.open(thread);
       await screen.getByText("Start", { exact: true }).waitFor();
 
       await runPromise(

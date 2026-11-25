@@ -5,7 +5,7 @@ import * as Path from "effect/Path";
 import * as Schema from "effect/Schema";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { makeState, runPromise, test, WEB } from "./t3.ts";
+import { makeState, runPromise, test, WEB } from "./j6.ts";
 
 const SettingsJson = Schema.fromJsonString(Schema.Record(Schema.String, Schema.Unknown));
 const decodeSettings = Schema.decodeEffect(SettingsJson);
@@ -25,16 +25,16 @@ const threadRuntimeSettings = Effect.gen(function* () {
   };
 });
 
-test("/compact sent while the agent works waits for the turn", WEB, async ({ t3, app, screen }) => {
-  const project = await t3.project("demo");
+test("/compact sent while the agent works waits for the turn", WEB, async ({ j6, app, screen }) => {
+  const project = await j6.project("demo");
   // The showcase recording streams for several seconds, long enough to send into its turn.
-  const thread = await t3.thread({
+  const thread = await j6.thread({
     project,
     title: "Long work",
     messages: ["Show me around"],
     model: "showcase",
   });
-  await t3.open(thread);
+  await j6.open(thread);
 
   const composer = screen.getByRole("textbox");
   await composer.tap();
@@ -52,14 +52,14 @@ test("/compact sent while the agent works waits for the turn", WEB, async ({ t3,
   try {
     // An approval holds this turn open, so the queued command stays put while Send now is hovered.
     await runPromise(settings.supervise);
-    const waiting = await t3.thread({
+    const waiting = await j6.thread({
       project,
       title: "Waiting work",
       messages: ["Change the file"],
       model: "approval",
     });
     await runPromise(makeState(T3_HOME).cli(["thread", "send", waiting.threadId, "/compact"]));
-    await t3.open(waiting);
+    await j6.open(waiting);
     await screen.getByRole("button", "Send now").hover();
     await expect(
       screen.getByText("Move this command to the front of the queue", { exact: false }),

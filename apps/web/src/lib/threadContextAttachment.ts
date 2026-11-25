@@ -1,7 +1,7 @@
-import type { EnvironmentId, OrchestrationV2ThreadTranscript } from "@t3tools/contracts";
-import { splitsSurrogatePair } from "@t3tools/shared/assistantCitations";
-import { toKindScopedComposerContextId } from "@t3tools/shared/composerContextReferences";
-import { threadTranscriptHeader } from "@t3tools/shared/threadTranscript";
+import type { EnvironmentId, OrchestrationV2ThreadTranscript } from "@j6/contracts";
+import { splitsSurrogatePair } from "@j6/shared/assistantCitations";
+import { toKindScopedComposerContextId } from "@j6/shared/composerContextReferences";
+import { threadTranscriptHeader } from "@j6/shared/threadTranscript";
 import * as DateTime from "effect/DateTime";
 
 export function threadContextAttachment(

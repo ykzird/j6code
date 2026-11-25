@@ -6,9 +6,9 @@ import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 import * as Path from "effect/Path";
 
-import { symlinksSupported } from "@t3tools/shared/testing/symlinks";
-import * as SourceControlHost from "@t3tools/source-control-core/server/SourceControlHost";
-import * as TestSourceControlHost from "@t3tools/source-control-testing/TestSourceControlHost";
+import { symlinksSupported } from "@j6/shared/testing/symlinks";
+import * as SourceControlHost from "@j6/source-control-core/server/SourceControlHost";
+import * as TestSourceControlHost from "@j6/source-control-testing/TestSourceControlHost";
 
 import * as GitHubChangeRequestTemplate from "./gitHubChangeRequestTemplate.ts";
 
@@ -42,7 +42,7 @@ const runWithTempDirectory = <A, E, R>(
   Effect.scoped(
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
-      const cwd = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-pr-template-" });
+      const cwd = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-pr-template-" });
       yield* runGit(cwd, ["init", "--initial-branch=main"]);
       yield* runGit(cwd, ["config", "user.email", "test@example.com"]);
       yield* runGit(cwd, ["config", "user.name", "Test User"]);
@@ -164,7 +164,7 @@ it.effect.skipIf(!symlinksSupported)(
         const fileSystem = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
         const outsideDirectory = yield* fileSystem.makeTempDirectoryScoped({
-          prefix: "t3-pr-template-outside-",
+          prefix: "j6-pr-template-outside-",
         });
         const outsideTemplate = path.join(outsideDirectory, "secret.md");
         yield* fileSystem.writeFileString(outsideTemplate, "LOCAL_SECRET_SENTINEL");
@@ -192,7 +192,7 @@ it.effect.skipIf(!symlinksSupported)(
         const fileSystem = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
         const outsideDirectory = yield* fileSystem.makeTempDirectoryScoped({
-          prefix: "t3-pr-template-outside-",
+          prefix: "j6-pr-template-outside-",
         });
         const templatePath = yield* writeTemplate(
           cwd,

@@ -4,9 +4,9 @@ import * as NodePath from "node:path";
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import { NodeHttpServer } from "@effect/platform-node";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import type { ExecutionEnvironmentDescriptor } from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import * as NetService from "@t3tools/shared/Net";
+import type { ExecutionEnvironmentDescriptor } from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
+import * as NetService from "@j6/shared/Net";
 import { expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -41,7 +41,7 @@ it.effect("links a file of environments, reports each line, and fails when one d
   Effect.scoped(
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-environment-cli-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-environment-cli-" });
       const { settingsPath } = yield* ServerConfig.deriveServerPaths(baseDir, undefined);
       yield* fs.makeDirectory(NodePath.dirname(settingsPath), { recursive: true });
       yield* fs.writeFileString(settingsPath, JSON.stringify({ linkedEnvironmentsEnabled: true }));

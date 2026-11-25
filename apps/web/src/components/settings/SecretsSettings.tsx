@@ -1,4 +1,4 @@
-import type { EnvironmentId, SecretProviderConfig, SecretProviderId } from "@t3tools/contracts";
+import type { EnvironmentId, SecretProviderConfig, SecretProviderId } from "@j6/contracts";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { T, useGT, useMessages, Var } from "gt-react";
@@ -47,7 +47,7 @@ export function SecretsSettingsPanel() {
         <SettingsSection {...setting("secret-providers")}>
           <p className="px-4 py-3 text-sm text-muted-foreground">
             <T>
-              Update T3 Code on <Var>{environment.label}</Var> to manage its secret providers.
+              Update J6 Code on <Var>{environment.label}</Var> to manage its secret providers.
             </T>
           </p>
         </SettingsSection>

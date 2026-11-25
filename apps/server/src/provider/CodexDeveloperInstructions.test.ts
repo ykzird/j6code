@@ -1,6 +1,6 @@
 import * as NodeAssert from "node:assert/strict";
 
-import { T3_CODE_DEVICE_TOOL_INSTRUCTIONS } from "@t3tools/provider-core/server/orchestrationInstructions";
+import { T3_CODE_DEVICE_TOOL_INSTRUCTIONS } from "@j6/provider-core/server/orchestrationInstructions";
 import { describe, it } from "vite-plus/test";
 
 import {
@@ -75,7 +75,7 @@ describe("Codex device context", () => {
 
     NodeAssert.ok(tools(true).includes(T3_CODE_DEVICE_TOOL_INSTRUCTIONS));
     NodeAssert.ok(!tools(true).includes("ToolSearch"));
-    NodeAssert.ok(!tools(false).includes("## T3 Code devices"));
+    NodeAssert.ok(!tools(false).includes("## J6 Code devices"));
   });
 });
 

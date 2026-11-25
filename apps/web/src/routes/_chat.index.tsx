@@ -1,6 +1,6 @@
 import { workspaceAreaProps } from "../lib/workspaceFocus";
 import { RefreshIcon } from "~/components/ui/refresh-icon";
-import { scopeProjectRef } from "@t3tools/client-runtime/environment";
+import { scopeProjectRef } from "@j6/client-runtime/environment";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { T, useGT } from "gt-react";
 import { useEffect, useEffectEvent, useRef, useState } from "react";
@@ -53,7 +53,7 @@ function IndexDraftLanding() {
     )[0] ?? null;
   const attempt = startState.retryRequest;
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- starts a draft thread in the most recent project and navigates to it while still on the index
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- starts a draft thread in the most recent project and navigates to it while still on the index
   useEffect(() => {
     // Starting a draft after the user has left would replace the page they picked.
     if (mostRecentProject === null || startedAttemptRef.current === attempt || !isStillOnIndex()) {

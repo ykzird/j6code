@@ -1,4 +1,4 @@
-import { AuthStandardClientScopes } from "@t3tools/contracts";
+import { AuthStandardClientScopes } from "@j6/contracts";
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { expect, it } from "@effect/vitest";
@@ -12,7 +12,7 @@ import * as TestClock from "effect/testing/TestClock";
 import {
   DESKTOP_BOOTSTRAP_TOKEN_WINDOW_MS,
   currentDesktopBootstrapToken,
-} from "@t3tools/shared/desktopBootstrapToken";
+} from "@j6/shared/desktopBootstrapToken";
 
 import * as ServerConfig from "../config.ts";
 import { MCP_APPROVAL_SUBJECT_PREFIX } from "../persistence/AuthPairingLinks.ts";
@@ -34,7 +34,7 @@ const layerServerConfig = (
       } satisfies ServerConfig.ServerConfig["Service"];
     }),
   ).pipe(
-    Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "t3-auth-bootstrap-test-" })),
+    Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "j6-auth-bootstrap-test-" })),
   );
 
 const layerPairingGrantStore = (

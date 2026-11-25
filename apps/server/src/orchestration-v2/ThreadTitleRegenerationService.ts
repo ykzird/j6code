@@ -1,5 +1,5 @@
-import { resolveProjectSettings } from "@t3tools/shared/projectSettings";
-import { isAttachmentOnlyBootstrapPrompt } from "@t3tools/shared/composerContextReferences";
+import { resolveProjectSettings } from "@j6/shared/projectSettings";
+import { isAttachmentOnlyBootstrapPrompt } from "@j6/shared/composerContextReferences";
 import {
   CommandId,
   type ChatAttachment,
@@ -10,7 +10,7 @@ import {
   type ServerSettingsError,
   TextGenerationError,
   type ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -28,8 +28,8 @@ import * as ProjectStore from "./ProjectStore.ts";
 import { forkInheritedRunOrdinals, ProjectionStoreThreadNotFoundError } from "./ProjectionStore.ts";
 import * as ThreadManagementService from "./ThreadManagementService.ts";
 
-import { formatThreadTitleContext } from "@t3tools/provider-core/server/threadTitleContext";
-export { formatThreadTitleContext } from "@t3tools/provider-core/server/threadTitleContext";
+import { formatThreadTitleContext } from "@j6/provider-core/server/threadTitleContext";
+export { formatThreadTitleContext } from "@j6/provider-core/server/threadTitleContext";
 
 export class ThreadTitleRegenerationService extends Context.Service<
   ThreadTitleRegenerationService,
@@ -48,7 +48,7 @@ export class ThreadTitleRegenerationService extends Context.Service<
       | ThreadManagementService.ThreadManagementProviderInstanceDisabledError
     >;
   }
->()("t3/orchestration-v2/ThreadTitleRegenerationService") {}
+>()("j6/orchestration-v2/ThreadTitleRegenerationService") {}
 
 type Outcome =
   | { readonly status: "renamed"; readonly title: string }

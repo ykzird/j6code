@@ -11,8 +11,8 @@ import {
   PeerLinkError,
   type PeerLinkName,
   type PeerLinkSummary,
-} from "@t3tools/contracts";
-import * as NodeSqliteClient from "@t3tools/shared/nodeSqliteClient";
+} from "@j6/contracts";
+import * as NodeSqliteClient from "@j6/shared/nodeSqliteClient";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
 import * as Digest from "effect/crypto/Digest";
@@ -35,7 +35,7 @@ import * as HttpClient from "effect/http/HttpClient";
 import * as HttpClientError from "effect/http/HttpClientError";
 import * as HttpApi from "effect/http-api/HttpApi";
 import * as HttpApiClient from "effect/http-api/HttpApiClient";
-import { isLocalLoopbackHost, isTailnetHost } from "@t3tools/shared/hostClassification";
+import { isLocalLoopbackHost, isTailnetHost } from "@j6/shared/hostClassification";
 
 import * as ServerSecretStore from "../auth/ServerSecretStore.ts";
 import * as ServerEnvironment from "../environment/ServerEnvironment.ts";
@@ -47,7 +47,7 @@ const PeerHttpApi = HttpApi.make(EnvironmentHttpApi.identifier)
   .annotateMerge(EnvironmentHttpApi.annotations);
 
 /** The redirect registered for a link. Nothing ever listens there: the code comes back in the response. */
-const LINK_REDIRECT_URI = "http://127.0.0.1/t3code-peer-link";
+const LINK_REDIRECT_URI = "http://127.0.0.1/j6code-peer-link";
 /**
  * How long a peer's descriptor or MCP handshake may take before a route counts
  * as unreachable. A tailnet or relayed route to a machine that is waking up takes longer.
@@ -85,7 +85,7 @@ export interface ResolvedPeerLink {
 }
 
 /** What a link's session is called in the peer's Connections, before this environment's label. */
-export const LINK_CLIENT_NAME_PREFIX = "T3 Code · ";
+export const LINK_CLIENT_NAME_PREFIX = "J6 Code · ";
 
 export const LINKED_ENVIRONMENTS_OFF =
   "Linked environments is off on this machine. Turn it on in Settings → Labs.";
@@ -135,7 +135,7 @@ export class PeerLinks extends Context.Service<
       expiresAt: DateTime.Utc,
     ) => Effect.Effect<void>;
   }
->()("t3/peer/PeerLinks") {}
+>()("j6/peer/PeerLinks") {}
 
 interface PeerLinkRow {
   readonly environment_id: string;
@@ -206,7 +206,7 @@ const connectionCode = (cause: unknown) =>
     .map((error) => (Predicate.hasProperty(error, "code") ? error.code : undefined))
     .find(Predicate.isString);
 
-/** Why `origin` did not answer as T3 Code, short enough for a toast. Never echoes a body. */
+/** Why `origin` did not answer as J6 Code, short enough for a toast. Never echoes a body. */
 const probeFailure = (
   origin: string,
   error: HttpClientError.HttpClientError | Schema.SchemaError | Cause.TimeoutError,
@@ -228,13 +228,13 @@ const probeFailure = (
   }
   return new PeerLinkError({
     reason: "not_a_t3_environment",
-    message: `${origin} answered, but not as a T3 Code environment this version understands.`,
+    message: `${origin} answered, but not as a J6 Code environment this version understands.`,
   });
 };
 
 /** Whether a host is this machine's own loopback. Tests serve their peers there, so they narrow it. */
 export const LoopbackHost = Context.Reference<(host: string) => boolean>(
-  "t3/peer/PeerLinks/LoopbackHost",
+  "j6/peer/PeerLinks/LoopbackHost",
   { defaultValue: () => isLocalLoopbackHost },
 );
 
@@ -273,7 +273,7 @@ const make = Effect.gen(function* () {
       Effect.provideService(HttpClient.HttpClient, peerHttpClient),
     );
 
-  /** The environment answering at `origin`, or why nothing there answers as T3 Code. */
+  /** The environment answering at `origin`, or why nothing there answers as J6 Code. */
   const probe = (origin: string) => {
     const timeout = probeTimeout(origin);
     return clientFor(origin).pipe(
@@ -554,7 +554,7 @@ const make = Effect.gen(function* () {
     if (!linkLimitsHold(peer)) {
       return yield* new PeerLinkError({
         reason: "incompatible",
-        message: `${peer.label} runs a T3 Code version that cannot keep a linked agent's limits. Update it, then link again.`,
+        message: `${peer.label} runs a J6 Code version that cannot keep a linked agent's limits. Update it, then link again.`,
       });
     }
     const issued = yield* signIn(primary, input, `${LINK_CLIENT_NAME_PREFIX}${self.label}`);
@@ -777,7 +777,7 @@ const make = Effect.gen(function* () {
       if (!linkLimitsHold(peer)) {
         return yield* new PeerLinkError({
           reason: "incompatible",
-          message: `${link.label} runs a T3 Code version that cannot keep a linked agent's limits. Update it, then link again.`,
+          message: `${link.label} runs a J6 Code version that cannot keep a linked agent's limits. Update it, then link again.`,
         });
       }
       return {

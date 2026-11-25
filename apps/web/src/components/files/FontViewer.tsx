@@ -1,4 +1,4 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { msg, T, useGT } from "gt-react";
 import { useEffect, useState } from "react";
 
@@ -49,7 +49,7 @@ export default function FontViewer(props: { readonly src: string; readonly name:
   const { resolvedTheme } = useTheme();
   const [data, setData] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Load the font from its URL and abort the request and timeout when the source changes or unmounts.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Load the font from its URL and abort the request and timeout when the source changes or unmounts.
   useEffect(() => {
     const controller = new AbortController();
     const timeout = setTimeout(() => {

@@ -3,7 +3,7 @@ import {
   allowsPreviewTunnel,
   type DesktopPortForward,
   type EnvironmentId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -15,7 +15,7 @@ import * as AsyncResult from "effect/reactivity/AsyncResult";
 import { Atom } from "effect/reactivity";
 import { msg } from "gt-react";
 
-import type { ConnectionTarget } from "@t3tools/client-runtime/connection";
+import type { ConnectionTarget } from "@j6/client-runtime/connection";
 
 import { tunnelsEnvironmentLoopback } from "../browser/browserTargetResolver";
 import { m } from "../i18n/messages";

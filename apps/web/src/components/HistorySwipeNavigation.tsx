@@ -116,7 +116,7 @@ export function isMomentumTail(deltas: readonly number[]): boolean {
 export function HistorySwipeNavigation() {
   const [swipe, setSwipe] = useState<SwipeIndicatorState | null>(null);
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- window wheel and desktop gesture listeners track trackpad swipes
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- window wheel and desktop gesture listeners track trackpad swipes
   useEffect(() => {
     if (!isMacPlatform(navigator.platform)) return;
     let gesture: SwipeGesture | null = null;

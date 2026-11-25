@@ -1,15 +1,15 @@
 import type {
   ConnectionRouteKind,
   EnvironmentConnectionPhase,
-} from "@t3tools/client-runtime/connection";
-import { linkBackOffer } from "@t3tools/client-runtime/link-batch";
-import { peerLinkHealth, type PeerLinkHealth } from "@t3tools/client-runtime/state/peerLinks";
+} from "@j6/client-runtime/connection";
+import { linkBackOffer } from "@j6/client-runtime/link-batch";
+import { peerLinkHealth, type PeerLinkHealth } from "@j6/client-runtime/state/peerLinks";
 import {
   AuthMcpClientAccess,
   type EnvironmentId,
   type EnvironmentMachineKind,
   type PeerLinkSummary,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import type * as DateTime from "effect/DateTime";
 
 export const FLEET_CLIENT_NODE_ID = "client";
@@ -52,7 +52,7 @@ export interface FleetEnvironmentInput {
   readonly hasLinkAddress: boolean;
 }
 
-/** A machine on the user's T3 Connect account that this client has not saved. */
+/** A machine on the user's J6 Connect account that this client has not saved. */
 export interface FleetConnectMachineInput {
   readonly environmentId: EnvironmentId;
   readonly label: string;
@@ -73,7 +73,7 @@ export type FleetRouteState =
   /** Not dialled: the environment is switched off, or needs an update first. */
   | "idle"
   | "refused"
-  /** A T3 Connect machine this client could add; no route is saved yet. */
+  /** A J6 Connect machine this client could add; no route is saved yet. */
   | "offered";
 
 /** Why an environment can or cannot be the source of a new link. */
@@ -175,7 +175,7 @@ function linking(environment: FleetEnvironmentInput): FleetLinking {
 
 /**
  * One node per machine however often it is named: an environment listed twice, a link repeated
- * in a list, a T3 Connect machine the client also saved, and a link to a machine the client
+ * in a list, a J6 Connect machine the client also saved, and a link to a machine the client
  * knows all land on the same node. Each saved route is its own edge from the client.
  */
 export function buildFleetGraph(input: {

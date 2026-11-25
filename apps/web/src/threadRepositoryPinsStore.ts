@@ -2,8 +2,8 @@ import {
   pinThreadRepository,
   unpinThreadRepository,
   type PinnedThreadRepository,
-} from "@t3tools/client-runtime/state/thread-repositories";
-import type { ScopedThreadRef } from "@t3tools/contracts";
+} from "@j6/client-runtime/state/thread-repositories";
+import type { ScopedThreadRef } from "@j6/contracts";
 import { create } from "zustand";
 
 const NO_PINS: ReadonlyArray<PinnedThreadRepository> = Object.freeze([]);

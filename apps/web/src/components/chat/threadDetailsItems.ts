@@ -1,4 +1,4 @@
-import type { ClientSettings } from "@t3tools/contracts";
+import type { ClientSettings } from "@j6/contracts";
 import { msg } from "gt-react";
 
 // Ids are stored in client settings, so never rename one.

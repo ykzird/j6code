@@ -2,7 +2,7 @@ import {
   IssueTrackerAccountId,
   IssueTrackerKind,
   MAX_ISSUE_TRACKER_ADDITIONAL_SCOPES,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

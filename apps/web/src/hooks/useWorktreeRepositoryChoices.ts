@@ -1,8 +1,8 @@
 import {
   worktreeRepositoryChoices,
   type WorktreeRepositoryChoice,
-} from "@t3tools/client-runtime/state/thread-repositories";
-import type { EnvironmentProject } from "@t3tools/client-runtime/state/shell";
+} from "@j6/client-runtime/state/thread-repositories";
+import type { EnvironmentProject } from "@j6/client-runtime/state/shell";
 
 import { filesystemEnvironment } from "~/state/filesystem";
 import { useEnvironmentQuery } from "~/state/query";

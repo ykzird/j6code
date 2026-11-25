@@ -1,9 +1,9 @@
-import type { EnvironmentCloudLinkStateResult } from "@t3tools/contracts";
+import type { EnvironmentCloudLinkStateResult } from "@j6/contracts";
 import type {
   RelayManagedEndpoint,
   RelayManagedEndpointProviderKind,
-} from "@t3tools/contracts/relay";
-import { parseUrl } from "@t3tools/shared/url";
+} from "@j6/contracts/relay";
+import { parseUrl } from "@j6/shared/url";
 
 // Require managed discovery: stale tunnel config after a publish-only switch causes endpoint_provider_not_managed.
 export function isManagedTunnelActive(
@@ -39,8 +39,8 @@ export function cloudChangeReplacesLink(
 const TUNNEL_HOSTNAME = /^[a-z0-9-]+(\.[a-z0-9-]+)+$/i;
 
 /**
- * An environment's MCP URL on its T3 Connect tunnel, or null. This machine reports its own
- * tunnel hostname; a saved machine's comes from T3 Connect, and only a tunnel counts there,
+ * An environment's MCP URL on its J6 Connect tunnel, or null. This machine reports its own
+ * tunnel hostname; a saved machine's comes from J6 Connect, and only a tunnel counts there,
  * since a publish-only link registers its local address as `manual`.
  */
 export function t3ConnectMcpUrl(input: {
@@ -58,7 +58,7 @@ export function t3ConnectMcpUrl(input: {
     : null;
 }
 
-/** Where T3 Connect can be turned on for an environment: from here, only by policy, or on its host. */
+/** Where J6 Connect can be turned on for an environment: from here, only by policy, or on its host. */
 export type T3ConnectTurnOn =
   | { readonly kind: "here" }
   | { readonly kind: "policy"; readonly reason: string }

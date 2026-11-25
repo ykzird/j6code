@@ -1,8 +1,8 @@
-import { fitImageAttachmentSize } from "@t3tools/client-runtime/image-attachment-size";
+import { fitImageAttachmentSize } from "@j6/client-runtime/image-attachment-size";
 import {
   IMAGE_DIMENSIONS_HEADER_BYTES,
   readImageDimensions,
-} from "@t3tools/shared/imageDimensions";
+} from "@j6/shared/imageDimensions";
 
 // Canvas work shared by the main thread and imageCompression.worker.ts, so it imports no UI code.
 

@@ -2,11 +2,11 @@ import { ThreadDetailsControl } from "./chat/ThreadDetailsControl";
 import { contextMenuSourceOf } from "../contextMenuSource";
 import { ComposerContextLabel } from "./ComposerContextLabel";
 import { useRightPanelStore } from "../rightPanelStore";
-import { scopeProjectRef, scopeThreadRef } from "@t3tools/client-runtime/environment";
+import { scopeProjectRef, scopeThreadRef } from "@j6/client-runtime/environment";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
+} from "@j6/client-runtime/state/runtime";
 import {
   AuthOrchestrationOperateScope,
   AuthSourceControlWriteScope,
@@ -14,7 +14,7 @@ import {
   type EnvironmentId,
   type VcsRef,
   type ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { msg, T, useGT, useMessages, Var } from "gt-react";
 import { GitBranchIcon } from "lucide-react";
 import {
@@ -45,7 +45,7 @@ import { cn } from "../lib/utils";
 import { THREAD_DETAILS_PANEL_ICON_CLASS } from "./chat/threadDetailsPanelStyles";
 import { ThreadDetailsThreadPrRows } from "./chat/ThreadDetailsPrRows";
 import { ThreadDetailsIssueRows } from "./chat/ThreadDetailsIssueRows";
-import { parsePullRequestReference } from "@t3tools/client-runtime/pull-request-link-input";
+import { parsePullRequestReference } from "@j6/client-runtime/pull-request-link-input";
 import { getSourceControlPresentation } from "../sourceControlPresentation";
 import { changeRequestTermKind } from "./pullRequest/changeRequestTerm";
 import { useComposerMenuProps } from "./chat/composerEventScope";
@@ -637,11 +637,11 @@ export function BranchToolbarBranchSelector({
       input: { cwd: branchCwd },
     });
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- refs listed while the project was cloning are empty; reload them past the server's snapshot when the clone finishes
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- refs listed while the project was cloning are empty; reload them past the server's snapshot when the clone finishes
   useEffect(() => {
     if (projectCloneDone) refreshStaleRefs();
   }, [projectCloneDone]);
-  // A checkout made outside T3 Code, such as a clone finishing, leaves refs listed before it.
+  // A checkout made outside J6 Code, such as a clone finishing, leaves refs listed before it.
   const statusBranch = branchStatusQuery.data?.refName ?? null;
   const refreshRefsMissingStatusBranch = useEffectEvent((branch: string | null) => {
     if (branch === null || branchCwd === null) return;
@@ -655,14 +655,14 @@ export function BranchToolbarBranchSelector({
     if (isInitialBranchesLoadPending) return;
     if (branchByName.get(branch)?.current !== true) refreshStaleRefs();
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- reloads refs from the server once per branch live status reports that they do not list as checked out
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- reloads refs from the server once per branch live status reports that they do not list as checked out
   useEffect(() => {
     refreshRefsMissingStatusBranch(statusBranch);
   }, [statusBranch]);
 
   // The server sets started threads' branches; defaulting here would detach the agent from its worktree.
   const threadStarted = serverSession !== null;
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- writes a default base branch to the server thread or draft once branches load for a new worktree thread
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- writes a default base branch to the server thread or draft once branches load for a new worktree thread
   useEffect(() => {
     if (
       threadStarted ||

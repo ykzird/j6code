@@ -3,7 +3,7 @@ import type {
   OrchestrationV2RunAttempt,
   OrchestrationV2TurnItem,
   OrchestrationV2UserMessageInputIntent,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
 type TimelineRun = Pick<OrchestrationV2Run, "id" | "status"> &
   Partial<Pick<OrchestrationV2Run, "startedAt">>;

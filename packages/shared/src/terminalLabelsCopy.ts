@@ -1,4 +1,4 @@
-import type { TerminalSummary } from "@t3tools/contracts";
+import type { TerminalSummary } from "@j6/contracts";
 import { mFallback, msg } from "gt-i18n";
 import type { MFunctionType } from "gt-i18n/types";
 

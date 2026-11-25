@@ -3,8 +3,8 @@
 // base and passes on head. See docs/internals/15_testing.md#scenarios.
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { fromJsonStringPretty } from "@t3tools/shared/schemaJson";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { fromJsonStringPretty } from "@j6/shared/schemaJson";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -269,11 +269,11 @@ const runSide = Effect.fn("prove.runSide")(function* (
   return result;
 });
 
-/** The one target a scenario runs on: an iOS scenario imports `t3-mobile.ts`, a web one does not. */
+/** The one target a scenario runs on: an iOS scenario imports `j6-mobile.ts`, a web one does not. */
 const targetOf = Effect.fn("prove.targetOf")(function* (scenarioPath: string) {
   const fs = yield* FileSystem.FileSystem;
   const source = yield* fs.readFileString(scenarioPath).pipe(Effect.orElseSucceed(() => ""));
-  return source.includes("t3-mobile") ? "ios" : "web";
+  return source.includes("j6-mobile") ? "ios" : "web";
 });
 
 /** Uploads the captures and maps each to its URL; a failed upload leaves the map empty. */
@@ -357,7 +357,7 @@ const command = Command.make(
     ),
     target: Flag.String("target").pipe(
       Flag.withDescription(
-        "Target to run on: web or ios. Default: ios when the scenario imports t3-mobile.ts, else web.",
+        "Target to run on: web or ios. Default: ios when the scenario imports j6-mobile.ts, else web.",
       ),
       Flag.optional,
     ),

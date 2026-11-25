@@ -4,13 +4,13 @@ import {
   type IssueComment,
   type IssueEvent,
   type IssueState,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   IssueTrackerError,
   type IssueScopeTarget,
   type IssueTrackerApi,
   type TrackerIssueSummary,
-} from "@t3tools/source-control-core/server/IssueTracker";
+} from "@j6/source-control-core/server/IssueTracker";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 

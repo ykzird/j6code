@@ -19,8 +19,8 @@ import {
 import { HttpClient } from "effect/http";
 import * as Headers from "effect/http/Headers";
 import { LINEAR_KIND } from "../shared/issueUrl.ts";
-import { IssueTrackerError } from "@t3tools/source-control-core/server/IssueTracker";
-import * as IssueTrackerHost from "@t3tools/source-control-core/server/IssueTrackerHost";
+import { IssueTrackerError } from "@j6/source-control-core/server/IssueTracker";
+import * as IssueTrackerHost from "@j6/source-control-core/server/IssueTrackerHost";
 
 import type {
   CommentCreateInput,
@@ -57,7 +57,7 @@ export const KIND = LINEAR_KIND;
 const DEFAULT_API_URL = "https://api.linear.app/graphql";
 
 const LinearApiConfig = Config.all({
-  apiUrl: Config.String("T3CODE_LINEAR_API_URL").pipe(Config.withDefault(DEFAULT_API_URL)),
+  apiUrl: Config.String("J6CODE_LINEAR_API_URL").pipe(Config.withDefault(DEFAULT_API_URL)),
 });
 
 const LinearTemplateData = Schema.Struct({
@@ -157,15 +157,15 @@ export class LinearApi extends Context.Service<
       IssueTrackerError
     >;
   }
->()("@t3tools/issue-tracker-linear/server/LinearApi") {}
+>()("@j6/issue-tracker-linear/server/LinearApi") {}
 
 /** The API key a call is sent with: the stored one, or a new one being vetted. */
 class LinearToken extends Context.Service<LinearToken, string>()(
-  "@t3tools/issue-tracker-linear/server/LinearApi/LinearToken",
+  "@j6/issue-tracker-linear/server/LinearApi/LinearToken",
 ) {}
 
 class LinearAuth extends GraphQLMiddleware.Service<LinearAuth, { requires: LinearToken }>()(
-  "@t3tools/issue-tracker-linear/server/LinearApi/LinearAuth",
+  "@j6/issue-tracker-linear/server/LinearApi/LinearAuth",
 ) {}
 
 const LinearGroup = LinearApiGraphQLGroup.middleware(LinearAuth);

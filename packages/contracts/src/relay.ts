@@ -382,7 +382,7 @@ export type RelayEnvironmentEndpointUnavailableReason =
 /**
  * Which part of the path from the relay to the environment failed. `tunnel_down`
  * means Cloudflare has no live connector for the tunnel; `origin_unreachable`
- * means the tunnel answered but T3 Code behind it did not. Optional on the wire
+ * means the tunnel answered but J6 Code behind it did not. Optional on the wire
  * so old relays and old clients keep working.
  */
 export const RelayEnvironmentEndpointFailure = Schema.Literals([
@@ -658,7 +658,7 @@ export class RelayClientPrincipal extends Context.Service<
     readonly proofKeyThumbprint?: string;
     readonly dpopScopes?: ReadonlyArray<RelayDpopAccessTokenScope>;
   }
->()("@t3tools/contracts/relay/RelayClientPrincipal") {}
+>()("@j6/contracts/relay/RelayClientPrincipal") {}
 
 export class RelayEnvironmentPrincipal extends Context.Service<
   RelayEnvironmentPrincipal,
@@ -666,12 +666,12 @@ export class RelayEnvironmentPrincipal extends Context.Service<
     readonly environmentId: string;
     readonly environmentPublicKey: string;
   }
->()("@t3tools/contracts/relay/RelayEnvironmentPrincipal") {}
+>()("@j6/contracts/relay/RelayEnvironmentPrincipal") {}
 
 const RelayClientBearerAuthorization = HttpApiSecurity.http({ scheme: "bearer" }).pipe(
   HttpApiSecurity.annotate(
     OpenApi.Description,
-    "Clerk session or OAuth bearer token for the signed-in T3 Connect user.",
+    "Clerk session or OAuth bearer token for the signed-in J6 Connect user.",
   ),
 );
 
@@ -759,10 +759,10 @@ export const RelayDpopTokenExchangeGrantType =
   "urn:ietf:params:oauth:grant-type:token-exchange" as const;
 export const RelayJwtSubjectTokenType = "urn:ietf:params:oauth:token-type:jwt" as const;
 export const RelayAccessTokenType = "urn:ietf:params:oauth:token-type:access_token" as const;
-export const RelayPublicClientId = Schema.Literals(["t3-mobile", "t3-web"]);
+export const RelayPublicClientId = Schema.Literals(["j6-mobile", "j6-web"]);
 export type RelayPublicClientId = typeof RelayPublicClientId.Type;
-export const RelayMobileClientId = "t3-mobile" as const;
-export const RelayWebClientId = "t3-web" as const;
+export const RelayMobileClientId = "j6-mobile" as const;
+export const RelayWebClientId = "j6-web" as const;
 
 export const RelayDpopAccessTokenRequest = Schema.Struct({
   grant_type: Schema.Literal(RelayDpopTokenExchangeGrantType),
@@ -885,7 +885,7 @@ export const RelayCloudEnvironmentHealthProofPayload = Schema.Struct({
 export type RelayCloudEnvironmentHealthProofPayload =
   typeof RelayCloudEnvironmentHealthProofPayload.Type;
 
-/** Verify x-t3-relay-delivery with the relay mint key before trusting delivery id, time, or trace context. */
+/** Verify x-j6-relay-delivery with the relay mint key before trusting delivery id, time, or trace context. */
 export const RelayHookDeliveryProofPayload = Schema.Struct({
   ...RelaySignedJwtRegisteredClaims,
   environmentId: EnvironmentId,
@@ -1340,7 +1340,7 @@ export const RelayApi = HttpApi.make("RelayApi")
     RelayMobileTelemetryGroup,
     RelayAccountWebhooksGroup,
   )
-  .annotate(OpenApi.Title, "T3 Code Relay API")
+  .annotate(OpenApi.Title, "J6 Code Relay API")
   .annotate(OpenApi.Version, "1.0.0")
   .annotate(
     OpenApi.Description,

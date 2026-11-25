@@ -2,7 +2,7 @@ import {
   isDeliveredProviderTurn,
   type OrchestrationV2Run,
   type OrchestrationV2ThreadProjection,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
 export function unsentManualContinuationSource(
   run: Pick<OrchestrationV2Run, "manualContinuationOfRunId"> | undefined,

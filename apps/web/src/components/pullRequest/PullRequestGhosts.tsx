@@ -1,4 +1,4 @@
-import type { PullRequestListEntry, PullRequestSummary, ScopedThreadRef } from "@t3tools/contracts";
+import type { PullRequestListEntry, PullRequestSummary, ScopedThreadRef } from "@j6/contracts";
 import {
   ArrowLeftIcon,
   ChevronRightIcon,
@@ -14,7 +14,7 @@ import type { ReactNode } from "react";
 import {
   sourceControlClients,
   type ChangeRequestTerminology,
-} from "@t3tools/client-runtime/source-control-clients";
+} from "@j6/client-runtime/source-control-clients";
 
 import { useOpenLink } from "~/browser/useOpenLink";
 import { cn } from "~/lib/utils";

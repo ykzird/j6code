@@ -5,7 +5,7 @@ import * as NodePath from "node:path";
 import { expect } from "e2e";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { makeState, runPromise, test, WEB } from "./t3.ts";
+import { makeState, runPromise, test, WEB } from "./j6.ts";
 
 const HOME_PATH = "~/.claude/CLAUDE.md";
 const REPLY = "Updated your global instructions.";
@@ -56,8 +56,8 @@ for await (const line of createInterface({ input: process.stdin })) {
 test(
   "Files an agent read and edited in the home folder show their ~/ paths, not paths under the project",
   WEB,
-  async ({ t3, app, screen }) => {
-    const project = await t3.project("demo");
+  async ({ j6, app, screen }) => {
+    const project = await j6.project("demo");
     const script = NodePath.join(project, "home-path-acp.mjs");
     const settingsPath = NodePath.join(T3_HOME, "userdata/settings.json");
     const originalSettings = await NodeFSP.readFile(settingsPath, "utf8");
@@ -99,7 +99,7 @@ test(
       }
       if (threadId === undefined) throw new Error("Could not start the home path turn.");
 
-      await t3.open({ threadId });
+      await j6.open({ threadId });
       await screen.getByText(REPLY, { exact: true }).waitFor({ timeout: 60_000 });
       await screen.getByRole("button", "Worked for", { exact: false }).tap();
       await screen.getByRole("button", "Read 1 file and changed 1 file").tap();

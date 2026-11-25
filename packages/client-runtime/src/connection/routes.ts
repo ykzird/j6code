@@ -3,8 +3,8 @@ import {
   isPrivateNetworkHost,
   isSharedAddressSpaceHost,
   isTailnetHost,
-} from "@t3tools/shared/hostClassification";
-import type { DesktopSshEnvironmentTarget } from "@t3tools/contracts";
+} from "@j6/shared/hostClassification";
+import type { DesktopSshEnvironmentTarget } from "@j6/contracts";
 import * as Option from "effect/Option";
 
 import {
@@ -188,7 +188,7 @@ function routeAddressKey(route: ConnectionRoute): string | null {
   }
 }
 
-const T3_CONNECT_NAME = "T3 Connect";
+const T3_CONNECT_NAME = "J6 Connect";
 
 /** The route's label in English. Display sites use `connectionRouteLabelText`. */
 export function connectionRouteLabel(route: ConnectionRoute): string {
@@ -270,8 +270,8 @@ export function mergeLearnedRoutes(input: {
   const authorization =
     active._tag === "RelayConnectionTarget" ||
     (activeProfile?._tag === "BearerConnectionProfile" &&
-      activeProfile.authorization === "t3-connect")
-      ? ("t3-connect" as const)
+      activeProfile.authorization === "j6-connect")
+      ? ("j6-connect" as const)
       : undefined;
   const sharedCredential =
     authorization === undefined && active._tag === "BearerConnectionTarget"
@@ -388,7 +388,7 @@ export function sendsTokenInClear(
   tailscale?: boolean,
 ): boolean {
   const profile = Option.getOrNull(route.profile);
-  if (profile?._tag !== "BearerConnectionProfile" || profile.authorization === "t3-connect") {
+  if (profile?._tag !== "BearerConnectionProfile" || profile.authorization === "j6-connect") {
     return false;
   }
   if ((tailscale ?? profile.network === "tailscale") || !profile.httpBaseUrl.startsWith("http:")) {
@@ -456,7 +456,7 @@ export function isLearned(route: ConnectionRoute): boolean {
 
 /**
  * A learned route borrows the credential of the route it was learned over, so
- * it cannot outlive that route: removing T3 Connect also removes routes learned
+ * it cannot outlive that route: removing J6 Connect also removes routes learned
  * through it, and removing a paired address removes routes that borrow its
  * token.
  */
@@ -470,7 +470,7 @@ export function routesAfterRemoving(
     if (route === removed) return false;
     if (!isLearned(route)) return true;
     const profile = Option.getOrNull(route.profile);
-    if (profile?._tag === "BearerConnectionProfile" && profile.authorization === "t3-connect") {
+    if (profile?._tag === "BearerConnectionProfile" && profile.authorization === "j6-connect") {
       return removed.target._tag !== "RelayConnectionTarget";
     }
     return credentialConnectionId(connectionRouteId(route.target)) !== removedId;

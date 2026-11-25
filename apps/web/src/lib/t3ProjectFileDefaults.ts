@@ -3,9 +3,9 @@ import {
   type EnvironmentId,
   type ProjectReadFileResult,
   type T3ProjectFile,
-} from "@t3tools/contracts";
-import { parseT3ProjectFile } from "@t3tools/shared/t3ProjectFile";
-import { executeAtomQuery } from "@t3tools/client-runtime/state/runtime";
+} from "@j6/contracts";
+import { parseT3ProjectFile } from "@j6/shared/t3ProjectFile";
+import { executeAtomQuery } from "@j6/client-runtime/state/runtime";
 import { AsyncResult } from "effect/reactivity";
 
 import {
@@ -45,7 +45,7 @@ export async function readT3ProjectFile(
   );
 }
 
-/** The project's t3.json from an earlier read, or `undefined` when none has loaded yet. */
+/** The project's j6.json from an earlier read, or `undefined` when none has loaded yet. */
 export function peekT3ProjectFile(
   environmentId: EnvironmentId,
   workspaceRoot: string,

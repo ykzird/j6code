@@ -4,7 +4,7 @@ import { expect } from "e2e";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 
-import { runPromise, test, WEB } from "./t3.ts";
+import { runPromise, test, WEB } from "./j6.ts";
 
 // A raw-mode process prints rows, then on `b` sets the default background with OSC 11.
 const PROGRAM = String.raw`import { writeFileSync } from "node:fs";
@@ -28,10 +28,10 @@ process.stdin.on("data", (chunk) => {
 test(
   "A program setting the terminal's default background repaints the whole screen",
   WEB,
-  async ({ t3, app, browser, screen }) => {
+  async ({ j6, app, browser, screen }) => {
     await browser.emulateMedia({ colorScheme: "dark" });
-    const project = await t3.project("colors", { "program.mjs": PROGRAM });
-    const thread = await t3.thread({ project, title: "Colors", messages: ["hello"] });
+    const project = await j6.project("colors", { "program.mjs": PROGRAM });
+    const thread = await j6.thread({ project, title: "Colors", messages: ["hello"] });
     const read = (file: string) =>
       runPromise(
         Effect.gen(function* () {
@@ -39,7 +39,7 @@ test(
           return yield* fs.readFileString(`${project}/${file}`);
         }).pipe(Effect.orElseSucceed(() => "")),
       );
-    await t3.open(thread);
+    await j6.open(thread);
     await screen.getByRole("button", "Toggle terminal drawer").tap();
     const terminal = screen.getByLabel("Terminal input");
 

@@ -37,7 +37,7 @@ function mountTimeline(html: string) {
   return { container, [Symbol.dispose]: () => container.remove() };
 }
 
-const painted = () => [...(CSS.highlights.get("t3-thread-find") ?? [])] as Range[];
+const painted = () => [...(CSS.highlights.get("j6-thread-find") ?? [])] as Range[];
 const paintedIn = (element: Element) =>
   painted().filter((range) => element.contains(range.startContainer)).length;
 
@@ -60,7 +60,7 @@ it("paints only matches near the viewport plus the active one, in a row with mor
   expect(visible.length).toBeGreaterThan(0);
   expect(visible.length).toBeLessThan(5_000);
   expect(Math.max(...visible.map((range) => range.startOffset))).toBeLessThan(count);
-  expect(CSS.highlights.get("t3-thread-find-active")?.size).toBe(1);
+  expect(CSS.highlights.get("j6-thread-find-active")?.size).toBe(1);
   expect(onActiveRange.mock.lastCall?.[0]?.startOffset).toBe((count - 1) * 3);
 
   timeline.container.scrollTop = timeline.container.scrollHeight;
@@ -145,7 +145,7 @@ it("registers a row's matches only while it is near the viewport, and again afte
     />,
   );
   expect([paintedIn(near!), paintedIn(far!)]).toEqual([3, 0]);
-  expect(CSS.highlights.get("t3-thread-find-active")?.size).toBe(1);
+  expect(CSS.highlights.get("j6-thread-find-active")?.size).toBe(1);
   expect(far!.contains(onActiveRange.mock.lastCall?.[0]?.startContainer ?? null)).toBe(true);
 
   near!.append(" e");

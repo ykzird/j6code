@@ -1,5 +1,5 @@
 // @effect-diagnostics globalTimers:off -- A plain Node child; the poll runs outside any Effect fiber.
-import { SNAP_SHOT_MODIFIERS, type SnapShotModifier } from "@t3tools/contracts";
+import { SNAP_SHOT_MODIFIERS, type SnapShotModifier } from "@j6/contracts";
 
 import { loadWindowsForegroundApi } from "../electron/WindowsForeground.ts";
 import { WINDOWS_MODIFIER_PAIR_VIRTUAL_KEYS } from "./snapShot.ts";
@@ -33,7 +33,7 @@ const RAW_INPUT_HEADER_SIZE = 24;
 // Raw Input queues every key event, so a keystroke between two polls is still seen.
 async function openKeyboardActivity(): Promise<() => boolean> {
   const { DataType, load, open } = await import("ffi-rs");
-  const library = "t3-user32-raw-input";
+  const library = "j6-user32-raw-input";
   open({ library, path: "user32.dll" });
   const className = Buffer.from("STATIC\0", "utf16le");
   const window = load({

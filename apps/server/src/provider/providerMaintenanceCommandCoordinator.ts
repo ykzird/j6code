@@ -3,7 +3,7 @@ import * as NodeCrypto from "node:crypto";
 import * as NodeFSP from "node:fs/promises";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
-import * as KeyedLock from "@t3tools/shared/KeyedLock";
+import * as KeyedLock from "@j6/shared/KeyedLock";
 import { lock } from "proper-lockfile";
 import * as Effect from "effect/Effect";
 import * as Ref from "effect/Ref";
@@ -24,7 +24,7 @@ class MachineLockError extends Schema.TaggedError<MachineLockError>()("MachineLo
   cause: Schema.Defect(),
 }) {}
 
-const lockDirectory = () => NodePath.join(NodeOS.tmpdir(), "t3code-provider-updates");
+const lockDirectory = () => NodePath.join(NodeOS.tmpdir(), "j6code-provider-updates");
 
 /** @internal */
 export const machineLockFile = (lockKey: string) =>

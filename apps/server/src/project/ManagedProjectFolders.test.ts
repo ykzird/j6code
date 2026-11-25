@@ -7,8 +7,8 @@ import {
   ThreadId,
   VcsProcessSpawnError,
   VcsProcessTimeoutError,
-} from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+} from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -104,7 +104,7 @@ const withScratch = <A, E>(
 ) =>
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
-    const baseDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-managed-folders-" });
+    const baseDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-managed-folders-" });
     return yield* body({ baseDir }).pipe(Effect.provide(layer(baseDir, options)));
   }).pipe(Effect.scoped, Effect.provide(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)));
 
@@ -127,9 +127,9 @@ it.effect("offers nothing, and says why once, when the data dir sits inside a Gi
   return Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const checkout = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-scratch-repo-" });
+    const checkout = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-scratch-repo-" });
     yield* git(checkout, ["init", "--quiet"]);
-    const baseDir = path.join(checkout, ".t3");
+    const baseDir = path.join(checkout, ".j6");
     yield* fileSystem.makeDirectory(baseDir);
     const repositoryRoot = (yield* git(baseDir, ["rev-parse", "--show-toplevel"])).stdout.trim();
     yield* Effect.gen(function* () {
@@ -401,7 +401,7 @@ const withGitEnv = <A, E, R>(
 ) =>
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
-    const emptyConfig = yield* fileSystem.makeTempFileScoped({ prefix: "t3-gitconfig-" });
+    const emptyConfig = yield* fileSystem.makeTempFileScoped({ prefix: "j6-gitconfig-" });
     const hostEnv: NodeJS.ProcessEnv = { ...(yield* HostProcess.Environment) };
     for (const key of GIT_IDENTITY_KEYS) delete hostEnv[key];
     return yield* effect.pipe(

@@ -1,4 +1,4 @@
-import type { OfficePreviewKind } from "@t3tools/shared/filePreview";
+import type { OfficePreviewKind } from "@j6/shared/filePreview";
 import type { PreviewFailure } from "./previewFailure";
 
 export const OFFICE_PREVIEW_MAX_BYTES = 50 * 1024 * 1024;

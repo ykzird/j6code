@@ -2,14 +2,14 @@ import {
   SourceControlProviderKind,
   type PullRequestReviewCapabilities,
   type PullRequestReviewerCapabilities,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   providerAuth,
   type SourceControlProviderDiscoverySpec,
-} from "@t3tools/source-control-core/server/discovery";
-import type { SourceControlDriverInstance } from "@t3tools/source-control-core/server/driver";
-import type { PullRequestProviderApi } from "@t3tools/source-control-core/server/PullRequestProvider";
-import type * as SourceControlProvider from "@t3tools/source-control-core/server/SourceControlProvider";
+} from "@j6/source-control-core/server/discovery";
+import type { SourceControlDriverInstance } from "@j6/source-control-core/server/driver";
+import type { PullRequestProviderApi } from "@j6/source-control-core/server/PullRequestProvider";
+import type * as SourceControlProvider from "@j6/source-control-core/server/SourceControlProvider";
 import * as Effect from "effect/Effect";
 
 const FULL_REVIEW: PullRequestReviewCapabilities = {

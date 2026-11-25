@@ -1,9 +1,9 @@
-import { createAdvertisedEndpoint } from "@t3tools/shared/advertisedEndpoint";
+import { createAdvertisedEndpoint } from "@j6/shared/advertisedEndpoint";
 import {
   ExecutionEnvironmentDescriptor,
   type AdvertisedEndpoint,
   type AdvertisedEndpointProvider,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   buildTailscaleHttpsBaseUrl,
   isTailscaleIpv4Address,
@@ -11,7 +11,7 @@ import {
   probeTailscaleHttpsEndpoint,
   readTailscaleStatus,
   type TailscaleStatus,
-} from "@t3tools/tailscale";
+} from "@j6/tailscale";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import * as HttpClient from "effect/http/HttpClient";
@@ -78,7 +78,7 @@ function resolveTailscaleIpAdvertisedEndpoints(input: {
 
 // The backend may run elsewhere (WSL), so ask it for its id instead of reading the state dir.
 const probeServesThisBackend = (localHttpUrl: string) => (baseUrl: string) =>
-  HttpClient.get(new URL("/.well-known/t3/environment", localHttpUrl)).pipe(
+  HttpClient.get(new URL("/.well-known/j6/environment", localHttpUrl)).pipe(
     Effect.flatMap(HttpClientResponse.filterStatusOk),
     Effect.flatMap(HttpClientResponse.schemaBodyJson(ExecutionEnvironmentDescriptor)),
     Effect.flatMap(({ environmentId }) => probeTailscaleHttpsEndpoint({ baseUrl, environmentId })),

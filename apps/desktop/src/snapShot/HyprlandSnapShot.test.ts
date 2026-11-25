@@ -35,7 +35,7 @@ const window = {
   clientBounds: { x: -1920, y: 20, width: 800, height: 600 },
 };
 beforeEach(async () => {
-  directory = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-hypr-test-"));
+  directory = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-hypr-test-"));
   paths = {
     bundle: NodePath.join(directory, "bundle"),
     dataHome: NodePath.join(directory, "user data"),
@@ -119,14 +119,14 @@ it.each([true, false])("uses the active config syntax and user bindings (Lua: %s
     NodePath.join(config, lua ? "bindings.lua" : "bindings.conf"),
     "custom bindings",
   );
-  const result = await hyprlandCaptureShortcut("com.t3tools.T3Code", "/home/test", directory);
+  const result = await hyprlandCaptureShortcut("com.ykzird.J6Code", "/home/test", directory);
   expect(result.shortcutConfigPath).toBe(
     NodePath.join(config, lua ? "bindings.lua" : "bindings.conf"),
   );
   expect(result.shortcutBinding).toBe(
     lua
-      ? 'hl.bind("CTRL + SHIFT + 2", hl.dsp.global("com.t3tools.T3Code:capture-window"))'
-      : "bind = CTRL SHIFT, 2, global, com.t3tools.T3Code:capture-window",
+      ? 'hl.bind("CTRL + SHIFT + 2", hl.dsp.global("com.ykzird.J6Code:capture-window"))'
+      : "bind = CTRL SHIFT, 2, global, com.ykzird.J6Code:capture-window",
   );
   expect(await NodeFSP.readFile(result.shortcutConfigPath, "utf8")).toBe("custom bindings");
 });

@@ -1,4 +1,4 @@
-import type { EnvironmentThreadStatus } from "@t3tools/client-runtime/state/threads";
+import type { EnvironmentThreadStatus } from "@j6/client-runtime/state/threads";
 import { msg } from "gt-react";
 
 import { m, type MessageResolver } from "./i18n/messages";

@@ -3,7 +3,7 @@
 import * as NodeChildProcess from "node:child_process";
 import * as NodePath from "node:path";
 
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -24,7 +24,7 @@ import {
 import { projectLocationFlags, resolveCliAuthConfig } from "./config.ts";
 import * as CliService from "./service.ts";
 import { awaitDetachedSpawn } from "../process/windowsVerbatimSpawn.ts";
-import { windowsSystem32Path } from "@t3tools/shared/windowsSystem";
+import { windowsSystem32Path } from "@j6/shared/windowsSystem";
 import { findWindowsShim } from "./update.ts";
 
 export class CliUninstallError extends Schema.TaggedError<CliUninstallError>()(
@@ -66,7 +66,7 @@ export const findOwnedLauncher = Effect.fn("cli.uninstall.find_launcher")(functi
   return yield* findPosixLauncher({ launchedAs: input.launchedAs, versionsDir: input.versionsDir });
 });
 
-/** Whether `launcher` is a link, unedited `t3` script, or unedited `t3.cmd` into this home's runtime/versions. */
+/** Whether `launcher` is a link, unedited `j6` script, or unedited `j6.cmd` into this home's runtime/versions. */
 const ownsLauncher = Effect.fn("cli.uninstall.owns_launcher")(function* (
   launcher: string,
   versionsDir: string,
@@ -108,7 +108,7 @@ const ownsLauncher = Effect.fn("cli.uninstall.owns_launcher")(function* (
 });
 
 /**
- * Launchers recorded in `runtime/launchers` by the install scripts and `t3 install` that still
+ * Launchers recorded in `runtime/launchers` by the install scripts and `j6 install` that still
  * point into this home's runtime/versions. npx can run a different version than the installed
  * one, so the launcher this process started from does not always name them.
  */
@@ -128,7 +128,7 @@ export const findRecordedLaunchers = Effect.fn("cli.uninstall.find_recorded_laun
 });
 
 // cmd.exe needs verbatim quoting and literal paths, with delayed expansion disabled. The shell
-// starts in System32 and runs ping from there, whatever directory `t3 uninstall` was run in.
+// starts in System32 and runs ping from there, whatever directory `j6 uninstall` was run in.
 export function spawnWindowsRemoval(environment: NodeJS.ProcessEnv, dir: string) {
   const ping = windowsSystem32Path(environment, "ping.exe");
   return NodeChildProcess.spawn(
@@ -194,7 +194,7 @@ export const uninstallCommand = Command.make("uninstall", {
   ),
 }).pipe(
   Command.withDescription(
-    "Remove t3 from this machine: the background service, the launcher, and every downloaded version. Your projects and threads are kept.",
+    "Remove j6 from this machine: the background service, the launcher, and every downloaded version. Your projects and threads are kept.",
   ),
   Command.withHandler((flags) =>
     Effect.gen(function* () {
@@ -211,7 +211,7 @@ const logOtherHomeService = (plan: UninstallPlan) =>
   plan.otherHomeService === undefined
     ? Effect.void
     : Console.log(
-        `The T3 Code service serves ${plan.otherHomeService}, so it was not removed. Pass \`${BootService.formatBootServiceBaseDirOption(plan.otherHomeService)}\` to remove it.`,
+        `The J6 Code service serves ${plan.otherHomeService}, so it was not removed. Pass \`${BootService.formatBootServiceBaseDirOption(plan.otherHomeService)}\` to remove it.`,
       );
 
 const runUninstall = Effect.fn("cli.uninstall.run")(function* (input: {
@@ -225,10 +225,10 @@ const runUninstall = Effect.fn("cli.uninstall.run")(function* (input: {
   const plan = yield* planUninstall({ baseDir: input.baseDir });
 
   if (!plan.service && plan.launchers.length === 0 && plan.runtimeDir === undefined) {
-    yield* Console.log(`Nothing to remove: t3 is not installed for ${input.baseDir}.`);
+    yield* Console.log(`Nothing to remove: j6 is not installed for ${input.baseDir}.`);
     if (!(yield* HostProcess.IsExecutable)) {
       yield* Console.log(
-        "  This t3 runs from a Node script, so it was installed by npm or built from source. Remove it the same way (`npm uninstall -g t3`, or delete the checkout).",
+        "  This j6 runs from a Node script, so it was installed by npm or built from source. Remove it the same way (`npm uninstall -g j6`, or delete the checkout).",
       );
     }
     yield* logOtherHomeService(plan);
@@ -253,7 +253,7 @@ const runUninstall = Effect.fn("cli.uninstall.run")(function* (input: {
       });
     }
     const confirmed = yield* Prompt.run(
-      Prompt.Confirm({ message: "Remove t3 from this machine?", initial: false }),
+      Prompt.Confirm({ message: "Remove j6 from this machine?", initial: false }),
     ).pipe(Effect.catchTags({ QuitError: () => Effect.succeed(false) }));
     if (!confirmed) {
       yield* Console.log("Left as is.");
@@ -270,7 +270,7 @@ const runUninstall = Effect.fn("cli.uninstall.run")(function* (input: {
   }
   for (const launcher of plan.launchers) {
     if (!(yield* ownsLauncher(launcher, plan.versionsDir))) {
-      yield* Console.log(`Left ${launcher}: it no longer runs this t3.`);
+      yield* Console.log(`Left ${launcher}: it no longer runs this j6.`);
       continue;
     }
     yield* fs
@@ -293,7 +293,7 @@ const runUninstall = Effect.fn("cli.uninstall.run")(function* (input: {
       yield* awaitDetachedSpawn(() => spawnWindowsRemoval(environment, runtimeDir)).pipe(
         Effect.mapError(notScheduled),
       );
-      yield* Console.log(`${runtimeDir} will be removed once t3 exits.`);
+      yield* Console.log(`${runtimeDir} will be removed once j6 exits.`);
     } else {
       yield* fs
         .remove(plan.runtimeDir, { recursive: true, force: true })
@@ -306,6 +306,6 @@ const runUninstall = Effect.fn("cli.uninstall.run")(function* (input: {
     }
   }
   yield* Console.log("");
-  yield* Console.log("t3 is uninstalled. Thanks for trying T3 Code.");
+  yield* Console.log("j6 is uninstalled. Thanks for trying J6 Code.");
   yield* logOtherHomeService(plan);
 });

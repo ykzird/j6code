@@ -2,9 +2,9 @@ import {
   parsePullRequestAnchor,
   pullRequestAnchorMatchesUrl,
   resolvePullRequestReviewAnchor,
-} from "@t3tools/shared/pullRequestAnchor";
+} from "@j6/shared/pullRequestAnchor";
 import { holdLinkedNodeInView } from "./holdLinkedNodeInView";
-import { sourceControlClients } from "@t3tools/client-runtime/source-control-clients";
+import { sourceControlClients } from "@j6/client-runtime/source-control-clients";
 import { useAtomCommand } from "~/state/use-atom-command";
 import type {
   EnvironmentId,
@@ -13,7 +13,7 @@ import type {
   PullRequestDetailView,
   PullRequestRef,
   ScopedThreadRef,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   ChevronDownIcon,
   CircleCheckIcon,
@@ -51,12 +51,12 @@ import {
   type PullRequestTimelineEvent,
   type PullRequestTimelineThread,
 } from "./pullRequestDetail.logic";
-import { canEditPullRequestComment } from "@t3tools/client-runtime/pull-request-editing";
+import { canEditPullRequestComment } from "@j6/client-runtime/pull-request-editing";
 import { PullRequestMarkdown } from "./PullRequestMarkdown";
 import { PullRequestMoreReplies } from "./PullRequestMoreReplies";
 import { PullRequestMarkdownEditor } from "./PullRequestMarkdownEditor";
 import { PullRequestReactionBar } from "./PullRequestReactions";
-import { canReactPullRequestComment } from "@t3tools/client-runtime/pull-request-reactions";
+import { canReactPullRequestComment } from "@j6/client-runtime/pull-request-reactions";
 import { PullRequestResolveThreadButton } from "./PullRequestResolveThreadButton";
 import {
   PullRequestActorAvatar,
@@ -904,12 +904,12 @@ export function PullRequestTimelineTab({
       onRevealSettled?.(url);
     });
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- reveals a link destination after activity loading and virtual list mounting
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- reveals a link destination after activity loading and virtual list mounting
   useEffect(() => {
     reveal();
     // oxlint-disable-next-line react/exhaustive-effect-dependencies -- runs for each clicked link and again when activity resolves its row
   }, [revealUrl, targetIndex]);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- the hold observes DOM outside React and must end with the tab
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- the hold observes DOM outside React and must end with the tab
   useEffect(() => () => stopHolding.current?.(), []);
   const openOnHost = (url: string) => {
     void readLocalApi()?.shell.openExternal(url);

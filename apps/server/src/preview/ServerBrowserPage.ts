@@ -19,7 +19,7 @@ import {
   type PreviewAutomationTypeInput,
   type PreviewAutomationUploadInput,
   type PreviewAutomationWaitForInput,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { constVoid } from "effect/Function";
 import * as Schema from "effect/Schema";
 import type { CDPSession, ConsoleMessage, Frame, Locator, Page } from "playwright-core";
@@ -362,7 +362,7 @@ const openReaders = async (page: Page, cdp: CDPSession) => {
         ids(frameTree).map(async (frameId) => {
           const world = await session.send("Page.createIsolatedWorld", {
             frameId,
-            worldName: "t3-preview",
+            worldName: "j6-preview",
           });
           return world.executionContextId;
         }),
@@ -522,7 +522,7 @@ const readPageMetrics = async (cdp: CDPSession) => {
   const { frameTree } = await cdp.send("Page.getFrameTree");
   const { executionContextId } = await cdp.send("Page.createIsolatedWorld", {
     frameId: frameTree.frame.id,
-    worldName: "t3-preview-metrics",
+    worldName: "j6-preview-metrics",
   });
   let { cssVisualViewport } = await cdp.send("Page.getLayoutMetrics");
   // Desktop zoom applies asynchronously; bracket the CSS metrics to reject a torn read.
@@ -566,7 +566,7 @@ export const captureViewport = async (
           new ServerBrowserOperationError({
             tag: "PreviewAutomationExecutionError",
             message:
-              "The browser is not producing screenshot frames. For a desktop tab, show or restore the T3 Code window and try again.",
+              "The browser is not producing screenshot frames. For a desktop tab, show or restore the J6 Code window and try again.",
           }),
         ),
       SCREENSHOT_TIMEOUT_MS,
@@ -616,7 +616,7 @@ const shrinkPng = async (cdp: CDPSession, png: string, scale: number) => {
   const { frameTree } = await cdp.send("Page.getFrameTree");
   const { executionContextId } = await cdp.send("Page.createIsolatedWorld", {
     frameId: frameTree.frame.id,
-    worldName: "t3-preview-screenshot",
+    worldName: "j6-preview-screenshot",
   });
   const { result, exceptionDetails } = await cdp.send("Runtime.callFunctionOn", {
     functionDeclaration: SHRINK_PNG,
@@ -753,7 +753,7 @@ const capture = async (
   const accessibilityTree = (dotted ? maskTree(redacted, dotted) : redacted)
     .slice(0, MAX_VISIBLE_TEXT_LENGTH)
     .replace(/\[ref=((?:f\d+)?e\d+)\]/g, (_match, nativeRef: string) => {
-      const ref = `t3-${generation}-${nativeRef}`;
+      const ref = `j6-${generation}-${nativeRef}`;
       state.refs.set(ref, nativeRef);
       return `[ref=${ref}]`;
     });

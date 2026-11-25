@@ -1,6 +1,6 @@
-import type { EnvironmentSpeechModel } from "@t3tools/contracts";
+import type { EnvironmentSpeechModel } from "@j6/contracts";
 import { expect, it } from "vite-plus/test";
-import { recommendSpeechModels } from "@t3tools/shared/speech";
+import { recommendSpeechModels } from "@j6/shared/speech";
 
 import { filterSpeechModels } from "./speechModelBrowser";
 

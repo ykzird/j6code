@@ -1,7 +1,7 @@
 import * as WorktreeSetupTracker from "../project/WorktreeSetupTracker.ts";
 import * as ProjectCloneTracker from "../project/ProjectCloneTracker.ts";
 import * as TerminalManager from "../terminal/Manager.ts";
-import { resolveProjectSettings } from "@t3tools/shared/projectSettings";
+import { resolveProjectSettings } from "@j6/shared/projectSettings";
 import {
   CommandId,
   type ChatAttachment,
@@ -25,7 +25,7 @@ import {
   TaskFolderError,
   TextGenerationError,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as Clock from "effect/Clock";
 import * as Context from "effect/Context";
@@ -46,7 +46,7 @@ import {
   flattenTemporaryWorktreeBranchName,
   formatGeneratedBranchName,
   isTemporaryWorktreeBranch,
-} from "@t3tools/shared/git";
+} from "@j6/shared/git";
 
 import * as CheckpointStore from "../checkpointing/CheckpointStore.ts";
 import * as GitWorkflow from "../git/GitWorkflowService.ts";
@@ -60,10 +60,10 @@ import * as ServerSettings from "../serverSettings.ts";
 import * as TextGeneration from "../textGeneration/TextGeneration.ts";
 import * as CommandReceiptStore from "./CommandReceiptStore.ts";
 import * as EventSink from "./EventSink.ts";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
 import type * as Orchestrator from "./Orchestrator.ts";
-import { makeProviderFailure } from "@t3tools/provider-core/server/failure";
-import { randomUuidV4 } from "@t3tools/provider-core/server/randomUuid";
+import { makeProviderFailure } from "@j6/provider-core/server/failure";
+import { randomUuidV4 } from "@j6/provider-core/server/randomUuid";
 import { DispatchModeLimit } from "./DispatchModeLimit.ts";
 import * as ThreadManagement from "./ThreadManagementService.ts";
 import * as TaskFolders from "../workspace/TaskFolders.ts";
@@ -92,7 +92,7 @@ export interface ThreadLaunchInitialMessage {
   readonly senderThreadId?: ThreadId;
   readonly text: string;
   readonly attachments: ReadonlyArray<ChatAttachment>;
-  readonly context?: import("@t3tools/contracts").OrchestrationMessageContext | undefined;
+  readonly context?: import("@j6/contracts").OrchestrationMessageContext | undefined;
   /** Ask the first run for a result as data matching this JSON Schema. */
   readonly outputSchema?: Readonly<Record<string, Schema.Json>> | undefined;
 }
@@ -267,7 +267,7 @@ export class ThreadLaunchService extends Context.Service<
     >;
     readonly prepareRun: (input: ThreadLaunchPreparationInput) => Effect.Effect<void>;
   }
->()("t3/orchestration-v2/ThreadLaunchService") {}
+>()("j6/orchestration-v2/ThreadLaunchService") {}
 
 const isThreadLaunchError = Schema.is(ThreadLaunchError);
 

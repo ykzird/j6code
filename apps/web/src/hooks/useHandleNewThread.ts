@@ -2,13 +2,13 @@ import {
   scopedProjectKey,
   scopeProjectRef,
   scopeThreadRef,
-} from "@t3tools/client-runtime/environment";
+} from "@j6/client-runtime/environment";
 import {
   DEFAULT_SERVER_SETTINGS,
   type ScopedProjectRef,
   type T3ProjectFile,
   type ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { type AnyRouter, useRouter } from "@tanstack/react-router";
 import { flushSync } from "react-dom";
 import {
@@ -28,8 +28,8 @@ import {
   resolveGroupDefaultProject,
   selectProjectGroupingSettings,
   type ProjectGroupingSettings,
-} from "@t3tools/client-runtime/state/project-grouping";
-import { resolveNewThreadEnvMode, resolveProjectSettings } from "@t3tools/shared/projectSettings";
+} from "@j6/client-runtime/state/project-grouping";
+import { resolveNewThreadEnvMode, resolveProjectSettings } from "@j6/shared/projectSettings";
 import {
   readProjects,
   readThreadShell,
@@ -44,7 +44,7 @@ import {
   resolveNewThreadModelSelectionOverride,
   threadHasStarted,
 } from "../lib/chatThreadActions";
-import type { EnvironmentProject } from "@t3tools/client-runtime/state/shell";
+import type { EnvironmentProject } from "@j6/client-runtime/state/shell";
 import { peekT3ProjectFile, readT3ProjectFile } from "../lib/t3ProjectFileDefaults";
 import { appAtomRegistry } from "../rpc/atomRegistry";
 import { environmentSummaries } from "../state/presentation";
@@ -59,9 +59,9 @@ import { defaultProjectFallbackReadyAtom } from "../state/projects";
 import { useThreadRouteTarget } from "./useThreadRouteTarget";
 import { readUnloadedThreadCount } from "../state/olderSettledShelf";
 import { resolveProjectDefaultProviderModelSelection } from "../providerInstances";
-import { resolveNewThreadModelSelection } from "@t3tools/shared/usageLimits";
+import { resolveNewThreadModelSelection } from "@j6/shared/usageLimits";
 
-export const LAST_USED_PROJECT_STORAGE_KEY = "t3code:last-used-project:v1";
+export const LAST_USED_PROJECT_STORAGE_KEY = "j6code:last-used-project:v1";
 export const lastUsedProjectKeySchema = Schema.NullOr(Schema.String);
 
 export function readLastUsedProjectKey(): string | null {
@@ -72,7 +72,7 @@ export function readLastUsedProjectKey(): string | null {
   }
 }
 
-// Drafts that opened before their project's t3.json was read. A send waits for the file's
+// Drafts that opened before their project's j6.json was read. A send waits for the file's
 // workspace default unless the user has already chosen a workspace.
 interface ProvisionalWorkspace {
   readonly envMode: DraftThreadEnvMode;
@@ -260,7 +260,7 @@ export function createNewThreadHandler(router: AnyRouter) {
         envMode,
         newWorktreesStartFromOrigin: projectSettings.settings.newWorktreesStartFromOrigin,
       });
-    // The draft opens without waiting on t3.json: a cold read takes seconds on a loaded host.
+    // The draft opens without waiting on j6.json: a cold read takes seconds on a loaded host.
     // Its workspace default lands afterwards unless the user picked a workspace or sent first.
     const resolveDefaultEnvMode = () => {
       // Environment queries wait for a connection, so an offline machine's file is never read.

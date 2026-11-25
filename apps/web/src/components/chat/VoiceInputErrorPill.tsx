@@ -1,5 +1,5 @@
 import { msg, useGT, useMessages } from "gt-react";
-import type { VoiceInputErrorCode } from "@t3tools/client-runtime/voice-input";
+import type { VoiceInputErrorCode } from "@j6/client-runtime/voice-input";
 import { useNavigate } from "@tanstack/react-router";
 import { CircleAlertIcon, XIcon } from "lucide-react";
 

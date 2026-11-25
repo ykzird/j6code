@@ -12,12 +12,12 @@ import {
   type IssueInvolvement,
   type IssueLinkedPullRequest,
   type IssueViewerPermissions,
-} from "@t3tools/contracts";
-import { decodeJsonResult } from "@t3tools/shared/schemaJson";
+} from "@j6/contracts";
+import { decodeJsonResult } from "@j6/shared/schemaJson";
 import {
   IssueTrackerError,
   type IssueTrackerApi,
-} from "@t3tools/source-control-core/server/IssueTracker";
+} from "@j6/source-control-core/server/IssueTracker";
 
 import * as ForgejoCli from "./ForgejoCli.ts";
 import {

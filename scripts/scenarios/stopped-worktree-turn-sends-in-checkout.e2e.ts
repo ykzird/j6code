@@ -1,13 +1,13 @@
 import { expect } from "e2e";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { makeState, runPromise, test, WEB } from "./t3.ts";
+import { makeState, runPromise, test, WEB } from "./j6.ts";
 
 test(
   "A worktree thread stopped mid-turn and moved to the project checkout runs its next message",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    const project = await t3.project("demo");
+  async ({ j6, app, browser, screen }) => {
+    const project = await j6.project("demo");
     // The question recording waits for an answer, so the turn is running in its new worktree.
     const started = await runPromise(
       makeState(T3_HOME).cli(
@@ -28,7 +28,7 @@ test(
         [2],
       ),
     );
-    await t3.open(JSON.parse(started.stdout) as { threadId: string });
+    await j6.open(JSON.parse(started.stdout) as { threadId: string });
 
     const stop = screen.getByRole("button", "Stop generation");
     await stop.waitFor({ timeout: 60_000 });

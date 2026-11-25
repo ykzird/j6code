@@ -7,8 +7,8 @@ import {
   ProjectId,
   ProviderInstanceId,
   ThreadId,
-} from "@t3tools/contracts";
-import { resolveProjectSettings } from "@t3tools/shared/projectSettings";
+} from "@j6/contracts";
+import { resolveProjectSettings } from "@j6/shared/projectSettings";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Stream from "effect/Stream";
@@ -53,7 +53,7 @@ it.effect.each([
     const manager = yield* Preview.make.pipe(
       Effect.provide(
         Layer.merge(
-          ServerConfig.layerTest(process.cwd(), { prefix: "t3-preview-controls-" }).pipe(
+          ServerConfig.layerTest(process.cwd(), { prefix: "j6-preview-controls-" }).pipe(
             Layer.provide(NodeServices.layer),
           ),
           NodeCrypto.layer,

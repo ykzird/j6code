@@ -1,16 +1,16 @@
-import { scopeThreadRef } from "@t3tools/client-runtime/environment";
+import { scopeThreadRef } from "@j6/client-runtime/environment";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
-import { deriveThreadQueueWorkflowState } from "@t3tools/client-runtime/state/thread-workflows";
-import { assistantCitationsToPlainText } from "@t3tools/shared/assistantCitations";
-import { isSlashCommand } from "@t3tools/shared/composerTrigger";
+} from "@j6/client-runtime/state/runtime";
+import { deriveThreadQueueWorkflowState } from "@j6/client-runtime/state/thread-workflows";
+import { assistantCitationsToPlainText } from "@j6/shared/assistantCitations";
+import { isSlashCommand } from "@j6/shared/composerTrigger";
 import {
   isAttachmentOnlyBootstrapPrompt,
   replaceComposerContextReferences,
-} from "@t3tools/shared/composerContextReferences";
-import { composerFileLinksToPlainText } from "@t3tools/shared/composerInlineTokens";
+} from "@j6/shared/composerContextReferences";
+import { composerFileLinksToPlainText } from "@j6/shared/composerInlineTokens";
 import {
   parseGoalCommand,
   type ChatAttachment as ContractChatAttachment,
@@ -18,8 +18,8 @@ import {
   type MessageId,
   type RunId,
   type ThreadId,
-} from "@t3tools/contracts";
-import { resolveUserMessagePresentation } from "@t3tools/client-runtime/user-message";
+} from "@j6/contracts";
+import { resolveUserMessagePresentation } from "@j6/client-runtime/user-message";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowUpIcon,
@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 import * as DateTime from "effect/DateTime";
 import { msg, T, useGT, useMessages } from "gt-react";
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { useId, useImperativeHandle, useRef, useState, type ReactNode, type Ref } from "react";
 
 import { useAssetUrls } from "../../assets/assetUrls";
@@ -46,7 +46,7 @@ import { Button, InlineButton } from "../ui/button";
 import { toastManager } from "../ui/toast";
 import { m } from "../../i18n/messages";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
-import type { TimestampFormat } from "@t3tools/contracts/settings";
+import type { TimestampFormat } from "@j6/contracts/settings";
 import { GuestMessageName } from "./guestMessageStyle";
 import { TimelineRowTimestamp } from "./TimelineRowParts";
 import { FoldedMessageHeader, useScheduledTaskTitle } from "./TimelineUserMessageRow";
@@ -516,9 +516,9 @@ function QueuedMessage(props: {
 
   return (
     <>
-      {attribution === "t3code" ? (
+      {attribution === "j6code" ? (
         <p className="me-1 text-2xs text-muted-foreground/70">
-          <T>Sent by T3 Code</T>
+          <T>Sent by J6 Code</T>
         </p>
       ) : null}
       {presentation?.guestName === undefined ? null : (

@@ -1,10 +1,10 @@
-import { threadChipCopyTarget } from "@t3tools/client-runtime/thread-reference";
-import { type ComposerContextClipboardFragment, EnvironmentId, ThreadId } from "@t3tools/contracts";
+import { threadChipCopyTarget } from "@j6/client-runtime/thread-reference";
+import { type ComposerContextClipboardFragment, EnvironmentId, ThreadId } from "@j6/contracts";
 import {
   COMPOSER_CONTEXT_CLIPBOARD_MIME,
   encodeComposerContextFragment,
-} from "@t3tools/shared/composerContextClipboard";
-import { threadContextRecord } from "@t3tools/shared/composerContextReferences";
+} from "@j6/shared/composerContextClipboard";
+import { threadContextRecord } from "@j6/shared/composerContextReferences";
 import { describe, expect, it } from "vite-plus/test";
 
 import { importPastedComposerText } from "./composerInlineTokenPaste";
@@ -17,7 +17,7 @@ const clipboard = (data: Record<string, string>) => ({
   getData: (type: string) => data[type] ?? "",
 });
 const chip = (title: string) =>
-  `[${title}](t3-context://v1/thread/${threadContextRecord(thread, title).contextId})`;
+  `[${title}](j6-context://v1/thread/${threadContextRecord(thread, title).contextId})`;
 
 /** Imports every record it is offered, as the composer does for a thread its agent can read. */
 const importAll =
@@ -44,7 +44,7 @@ describe("importPastedComposerText", () => {
 
   it("makes a chip of a v2 link pasted without T3's clipboard format", () => {
     const text = importPastedComposerText(
-      clipboard({ "text/plain": "[Login](t3-thread://v2/env-1/thread-1)" }),
+      clipboard({ "text/plain": "[Login](j6-thread://v2/env-1/thread-1)" }),
       importAll([]),
     );
     expect(text).toBe(chip("Login"));

@@ -31,7 +31,7 @@ import {
   PullRequestOperationError,
   PullRequestSummary,
   type VcsStatusResult,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import { persistPullRequestStats } from "./pullRequestStatsPersistence.ts";

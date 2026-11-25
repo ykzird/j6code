@@ -1,4 +1,4 @@
-import type { ChangeRequestTerminology } from "@t3tools/client-runtime/source-control-clients";
+import type { ChangeRequestTerminology } from "@j6/client-runtime/source-control-clients";
 import { msg } from "gt-react";
 
 import { m } from "~/i18n/messages";

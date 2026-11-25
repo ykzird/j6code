@@ -26,13 +26,13 @@ const buildVersion =
   resolveTaggedSourceVersion(NodePath.join(import.meta.dirname, "../.."), packageJson.version);
 const cliBuildChannel = /^[^-+]+-(?:nightly|preview)\./.test(buildVersion) ? "nightly" : "latest";
 // tsdown SEA needs one chunk (sourcemaps count) and Node >=25.7, so package separately.
-// "bundle" emits the embedded CLI. "1" builds dist-exe/t3 from the bootstrap.
+// "bundle" emits the embedded CLI. "1" builds dist-exe/j6 from the bootstrap.
 // TEMPORARY one-time Node fix. Remove when fixed: https://github.com/nodejs/node/issues/67048
 // "bootstrap" stops at bin.mjs for scripts/cli.ts to inject (linux-arm64).
-const packMode = process.env.T3CODE_PACK_EXE;
+const packMode = process.env.J6CODE_PACK_EXE;
 const packBootstrap = packMode === "1" || packMode === "bootstrap";
 const packExecutable = packBootstrap || packMode === "bundle";
-const cliAssetDir = process.env.T3CODE_CLI_ASSET_DIR ?? "";
+const cliAssetDir = process.env.J6CODE_CLI_ASSET_DIR ?? "";
 if (packExecutable && !cliAssetDir) throw new Error("Build the executable with build:exe.");
 // TEMPORARY one-time Node fix. Remove when fixed: https://github.com/nodejs/node/issues/67048
 // No linux-arm64: --build-sea output cannot load on 16/64 KiB page kernels, so it builds natively.
@@ -43,7 +43,7 @@ const SEA_TARGETS = {
   "win-arm64": { platform: "win", arch: "arm64" },
   "win-x64": { platform: "win", arch: "x64" },
 } as const;
-const packExecutableTarget = process.env.T3CODE_PACK_EXE_TARGET?.trim();
+const packExecutableTarget = process.env.J6CODE_PACK_EXE_TARGET?.trim();
 const cliNodeVersion = rootPackageJson.engines.node;
 if (packExecutable && !packExecutableTarget && process.versions.node !== cliNodeVersion) {
   throw new Error(
@@ -52,7 +52,7 @@ if (packExecutable && !packExecutableTarget && process.versions.node !== cliNode
 }
 if (packExecutableTarget && !Object.hasOwn(SEA_TARGETS, packExecutableTarget)) {
   throw new Error(
-    `T3CODE_PACK_EXE_TARGET must be one of ${Object.keys(SEA_TARGETS).join(", ")}, got "${packExecutableTarget}".`,
+    `J6CODE_PACK_EXE_TARGET must be one of ${Object.keys(SEA_TARGETS).join(", ")}, got "${packExecutableTarget}".`,
   );
 }
 const packExecutableTargets = packExecutableTarget
@@ -77,7 +77,7 @@ export default mergeConfig(
       tasks: {
         build: {
           command: "node scripts/cli.ts build",
-          dependsOn: ["@t3tools/web#build"],
+          dependsOn: ["@j6/web#build"],
           cache: false,
         },
         // A local tsbuildinfo is leftover build state, not a typecheck input.
@@ -91,7 +91,7 @@ export default mergeConfig(
       plugins: [
         {
           // Every server module reads its version from this manifest import.
-          name: "t3code:build-version",
+          name: "j6code:build-version",
           load(id) {
             if (NodePath.resolve(id) !== serverManifestPath) return;
             return {
@@ -115,7 +115,7 @@ export default mergeConfig(
       ...(packMode === "1"
         ? {
             exe: {
-              fileName: "t3",
+              fileName: "j6",
               outDir: "dist-exe",
               ...(packExecutableTargets ? { targets: packExecutableTargets } : {}),
               // Node SEA useCodeCache breaks import(), which the server needs.
@@ -141,22 +141,22 @@ export default mergeConfig(
         js: "#!/usr/bin/env node\n",
       },
       define: {
-        __T3CODE_BUILD_CHANNEL__: JSON.stringify(cliBuildChannel),
-        __T3CODE_BUILD_RELAY_URL__: JSON.stringify(repoEnv.T3CODE_RELAY_URL?.trim() ?? ""),
-        __T3CODE_BUILD_CLERK_PUBLISHABLE_KEY__: JSON.stringify(
-          repoEnv.T3CODE_CLERK_PUBLISHABLE_KEY?.trim() ?? "",
+        __J6CODE_BUILD_CHANNEL__: JSON.stringify(cliBuildChannel),
+        __J6CODE_BUILD_RELAY_URL__: JSON.stringify(repoEnv.J6CODE_RELAY_URL?.trim() ?? ""),
+        __J6CODE_BUILD_CLERK_PUBLISHABLE_KEY__: JSON.stringify(
+          repoEnv.J6CODE_CLERK_PUBLISHABLE_KEY?.trim() ?? "",
         ),
-        __T3CODE_BUILD_CLERK_CLI_OAUTH_CLIENT_ID__: JSON.stringify(
-          repoEnv.T3CODE_CLERK_CLI_OAUTH_CLIENT_ID?.trim() ?? "",
+        __J6CODE_BUILD_CLERK_CLI_OAUTH_CLIENT_ID__: JSON.stringify(
+          repoEnv.J6CODE_CLERK_CLI_OAUTH_CLIENT_ID?.trim() ?? "",
         ),
-        __T3CODE_BUILD_RELAY_CLIENT_OTLP_TRACES_URL__: JSON.stringify(
-          repoEnv.T3CODE_RELAY_CLIENT_OTLP_TRACES_URL?.trim() ?? "",
+        __J6CODE_BUILD_RELAY_CLIENT_OTLP_TRACES_URL__: JSON.stringify(
+          repoEnv.J6CODE_RELAY_CLIENT_OTLP_TRACES_URL?.trim() ?? "",
         ),
-        __T3CODE_BUILD_RELAY_CLIENT_OTLP_TRACES_DATASET__: JSON.stringify(
-          repoEnv.T3CODE_RELAY_CLIENT_OTLP_TRACES_DATASET?.trim() ?? "",
+        __J6CODE_BUILD_RELAY_CLIENT_OTLP_TRACES_DATASET__: JSON.stringify(
+          repoEnv.J6CODE_RELAY_CLIENT_OTLP_TRACES_DATASET?.trim() ?? "",
         ),
-        __T3CODE_BUILD_RELAY_CLIENT_OTLP_TRACES_TOKEN__: JSON.stringify(
-          repoEnv.T3CODE_RELAY_CLIENT_OTLP_TRACES_TOKEN?.trim() ?? "",
+        __J6CODE_BUILD_RELAY_CLIENT_OTLP_TRACES_TOKEN__: JSON.stringify(
+          repoEnv.J6CODE_RELAY_CLIENT_OTLP_TRACES_TOKEN?.trim() ?? "",
         ),
       },
     },

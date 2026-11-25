@@ -1,5 +1,5 @@
 import { useAtomValue } from "@effect/atom-react";
-import { splitMarkdown, type SplitMarkdown } from "@t3tools/shared/markdownChunks";
+import { splitMarkdown, type SplitMarkdown } from "@j6/shared/markdownChunks";
 import * as Effect from "effect/Effect";
 import { FetchHttpClient, HttpClient, HttpClientResponse } from "effect/http";
 import * as Stream from "effect/Stream";

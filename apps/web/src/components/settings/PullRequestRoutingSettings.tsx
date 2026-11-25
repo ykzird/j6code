@@ -1,10 +1,10 @@
 import { useAtomValue } from "@effect/atom-react";
-import { resolveEnvironmentMachineKind } from "@t3tools/contracts";
+import { resolveEnvironmentMachineKind } from "@j6/contracts";
 import {
   pullRequestRoutingConnectionKey,
   pullRequestRoutingPermissionFor,
   type PullRequestRoutingPermission,
-} from "@t3tools/client-runtime/connection";
+} from "@j6/client-runtime/connection";
 import { msg, T, useGT, useMessages } from "gt-react";
 import { useState } from "react";
 

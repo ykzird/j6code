@@ -1,4 +1,4 @@
-import { T3CHAT_PLAN_TUNNEL_LIMITS, type RelayT3ChatLink } from "@t3tools/contracts/relay";
+import { T3CHAT_PLAN_TUNNEL_LIMITS, type RelayT3ChatLink } from "@j6/contracts/relay";
 import { MessageSquareIcon } from "lucide-react";
 import { T, useGT, Var } from "gt-react";
 import type { ReactNode } from "react";
@@ -66,7 +66,7 @@ export function T3ChatUserProfilePage() {
     <ClerkUserProfilePage
       title="T3 Chat"
       description={gt(
-        "Link a paid T3 Chat account for more T3 Connect tunnels: up to {pro} with Pro, {premier} with Premier.",
+        "Link a paid T3 Chat account for more J6 Connect tunnels: up to {pro} with Pro, {premier} with Premier.",
         { pro: T3CHAT_PLAN_TUNNEL_LIMITS.pro, premier: T3CHAT_PLAN_TUNNEL_LIMITS.premier },
       )}
       action={
@@ -86,7 +86,7 @@ export function T3ChatUserProfilePage() {
         </div>
       ) : data === null ? null : !data.available ? (
         <p className="border-t py-4 text-xs text-muted-foreground">
-          <T>This T3 Connect server does not support T3 Chat linking.</T>
+          <T>This J6 Connect server does not support T3 Chat linking.</T>
         </p>
       ) : (
         <ul className="border-t">
@@ -108,12 +108,12 @@ export function T3ChatUserProfilePage() {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        t3.chat
+                        j6.chat
                       </a>
                       , then select Refresh.
                     </T>
                   ) : (
-                    gt("You confirm the link on t3.chat.")
+                    gt("You confirm the link on j6.chat.")
                   )}
                 </p>
               </div>

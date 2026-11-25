@@ -10,9 +10,9 @@ import {
   settingsSecretLiteral,
   type UsageLimitSourceId,
   type UsageLimitSourceSnapshot,
-} from "@t3tools/contracts";
-import { resolveServerBackgroundActivitySettings } from "@t3tools/shared/backgroundActivitySettings";
-import { antigravityWindowLimitsModel, hubRoutes } from "@t3tools/shared/usageLimits";
+} from "@j6/contracts";
+import { resolveServerBackgroundActivitySettings } from "@j6/shared/backgroundActivitySettings";
+import { antigravityWindowLimitsModel, hubRoutes } from "@j6/shared/usageLimits";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import * as Duration from "effect/Duration";
@@ -28,7 +28,7 @@ import * as HttpClientError from "effect/http/HttpClientError";
 import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect/http";
 
 import * as BackgroundPolicy from "../background/BackgroundPolicy.ts";
-import * as SecretResolver from "@t3tools/secret-provider-core/server/SecretResolver";
+import * as SecretResolver from "@j6/secret-provider-core/server/SecretResolver";
 import * as SecretResolverLayer from "../secrets/SecretResolver.ts";
 import { resolveSettingsSecrets } from "../secrets/settingsSecretValue.ts";
 import * as Settings from "../serverSettings.ts";
@@ -72,7 +72,7 @@ export class UsageLimitSources extends Context.Service<
       input: UsageLimitSourceConsumeResetCreditInput,
     ) => Effect.Effect<ProviderConsumeResetCreditResult, UsageLimitSourceError>;
   }
->()("t3/usage/UsageLimitSources") {}
+>()("j6/usage/UsageLimitSources") {}
 
 function sourceLabel(id: string, config: UsageLimitSourceConfig): string {
   if (config.label) return config.label;
@@ -345,7 +345,7 @@ export class UsageLimitResetFallback extends Context.Reference<{
     endpoint: string,
     model: string | null,
   ) => Effect.Effect<string | null>;
-}>("t3/usage/UsageLimitResetFallback", {
+}>("j6/usage/UsageLimitResetFallback", {
   defaultValue: () => ({ resetAt: () => Effect.succeed(null) }),
 }) {}
 

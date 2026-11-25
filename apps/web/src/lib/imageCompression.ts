@@ -2,7 +2,7 @@ import {
   downscalableImageMimeType,
   fitImageAttachmentSize,
   IMAGE_ATTACHMENT_MAX_EDGE,
-} from "@t3tools/client-runtime/image-attachment-size";
+} from "@j6/client-runtime/image-attachment-size";
 import { msg } from "gt-react";
 
 import { m } from "../i18n/messages";

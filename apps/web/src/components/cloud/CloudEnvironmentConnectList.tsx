@@ -2,7 +2,7 @@ import {
   errorDisplayMessage,
   findErrorTraceId,
   thrownErrorMessage,
-} from "@t3tools/client-runtime/errors";
+} from "@j6/client-runtime/errors";
 import {
   connectionErrorText,
   type ConnectionTarget,
@@ -10,22 +10,22 @@ import {
   RelayConnectionRegistration,
   RelayConnectionTarget,
   orchestrationProtocolCompatibilityError,
-} from "@t3tools/client-runtime/connection";
-import { relayOfflineReasonMessage } from "@t3tools/client-runtime/relay";
+} from "@j6/client-runtime/connection";
+import { relayOfflineReasonMessage } from "@j6/client-runtime/relay";
 import {
   isAtomCommandInterrupted,
   settlePromise,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
+} from "@j6/client-runtime/state/runtime";
 import {
   type EnvironmentId,
   resolveEnvironmentMachineKind,
   type ServerConfig,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import type {
   RelayClientEnvironmentRecord,
   RelayEnvironmentStatusResponse,
-} from "@t3tools/contracts/relay";
+} from "@j6/contracts/relay";
 import * as Option from "effect/Option";
 import { T, useGT, useMessages } from "gt-react";
 import { type ReactNode, useEffect, useEffectEvent, useState } from "react";
@@ -145,7 +145,7 @@ export function CloudEnvironmentConnectRows({
       .map((environment) => environment.environmentId),
   );
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- fetches relay discovery when its inputs change, unless hidden polling covers it, and reports readiness
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- fetches relay discovery when its inputs change, unless hidden polling covers it, and reports readiness
   useEffect(() => {
     let active = true;
     // A single row belongs to a view that already listed the machines; listing again empties it.
@@ -178,13 +178,13 @@ export function CloudEnvironmentConnectRows({
       toastManager.add({
         type: "success",
         title: savedWithoutRelay.has(environment.environmentId)
-          ? gt("T3 Connect route added")
+          ? gt("J6 Connect route added")
           : gt("Environment added"),
         description: savedWithoutRelay.has(environment.environmentId)
-          ? gt("{environment} falls back to T3 Connect when its other routes are unreachable.", {
+          ? gt("{environment} falls back to J6 Connect when its other routes are unreachable.", {
               environment: environment.label,
             })
-          : gt("Connecting to {environment} through T3 Connect.", {
+          : gt("Connecting to {environment} through J6 Connect.", {
               environment: environment.label,
             }),
       });
@@ -195,9 +195,9 @@ export function CloudEnvironmentConnectRows({
     }
     const cause = squashAtomCommandFailure(result);
     const message =
-      thrownErrorMessage(cause, m) ?? gt("Could not connect the T3 Connect environment.");
+      thrownErrorMessage(cause, m) ?? gt("Could not connect the J6 Connect environment.");
     const traceId = findErrorTraceId(cause);
-    console.error("[t3-connect] Could not connect environment", { message, traceId, cause });
+    console.error("[j6-connect] Could not connect environment", { message, traceId, cause });
     toastManager.add({
       type: "error",
       title: gt("Could not connect environment"),
@@ -214,7 +214,7 @@ export function CloudEnvironmentConnectRows({
     return false;
   };
 
-  // Omit machines saved over other routes; onboarding selection must not add a T3 Connect route.
+  // Omit machines saved over other routes; onboarding selection must not add a J6 Connect route.
   const isVisibleEnvironment = (environmentId: EnvironmentId) =>
     (only === undefined || environmentId === only) &&
     environmentId !== primaryEnvironmentId &&
@@ -251,7 +251,7 @@ export function CloudEnvironmentConnectRows({
       }
     },
   );
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- auto-selects newly discovered machines from the discovery store and starts their relay connections
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- auto-selects newly discovered machines from the discovery store and starts their relay connections
   useEffect(() => {
     // oxlint-disable-next-line react/set-state-in-effect -- Discovery results arrive from an external store and auto-selection starts relay connections, which mark themselves connecting.
     selectNewComputers(environmentsState.environments);
@@ -261,7 +261,7 @@ export function CloudEnvironmentConnectRows({
   const shouldRefreshWhileEmpty =
     refreshWhileEmpty && visibleEnvironments.length === 0 && !environmentsState.offline;
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- polls relay discovery on a timer, focus and visibility change while no machine is found
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- polls relay discovery on a timer, focus and visibility change while no machine is found
   useEffect(() => {
     if (!shouldRefreshWhileEmpty) return;
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -319,7 +319,7 @@ export function CloudEnvironmentConnectRows({
       return (
         <div className={ITEM_ROW_CLASSNAME}>
           <p className="text-sm font-medium text-destructive">
-            <T>Could not load T3 Connect environments</T>
+            <T>Could not load J6 Connect environments</T>
           </p>
           <p className="mt-1 text-xs text-muted-foreground">{discoveryProblem}</p>
           <Button
@@ -382,23 +382,23 @@ export function CloudEnvironmentConnectRows({
             ? "bg-warning"
             : "bg-muted-foreground/35";
     const notAdded = savedWithoutRelay.has(environment.environmentId)
-      ? gt("Saved without T3 Connect")
+      ? gt("Saved without J6 Connect")
       : gt("Not added");
     const statusText =
       unsupported && !savedEnvironment
-        ? `T3 Connect · ${notAdded} · ${gt("Client not supported")}`
+        ? `J6 Connect · ${notAdded} · ${gt("Client not supported")}`
         : offlineReason !== null
           ? offlineReason
           : savedConnection
             ? savedConnection.statusText
             : availability === "online"
-              ? `T3 Connect · ${notAdded} · ${gt("Relay online")}`
+              ? `J6 Connect · ${notAdded} · ${gt("Relay online")}`
               : availability === "offline"
-                ? `T3 Connect · ${notAdded} · ${gt("Relay offline")}`
+                ? `J6 Connect · ${notAdded} · ${gt("Relay offline")}`
                 : availability === "checking"
-                  ? `T3 Connect · ${notAdded} · ${gt("Checking relay status…")}`
+                  ? `J6 Connect · ${notAdded} · ${gt("Checking relay status…")}`
                   : (errorDisplayMessage(Option.getOrNull(error), m) ??
-                    `T3 Connect · ${notAdded} · ${gt("Relay status unavailable")}`);
+                    `J6 Connect · ${notAdded} · ${gt("Relay status unavailable")}`);
     if (selection) {
       return (
         <label

@@ -1,12 +1,12 @@
-import { managedCapabilityDenial } from "@t3tools/client-runtime/contract-labels";
-import { runAtomCommand, squashAtomCommandFailure } from "@t3tools/client-runtime/state/runtime";
+import { managedCapabilityDenial } from "@j6/client-runtime/contract-labels";
+import { runAtomCommand, squashAtomCommandFailure } from "@j6/client-runtime/state/runtime";
 import {
   AuthFilesystemReadScope,
   AuthTerminalOperateScope,
   type EnvironmentId,
   type ProjectId,
   type WorktreeLayoutCommand,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { msg } from "gt-react";
 
 import { m } from "./i18n/messages";

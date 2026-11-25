@@ -3,7 +3,7 @@ import {
   type DeviceHostId,
   DeviceOperationError,
   type DevicePlatform,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -27,7 +27,7 @@ const SIMULATOR_LIST_FAILED =
 const AVDMANAGER_LIST_FAILED = "[android-utils] Failed to run `avdmanager list avd`";
 const GETPROP_LINE = /^\[([^\]]+)\]: \[(.*)\]$/;
 const runsOnXcode26Runtime = (version: string) => Number(/^iOS (\d+)/.exec(version)?.[1]) <= 26;
-const DEFAULT_DISPLAY_SCREENSHOT = `f=$(mktemp -t t3-screenshot) || exit 1
+const DEFAULT_DISPLAY_SCREENSHOT = `f=$(mktemp -t j6-screenshot) || exit 1
 trap 'rm -f "$f"' 0
 xcrun simctl io "$1" screenshot --type=png "$f" >/dev/null && base64 -i "$f"`;
 

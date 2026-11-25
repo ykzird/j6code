@@ -1,11 +1,11 @@
 import { assert, describe, it } from "@effect/vitest";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import type { ManagedPolicyLimits } from "@t3tools/contracts";
-import { EDITORS, REMOTE_CAPABLE_EDITOR_IDS } from "@t3tools/contracts";
-import { resolveEditorCommand } from "@t3tools/shared/editor";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { makePathDirectoryListings, PathDirectoryListings } from "@t3tools/shared/shell";
-import { ManagedPolicyFileError } from "@t3tools/shared/managedPolicyFile";
+import type { ManagedPolicyLimits } from "@j6/contracts";
+import { EDITORS, REMOTE_CAPABLE_EDITOR_IDS } from "@j6/contracts";
+import { resolveEditorCommand } from "@j6/shared/editor";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { makePathDirectoryListings, PathDirectoryListings } from "@j6/shared/shell";
+import { ManagedPolicyFileError } from "@j6/shared/managedPolicyFile";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
 import * as Effect from "effect/Effect";
@@ -478,7 +478,7 @@ it.effect.skipIf(HostProcess.Platform.defaultValue() === "win32")(
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-remote-editors-" });
+      const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-remote-editors-" });
       for (const app of ["Cursor", "Visual Studio Code", "WebStorm"]) {
         const executable = path.join(
           home,
@@ -511,7 +511,7 @@ describe("probeRemoteEditors PATH scan", () => {
   const makeFakePath = Effect.fnUntraced(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const root = yield* fs.makeTempDirectoryScoped({ prefix: "t3-probe-path-" });
+    const root = yield* fs.makeTempDirectoryScoped({ prefix: "j6-probe-path-" });
     const dirs = ["a", "b", "c", "d"].map((name) => path.join(root, name));
     for (const dir of dirs) yield* fs.makeDirectory(dir, { recursive: true });
     // Launchers in different PATH directories, deliberately not in REMOTE_CAPABLE_EDITOR_IDS order.

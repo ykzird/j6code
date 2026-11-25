@@ -1,11 +1,11 @@
 import { useAtomValue } from "@effect/atom-react";
-import { connectionStatusTitle } from "@t3tools/client-runtime/connection";
-import type { PeerLinkHealth } from "@t3tools/client-runtime/state/peerLinks";
+import { connectionStatusTitle } from "@j6/client-runtime/connection";
+import type { PeerLinkHealth } from "@j6/client-runtime/state/peerLinks";
 import {
   AuthMcpClientAccess,
   type EnvironmentId,
   resolveEnvironmentMachineKind,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 import { T, useGT, useMessages } from "gt-react";
 import { ArrowRightIcon, ClockAlertIcon, PlusIcon, TriangleAlertIcon, XIcon } from "lucide-react";
@@ -115,7 +115,7 @@ export interface FleetDetailsProps {
   readonly graph: FleetGraph;
   readonly stacks: ReadonlyArray<FleetStack>;
   readonly environments: ReadonlyArray<EnvironmentPresentation>;
-  /** Why the account's T3 Connect machines are missing from the map, and how to ask again. */
+  /** Why the account's J6 Connect machines are missing from the map, and how to ask again. */
   readonly connectProblem: { readonly message: string; readonly retry: () => void } | null;
   readonly selection: FleetFocus | null;
   /** The machine a map search landed on inside the selected stack. */
@@ -165,7 +165,7 @@ export function FleetDetails(props: FleetDetailsProps) {
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-border/60 px-3 py-2 sm:px-4">
           <p className="min-w-0 flex-1 text-muted-foreground">
             <span className="font-medium text-destructive">
-              <T>Could not load T3 Connect environments</T>
+              <T>Could not load J6 Connect environments</T>
             </span>{" "}
             {connectProblem.message}
           </p>

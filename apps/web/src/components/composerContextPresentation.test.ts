@@ -1,4 +1,4 @@
-import { ChatAttachmentId, ComposerContextId, EnvironmentId, ThreadId } from "@t3tools/contracts";
+import { ChatAttachmentId, ComposerContextId, EnvironmentId, ThreadId } from "@j6/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { composerFileNeedsReattach } from "~/composerDraftStore";

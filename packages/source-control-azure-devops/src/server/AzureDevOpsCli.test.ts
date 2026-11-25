@@ -5,12 +5,12 @@ import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 import * as PlatformError from "effect/PlatformError";
 import { ChildProcessSpawner } from "effect/process";
-import { VcsProcessExitError, VcsProcessSpawnError } from "@t3tools/contracts";
+import { VcsProcessExitError, VcsProcessSpawnError } from "@j6/contracts";
 
-import type * as SourceControlHost from "@t3tools/source-control-core/server/SourceControlHost";
-import * as TestSourceControlHost from "@t3tools/source-control-testing/TestSourceControlHost";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { SpawnExecutableResolution } from "@t3tools/shared/shell";
+import type * as SourceControlHost from "@j6/source-control-core/server/SourceControlHost";
+import * as TestSourceControlHost from "@j6/source-control-testing/TestSourceControlHost";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { SpawnExecutableResolution } from "@j6/shared/shell";
 import { AzureCliInstallLocation, type AzureCliInstall } from "./azureCliLauncher.ts";
 import * as AzureDevOpsCli from "./AzureDevOpsCli.ts";
 import { primaryRemoteUrl, scopeAzureCliArgs } from "./AzureDevOpsCli.ts";

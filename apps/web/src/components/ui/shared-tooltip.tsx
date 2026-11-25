@@ -141,7 +141,7 @@ export function SharedTooltipProvider({ children }: { children: ReactNode }) {
   }));
 
   const activeAnchor = state?.open ? state.anchor : null;
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- links the active trigger DOM element to the shared tooltip popup via aria-describedby
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- links the active trigger DOM element to the shared tooltip popup via aria-describedby
   useEffect(() => {
     if (!activeAnchor) return;
     setAriaDescribedBy(activeAnchor, popupId, true);
@@ -188,11 +188,11 @@ export function useSharedTooltip(content: SharedTooltipContent): SharedTooltipTr
   const api = use(SharedTooltipContext);
   const scrollTracker = useTooltipScrollTracker();
   const anchorRef = useRef<HTMLElement | null>(null);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- refreshes an open shared tooltip when its trigger's label changes
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- refreshes an open shared tooltip when its trigger's label changes
   useEffect(() => {
     if (api && anchorRef.current) api.refresh(anchorRef.current, content);
   }, [api, content]);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- a removed trigger fires no pointerleave, so it must close the popup anchored to it
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- a removed trigger fires no pointerleave, so it must close the popup anchored to it
   useEffect(
     () => () => {
       if (api && anchorRef.current) api.release(anchorRef.current);

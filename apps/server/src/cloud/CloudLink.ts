@@ -2,7 +2,7 @@ import {
   type EnvironmentCloudLinkStateResult,
   type EnvironmentCloudPreferencesRequest,
   type EnvironmentCloudRelayConfigResult,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   RelayCloudEnvironmentHealthProofPayload,
   type RelayCloudEnvironmentHealthRequest,
@@ -24,8 +24,8 @@ import {
   RelayManagedEndpointRecoveryResponse,
   type RelayManagedEndpointRuntimeConfig,
   RelayOkResponse,
-} from "@t3tools/contracts/relay";
-import { withRelayClientTracing } from "@t3tools/shared/relayTracing";
+} from "@j6/contracts/relay";
+import { withRelayClientTracing } from "@j6/shared/relayTracing";
 import {
   decodeRelayJwt,
   normalizeRelayIssuer,
@@ -36,8 +36,8 @@ import {
   RELAY_MINT_REQUEST_TYP,
   RELAY_MINT_RESPONSE_TYP,
   verifyRelayJwt,
-} from "@t3tools/shared/relayJwt";
-import { isSecureRelayUrl, normalizeSecureRelayUrl } from "@t3tools/shared/relayUrl";
+} from "@j6/shared/relayJwt";
+import { isSecureRelayUrl, normalizeSecureRelayUrl } from "@j6/shared/relayUrl";
 import * as Context from "effect/Context";
 import * as Digest from "effect/crypto/Digest";
 import * as SecureRandom from "effect/crypto/SecureRandom";
@@ -168,7 +168,7 @@ export class CloudLinkNotLinkedError extends Schema.TaggedError<CloudLinkNotLink
   {},
 ) {
   override get message(): string {
-    return "Link this environment to T3 Connect first.";
+    return "Link this environment to J6 Connect first.";
   }
 }
 
@@ -186,7 +186,7 @@ export class CloudLinkAuthorizationMissingError extends Schema.TaggedError<Cloud
   {},
 ) {
   override get message(): string {
-    return "Run `t3 connect link` to authorize this environment.";
+    return "Run `j6 connect link` to authorize this environment.";
   }
 }
 
@@ -235,20 +235,20 @@ export class CloudLinkEndpointUnavailableError extends Schema.TaggedError<CloudL
 
 const INTERNAL_OPERATION_MESSAGES = {
   "relay-url-unconfigured":
-    "T3CODE_RELAY_URL must be configured as a secure absolute HTTPS origin.",
+    "J6CODE_RELAY_URL must be configured as a secure absolute HTTPS origin.",
   "generate-link-proof": "Could not generate environment link proof.",
   "persist-relay-config": "Could not persist environment relay configuration.",
   "register-endpoint-origin": "Could not register the managed endpoint origin.",
   "resolve-server-origin": "Could not resolve the local server origin.",
-  "persist-desired-link": "Could not persist desired T3 Connect link state.",
+  "persist-desired-link": "Could not persist desired J6 Connect link state.",
   "sign-recovery-proof": "Could not sign the managed tunnel recovery request.",
   "unsupported-recovered-tunnel":
-    "T3 Connect returned an unsupported managed tunnel configuration.",
+    "J6 Connect returned an unsupported managed tunnel configuration.",
   "persist-recovered-tunnel": "Could not persist the recovered managed tunnel configuration.",
   "read-relay-config": "Could not read environment relay configuration.",
   "remove-relay-config": "Could not remove environment relay configuration.",
-  "update-live-activity-preference": "Could not update T3 Connect Live Activity preferences.",
-  "update-webhook-settings": "Could not update T3 Connect webhook settings.",
+  "update-live-activity-preference": "Could not update J6 Connect Live Activity preferences.",
+  "update-webhook-settings": "Could not update J6 Connect webhook settings.",
   "read-preferences": "Could not read environment cloud preferences.",
   "persist-preferences": "Could not persist environment cloud preferences.",
   "answer-health": "Could not answer cloud health request.",
@@ -296,7 +296,7 @@ export const shouldRetryCloudLink = (error: unknown): boolean =>
   !(CliTokenManager.isCloudCliCredentialRefreshError(error) && error.requiresLogin);
 
 const rollbackFailed = (cause: unknown) =>
-  Effect.logWarning("Could not roll back a T3 Connect preference", { cause });
+  Effect.logWarning("Could not roll back a J6 Connect preference", { cause });
 
 const requireRelayUrl = relayUrlConfig.pipe(
   Effect.mapError(
@@ -508,7 +508,7 @@ export class CloudLink extends Context.Service<
       | HttpClientError.HttpClientError
     >;
   }
->()("t3/cloud/CloudLink") {}
+>()("j6/cloud/CloudLink") {}
 
 const make = Effect.gen(function* () {
   const secrets = yield* ServerSecretStore.ServerSecretStore;
@@ -616,7 +616,7 @@ const make = Effect.gen(function* () {
     );
     const descriptor = yield* environment.getDescriptor;
     const payload = {
-      iss: `t3-env:${descriptor.environmentId}`,
+      iss: `j6-env:${descriptor.environmentId}`,
       aud: normalizeRelayIssuer(request.relayIssuer),
       sub: descriptor.environmentId,
       jti: yield* random.uuidV4(),
@@ -953,7 +953,7 @@ const make = Effect.gen(function* () {
     const now = yield* DateTime.now;
     const issuedAt = Math.floor(now.epochMilliseconds / 1_000);
     const claims = {
-      iss: `t3-env:${input.environmentId}`,
+      iss: `j6-env:${input.environmentId}`,
       aud: normalizeRelayIssuer(
         Option.isSome(configuredIssuer) ? bytesToString(configuredIssuer.value) : input.relayUrl,
       ),
@@ -995,7 +995,7 @@ const make = Effect.gen(function* () {
           return false;
         }
         yield* Effect.logWarning(
-          "T3 Connect no longer accepts this environment's link. Link it again to restore remote access.",
+          "J6 Connect no longer accepts this environment's link. Link it again to restore remote access.",
           { cause },
         );
         yield* secrets.set(CLOUD_LINK_REVOKED, stringToBytes("true"));
@@ -1519,7 +1519,7 @@ const make = Effect.gen(function* () {
         token: request.proof,
         typ: RELAY_HEALTH_REQUEST_TYP,
         issuer: normalizeRelayIssuer(relayIssuer),
-        audience: `t3-env:${environmentId}`,
+        audience: `j6-env:${environmentId}`,
       }).pipe(Effect.provideService(Signature.Signature, signature), Effect.option);
       if (
         Option.isNone(proofOption) ||
@@ -1546,7 +1546,7 @@ const make = Effect.gen(function* () {
       const descriptor = yield* environment.getDescriptor;
       const responseExpiresAt = DateTime.add(now, { minutes: 5 });
       const responsePayload = {
-        iss: `t3-env:${environmentId}`,
+        iss: `j6-env:${environmentId}`,
         aud: normalizeRelayIssuer(relayIssuer),
         sub: environmentId,
         jti: yield* random.uuidV4(),
@@ -1621,7 +1621,7 @@ const make = Effect.gen(function* () {
         token: request.proof,
         typ: RELAY_MINT_REQUEST_TYP,
         issuer: normalizeRelayIssuer(relayIssuer),
-        audience: `t3-env:${environmentId}`,
+        audience: `j6-env:${environmentId}`,
       }).pipe(Effect.provideService(Signature.Signature, signature), Effect.option);
       if (
         Option.isNone(proofOption) ||
@@ -1654,7 +1654,7 @@ const make = Effect.gen(function* () {
         requireApproval: settings.requireConnectDeviceApproval,
       });
       const responsePayload = {
-        iss: `t3-env:${environmentId}`,
+        iss: `j6-env:${environmentId}`,
         aud: normalizeRelayIssuer(relayIssuer),
         sub: environmentId,
         jti: yield* random.uuidV4(),
@@ -1690,9 +1690,9 @@ const make = Effect.gen(function* () {
   if (!ManagedLimits.allowsConnect(managedPolicy)) {
     // Reading state and unlinking stay available so clients can show and leave the old link.
     yield* unlink().pipe(
-      Effect.tap(() => Effect.logInfo("T3 Connect is off by managed policy; unlinked.")),
+      Effect.tap(() => Effect.logInfo("J6 Connect is off by managed policy; unlinked.")),
       Effect.catch((cause) =>
-        Effect.logWarning("Failed to unlink T3 Connect turned off by managed policy", { cause }),
+        Effect.logWarning("Failed to unlink J6 Connect turned off by managed policy", { cause }),
       ),
     );
     const refused = Effect.fn("CloudLink.refusedByPolicy")(function* () {

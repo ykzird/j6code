@@ -7,7 +7,7 @@ import {
   ProviderInstanceId,
   type ProviderOptionDescriptor,
   type ProviderOptionSelection,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
 import { copySorted } from "./Array.ts";
@@ -285,7 +285,7 @@ export function getProviderOptionStatedValue(
 }
 
 /** The variant choice that sends no variant; distinct from any variant name a provider defines. */
-export const DEFAULT_VARIANT_CHOICE_ID = "t3:default";
+export const DEFAULT_VARIANT_CHOICE_ID = "j6:default";
 
 export function getProviderOptionCurrentValue(
   descriptor: ProviderOptionDescriptor | null | undefined,

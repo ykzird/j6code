@@ -13,8 +13,8 @@ import {
   type OrchestratorMcpThreadRun,
   type OrchestratorMcpThreadStatus,
   type OrchestratorMcpThreadTimelineItem,
-} from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+} from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -61,7 +61,7 @@ export class ThreadServerNotRunningError extends Schema.TaggedError<ThreadServer
 ) {
   override readonly [Runtime.errorReported] = false;
   override get message(): string {
-    return `No running T3 Code server uses ${this.baseDir}. Start T3 Code, then retry.`;
+    return `No running J6 Code server uses ${this.baseDir}. Start J6 Code, then retry.`;
   }
 }
 
@@ -72,7 +72,7 @@ export class ThreadServerUnreachableError extends Schema.TaggedError<ThreadServe
   override readonly [Runtime.errorReported] = false;
   override get message(): string {
     const reason = this.cause instanceof Error ? ` ${this.cause.message}` : "";
-    return `Could not reach the T3 Code server at ${this.origin}.${reason}`;
+    return `Could not reach the J6 Code server at ${this.origin}.${reason}`;
   }
 }
 
@@ -93,7 +93,7 @@ class ThreadToolMissingError extends Schema.TaggedError<ThreadToolMissingError>(
 ) {
   override readonly [Runtime.errorReported] = false;
   override get message(): string {
-    return `This T3 Code server has no ${this.tool} tool. Update T3 Code, then retry.`;
+    return `This J6 Code server has no ${this.tool} tool. Update J6 Code, then retry.`;
   }
 }
 
@@ -112,7 +112,7 @@ export class ThreadProjectNotFoundError extends Schema.TaggedError<ThreadProject
 ) {
   override readonly [Runtime.errorReported] = false;
   override get message(): string {
-    return `No T3 Code project matches '${this.identifier}'. Pass a project id or a path inside a project.`;
+    return `No J6 Code project matches '${this.identifier}'. Pass a project id or a path inside a project.`;
   }
 }
 
@@ -125,7 +125,7 @@ export class ThreadNeedsInputError extends Schema.TaggedError<ThreadNeedsInputEr
   override readonly [Runtime.errorExitCode] = 2;
 
   override get message(): string {
-    return `Thread ${this.threadId} is waiting for an answer. Open it in T3 Code to respond.`;
+    return `Thread ${this.threadId} is waiting for an answer. Open it in J6 Code to respond.`;
   }
 }
 
@@ -211,7 +211,7 @@ const makeThreadTools = (session: McpToolSession, origin: string) => {
   const unexpected = (tool: string) =>
     new ThreadToolFailedError({
       tool,
-      detail: `The server sent an unexpected ${tool} result. Update the t3 CLI to match the server.`,
+      detail: `The server sent an unexpected ${tool} result. Update the j6 CLI to match the server.`,
     });
   return {
     call: Effect.fn("cli.thread.callTool")(function* <S extends Schema.Decoder<unknown>>(
@@ -269,7 +269,7 @@ export const withThreadTools = Effect.fn("cli.thread.withThreadTools")(function*
     const environmentAuth = yield* EnvironmentAuth.EnvironmentAuth;
     const issued = yield* Effect.acquireRelease(
       environmentAuth.issueMcpClientSession({
-        label: flags.clientLabel ?? "t3 thread cli",
+        label: flags.clientLabel ?? "j6 thread cli",
         // The CLI runs as the machine's owner. New threads still start at
         // the project's default mode, never at this ceiling by default.
         access: "full-access",
@@ -282,7 +282,7 @@ export const withThreadTools = Effect.fn("cli.thread.withThreadTools")(function*
     const session = yield* mcpToolSession({
       endpoint: new URL("/mcp", origin).href,
       authorization: `Bearer ${issued.token}`,
-      clientName: "t3-thread-cli",
+      clientName: "j6-thread-cli",
     }).pipe(Effect.mapError((cause) => new ThreadServerUnreachableError({ origin, cause })));
     return yield* run(makeThreadTools(session, origin));
   }).pipe(

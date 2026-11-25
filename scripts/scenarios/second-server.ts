@@ -1,8 +1,8 @@
 // A second T3 server for scenarios that need another machine: its own T3 home, the replay
 // agent, and a pairing token for Settings > Connections > Add environment.
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import * as NetService from "@t3tools/shared/Net";
+import * as HostProcess from "@j6/shared/HostProcess";
+import * as NetService from "@j6/shared/Net";
 import * as Cause from "effect/Cause";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
@@ -46,7 +46,7 @@ const runSecondServer = Effect.fn("scenario.secondServer")(function* (
     env: {
       PATH: `${path.join(SECOND_HOME, "bin")}:${hostEnvironment.PATH ?? ""}`,
       HOME: hostEnvironment.HOME,
-      T3CODE_AUTO_BOOTSTRAP_PROJECT_FROM_CWD: "0",
+      J6CODE_AUTO_BOOTSTRAP_PROJECT_FROM_CWD: "0",
       ...SCENARIO_MACHINE_ENV,
     },
     onLine: (line) => {

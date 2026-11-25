@@ -1,4 +1,4 @@
-import { CommandId, type ModelSelection, type ThreadId } from "@t3tools/contracts";
+import { CommandId, type ModelSelection, type ThreadId } from "@j6/contracts";
 import * as SecureRandom from "effect/crypto/SecureRandom";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -8,7 +8,7 @@ import {
   type EnvironmentId,
   type OrchestrationV2ShellSnapshot,
   type OrchestrationV2ThreadShell,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
 import { createOptimisticThreadLifecycle } from "./threadLifecycle.ts";
 import type { EnvironmentShellStatus } from "./shell.ts";

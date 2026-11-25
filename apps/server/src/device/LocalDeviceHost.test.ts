@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@effect/vitest";
 import * as NodePath from "@effect/platform-node/NodePath";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -17,7 +17,7 @@ import * as LocalDeviceHost from "./LocalDeviceHost.ts";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
 import { HttpClient, HttpClientResponse } from "effect/http";
-import * as NetService from "@t3tools/shared/Net";
+import * as NetService from "@j6/shared/Net";
 import * as ServerConfig from "../config.ts";
 import * as ProcessRunner from "../processRunner.ts";
 import {
@@ -47,7 +47,7 @@ const agentFixture = Effect.fn("agentFixture")(function* (
 ) {
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
-  const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-device-agent-start-" });
+  const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-device-agent-start-" });
   const hub = {
     running: true,
     spawnFails: false,
@@ -273,7 +273,7 @@ describe("AgentDevice startup", () => {
   it.effect("uses the SDK a later shell environment selects", () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-device-sdk-" });
+      const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-device-sdk-" });
       const standard = `${home}/Library/Android/sdk`;
       const profile = `${home}/profile-sdk`;
       for (const root of [standard, profile]) {
@@ -325,7 +325,7 @@ describe("AgentDevice startup", () => {
     () =>
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
-        const sdk = yield* fs.makeTempDirectoryScoped({ prefix: "t3-device-camera-sdk-" });
+        const sdk = yield* fs.makeTempDirectoryScoped({ prefix: "j6-device-camera-sdk-" });
         for (const tool of ["platform-tools/adb", "emulator/emulator"]) {
           yield* fs.makeDirectory(`${sdk}/${tool.split("/")[0]}`, { recursive: true });
           yield* fs.writeFileString(`${sdk}/${tool}`, "");
@@ -854,7 +854,7 @@ it.effect.each([
 it.effect("keeps local Android and iOS available without ffmpeg", () =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
-    const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-device-ffmpeg-" });
+    const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-device-ffmpeg-" });
     yield* fs.makeDirectory(`${baseDir}/bin`);
     yield* fs.writeFileString(`${baseDir}/bin/xcrun`, "#!/bin/sh\nexit 0\n");
     yield* fs.chmod(`${baseDir}/bin/xcrun`, 0o755);
@@ -906,7 +906,7 @@ it.effect(
   () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-device-consent-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-device-consent-" });
       const host = yield* LocalDeviceHost.make().pipe(
         Effect.provide(Layer.mergeAll(ServerConfig.layerTest(baseDir, baseDir), NetService.layer)),
         Effect.provideService(HostProcess.Environment, { HOME: baseDir, PATH: "" }),

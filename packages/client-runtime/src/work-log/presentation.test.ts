@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { ThreadId, TurnItemId, type OrchestrationV2TurnItem } from "@t3tools/contracts";
+import { ThreadId, TurnItemId, type OrchestrationV2TurnItem } from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 
 import {
@@ -133,11 +133,11 @@ describe("resolveWorkEntryToolPresentation", () => {
     expect(workEntryDisplayIndicatesToolFailure(childFailure)).toBe(false);
   });
   it.each([
-    "mcp__t3-code__preview_click",
+    "mcp__j6-code__preview_click",
     "mcp__t3_code__preview_click",
     "mcp__t3code__preview_click",
     "T3-code.preview_click",
-    "t3-code · preview_click completed",
+    "j6-code · preview_click completed",
     "t3_code/preview_click",
     "preview_click",
   ])("recognizes browser tool names across providers: %s", (label) => {
@@ -152,7 +152,7 @@ describe("resolveWorkEntryToolPresentation", () => {
       resolveWorkEntryToolPresentation({
         label: "Tool call complete",
         toolTitle: "Inspect the current page",
-        toolData: { server: "t3-code", tool: "preview_snapshot", result: { title: "Example" } },
+        toolData: { server: "j6-code", tool: "preview_snapshot", result: { title: "Example" } },
       }),
     ).toEqual({ displayName: "Taking a snapshot of the preview page", icon: "browser" });
   });
@@ -191,8 +191,8 @@ describe("resolveWorkEntryToolPresentation", () => {
   it("does not brand unknown tools or another server's matching tool name", () => {
     for (const label of [
       "mcp__github__preview_click",
-      "t3-code.unknown_tool",
-      "t3-code.toString",
+      "j6-code.unknown_tool",
+      "j6-code.toString",
       "Search files",
     ]) {
       expect(resolveWorkEntryToolPresentation({ label })).toBeNull();

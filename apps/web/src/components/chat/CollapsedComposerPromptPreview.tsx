@@ -1,8 +1,8 @@
-import { isProviderSkillUserInvocable } from "@t3tools/client-runtime/providerSkills";
-import type { ServerProviderSkill } from "@t3tools/contracts";
-import { assistantCitationLabel } from "@t3tools/shared/assistantCitations";
-import { formatProviderSkillDisplayName } from "@t3tools/shared/inlineSkills";
-import { fileDisplayName } from "@t3tools/shared/path";
+import { isProviderSkillUserInvocable } from "@j6/client-runtime/providerSkills";
+import type { ServerProviderSkill } from "@j6/contracts";
+import { assistantCitationLabel } from "@j6/shared/assistantCitations";
+import { formatProviderSkillDisplayName } from "@j6/shared/inlineSkills";
+import { fileDisplayName } from "@j6/shared/path";
 import {
   CircleDashedIcon,
   ImageIcon,

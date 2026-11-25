@@ -1,6 +1,6 @@
-import { AgentScope } from "@t3tools/shared/AgentScope";
-import * as KeyedLock from "@t3tools/shared/KeyedLock";
-import { resolveProjectSettings } from "@t3tools/shared/projectSettings";
+import { AgentScope } from "@j6/shared/AgentScope";
+import * as KeyedLock from "@j6/shared/KeyedLock";
+import { resolveProjectSettings } from "@j6/shared/projectSettings";
 import {
   CommandId,
   isOrchestrationV2WorkActive,
@@ -21,7 +21,7 @@ import {
   type OrchestrationV2TurnItem,
   type ProviderThreadId,
   type ProviderTurnId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as Clock from "effect/Clock";
 import * as Context from "effect/Context";
@@ -54,7 +54,7 @@ import {
 import { ProviderWorkspaceMissingError } from "../provider/Errors.ts";
 import * as ProviderInstallationGate from "../provider/ProviderInstallationGate.ts";
 import * as ProjectService from "../project/ProjectService.ts";
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
 import * as ServerSettings from "../serverSettings.ts";
 import * as McpSessionRegistry from "../mcp/McpSessionRegistry.ts";
 import * as EffectOutbox from "./EffectOutbox.ts";
@@ -67,14 +67,14 @@ import {
   mergeRestartCancelledBackgroundWork,
 } from "./RestartBackgroundNote.ts";
 import * as CommandOutputHub from "./CommandOutputHub.ts";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
 import * as ProviderEventIngestor from "./ProviderEventIngestor.ts";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
-import { makeProviderFailure } from "@t3tools/provider-core/server/failure";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
+import { makeProviderFailure } from "@j6/provider-core/server/failure";
 import {
   endOrphanedNativeSubagent,
   endRunlessRootTurns,
-} from "@t3tools/provider-core/server/subagentProjection";
+} from "@j6/provider-core/server/subagentProjection";
 import * as ProviderAdapterRegistry from "./ProviderAdapterRegistry.ts";
 import * as ProjectionStore from "./ProjectionStore.ts";
 
@@ -322,7 +322,7 @@ export interface ProviderSessionManagerV2Shape {
 export class ProviderSessionManagerV2 extends Context.Service<
   ProviderSessionManagerV2,
   ProviderSessionManagerV2Shape
->()("t3/orchestration-v2/ProviderSessionManager/ProviderSessionManagerV2") {}
+>()("j6/orchestration-v2/ProviderSessionManager/ProviderSessionManagerV2") {}
 
 interface LiveSessionEntry {
   readonly attachedThreadIds: ReadonlySet<ThreadId>;

@@ -1,6 +1,6 @@
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 // The thread CLI takes at most 120,000 characters per message: 3,000 lines of ten "the".
 const SEEDED_MATCHES = 30_000;
@@ -15,8 +15,8 @@ const findTotal = `(() => {
 })()`;
 
 const paint = `(() => {
-  const inactive = CSS.highlights.get("t3-thread-find");
-  const active = CSS.highlights.get("t3-thread-find-active");
+  const inactive = CSS.highlights.get("j6-thread-find");
+  const active = CSS.highlights.get("j6-thread-find-active");
   let onScreen = 0;
   for (const highlight of [inactive, active])
     for (const range of highlight ?? []) {
@@ -33,14 +33,14 @@ const paint = `(() => {
 test(
   "Find paints only matches near the viewport of a message with 30,000 matches",
   WEB,
-  async ({ t3, app, screen, browser }) => {
-    const project = await t3.project("find-paint");
-    const thread = await t3.thread({
+  async ({ j6, app, screen, browser }) => {
+    const project = await j6.project("find-paint");
+    const thread = await j6.thread({
       project,
       title: "Paint bound proof",
       messages: [LONG_MESSAGE],
     });
-    await t3.open(thread);
+    await j6.open(thread);
     await expect(screen.getByText("first fixture turn complete", { exact: false })).toBeVisible({
       timeout: 120_000,
     });

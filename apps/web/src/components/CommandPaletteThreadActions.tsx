@@ -1,4 +1,4 @@
-import type { ContextMenuItem, KeybindingCommand, ScopedThreadRef } from "@t3tools/contracts";
+import type { ContextMenuItem, KeybindingCommand, ScopedThreadRef } from "@j6/contracts";
 import {
   ArchiveIcon,
   CircleCheckIcon,

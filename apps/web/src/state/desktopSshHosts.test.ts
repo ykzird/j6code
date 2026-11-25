@@ -1,4 +1,4 @@
-import type { DesktopDiscoveredSshHost } from "@t3tools/contracts";
+import type { DesktopDiscoveredSshHost } from "@j6/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { filterDiscoveredSshHosts } from "./desktopSshHosts";

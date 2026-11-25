@@ -1,5 +1,5 @@
-import { type ServerLifecycleWelcomePayload } from "@t3tools/contracts";
-import { scopedProjectKey, scopeProjectRef } from "@t3tools/client-runtime/environment";
+import { type ServerLifecycleWelcomePayload } from "@j6/contracts";
+import { scopedProjectKey, scopeProjectRef } from "@j6/client-runtime/environment";
 import {
   Outlet,
   Link,
@@ -47,7 +47,7 @@ import {
   deriveLogicalProjectKeyFromSettings,
   derivePhysicalProjectKeyFromPath,
   selectProjectGroupingSettings,
-} from "@t3tools/client-runtime/state/project-grouping";
+} from "@j6/client-runtime/state/project-grouping";
 import { useUiStateStore } from "../uiStateStore";
 import { resolveInitialServerAuthGateState } from "../environments/primary";
 import { GUEST_PAGE_PATH } from "../guestPage";
@@ -324,7 +324,7 @@ function errorDetails(error: unknown): string {
   try {
     return JSON.stringify(error, null, 2);
   } catch {
-    // oxlint-disable-next-line t3code/no-untranslated-copy -- error report pasted into bug reports
+    // oxlint-disable-next-line j6code/no-untranslated-copy -- error report pasted into bug reports
     return "No additional error details are available.";
   }
 }
@@ -407,7 +407,7 @@ function EventRouter({
     })().catch(() => undefined);
   });
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- expands the bootstrap project in the UI store and navigates the router on a server welcome
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- expands the bootstrap project in the UI store and navigates the router on a server welcome
   useEffect(() => {
     handleWelcome(serverWelcome);
   }, [serverWelcome]);

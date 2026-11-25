@@ -2,13 +2,13 @@ import type {
   OrchestrationThreadSearchMatch,
   OrchestrationV2SearchThreadResult,
   ScopedThreadRef,
-} from "@t3tools/contracts";
-import { parseScopedThreadKey, scopedThreadKey } from "@t3tools/client-runtime/environment";
+} from "@j6/contracts";
+import { parseScopedThreadKey, scopedThreadKey } from "@j6/client-runtime/environment";
 import {
   findSearchTokenRanges,
   messagePhrase,
   messageSearchTokens,
-} from "@t3tools/shared/paletteSearch";
+} from "@j6/shared/paletteSearch";
 import { create } from "zustand";
 import type { ThemeAppearance } from "~/themePalette";
 import { rightPanelHostRef } from "../../rightPanelStore";

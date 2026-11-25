@@ -5,7 +5,7 @@ import {
   retainedTerminalHistory,
   TerminalSessionSnapshot,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
 import {
   applyTerminalAttachStreamEvent,

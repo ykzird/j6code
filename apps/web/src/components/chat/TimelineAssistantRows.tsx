@@ -1,7 +1,7 @@
-import { shouldPreserveAssistantLineBreaks } from "@t3tools/shared/assistantInsights";
-import { MessageId, type TurnItemId } from "@t3tools/contracts";
-import { canForkProjectedAssistantItem } from "@t3tools/client-runtime/state/thread-workflows";
-import { agentWorkingDirectories } from "@t3tools/client-runtime/workspace-basename-lookup";
+import { shouldPreserveAssistantLineBreaks } from "@j6/shared/assistantInsights";
+import { MessageId, type TurnItemId } from "@j6/contracts";
+import { canForkProjectedAssistantItem } from "@j6/client-runtime/state/thread-workflows";
+import { agentWorkingDirectories } from "@j6/client-runtime/workspace-basename-lookup";
 import { T, useGT, useMessages } from "gt-react";
 import { use, useState } from "react";
 import { type ChatMessage } from "../../types";
@@ -40,7 +40,7 @@ export function AssistantTimelineRow({ row }: { row: Extract<TimelineRow, { kind
   return (
     <>
       <div className="relative min-w-0 px-1 py-0.5">
-        <MessageAuthorHeading>T3 Code</MessageAuthorHeading>
+        <MessageAuthorHeading>J6 Code</MessageAuthorHeading>
         <div data-thread-find-text="true">
           <AssistantCitationSource
             messageId={row.message.id}
@@ -98,7 +98,7 @@ export function SentMessageTimelineRow({
 
   return (
     <div className="min-w-0 px-1 py-0.5">
-      <MessageAuthorHeading>T3 Code</MessageAuthorHeading>
+      <MessageAuthorHeading>J6 Code</MessageAuthorHeading>
       {/* Sent messages have no message id; citations name their turn item instead. */}
       <AssistantCitationSource
         messageId={MessageId.make(row.id)}

@@ -4,12 +4,12 @@ import * as NodeHttp from "node:http";
 
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 test(
   "Browser history keeps visits from both open tabs after a reload",
   WEB,
-  async ({ t3, app, browser, screen }) => {
+  async ({ j6, app, browser, screen }) => {
     const server = NodeHttp.createServer((request, response) => {
       const title = request.url === "/first" ? "First preview visit" : "Second preview visit";
       response.writeHead(200, { "content-type": "text/html" });
@@ -21,11 +21,11 @@ test(
       if (address === null || typeof address === "string") throw new Error("No page port.");
       const host = `127.0.0.1:${address.port}`;
       const origin = `http://${host}`;
-      const project = await t3.project("demo");
-      const first = await t3.thread({ project, title: "First browser", messages: ["first"] });
-      const second = await t3.thread({ project, title: "Second browser", messages: ["second"] });
-      const history = await t3.thread({ project, title: "History check", messages: ["third"] });
-      await t3.open(first);
+      const project = await j6.project("demo");
+      const first = await j6.thread({ project, title: "First browser", messages: ["first"] });
+      const second = await j6.thread({ project, title: "Second browser", messages: ["second"] });
+      const history = await j6.thread({ project, title: "History check", messages: ["third"] });
+      await j6.open(first);
 
       // Load the second app before either visit, with an independent store and shared storage.
       await browser.evaluate((threadId) => {

@@ -1,5 +1,5 @@
-import type { EnvironmentThreadShell } from "@t3tools/client-runtime/state/models";
-import { resolveProviderInstanceDisplayName } from "@t3tools/client-runtime/state/provider-instance-display";
+import type { EnvironmentThreadShell } from "@j6/client-runtime/state/models";
+import { resolveProviderInstanceDisplayName } from "@j6/client-runtime/state/provider-instance-display";
 import { CircleAlertIcon, GitBranchIcon } from "lucide-react";
 import { useGT } from "gt-react";
 

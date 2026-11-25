@@ -1,6 +1,6 @@
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { resolveSelfInvocation, type SelfInvocation } from "@t3tools/shared/nodeRuntime";
-import { type OrchestrationV2ProviderCapabilities } from "@t3tools/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { resolveSelfInvocation, type SelfInvocation } from "@j6/shared/nodeRuntime";
+import { type OrchestrationV2ProviderCapabilities } from "@j6/contracts";
 import { FxSettings } from "../settings.ts";
 import type * as SecureRandom from "effect/crypto/SecureRandom";
 import * as Effect from "effect/Effect";
@@ -12,9 +12,9 @@ import type * as Scope from "effect/Scope";
 import type * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
 import type * as EffectAcpErrors from "effect-acp/errors";
 
-import type * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
-import type * as ProviderHost from "@t3tools/provider-core/server/ProviderHost";
-import { makeAcpNativeLoggerFactory } from "@t3tools/provider-acp/server/nativeLogging";
+import type * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
+import type * as ProviderHost from "@j6/provider-core/server/ProviderHost";
+import { makeAcpNativeLoggerFactory } from "@j6/provider-acp/server/nativeLogging";
 import {
   applyFxEffortDefault,
   applyFxModelSelection,
@@ -28,23 +28,23 @@ import {
   makeFxAcpRuntime,
   withFxSessionMode,
 } from "./acpSupport.ts";
-import { mergeProviderInstanceEnvironment } from "@t3tools/provider-core/server/instanceEnvironment";
-import type * as AcpSessionRuntime from "@t3tools/provider-acp/server/AcpSessionRuntime";
-import * as ProviderEventLoggers from "@t3tools/provider-core/server/ProviderEventLoggers";
-import type * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
+import { mergeProviderInstanceEnvironment } from "@j6/provider-core/server/instanceEnvironment";
+import type * as AcpSessionRuntime from "@j6/provider-acp/server/AcpSessionRuntime";
+import * as ProviderEventLoggers from "@j6/provider-core/server/ProviderEventLoggers";
+import type * as IdAllocator from "@j6/provider-core/server/IdAllocator";
 import {
   ProviderAdapterDriverCreateError,
   type ProviderAdapterDriver,
   type ProviderAdapterDriverCreateInput,
-} from "@t3tools/provider-core/server/adapterDriver";
+} from "@j6/provider-core/server/adapterDriver";
 import {
   AcpProviderCapabilitiesV2,
   makeAcpAdapterV2,
   type AcpAdapterV2Flavor,
   type AcpAdapterV2RuntimeInput,
   type AcpAdapterV2SubagentUpdate,
-} from "@t3tools/provider-acp/server/adapter";
-import type { AcpToolCallState } from "@t3tools/provider-acp/server/runtimeModel";
+} from "@j6/provider-acp/server/adapter";
+import type { AcpToolCallState } from "@j6/provider-acp/server/runtimeModel";
 
 export { FX_DRIVER_KIND } from "./acpSupport.ts";
 

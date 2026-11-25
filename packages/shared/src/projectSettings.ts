@@ -13,12 +13,12 @@ import {
   type T3ProjectFile,
   type ThreadEnvMode,
   type WorktreeCleanupRules,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { readCustomModelEntries } from "./model.ts";
 import { normalizeProjectPathForComparison } from "./path.ts";
 import { fallbackTextGenerationModelSelection } from "./serverSettings.ts";
 
-export type ProjectSettingSource = "environment" | "project" | "t3.json";
+export type ProjectSettingSource = "environment" | "project" | "j6.json";
 
 export type ProjectSettingSources = Readonly<
   Record<ProjectScopedServerSettingKey, ProjectSettingSource>
@@ -104,7 +104,7 @@ export function resolveProjectFileBackedSetting<K extends ProjectFileBackedSetti
   const fromFile = projectFile?.[field] as ResolvedServerSettings[K] | undefined;
   return fromFile === undefined
     ? { value: builtIn as ResolvedServerSettings[K], source: "environment" }
-    : { value: fromFile, source: "t3.json" };
+    : { value: fromFile, source: "j6.json" };
 }
 
 function resolveProjectOverrides(

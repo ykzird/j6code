@@ -4,7 +4,7 @@ import {
   type ProviderMcpSignInCompleteResult,
   type ProviderMcpSignInStartInput,
   type ProviderMcpSignInStartResult,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -30,7 +30,7 @@ export class McpSignIn extends Context.Service<
       input: ProviderMcpSignInCompleteInput,
     ) => Effect.Effect<ProviderMcpSignInCompleteResult, ProviderMcpSignInError>;
   }
->()("t3/mcpApps/McpSignIn") {}
+>()("j6/mcpApps/McpSignIn") {}
 
 const isSignInError = Schema.is(ProviderMcpSignInError);
 
@@ -55,7 +55,7 @@ const make = Effect.gen(function* () {
     );
     if (runtime === undefined) return yield* stopped(input.server);
     if (runtime.mcpSignIn === undefined) {
-      return yield* fail(input.server, "This agent can't sign MCP servers in from T3 Code.");
+      return yield* fail(input.server, "This agent can't sign MCP servers in from J6 Code.");
     }
     return { providerThread, mcpSignIn: runtime.mcpSignIn };
   });

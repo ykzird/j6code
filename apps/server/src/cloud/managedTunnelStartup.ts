@@ -1,4 +1,4 @@
-import type { RelayManagedEndpointRuntimeConfig } from "@t3tools/contracts/relay";
+import type { RelayManagedEndpointRuntimeConfig } from "@j6/contracts/relay";
 import * as Cause from "effect/Cause";
 import * as Clock from "effect/Clock";
 import * as Duration from "effect/Duration";
@@ -251,14 +251,14 @@ export const watchManagedTunnelOrigin = Effect.fn("ManagedTunnelOrigin.watch")(f
       continue;
     }
     yield* Effect.logWarning(
-      "T3 Connect routes this server's tunnel to another origin; registering this server again",
+      "J6 Connect routes this server's tunnel to another origin; registering this server again",
       { ingressOrigin: ingressOrigin ?? "unparseable", localOrigin },
     );
     yield* options.register.pipe(
       Effect.catchCause((cause) =>
         Cause.hasInterrupts(cause)
           ? Effect.interrupt
-          : Effect.logWarning("Failed to register this server's T3 Connect origin again", {
+          : Effect.logWarning("Failed to register this server's J6 Connect origin again", {
               cause,
             }),
       ),

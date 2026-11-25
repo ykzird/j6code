@@ -1,4 +1,4 @@
-import { type PullRequestRef, PullRequestReviewCommentDraft } from "@t3tools/contracts";
+import { type PullRequestRef, PullRequestReviewCommentDraft } from "@j6/contracts";
 import * as Schema from "effect/Schema";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -97,7 +97,7 @@ export const usePullRequestReviewStore = create<PullRequestReviewStoreState>()(
         }),
     }),
     {
-      name: "t3code:pull-request-review-drafts:v1",
+      name: "j6code:pull-request-review-drafts:v1",
       storage: createJSONStorage(() =>
         resolveStorage(typeof localStorage !== "undefined" ? localStorage : undefined),
       ),

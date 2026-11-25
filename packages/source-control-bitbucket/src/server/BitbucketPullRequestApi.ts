@@ -1,4 +1,4 @@
-import { isCommitSha } from "@t3tools/source-control-core/server/pullRequestUtils";
+import { isCommitSha } from "@j6/source-control-core/server/pullRequestUtils";
 import * as Cache from "effect/Cache";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
@@ -22,11 +22,11 @@ import type {
   PullRequestReviewThread,
   PullRequestReviewVerdict,
   PullRequestReviewerCandidateList,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
 import * as BitbucketApi from "./BitbucketApi.ts";
-import { parseDiffFileRevisions } from "@t3tools/source-control-core/server/diffFileRevisions";
-import { sortChecks } from "@t3tools/source-control-core/server/pullRequestChecks";
+import { parseDiffFileRevisions } from "@j6/source-control-core/server/diffFileRevisions";
+import { sortChecks } from "@j6/source-control-core/server/pullRequestChecks";
 import {
   buildReviewThreads,
   decodeCommentsJson,
@@ -43,7 +43,7 @@ import {
   type BitbucketPullRequest,
   type BitbucketRawComment,
 } from "./bitbucketPullRequestJson.ts";
-import type { ProviderListCursor } from "@t3tools/source-control-core/server/PullRequestProvider";
+import type { ProviderListCursor } from "@j6/source-control-core/server/PullRequestProvider";
 
 export class BitbucketPullRequestReadError extends Schema.TaggedError<BitbucketPullRequestReadError>()(
   "BitbucketPullRequestReadError",
@@ -272,7 +272,7 @@ export class BitbucketPullRequestApi extends Context.Service<
       readonly resolved: boolean;
     }) => Effect.Effect<void, BitbucketPullRequestApiError>;
   }
->()("@t3tools/source-control-bitbucket/server/BitbucketPullRequestApi") {}
+>()("@j6/source-control-bitbucket/server/BitbucketPullRequestApi") {}
 
 function repositorySegments(
   repository: string,

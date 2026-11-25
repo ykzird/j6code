@@ -1,14 +1,14 @@
 /// <reference lib="dom" />
-import type { GitResolvePullRequestResult } from "@t3tools/contracts";
+import type { GitResolvePullRequestResult } from "@j6/contracts";
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 test(
   "A failed local checkout does not show its error on another pull request",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    await t3.project("demo");
+  async ({ j6, app, browser, screen }) => {
+    await j6.project("demo");
     await browser.setViewport({ width: 1280, height: 800 });
     await browser.addInitScript(() => {
       const send = WebSocket.prototype.send;
@@ -65,7 +65,7 @@ test(
       };
     });
 
-    await t3.open("/");
+    await j6.open("/");
     await browser
       .locator('[data-slot="combobox-trigger"][aria-label^="Branch:"]:visible')
       .first()

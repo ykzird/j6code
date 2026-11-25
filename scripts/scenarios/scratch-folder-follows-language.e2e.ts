@@ -1,14 +1,14 @@
 /// <reference lib="dom" />
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 test(
   "The project folder for threads without a project follows the app language",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    const project = await t3.project("scenario-scratch");
-    const thread = await t3.thread({ project, title: "Scratch work", messages: ["Start"] });
+  async ({ j6, app, browser, screen }) => {
+    const project = await j6.project("scenario-scratch");
+    const thread = await j6.thread({ project, title: "Scratch work", messages: ["Start"] });
 
     // The scenario home is inside a Git checkout, where the server disables native scratch.
     // Advertise the seeded workspace as scratch while leaving the real project and thread in place.
@@ -66,11 +66,11 @@ test(
       } as typeof WebSocket.prototype.addEventListener;
     }, project);
 
-    await t3.open("/settings/labs");
+    await j6.open("/settings/labs");
     await screen.getByLabel("Boring sidebar (group by project)", { exact: true }).tap();
     await screen.getByLabel("Two-line folder rows", { exact: true }).waitFor();
 
-    await t3.open("/settings/general");
+    await j6.open("/settings/general");
     const openFolder = screen.getByTestId("sidebar-project-folder");
     await expect(openFolder).toContainText("No project", { timeout: 60_000 });
     await screen.getByLabel("Language", { exact: true }).tap();
@@ -79,7 +79,7 @@ test(
     // Settings leaves the sidebar mounted. Keep this failure through the capture after reopening.
     await expect.soft(openFolder).toContainText("プロジェクトなし");
 
-    await t3.open(thread);
+    await j6.open(thread);
     const folder = screen.getByTestId("sidebar-project-folder");
     await folder.getByText(/^(?:No project|プロジェクトなし)$/, { exact: true }).waitFor({
       timeout: 60_000,

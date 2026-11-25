@@ -1,12 +1,12 @@
 import {
   DEFAULT_SPEECH_POST_PROCESSING_PROMPT,
   type EnvironmentSpeechPostProcessingRequest,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
-import { resolveSpeechPostProcessingModelSelection } from "@t3tools/shared/serverSettings";
+import { resolveSpeechPostProcessingModelSelection } from "@j6/shared/serverSettings";
 
 import * as ProviderRegistry from "../provider/ProviderRegistry.ts";
 import * as ServerSettings from "../serverSettings.ts";
@@ -22,7 +22,7 @@ export class SpeechPostProcessing extends Context.Service<
       input: EnvironmentSpeechPostProcessingRequest,
     ) => Effect.Effect<{ readonly text: string }, SpeechOperationError>;
   }
->()("t3/speech/postProcessing/SpeechPostProcessing") {}
+>()("j6/speech/postProcessing/SpeechPostProcessing") {}
 
 const make = Effect.gen(function* () {
   const settingsService = yield* ServerSettings.ServerSettingsService;
@@ -40,7 +40,7 @@ const make = Effect.gen(function* () {
           (mode === "custom" ? customInstructions.trim() : "") ||
           DEFAULT_SPEECH_POST_PROCESSING_PROMPT;
         // Providers run in a working directory; cleanup must not read a checkout.
-        const cwd = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-voice-cleanup-" });
+        const cwd = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-voice-cleanup-" });
         const generated = yield* textGeneration.generateTranscriptionPostProcessing({
           cwd,
           prompt: buildTranscriptionPostProcessingPrompt(

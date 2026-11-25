@@ -2,14 +2,14 @@
 // The DOM lib types the function this scenario runs in the page.
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 const FILE = "C#/Program.cs";
 
 test(
   "An @-mention of a file whose folder has # opens it after the message is sent",
   WEB,
-  async ({ t3, app, screen, browser }) => {
+  async ({ j6, app, screen, browser }) => {
     // The editor renders in a shadow root that locators do not reach.
     const editorText = () =>
       browser.evaluate(() => {
@@ -20,9 +20,9 @@ test(
         return null;
       });
 
-    const project = await t3.project("demo", { [FILE]: "static void Main() {}\nProgram body\n" });
-    const thread = await t3.thread({ project, title: "Mention", messages: ["Show me around"] });
-    await t3.open(thread);
+    const project = await j6.project("demo", { [FILE]: "static void Main() {}\nProgram body\n" });
+    const thread = await j6.thread({ project, title: "Mention", messages: ["Show me around"] });
+    await j6.open(thread);
 
     const composer = screen.getByRole("textbox");
     await composer.pressSequentially("Review @Program");

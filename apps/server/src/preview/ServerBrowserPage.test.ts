@@ -1,4 +1,4 @@
-import { PreviewAutomationEvaluateInput } from "@t3tools/contracts";
+import { PreviewAutomationEvaluateInput } from "@j6/contracts";
 import * as Schema from "effect/Schema";
 import {
   chromium,
@@ -341,10 +341,10 @@ describe("server browser element refs", () => {
         ServerBrowserPage.toOperationError,
       );
 
-    const absent = await failure(".definitely-no-such-t3-target");
+    const absent = await failure(".definitely-no-such-j6-target");
     expect(absent.tag).toBe("PreviewAutomationTimeoutError");
     expect(absent.message).toBe(
-      'The click may have happened and removed its target or navigated; check the page before retrying. No element matches ".definitely-no-such-t3-target" after the timeout; take a fresh snapshot and use its locator.',
+      'The click may have happened and removed its target or navigated; check the page before retrying. No element matches ".definitely-no-such-j6-target" after the timeout; take a fresh snapshot and use its locator.',
     );
     expect(absent.cause).toMatchObject({ name: "TimeoutError" });
     const hidden = await failure("button");
@@ -514,7 +514,7 @@ describe("server browser element refs", () => {
     expect(tree.match(/\/url: data:text\/plain,…$/gm)).toHaveLength(8);
     expect(tree).toContain("/url: data:,…");
     expect(tree).toContain("/url: https://example.com/data:report,2026");
-    expect(tree).toMatch(/link "data:text\/plain,label" \[ref=t3-/);
+    expect(tree).toMatch(/link "data:text\/plain,label" \[ref=j6-/);
     expect(tree).not.toMatch(/PAYLOAD|tail|charset|\u2028/);
     expect(tree).toContain('/url: "\\"data:text/plain,relative"');
   });
@@ -811,7 +811,7 @@ describe("server browser drag", () => {
       void settled.then(() => (finished = true));
       // Two macrotask turns: Node reports a rejection nobody observed after the first.
       for (let turn = 0; turn < 2; turn++) {
-        // oxlint-disable-next-line t3code/no-real-time-wait-in-tests -- Node emits unhandledRejection only between macrotasks; no promise can mark that point.
+        // oxlint-disable-next-line j6code/no-real-time-wait-in-tests -- Node emits unhandledRejection only between macrotasks; no promise can mark that point.
         await new Promise((resolve) => setImmediate(resolve));
       }
       expect(finished).toBe(false);

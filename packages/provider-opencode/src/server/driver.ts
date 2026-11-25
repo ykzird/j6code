@@ -1,9 +1,9 @@
-import { resolveProviderProbeTimeoutMs } from "@t3tools/provider-core/server/snapshotProbe";
+import { resolveProviderProbeTimeoutMs } from "@j6/provider-core/server/snapshotProbe";
 import {
   ProviderDriverKind,
   settingsSecretLiteral,
   type ServerProviderModel,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { OpenCodeSettings } from "../settings.ts";
 import * as Digest from "effect/crypto/Digest";
 import * as SecureRandom from "effect/crypto/SecureRandom";
@@ -22,17 +22,17 @@ import * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
 
 import * as OpenCode2TextGeneration from "./v2/textGeneration.ts";
 import { makeOpenCodeTextGeneration } from "./textGeneration.ts";
-import * as ProviderLatestVersions from "@t3tools/provider-core/server/ProviderLatestVersions";
-import * as ProviderHost from "@t3tools/provider-core/server/ProviderHost";
-import { expandHomePath } from "@t3tools/provider-core/server/pathExpansion";
-import { AgentScope } from "@t3tools/shared/AgentScope";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { compareSemverVersions } from "@t3tools/shared/semver";
+import * as ProviderLatestVersions from "@j6/provider-core/server/ProviderLatestVersions";
+import * as ProviderHost from "@j6/provider-core/server/ProviderHost";
+import { expandHomePath } from "@j6/provider-core/server/pathExpansion";
+import { AgentScope } from "@j6/shared/AgentScope";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { compareSemverVersions } from "@j6/shared/semver";
 import * as OpenCodeAdapterV2 from "./adapter.ts";
 import * as OpenCode2AdapterV2 from "./v2/adapter.ts";
-import type * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
-import type { ProviderTextGeneration } from "@t3tools/provider-core/server/textGeneration";
-import { ProviderDriverError } from "@t3tools/provider-core/server/errors";
+import type * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
+import type { ProviderTextGeneration } from "@j6/provider-core/server/textGeneration";
+import { ProviderDriverError } from "@j6/provider-core/server/errors";
 import { openCodeUsageReader, type OpenCodeUsageReaderEnv } from "./usage.ts";
 import { readOpenCodeGoUsageLimits } from "./usageLimits.ts";
 import { loadOpenCode2Catalog, loadOpenCode2DirectoryCatalog } from "./openCode2Catalog.ts";
@@ -53,7 +53,7 @@ import {
   withOpenCode2Catalog,
   type OpenCode2Model,
 } from "./status.ts";
-import { makeManagedServerProvider } from "@t3tools/provider-core/server/managedProvider";
+import { makeManagedServerProvider } from "@j6/provider-core/server/managedProvider";
 import * as OpenCodeRuntime from "./OpenCodeRuntime.ts";
 import {
   makeOpenCodeRuntimeProbe,
@@ -69,10 +69,10 @@ import {
   defaultProviderContinuationIdentity,
   type ProviderDriver,
   type ProviderInstance,
-} from "@t3tools/provider-core/server/driver";
-import { withInstanceIdentity } from "@t3tools/provider-core/server/instanceIdentity";
-import { mergeProviderInstanceEnvironment } from "@t3tools/provider-core/server/instanceEnvironment";
-import { providerProbeEnvironment } from "@t3tools/provider-core/server/snapshotProbe";
+} from "@j6/provider-core/server/driver";
+import { withInstanceIdentity } from "@j6/provider-core/server/instanceIdentity";
+import { mergeProviderInstanceEnvironment } from "@j6/provider-core/server/instanceEnvironment";
+import { providerProbeEnvironment } from "@j6/provider-core/server/snapshotProbe";
 import {
   enrichProviderSnapshotWithVersionAdvisory,
   makeCachedProviderMaintenanceResolution,
@@ -80,12 +80,12 @@ import {
   makePackageManagedProviderMaintenanceResolver,
   normalizeCommandPath,
   resolveProviderMaintenanceCapabilitiesEffect,
-} from "@t3tools/provider-core/server/maintenanceResolver";
+} from "@j6/provider-core/server/maintenanceResolver";
 import {
   haveProviderSnapshotSettingsChanged,
   makeProviderSnapshotSettingsSource,
   type ProviderSnapshotSettings,
-} from "@t3tools/provider-core/server/snapshotSettings";
+} from "@j6/provider-core/server/snapshotSettings";
 const decodeOpenCodeSettings = Schema.decodeSync(OpenCodeSettings);
 
 const DRIVER_KIND = ProviderDriverKind.make("opencode");

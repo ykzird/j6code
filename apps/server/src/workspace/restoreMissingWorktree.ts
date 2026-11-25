@@ -4,7 +4,7 @@ import {
   type Project,
   type ProjectId,
   type TerminalCwdNotFoundError,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -266,7 +266,7 @@ export class ThreadWorktreeRestore extends Context.Service<
     /** A checkout this service recreated for the thread whose setup has not run yet. */
     readonly takeRecreated: (threadId: ThreadId) => Effect.Effect<RecreatedWorktree | undefined>;
   }
->()("t3/workspace/restoreMissingWorktree/ThreadWorktreeRestore") {}
+>()("j6/workspace/restoreMissingWorktree/ThreadWorktreeRestore") {}
 
 // Turn start restores under the same lease, so concurrent restores see each other's worktree.
 export const layerThreadWorktreeRestore = Layer.effect(

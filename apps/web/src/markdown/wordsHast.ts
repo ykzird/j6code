@@ -7,18 +7,18 @@ import {
 import wordsWasm from "@pierre/words/wasm";
 import { decodeHTML, decodeHTMLAttribute } from "entities";
 import { find, html as htmlSchema, svg as svgSchema } from "property-information";
-import { resolveCodexArtifactTemplate } from "@t3tools/shared/codexArtifactTemplates";
-import { resolveCodexFileCitationLink } from "@t3tools/shared/codexFileCitations";
-import type { ReferenceAutolink } from "@t3tools/client-runtime/source-control-clients";
-import { expandGithubEmojiAliases } from "@t3tools/client-runtime/pull-request-markdown";
-import { resolveChangeRequestMediaUrl } from "@t3tools/client-runtime/pull-request-references";
-import { GITHUB_ALERT_MARKER } from "@t3tools/shared/markdownGithubAlerts";
-import { absoluteFilePathMatches } from "@t3tools/shared/markdownLinks";
+import { resolveCodexArtifactTemplate } from "@j6/shared/codexArtifactTemplates";
+import { resolveCodexFileCitationLink } from "@j6/shared/codexFileCitations";
+import type { ReferenceAutolink } from "@j6/client-runtime/source-control-clients";
+import { expandGithubEmojiAliases } from "@j6/client-runtime/pull-request-markdown";
+import { resolveChangeRequestMediaUrl } from "@j6/client-runtime/pull-request-references";
+import { GITHUB_ALERT_MARKER } from "@j6/shared/markdownGithubAlerts";
+import { absoluteFilePathMatches } from "@j6/shared/markdownLinks";
 import {
   rehypeNormalizeLocalEditorLinks,
   rehypePreserveImageSourceMeta,
   sanitizeChatHast,
-} from "@t3tools/shared/markdownHast";
+} from "@j6/shared/markdownHast";
 
 import { rehypeChipPunctuation } from "../components/chat/markdownChipPunctuation";
 import { rehypeHeadingIds } from "../components/chat/markdownFragments";
@@ -464,7 +464,7 @@ function codexDirective(node: Element, walk: Walk, inLink: boolean): ElementCont
   };
 }
 
-const INLINE_PREFIX = "t3-markdown-inline-prefix:";
+const INLINE_PREFIX = "j6-markdown-inline-prefix:";
 
 function stripPositions(node: ElementContent) {
   delete node.position;
@@ -1173,7 +1173,7 @@ export function wordsHast(text: string, options: WordsHastOptions): Root {
     source,
     options,
     math: new Map(),
-    mathKey: `t3-math-${Math.random().toString(36).slice(2)}`,
+    mathKey: `j6-math-${Math.random().toString(36).slice(2)}`,
     insightMarker: insights?.marker ?? null,
   };
   transform(tree, walk, false, false);

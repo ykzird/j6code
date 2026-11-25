@@ -11,7 +11,7 @@ it.layer(NodeServices.layer)("service selection lock", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const root = yield* fs.makeTempDirectoryScoped({ prefix: "t3-service-selection-lock-" });
+      const root = yield* fs.makeTempDirectoryScoped({ prefix: "j6-service-selection-lock-" });
       const selectionPath = path.join(root, "service-state.json");
       const lock = `${selectionPath}.selection-lock`;
       const stale = `${process.pid}.1.00000000-0000-4000-8000-000000000000`;
@@ -32,7 +32,7 @@ it.layer(NodeServices.layer)("service selection lock", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const root = yield* fs.makeTempDirectoryScoped({ prefix: "t3-service-selection-lock-" });
+      const root = yield* fs.makeTempDirectoryScoped({ prefix: "j6-service-selection-lock-" });
       const selectionPath = path.join(root, "service-state.json");
       const lock = `${selectionPath}.selection-lock`;
 

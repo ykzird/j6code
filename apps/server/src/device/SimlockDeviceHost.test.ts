@@ -1,8 +1,8 @@
 import { describe, expect, it } from "@effect/vitest";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import { SecretProviderId, type SimlockDeviceHostConfig } from "@t3tools/contracts";
-import * as SecretResolver from "@t3tools/secret-provider-core/server/SecretResolver";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import { SecretProviderId, type SimlockDeviceHostConfig } from "@j6/contracts";
+import * as SecretResolver from "@j6/secret-provider-core/server/SecretResolver";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Effect from "effect/Effect";
 import * as Clock from "effect/Clock";
 import * as Fiber from "effect/Fiber";
@@ -171,7 +171,7 @@ const makeSecretResolver = (values: Record<string, string> = {}) =>
 
 const layerWith = (secrets: Layer.Layer<SecretResolver.SecretResolver>) =>
   Layer.mergeAll(
-    ServerConfig.layerTest(process.cwd(), { prefix: "t3-simlock-host-" }),
+    ServerConfig.layerTest(process.cwd(), { prefix: "j6-simlock-host-" }),
     secrets,
   ).pipe(Layer.provideMerge(NodeServices.layer));
 

@@ -1,5 +1,5 @@
 import { assert, describe, it } from "@effect/vitest";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -96,7 +96,7 @@ describe("AppleSpeech", () => {
       const speech = yield* AppleSpeech.AppleSpeech;
       assert.deepEqual(yield* speech.prepare("en-US"), expected);
       assert.deepEqual(commands, [
-        ["/app/Resources/apple-speech/t3-apple-speech", "prepare", "en-US"],
+        ["/app/Resources/apple-speech/j6-apple-speech", "prepare", "en-US"],
       ]);
     }).pipe(Effect.provide(layer));
   });
@@ -155,7 +155,7 @@ describe("AppleSpeech", () => {
       assert.deepEqual(result, { ok: true, value: "hello" });
       assert.deepEqual(commands, [
         [
-          "/app/Resources/apple-speech/t3-apple-speech",
+          "/app/Resources/apple-speech/j6-apple-speech",
           "transcribe",
           "en-US",
           "/tmp/recording.wav",

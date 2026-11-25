@@ -1,6 +1,6 @@
 import * as Schema from "effect/Schema";
 import { msg } from "gt-react";
-import { SavedViewIdentity } from "@t3tools/client-runtime/saved-views";
+import { SavedViewIdentity } from "@j6/client-runtime/saved-views";
 
 import type { SavedView, SavedViewsKind } from "../SavedViewsMenu";
 import {
@@ -25,7 +25,7 @@ export function pullRequestViewMatches(
 }
 
 export const PULL_REQUEST_SAVED_VIEWS = {
-  storageKey: "t3.pullRequests.savedViews",
+  storageKey: "j6.pullRequests.savedViews",
   schema: Schema.Array(
     Schema.Struct({ ...SavedViewIdentity.fields, preferences: PullRequestListPreferencesSchema }),
   ),

@@ -1,5 +1,5 @@
-import { type EnvironmentId, SourceControlProviderKind } from "@t3tools/contracts";
-import { runAtomCommand } from "@t3tools/client-runtime/state/runtime";
+import { type EnvironmentId, SourceControlProviderKind } from "@j6/contracts";
+import { runAtomCommand } from "@j6/client-runtime/state/runtime";
 import * as Schema from "effect/Schema";
 import { msg } from "gt-react";
 import { StarIcon } from "lucide-react";
@@ -12,8 +12,8 @@ import { sourceControlEnvironment } from "../state/sourceControl";
 import { toastManager } from "./ui/toast";
 
 // Separate keys so a count written by another tab can never undo a dismissal.
-const SENT_KEY = "t3code:github-star-prompt:sent";
-const DISMISSED_KEY = "t3code:github-star-prompt:dismissed";
+const SENT_KEY = "j6code:github-star-prompt:sent";
+const DISMISSED_KEY = "j6code:github-star-prompt:dismissed";
 const REPOSITORY = "pingdotgg/t3code";
 const PROMPTS_BEFORE_ASKING = 5;
 const IDLE_MS = 30_000;
@@ -45,7 +45,7 @@ function showStarPrompt(environmentId: EnvironmentId) {
       toastManager.update(id, {
         type: "success",
         title: m(msg("Thanks for the star!")),
-        description: m(msg("It really helps T3 Code grow.")),
+        description: m(msg("It really helps J6 Code grow.")),
         timeout: 5_000,
         actionProps: undefined,
         data: {},
@@ -61,7 +61,7 @@ function showStarPrompt(environmentId: EnvironmentId) {
     });
   };
   const id = toastManager.add({
-    title: m(msg("Enjoying T3 Code?")),
+    title: m(msg("Enjoying J6 Code?")),
     description: m(msg("Give us a star on GitHub to let us know!")),
     timeout: 0,
     onClose: dismiss,

@@ -6,13 +6,13 @@ import {
   type KeybindingWhenNode,
   type ResolvedKeybindingRule,
   type ResolvedKeybindingsConfig,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   DEFAULT_RESOLVED_KEYBINDINGS,
   parseKeybindingShortcut,
   parseKeybindingWhenExpression,
   US_SHIFTED_TO_UNSHIFTED_KEYS,
-} from "@t3tools/shared/keybindings";
+} from "@j6/shared/keybindings";
 import { msg } from "gt-react";
 
 import { m, type MessageResolver } from "../../i18n/messages";

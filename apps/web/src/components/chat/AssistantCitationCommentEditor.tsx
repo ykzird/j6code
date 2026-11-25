@@ -1,4 +1,4 @@
-import { ASSISTANT_CITATION_MAX_COMMENT_LENGTH, type AssistantCitation } from "@t3tools/contracts";
+import { ASSISTANT_CITATION_MAX_COMMENT_LENGTH, type AssistantCitation } from "@j6/contracts";
 import { T, useGT, Var } from "gt-react";
 import { use, useEffect, useRef, useState, type RefObject } from "react";
 
@@ -50,7 +50,7 @@ export function AssistantCitationCommentEditor({
     onTextChange: updateComment,
   });
   const setupOpen = speech.setup.open;
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- keeps the citation popover open while the voice setup dialog owns focus
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- keeps the citation popover open while the voice setup dialog owns focus
   useEffect(() => {
     onVoiceSetupOpenChange?.(setupOpen);
     return () => onVoiceSetupOpenChange?.(false);

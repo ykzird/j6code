@@ -34,8 +34,8 @@ import {
   type IssueUpdateInput,
   type OrchestrationProjectShell,
   type ProjectId,
-} from "@t3tools/contracts";
-import * as SourceControlRateLimit from "@t3tools/source-control-core/server/SourceControlRateLimit";
+} from "@j6/contracts";
+import * as SourceControlRateLimit from "@j6/source-control-core/server/SourceControlRateLimit";
 import {
   IssueTrackerError,
   isStandaloneIssueTracker,
@@ -44,9 +44,9 @@ import {
   type StandaloneIssueTrackerApi,
   type TrackerIssueDetail,
   type TrackerIssueLink,
-} from "@t3tools/source-control-core/server/IssueTracker";
-import { asIssueTrackerAccount } from "@t3tools/source-control-core/server/IssueTrackerHost";
-import { parseUrl } from "@t3tools/shared/url";
+} from "@j6/source-control-core/server/IssueTracker";
+import { asIssueTrackerAccount } from "@j6/source-control-core/server/IssueTrackerHost";
+import { parseUrl } from "@j6/shared/url";
 
 import * as IssueTrackerBindings from "../persistence/IssueTrackerBindings.ts";
 import * as ProjectService from "../project/ProjectService.ts";
@@ -201,7 +201,7 @@ export class IssueService extends Context.Service<
       IssueError
     >;
   }
->()("t3/issue/IssueService") {}
+>()("j6/issue/IssueService") {}
 
 const make = Effect.gen(function* () {
   const registry = yield* IssueTrackerRegistry.IssueTrackerRegistry;
@@ -837,7 +837,7 @@ const make = Effect.gen(function* () {
         if (found === null) {
           return yield* new IssueOperationError({
             operation: "resolveUrl",
-            detail: `No project in T3 Code is on ${link.host}. Add any ${link.host} project to read its issues.`,
+            detail: `No project in J6 Code is on ${link.host}. Add any ${link.host} project to read its issues.`,
           });
         }
         return found.resolved;

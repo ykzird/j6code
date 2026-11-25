@@ -1,9 +1,9 @@
 // @effect-diagnostics nodeBuiltinImport:off -- Pure synchronous hashing keeps page matching bounded without a runtime dependency.
 import * as NodeCrypto from "node:crypto";
-import type { ThreadId } from "@t3tools/contracts";
-import type { HtmlRenderReference } from "@t3tools/shared/htmlRender";
-import { stableStringify } from "@t3tools/shared/relaySigning";
-import { resolveT3McpToolId } from "@t3tools/shared/t3McpToolPresentation";
+import type { ThreadId } from "@j6/contracts";
+import type { HtmlRenderReference } from "@j6/shared/htmlRender";
+import { stableStringify } from "@j6/shared/relaySigning";
+import { resolveT3McpToolId } from "@j6/shared/t3McpToolPresentation";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -93,7 +93,7 @@ export class McpProviderSessions extends Context.Service<
     ) => Effect.Effect<Record<string, unknown> | undefined>;
     readonly clearToolResults: (threadId: ThreadId) => Effect.Effect<void>;
   }
->()("@t3tools/provider-core/server/McpProviderSessions") {}
+>()("@j6/provider-core/server/McpProviderSessions") {}
 
 interface PageInput {
   readonly html?: unknown;

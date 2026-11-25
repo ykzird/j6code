@@ -1,5 +1,5 @@
-import { resolveProviderProbeTimeoutMs } from "@t3tools/provider-core/server/snapshotProbe";
-import { CodexSettings, ProviderDriverKind } from "@t3tools/contracts";
+import { resolveProviderProbeTimeoutMs } from "@j6/provider-core/server/snapshotProbe";
+import { CodexSettings, ProviderDriverKind } from "@j6/contracts";
 import * as Digest from "effect/crypto/Digest";
 import * as SecureRandom from "effect/crypto/SecureRandom";
 import type * as Signature from "effect/crypto/Signature";
@@ -15,11 +15,11 @@ import { ChildProcessSpawner } from "effect/process";
 
 import type * as CodexUsageHistory from "../../usage/CodexUsageHistory.ts";
 import { makeCodexTextGeneration } from "../../textGeneration/CodexTextGeneration.ts";
-import * as ProviderLatestVersions from "@t3tools/provider-core/server/ProviderLatestVersions";
-import * as ProviderHost from "@t3tools/provider-core/server/ProviderHost";
+import * as ProviderLatestVersions from "@j6/provider-core/server/ProviderLatestVersions";
+import * as ProviderHost from "@j6/provider-core/server/ProviderHost";
 import * as ServerConfig from "../../config.ts";
-import { expandHomePath } from "@t3tools/provider-core/server/pathExpansion";
-import * as ProviderEventLoggers from "@t3tools/provider-core/server/ProviderEventLoggers";
+import { expandHomePath } from "@j6/provider-core/server/pathExpansion";
+import * as ProviderEventLoggers from "@j6/provider-core/server/ProviderEventLoggers";
 import {
   createCodexAdapterV2,
   type CodexAdapterV2DriverEnv,
@@ -33,24 +33,24 @@ import {
   withCodexAppServerClient,
 } from "../CodexProvider.ts";
 import { resolveCodexLaunchArgs } from "../codexLaunchArgs.ts";
-import { makeManagedServerProvider } from "@t3tools/provider-core/server/managedProvider";
-import * as ModelCatalog from "@t3tools/provider-core/server/ModelCatalog";
+import { makeManagedServerProvider } from "@j6/provider-core/server/managedProvider";
+import * as ModelCatalog from "@j6/provider-core/server/ModelCatalog";
 import { applyCodexModelCatalog } from "../codexModelCatalog.ts";
-import type { ProviderDriver, ProviderInstance } from "@t3tools/provider-core/server/driver";
-import { withInstanceIdentity } from "@t3tools/provider-core/server/instanceIdentity";
-import { mergeProviderInstanceEnvironment } from "@t3tools/provider-core/server/instanceEnvironment";
+import type { ProviderDriver, ProviderInstance } from "@j6/provider-core/server/driver";
+import { withInstanceIdentity } from "@j6/provider-core/server/instanceIdentity";
+import { mergeProviderInstanceEnvironment } from "@j6/provider-core/server/instanceEnvironment";
 import {
   enrichProviderSnapshotWithVersionAdvisory,
   makeCachedProviderMaintenanceResolution,
   makePackageManagedProviderMaintenanceResolver,
   resolveProviderMaintenanceCapabilitiesEffect,
   type ProviderMaintenanceCapabilities,
-} from "@t3tools/provider-core/server/maintenanceResolver";
+} from "@j6/provider-core/server/maintenanceResolver";
 import {
   haveProviderSnapshotSettingsChanged,
   makeProviderSnapshotSettingsSource,
   type ProviderSnapshotSettings,
-} from "@t3tools/provider-core/server/snapshotSettings";
+} from "@j6/provider-core/server/snapshotSettings";
 import {
   codexContinuationIdentity,
   codexHomeLaunchArgs,
@@ -63,7 +63,7 @@ import * as CodexInstallation from "../CodexInstallation.ts";
 import * as CodexManagedTokenBroker from "../CodexManagedTokenBroker.ts";
 import * as ServerSecretStore from "../../auth/ServerSecretStore.ts";
 import * as ServerEnvironment from "../../environment/ServerEnvironment.ts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 const decodeCodexSettings = Schema.decodeSync(CodexSettings);
 
 const DRIVER_KIND = ProviderDriverKind.make("codex");

@@ -2,12 +2,12 @@ import type {
   DesktopDiscoveredSshHost,
   DesktopSshEnvironmentBootstrap,
   DesktopSshEnvironmentTarget,
-} from "@t3tools/contracts";
-import { CLI_RELEASE_BASE_URL_ENV } from "@t3tools/shared/cliRelease";
-import * as NetService from "@t3tools/shared/Net";
-import * as SshAuth from "@t3tools/ssh/auth";
-import { resolveSshTarget } from "@t3tools/ssh/command";
-import { discoverSshHosts } from "@t3tools/ssh/config";
+} from "@j6/contracts";
+import { CLI_RELEASE_BASE_URL_ENV } from "@j6/shared/cliRelease";
+import * as NetService from "@j6/shared/Net";
+import * as SshAuth from "@j6/ssh/auth";
+import { resolveSshTarget } from "@j6/ssh/command";
+import { discoverSshHosts } from "@j6/ssh/config";
 import {
   SshCommandError,
   SshHostDiscoveryError,
@@ -16,8 +16,8 @@ import {
   SshPairingError,
   SshPasswordPromptError,
   SshReadinessError,
-} from "@t3tools/ssh/errors";
-import * as SshTunnel from "@t3tools/ssh/tunnel";
+} from "@j6/ssh/errors";
+import * as SshTunnel from "@j6/ssh/tunnel";
 import * as Context from "effect/Context";
 import type * as Digest from "effect/crypto/Digest";
 import * as SecureRandom from "effect/crypto/SecureRandom";
@@ -72,7 +72,7 @@ export class DesktopSshEnvironment extends Context.Service<
     ) => Effect.Effect<void, DesktopSshEnvironmentOperationError>;
     readonly closeAllTunnels: Effect.Effect<void>;
   }
->()("@t3tools/desktop/ssh/DesktopSshEnvironment") {}
+>()("@j6/desktop/ssh/DesktopSshEnvironment") {}
 
 export interface DesktopSshEnvironmentLayerOptions {
   readonly resolveCliRunner?: Effect.Effect<SshTunnel.RemoteT3RunnerOptions>;
@@ -147,7 +147,7 @@ function toSshPasswordPromptError(
       break;
     case "DesktopSshPromptWindowUnavailableError":
     case "DesktopSshPromptPresentationError":
-      message = "T3 Code window is not available for SSH authentication.";
+      message = "J6 Code window is not available for SSH authentication.";
       break;
     case "DesktopSshPromptTimedOutError":
       message = `SSH authentication timed out for ${cause.destination}.`;

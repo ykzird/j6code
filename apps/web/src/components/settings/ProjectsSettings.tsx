@@ -1,4 +1,4 @@
-import { EnvironmentId } from "@t3tools/contracts";
+import { EnvironmentId } from "@j6/contracts";
 import { T, useGT } from "gt-react";
 import { LayersIcon } from "lucide-react";
 

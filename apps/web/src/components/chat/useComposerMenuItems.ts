@@ -2,11 +2,11 @@ import { useGT, useMessages } from "gt-react";
 import {
   legacyThreadPullRequestKey,
   threadPullRequestKeyOf,
-} from "@t3tools/client-runtime/thread-pull-requests";
+} from "@j6/client-runtime/thread-pull-requests";
 import {
   matchComposerEnvironmentItems,
   matchComposerThreadItems,
-} from "@t3tools/client-runtime/composerThreadItems";
+} from "@j6/client-runtime/composerThreadItems";
 import { useAtomValue } from "@effect/atom-react";
 import { useState } from "react";
 import type {
@@ -18,13 +18,13 @@ import type {
   ServerProvider,
   ThreadId,
   ThreadPullRequestLink,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   composerPullRequestsFromLinks,
   filterComposerPullRequestMatches,
   withLinkedComposerPullRequestsFirst,
-} from "@t3tools/shared/composerPullRequestMatches";
-import { formatProviderSkillDisplayName } from "@t3tools/shared/inlineSkills";
+} from "@j6/shared/composerPullRequestMatches";
+import { formatProviderSkillDisplayName } from "@j6/shared/inlineSkills";
 
 import type { ComposerTrigger } from "../../composer-logic";
 import type { DraftId } from "../../composerDraftStore";
@@ -32,7 +32,7 @@ import { basenameOfPath } from "../../pierre-icons";
 import {
   getProviderSkillsForSlashMenu,
   getProviderSlashCommandsForSlashMenu,
-} from "@t3tools/client-runtime/providerSkills";
+} from "@j6/client-runtime/providerSkills";
 import { searchProviderSkills } from "../../providerSkillSearch";
 import { useVisibleThreadShells } from "~/state/entities";
 import { useEnvironmentIdentities, useEnvironmentMachines } from "~/state/environments";

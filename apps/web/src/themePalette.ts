@@ -1,5 +1,5 @@
 import { pipe } from "effect/Function";
-import { THEME_CSS_MAX_LENGTH, type EnvironmentTheme } from "@t3tools/contracts";
+import { THEME_CSS_MAX_LENGTH, type EnvironmentTheme } from "@j6/contracts";
 import * as Equal from "effect/Equal";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
@@ -23,7 +23,7 @@ import {
   type ThemeColors,
   type ThemeDefinition,
   type ThemeVariants,
-} from "@t3tools/shared/themePalettes";
+} from "@j6/shared/themePalettes";
 import {
   CONTEXT_CHIP_ACCENTS,
   contextChipColorVariable,
@@ -39,19 +39,19 @@ import { themeServerEnvironmentThemesAtom } from "./state/server";
 export { EMBER_THEME, GROVE_THEME, IRIS_THEME, OCEAN_THEME, T3_CHAT_THEME, THEME_COLOR_ROLES };
 export type { ThemeAppearance, ThemeColorRole, ThemeColors, ThemeDefinition, ThemeVariants };
 
-const T3_CHAT_THEME_ID = "t3-chat" as const;
+const T3_CHAT_THEME_ID = "j6-chat" as const;
 const GROVE_THEME_ID = "grove" as const;
 const OCEAN_THEME_ID = "ocean" as const;
 const EMBER_THEME_ID = "ember" as const;
 const IRIS_THEME_ID = "iris" as const;
 export const THEME_FILE_VERSION = 1 as const;
-export const CUSTOM_THEMES_STORAGE_KEY = "t3code:themes:v1";
-export const THEME_FOLLOW_SYSTEM_STORAGE_KEY = "t3code:theme-follow-system";
-export const THEME_APPEARANCE_MODE_STORAGE_KEY = "t3code:theme-appearance-mode";
-export const THEME_HALVES_STORAGE_KEY = "t3code:theme-halves:v1";
-export const ENVIRONMENT_THEMES_STORAGE_KEY = "t3code:environment-themes:v1";
+export const CUSTOM_THEMES_STORAGE_KEY = "j6code:themes:v1";
+export const THEME_FOLLOW_SYSTEM_STORAGE_KEY = "j6code:theme-follow-system";
+export const THEME_APPEARANCE_MODE_STORAGE_KEY = "j6code:theme-appearance-mode";
+export const THEME_HALVES_STORAGE_KEY = "j6code:theme-halves:v1";
+export const ENVIRONMENT_THEMES_STORAGE_KEY = "j6code:environment-themes:v1";
 
-const LEGACY_T3_CHAT_DARK_THEME_ID = "t3-chat-dark";
+const LEGACY_T3_CHAT_DARK_THEME_ID = "j6-chat-dark";
 
 export const ThemePreference = Schema.String;
 export type ThemePreference = typeof ThemePreference.Type;
@@ -304,7 +304,7 @@ function environmentThemeDefinition(theme: EnvironmentTheme): ThemeDefinition {
 
 /**
  * Published palettes this client can render. Reserved ids are dropped here rather
- * than rendered: a published `t3-iris.json` would show this palette on its
+ * than rendered: a published `j6-iris.json` would show this palette on its
  * card while "Use" resolved the built-in, and a published `dark.json` would
  * capture everyone whose stored preference is the stock `"dark"`.
  */
@@ -408,10 +408,10 @@ export function subscribeToCustomThemes(listener: () => void): () => void {
 
 const LEGACY_THEME_ID_ALIASES: Readonly<Record<string, string>> = {
   [LEGACY_T3_CHAT_DARK_THEME_ID]: T3_CHAT_THEME_ID,
-  "t3-grove": GROVE_THEME_ID,
-  "t3-ocean": OCEAN_THEME_ID,
-  "t3-ember": EMBER_THEME_ID,
-  "t3-iris": IRIS_THEME_ID,
+  "j6-grove": GROVE_THEME_ID,
+  "j6-ocean": OCEAN_THEME_ID,
+  "j6-ember": EMBER_THEME_ID,
+  "j6-iris": IRIS_THEME_ID,
 };
 
 function normalizeThemeId(themeId: string): string {

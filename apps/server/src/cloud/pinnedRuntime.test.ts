@@ -14,7 +14,7 @@ import { HttpClient, HttpClientError, HttpClientResponse } from "effect/http";
 import * as ChildProcess from "effect/process/ChildProcess";
 import * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
 
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 
 import * as ProcessRunner from "../processRunner.ts";
 import {
@@ -33,7 +33,7 @@ import {
 import { SERVICE_LAUNCHER_PROTOCOL } from "./serviceProtocol.ts";
 
 const version = "1.2.3";
-const archiveName = `t3-${version}-linux-x64.tar.gz`;
+const archiveName = `j6-${version}-linux-x64.tar.gz`;
 const archiveBytes = new TextEncoder().encode("not really a tarball");
 const archiveHex = (bytes: Uint8Array) =>
   Effect.promise(() => crypto.subtle.digest("SHA-256", bytes)).pipe(
@@ -60,7 +60,7 @@ const extractingRunner = (fs: FileSystem.FileSystem, path: Path.Path, commands: 
         if (input.command !== "tar" || stagingDir === undefined) {
           return yield* Effect.die(`unexpected command ${input.command}`);
         }
-        yield* fs.writeFileString(path.join(stagingDir, "t3"), "#!/bin/sh\n").pipe(Effect.orDie);
+        yield* fs.writeFileString(path.join(stagingDir, "j6"), "#!/bin/sh\n").pipe(Effect.orDie);
         return {
           stdout: "",
           stderr: "",
@@ -79,7 +79,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-pinned-archive-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-pinned-archive-" });
       const requests: string[] = [];
       const commands: string[] = [];
       const paths = yield* ensurePinnedRuntimeInstalled({
@@ -98,7 +98,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
             Effect.orDie,
           ),
       });
-      assert.equal(paths.entryPath, path.join(paths.versionDir, "t3"));
+      assert.equal(paths.entryPath, path.join(paths.versionDir, "j6"));
       assert.deepEqual(pinnedRuntimeCommand(paths), { command: paths.entryPath, args: [] });
       assert.deepEqual(requests, [
         `https://releases.example/download/v${version}/SHA256SUMS`,
@@ -106,7 +106,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
       ]);
       assert.deepEqual(commands, ["tar"]);
       assert.equal(yield* fs.readFileString(paths.sentinelPath), `${version}\n`);
-      assert.isFalse(yield* fs.exists(path.join(paths.versionDir, "t3-runtime-archive")));
+      assert.isFalse(yield* fs.exists(path.join(paths.versionDir, "j6-runtime-archive")));
     }),
   );
 
@@ -114,7 +114,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-pinned-progress-failed-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-pinned-progress-failed-" });
       const checksums = yield* validChecksums;
       const progress: PinnedRuntimeProgress[] = [];
       let cancelled = false;
@@ -169,7 +169,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-pinned-archive-missing-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-pinned-archive-missing-" });
       const checksums = yield* validChecksums;
       const failsWith = (status: number) =>
         ensurePinnedRuntimeInstalled({
@@ -190,7 +190,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
             ),
           ),
           // "404" in the mirror's path must not read a server error as a missing release.
-          releaseBaseUrl: "https://updates.example.com/404/t3code",
+          releaseBaseUrl: "https://updates.example.com/404/j6code",
           runner: extractingRunner(fs, path),
           validate: () => Effect.die("must not validate a missing archive"),
         }).pipe(Effect.flip);
@@ -203,7 +203,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-pinned-retry-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-pinned-retry-" });
       const checksums = yield* validChecksums;
       const requests: string[] = [];
       const gatewayTimeoutServed = yield* Deferred.make<void>();
@@ -263,7 +263,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
       const shortResume = "shortResume" in row;
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-pinned-retry-body-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-pinned-retry-body-" });
       const checksums = yield* validChecksums;
       const ranges: Array<string | undefined> = [];
       const checksumRanges: Array<string | undefined> = [];
@@ -391,7 +391,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-pinned-offline-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-pinned-offline-" });
       let requests = 0;
       const error = yield* ensurePinnedRuntimeInstalled({
         baseDir,
@@ -420,7 +420,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-pinned-archive-bad-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-pinned-archive-bad-" });
       const commands: string[] = [];
       const error = yield* ensurePinnedRuntimeInstalled({
         baseDir,
@@ -434,7 +434,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
         validate: () => Effect.die("must not validate an unverified archive"),
       }).pipe(Effect.flip);
       assert.instanceOf(error, PinnedRuntimeInstallError);
-      assert.equal(error.step, "verifying the t3 release archive checksum");
+      assert.equal(error.step, "verifying the j6 release archive checksum");
       assert.deepEqual(commands, []);
       assert.deepEqual(yield* fs.readDirectory(path.join(baseDir, "runtime", "versions")), []);
     }),
@@ -444,7 +444,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-pinned-runtime-test-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-pinned-runtime-test-" });
       const finalPaths = pinnedRuntimePaths(path, baseDir, version, "linux");
       let validatedDirectory = "";
 
@@ -476,7 +476,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-pinned-runtime-test-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-pinned-runtime-test-" });
       const finalPaths = pinnedRuntimePaths(path, baseDir, version, "linux");
 
       yield* ensurePinnedRuntimeInstalled({
@@ -506,7 +506,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-pinned-runtime-repair-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-pinned-runtime-repair-" });
       const finalPaths = pinnedRuntimePaths(path, baseDir, version, "linux");
       yield* fs.makeDirectory(finalPaths.versionDir, { recursive: true });
       yield* fs.writeFileString(path.join(finalPaths.versionDir, "partial"), "incomplete\n");
@@ -532,7 +532,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-pinned-runtime-mirror-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-pinned-runtime-mirror-" });
       const cached = pinnedRuntimePaths(path, baseDir, version, "linux");
       yield* fs.makeDirectory(path.dirname(cached.entryPath), { recursive: true });
       yield* fs.writeFileString(cached.entryPath, "#!/bin/sh\n");
@@ -547,19 +547,19 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
           arch: "x64",
           httpClient: releaseHttpClient(checksums, requests),
           // A signed mirror URL keeps its query on every file it serves.
-          releaseBaseUrl: "https://updates.example.com/t3code/?token=abc",
+          releaseBaseUrl: "https://updates.example.com/j6code/?token=abc",
           requirePublishedRelease: true,
           runner: extractingRunner(fs, path),
           validate: () => Effect.void,
         });
 
       const withdrawn = yield* install("", []).pipe(Effect.flip);
-      assert.include(withdrawn.message, `finding ${archiveName} in the t3 release checksums`);
+      assert.include(withdrawn.message, `finding ${archiveName} in the j6 release checksums`);
       const requests: string[] = [];
       assert.equal((yield* install(yield* validChecksums, requests)).entryPath, cached.entryPath);
       // Listed, so the cached runtime is used without downloading it again.
       assert.deepEqual(requests, [
-        `https://updates.example.com/t3code/v${version}/SHA256SUMS?token=abc`,
+        `https://updates.example.com/j6code/v${version}/SHA256SUMS?token=abc`,
       ]);
     }),
   );
@@ -568,7 +568,7 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-pinned-runtime-repair-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-pinned-runtime-repair-" });
       const finalPaths = pinnedRuntimePaths(path, baseDir, version, "linux");
       yield* fs.makeDirectory(path.dirname(finalPaths.entryPath), { recursive: true });
       yield* fs.writeFileString(finalPaths.entryPath, "broken\n");
@@ -602,12 +602,12 @@ it.layer(NodeServices.layer)("ensurePinnedRuntimeInstalled", (it) => {
   );
 });
 
-it("isVersionExecutable accepts only <version>/t3, never another drive or program", () => {
+it("isVersionExecutable accepts only <version>/j6, never another drive or program", () => {
   const win32 = NodePath.win32 as unknown as Path.Path;
-  assert.isTrue(isVersionExecutable(win32, "C:\\t3\\versions", "C:\\t3\\versions\\1.0.0\\t3.exe"));
-  assert.isFalse(isVersionExecutable(win32, "C:\\t3\\versions", "D:\\t3.exe"));
+  assert.isTrue(isVersionExecutable(win32, "C:\\j6\\versions", "C:\\j6\\versions\\1.0.0\\j6.exe"));
+  assert.isFalse(isVersionExecutable(win32, "C:\\j6\\versions", "D:\\j6.exe"));
   assert.isFalse(
-    isVersionExecutable(win32, "C:\\t3\\versions", "C:\\t3\\versions\\1.0.0\\node.exe"),
+    isVersionExecutable(win32, "C:\\j6\\versions", "C:\\j6\\versions\\1.0.0\\node.exe"),
   );
 });
 
@@ -630,7 +630,7 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
   const setup = Effect.fn(function* (versions: ReadonlyArray<string>) {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-pinned-prune-" });
+    const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-pinned-prune-" });
     const versionsDir = path.join(baseDir, "runtime", "versions");
     const now = Duration.toMillis(Duration.days(1));
     yield* TestClock.setTime(now);
@@ -640,7 +640,7 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
     ) {
       const directory = path.join(versionsDir, version);
       yield* fs.makeDirectory(directory, { recursive: true });
-      yield* fs.writeFileString(path.join(directory, "t3"), "");
+      yield* fs.writeFileString(path.join(directory, "j6"), "");
       if (completed === "never") return;
       const sentinel = path.join(directory, ".install-complete");
       yield* fs.writeFileString(sentinel, `${version}\n`);
@@ -679,12 +679,12 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
       yield* fs.makeDirectory(binDir);
       yield* fs.makeDirectory(customBinDir);
       // Chained: the launcher reaches its runtime through a second link.
-      yield* fs.symlink(path.join(versionsDir, "1.2.0", "t3"), path.join(baseDir, "alias-t3"));
-      yield* fs.symlink(path.join(baseDir, "alias-t3"), path.join(binDir, "t3"));
-      yield* fs.symlink(path.join(versionsDir, "1.2.5", "t3"), path.join(customBinDir, "t3"));
+      yield* fs.symlink(path.join(versionsDir, "1.2.0", "j6"), path.join(baseDir, "alias-j6"));
+      yield* fs.symlink(path.join(baseDir, "alias-j6"), path.join(binDir, "j6"));
+      yield* fs.symlink(path.join(versionsDir, "1.2.5", "j6"), path.join(customBinDir, "j6"));
       yield* fs.writeFileString(
         path.join(baseDir, "runtime", "launchers"),
-        `${path.join(customBinDir, "t3")}\n`,
+        `${path.join(customBinDir, "j6")}\n`,
       );
       yield* fs.writeFileString(
         path.join(baseDir, "runtime", "service-state.json"),
@@ -698,14 +698,14 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
       const removed = yield* prunePinnedRuntimes({
         baseDir,
         keep: ["2.0.0"],
-        references: [`ExecStart=${path.join(versionsDir, "1.3.5", "t3")} __service-launcher`],
+        references: [`ExecStart=${path.join(versionsDir, "1.3.5", "j6")} __service-launcher`],
       }).pipe(
         Effect.provideService(
           ProcessRunner.ProcessRunner,
-          lsofRunner(`p42\nftxt\nn${path.join(versionsDir, "1.3.0", "t3")}\n`),
+          lsofRunner(`p42\nftxt\nn${path.join(versionsDir, "1.3.0", "j6")}\n`),
         ),
         Effect.provideService(HostProcess.Platform, "darwin"),
-        Effect.provideService(HostProcess.Environment, { T3CODE_INSTALL_BIN_DIR: binDir }),
+        Effect.provideService(HostProcess.Environment, { J6CODE_INSTALL_BIN_DIR: binDir }),
       );
 
       // 1.2.0 is the default launcher, 1.2.5 a recorded one, 1.3.0 running, 1.3.5 in the unit,
@@ -715,7 +715,7 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
       // The launcher found on PATH is remembered for a service that cannot see it.
       assert.equal(
         yield* fs.readFileString(path.join(baseDir, "runtime", "launchers")),
-        `${path.join(customBinDir, "t3")}\n\n${path.join(binDir, "t3")}\n`,
+        `${path.join(customBinDir, "j6")}\n\n${path.join(binDir, "j6")}\n`,
       );
       assert.deepEqual((yield* fs.readDirectory(versionsDir)).toSorted(), [
         ".staging-abc",
@@ -795,17 +795,17 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
       const { baseDir, versionsDir } = yield* setup(["1.0.0", "1.1.0"]);
       const binDir = path.join(baseDir, "bin");
       yield* fs.makeDirectory(binDir);
-      yield* fs.symlink(path.join(versionsDir, "1.1.0", "t3"), path.join(binDir, "t3"));
+      yield* fs.symlink(path.join(versionsDir, "1.1.0", "j6"), path.join(binDir, "j6"));
       const ownDir = path.join(versionsDir, "1.0.0");
       if (recorded) {
         yield* fs.writeFileString(
           path.join(baseDir, "runtime", "launchers"),
-          `${path.join(ownDir, "t3")}\n`,
+          `${path.join(ownDir, "j6")}\n`,
         );
       }
 
       const home = linkedHome
-        ? path.join(yield* fs.makeTempDirectoryScoped({ prefix: "t3-pinned-link-" }), "home")
+        ? path.join(yield* fs.makeTempDirectoryScoped({ prefix: "j6-pinned-link-" }), "home")
         : baseDir;
       if (linkedHome) yield* fs.symlink(baseDir, home);
 
@@ -817,7 +817,7 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
         ),
         Effect.provideService(HostProcess.Platform, "darwin"),
         Effect.provideService(HostProcess.Environment, {
-          T3CODE_INSTALL_BIN_DIR: binDir,
+          J6CODE_INSTALL_BIN_DIR: binDir,
           PATH: onPath ? `${ownDir}:/usr/bin:/bin` : "/usr/bin:/bin",
         }),
       );
@@ -842,10 +842,10 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
         // The installer accepts any bin directory, including one under the versions directory.
         const binDir = path.join(versionsDir, "bin");
         yield* fs.makeDirectory(binDir);
-        yield* fs.symlink(path.join(versionsDir, "1.0.0", "t3"), path.join(binDir, "t3"));
+        yield* fs.symlink(path.join(versionsDir, "1.0.0", "j6"), path.join(binDir, "j6"));
         yield* fs.writeFileString(
           path.join(baseDir, "runtime", "launchers"),
-          `${path.join(binDir, "t3")}\n`,
+          `${path.join(binDir, "j6")}\n`,
         );
       } else {
         const linkedDir = path.join(via === "linked dir" ? baseDir : versionsDir, "current");
@@ -869,7 +869,7 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
     // An interrupted append cut this record short.
     { name: "an unterminated launcher record", recorded: "/opt/t", cut: "" },
     // Another process's append is cut short after prune reads the records.
-    { name: "a record cut short after the read", recorded: "/opt/t3\n", cut: "/opt/t" },
+    { name: "a record cut short after the read", recorded: "/opt/j6\n", cut: "/opt/t" },
   ])("remembers a launcher found on PATH after $name", ({ recorded, cut }) =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
@@ -877,7 +877,7 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
       const { baseDir, versionsDir } = yield* setup(["1.0.0", "1.1.0"]);
       const binDir = path.join(baseDir, "custom-bin");
       yield* fs.makeDirectory(binDir);
-      yield* fs.symlink(path.join(versionsDir, "1.0.0", "t3"), path.join(binDir, "t3"));
+      yield* fs.symlink(path.join(versionsDir, "1.0.0", "j6"), path.join(binDir, "j6"));
       const launchersFile = path.join(baseDir, "runtime", "launchers");
       yield* fs.writeFileString(launchersFile, recorded);
       const prune = (environment: Record<string, string>) =>
@@ -907,7 +907,7 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
       const removed = yield* prune({});
 
       assert.deepEqual(removed, []);
-      assert.isTrue(yield* fs.exists(path.join(versionsDir, "1.0.0", "t3")));
+      assert.isTrue(yield* fs.exists(path.join(versionsDir, "1.0.0", "j6")));
     }),
   );
 
@@ -916,10 +916,10 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
       const { baseDir, versionsDir } = yield* setup(["1.0.0", "1.1.0"]);
-      const shim = path.join(baseDir, "t3.cmd");
+      const shim = path.join(baseDir, "j6.cmd");
       yield* fs.writeFileString(
         shim,
-        `@echo off\r\n"${path.join(versionsDir, "1.0.0", "t3.exe").toUpperCase()}" %*`,
+        `@echo off\r\n"${path.join(versionsDir, "1.0.0", "j6.exe").toUpperCase()}" %*`,
       );
       yield* fs.writeFileString(path.join(baseDir, "runtime", "launchers"), `${shim}\n`);
 
@@ -955,7 +955,7 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
       const removed = yield* prunePinnedRuntimes({ baseDir, keep: ["2.0.0"] }).pipe(
         Effect.provideService(ProcessRunner.ProcessRunner, lsofRunner(lsof)),
         Effect.provideService(HostProcess.Platform, "darwin"),
-        Effect.provideService(HostProcess.Environment, { T3CODE_INSTALL_BIN_DIR: baseDir }),
+        Effect.provideService(HostProcess.Environment, { J6CODE_INSTALL_BIN_DIR: baseDir }),
       );
       assert.deepEqual(removed, []);
       assert.deepEqual(yield* fs.readDirectory(versionsDir), ["1.0.0"]);
@@ -969,13 +969,13 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
         const { baseDir, versionsDir } = yield* setup(["1.0.0", "1.1.0"]);
-        const entry = path.join(versionsDir, "1.0.0", "t3");
+        const entry = path.join(versionsDir, "1.0.0", "j6");
         // Multicall coreutils (Ubuntu's uutils) refuse to run renamed, so copy Node instead.
         yield* fs.copyFile(process.execPath, entry);
         yield* fs.chmod(entry, 0o755);
-        const link = path.join(baseDir, "t3");
+        const link = path.join(baseDir, "j6");
         yield* fs.symlink(entry, link);
-        // Its argv names only the link, as with `t3 serve` run from PATH. Removing the link after
+        // Its argv names only the link, as with `j6 serve` run from PATH. Removing the link after
         // spawning leaves the process's executable as the only reference.
         const spawner = yield* ChildProcessSpawner.ChildProcessSpawner;
         yield* spawner.spawn(ChildProcess.make(link, ["-e", "setTimeout(() => {}, 30_000)"]));
@@ -983,7 +983,7 @@ it.layer(NodeServices.layer)("prunePinnedRuntimes", (it) => {
 
         const removed = yield* prunePinnedRuntimes({ baseDir, keep: ["2.0.0"] }).pipe(
           Effect.provideService(HostProcess.Platform, "linux"),
-          Effect.provideService(HostProcess.Environment, { T3CODE_INSTALL_BIN_DIR: baseDir }),
+          Effect.provideService(HostProcess.Environment, { J6CODE_INSTALL_BIN_DIR: baseDir }),
           Effect.provide(ProcessRunner.layer),
         );
         assert.deepEqual(removed, ["1.1.0"]);
@@ -1001,13 +1001,13 @@ it.layer(NodeServices.layer)("launcher lookup on PATH", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const root = yield* fs.makeTempDirectoryScoped({ prefix: "t3-launcher-path-" });
-        const launcher = path.join(root, "t3");
+        const root = yield* fs.makeTempDirectoryScoped({ prefix: "j6-launcher-path-" });
+        const launcher = path.join(root, "j6");
         yield* fs.writeFileString(launcher, "", { mode: 0o755 });
         const missing = path.join(root, "missing");
         const lookup = (platform: NodeJS.Platform, searchPath: string) =>
           resolveLauncherPath.pipe(
-            Effect.provideService(HostProcess.InvokedAs, "t3"),
+            Effect.provideService(HostProcess.InvokedAs, "j6"),
             Effect.provideService(HostProcess.Platform, platform),
             Effect.provideService(HostProcess.Environment, { PATH: searchPath }),
             Effect.provideService(HostProcess.WorkingDirectory, root),
@@ -1026,23 +1026,23 @@ it.layer(NodeServices.layer)("launcher lookup on PATH", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const root = yield* fs.makeTempDirectoryScoped({ prefix: "t3-launcher-path-" });
-      const versionsDir = path.join(root, ".t3", "runtime", "versions");
-      const executable = path.join(versionsDir, "1.0.0", "t3");
+      const root = yield* fs.makeTempDirectoryScoped({ prefix: "j6-launcher-path-" });
+      const versionsDir = path.join(root, ".j6", "runtime", "versions");
+      const executable = path.join(versionsDir, "1.0.0", "j6");
       yield* fs.makeDirectory(path.dirname(executable), { recursive: true });
       yield* fs.writeFileString(executable, "", { mode: 0o755 });
       const bin = path.join(root, "bin");
       yield* fs.makeDirectory(bin);
-      yield* fs.writeFileString(path.join(bin, "t3"), posixLauncherScript(executable), {
+      yield* fs.writeFileString(path.join(bin, "j6"), posixLauncherScript(executable), {
         mode: 0o755,
       });
-      const script = yield* fs.realPath(path.join(bin, "t3"));
+      const script = yield* fs.realPath(path.join(bin, "j6"));
       const missing = path.join(root, "missing");
       const lookup = (searchPath: string) =>
         findPosixLauncher({ launchedAs: executable, versionsDir }).pipe(
           Effect.provideService(HostProcess.Environment, {
             PATH: searchPath,
-            T3CODE_INSTALL_BIN_DIR: missing,
+            J6CODE_INSTALL_BIN_DIR: missing,
           }),
           Effect.provideService(HostProcess.WorkingDirectory, bin),
         );

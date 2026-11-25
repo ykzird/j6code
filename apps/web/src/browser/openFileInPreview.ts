@@ -5,12 +5,12 @@ import type {
   PreviewOpenInput,
   PreviewSessionSnapshot,
   ScopedThreadRef,
-} from "@t3tools/contracts";
-import { mediaFileReference } from "@t3tools/client-runtime/media-reference";
+} from "@j6/contracts";
+import { mediaFileReference } from "@j6/client-runtime/media-reference";
 import {
   type AtomCommandResult,
   mapAtomCommandResult,
-} from "@t3tools/client-runtime/state/runtime";
+} from "@j6/client-runtime/state/runtime";
 import * as Cause from "effect/Cause";
 import * as Schema from "effect/Schema";
 import { AsyncResult } from "effect/reactivity";

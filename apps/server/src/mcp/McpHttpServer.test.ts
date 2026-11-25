@@ -17,7 +17,7 @@ import {
   ProviderInteractionMode,
   RuntimeMode,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
@@ -103,7 +103,7 @@ const layerTest = McpHttpServer.layerPreviewToolkit.pipe(
   Layer.provideMerge(McpHttpServer.layerInProcessMcpServer),
   Layer.provideMerge(McpToolAccessTestkit.liveThreadsLayer),
   Layer.provideMerge(PreviewAutomationBroker.layer),
-  Layer.provideMerge(ServerConfig.layerTest(process.cwd(), { prefix: "t3-mcp-http-server-test-" })),
+  Layer.provideMerge(ServerConfig.layerTest(process.cwd(), { prefix: "j6-mcp-http-server-test-" })),
   Layer.provideMerge(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
 );
 const layerPullRequestsTest = McpHttpServer.layerPullRequestsToolkit.pipe(
@@ -276,7 +276,7 @@ it.effect.each([
             }),
           ),
           Layer.provide(Layer.mock(ProjectService.ProjectService)({})),
-          Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "t3-device-mcp-test-" })),
+          Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "j6-device-mcp-test-" })),
           Layer.provide(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
         ),
       ),
@@ -348,7 +348,7 @@ const layerRecordingTools = (calls: Array<unknown>) => {
         Layer.mock(ServerSettings.ServerSettingsService)({}),
         Layer.mock(DocumentText.DocumentText)({}),
         Layer.mock(ProviderRegistry.ProviderRegistry)({}),
-        ServerConfig.layerTest(process.cwd(), { prefix: "t3-mcp-http-server-test-" }),
+        ServerConfig.layerTest(process.cwd(), { prefix: "j6-mcp-http-server-test-" }),
         NodeCrypto.layer,
       ),
     ),
@@ -850,7 +850,7 @@ it.effect("bounds large ARIA trees without dropping every server locator", () =>
     Effect.gen(function* () {
       const accessibilityTree = Array.from(
         { length: 2_000 },
-        (_, index) => `- button "删除 ${index}" [ref=t3-snapshot-e${index}]`,
+        (_, index) => `- button "删除 ${index}" [ref=j6-snapshot-e${index}]`,
       ).join("\n");
       const visibleText = Array.from({ length: 700 }, (_, index) => `Row ${index} value`).join(
         "\n",
@@ -867,7 +867,7 @@ it.effect("bounds large ARIA trees without dropping every server locator", () =>
         visibleText: string;
       };
       expect(metadata.visibleText.slice(0, 1_000)).toBe(visibleText.slice(0, 1_000));
-      expect(metadata.accessibilityTree).toContain("[ref=t3-snapshot-e0]");
+      expect(metadata.accessibilityTree).toContain("[ref=j6-snapshot-e0]");
       expect(metadata.accessibilityTree.length).toBeLessThan(accessibilityTree.length);
       const body = result.content[1];
       expect(Buffer.byteLength(body?.type === "text" ? body.text : "", "utf8")).toBeLessThanOrEqual(
@@ -964,7 +964,7 @@ it.effect("bounds page text made of wide characters before dropping locators", (
     Effect.gen(function* () {
       const accessibilityTree = Array.from(
         { length: 20 },
-        (_, i) => `- button "Button ${i}" [ref=t3-1-e${i}]`,
+        (_, i) => `- button "Button ${i}" [ref=j6-1-e${i}]`,
       ).join("\n");
       yield* serveSnapshots("mcp-wide-text-client", {
         ...snapshotResult,
@@ -1286,7 +1286,7 @@ it.effect("admits provider and OAuth client credentials and points only clients 
         ),
         Layer.provide(ServerHttp.layerBrowserApiCors),
         Layer.provide(
-          ServerConfig.layerTest(process.cwd(), { prefix: "t3-mcp-origin-test-" }).pipe(
+          ServerConfig.layerTest(process.cwd(), { prefix: "j6-mcp-origin-test-" }).pipe(
             Layer.provide(NodeServices.layer),
           ),
         ),
@@ -1413,7 +1413,7 @@ it.effect("accepts case-insensitive MCP bearer schemes and diagnoses rejected cr
     Layer.provide(ServerSecretStore.layer),
     Layer.provide(ManagedPolicy.layerTest()),
     Layer.provideMerge(ServerEnvironment.layerIdentity),
-    Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "t3-mcp-auth-header-test-" })),
+    Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "j6-mcp-auth-header-test-" })),
     Layer.provideMerge(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
   );
   return Effect.scoped(
@@ -1534,7 +1534,7 @@ it.effect("gives outside clients an upload URL on the origin their request reach
         Layer.provide(
           AssetSigner.layer.pipe(
             Layer.provideMerge(ServerSecretStore.layer),
-            Layer.provideMerge(ServerConfig.layerTest(process.cwd(), { prefix: "t3-mcp-upload-" })),
+            Layer.provideMerge(ServerConfig.layerTest(process.cwd(), { prefix: "j6-mcp-upload-" })),
             Layer.provideMerge(DocumentText.layer),
             Layer.provideMerge(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
           ),
@@ -1738,7 +1738,7 @@ it.effect("offers agent feedback tools only while the setting is on, to every cl
         capabilities: new Set(["orchestration"]),
         issuedAt: 1,
       };
-      // Any OAuth client can register under the label `t3 feedback` signs in with.
+      // Any OAuth client can register under the label `j6 feedback` signs in with.
       const cliScope: McpInvocationContext.McpInvocationScope = {
         environmentId,
         requestNamespace: "cliToken",
@@ -1837,7 +1837,7 @@ it.effect("offers agent feedback tools only while the setting is on, to every cl
       expect(yield* found).toEqual([]);
       for (const token of ["agentToken", "cliToken"]) {
         expect(yield* listed(token)).toEqual([]);
-        // `t3 feedback` turns exactly this answer into the Labs message.
+        // `j6 feedback` turns exactly this answer into the Labs message.
         expect(yield* report(token)).toMatchObject({
           error: { code: -32602, message: "Tool 't3_feedback' not found" },
         });
@@ -1984,7 +1984,7 @@ it.effect(
           environmentId,
           requestNamespace: "client:linked",
           thread: undefined,
-          client: { sessionId: "linked", label: "T3 Code · laptop", access: "auto" },
+          client: { sessionId: "linked", label: "J6 Code · laptop", access: "auto" },
           capabilities: new Set(["orchestration"]),
           issuedAt: 1,
         };
@@ -2063,7 +2063,7 @@ it.effect(
             const headers = {
               accept: "application/json, text/event-stream",
               authorization: `Bearer ${clientToken}`,
-              ...(limit === undefined ? {} : { "t3-mode-limit": limit }),
+              ...(limit === undefined ? {} : { "j6-mode-limit": limit }),
             };
             const initialize = yield* httpClient.post("/mcp", {
               headers,
@@ -2181,7 +2181,7 @@ it.effect("lists optional tools to a deferring client only after tool_search loa
           const headers = {
             accept: "application/json, text/event-stream",
             authorization: `Bearer ${token}`,
-            ...(deferred ? { "t3-tool-exposure": "deferred" } : {}),
+            ...(deferred ? { "j6-tool-exposure": "deferred" } : {}),
           };
           const initialize = yield* httpClient.post("/mcp", {
             headers,

@@ -4,9 +4,9 @@ import * as Option from "effect/Option";
 import * as Path from "effect/Path";
 import * as Schema from "effect/Schema";
 
-import type { ServerInstallation } from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { resolveCommandPath } from "@t3tools/shared/shell";
+import type { ServerInstallation } from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { resolveCommandPath } from "@j6/shared/shell";
 
 import packageJson from "../../package.json" with { type: "json" };
 import {
@@ -15,11 +15,11 @@ import {
   resolveLauncherPath,
 } from "../cloud/pinnedRuntime.ts";
 
-const PINNED_RUNTIME_ENTRY = /^(.*)\/runtime\/versions\/[^/]+\/t3$/;
+const PINNED_RUNTIME_ENTRY = /^(.*)\/runtime\/versions\/[^/]+\/j6$/;
 
 export type CliRunner = "npx" | "pnpm dlx" | "bunx";
 
-/** Detection is best-effort; callers must fail closed to a plain `t3` command. */
+/** Detection is best-effort; callers must fail closed to a plain `j6` command. */
 export function detectCliRunner(entryPath: string): CliRunner | null {
   const path = entryPath.replaceAll("\\", "/");
   if (path.includes("/_npx/")) {
@@ -41,16 +41,16 @@ export function detectCliRunner(entryPath: string): CliRunner | null {
 const InstallManifest = Schema.Struct({
   name: Schema.String,
   version: Schema.String,
-  bin: Schema.optionalKey(Schema.Struct({ t3: Schema.String })),
+  bin: Schema.optionalKey(Schema.Struct({ j6: Schema.String })),
 });
 const decodeInstallManifest = Schema.decodeUnknownEffect(Schema.fromJsonString(InstallManifest));
 
 /**
- * `T3CODE_NPM_LAUNCHER_PATH` is inherited by child shells, so accept it only for this package
- * version to avoid claiming another `t3` invocation is the npm install.
+ * `J6CODE_NPM_LAUNCHER_PATH` is inherited by child shells, so accept it only for this package
+ * version to avoid claiming another `j6` invocation is the npm install.
  */
 export const resolveEntryPath = Effect.gen(function* () {
-  const npmLauncher = (yield* HostProcess.Environment).T3CODE_NPM_LAUNCHER_PATH?.trim();
+  const npmLauncher = (yield* HostProcess.Environment).J6CODE_NPM_LAUNCHER_PATH?.trim();
   if (npmLauncher) {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
@@ -59,7 +59,7 @@ export const resolveEntryPath = Effect.gen(function* () {
       .pipe(Effect.flatMap(decodeInstallManifest), Effect.option);
     if (
       Option.isSome(manifest) &&
-      manifest.value.name === "t3" &&
+      manifest.value.name === "j6" &&
       manifest.value.version === packageJson.version
     ) {
       return npmLauncher;
@@ -91,16 +91,16 @@ export const resolveServerInstallation = Effect.gen(function* () {
     const target = Option.isSome(link)
       ? path.resolve(path.dirname(launcher), link.value)
       : yield* readPosixLauncherTarget(launcher);
-    // Keep the home as the launcher spells it; `t3 update` only repoints launchers into that spelling.
+    // Keep the home as the launcher spells it; `j6 update` only repoints launchers into that spelling.
     const linked = target === undefined ? null : PINNED_RUNTIME_ENTRY.exec(target);
     if (!linked || (yield* fs.realPath(linked[1] || "/")) !== (runtime[1] || "/")) return null;
     return {
-      kind: "t3-launcher",
+      kind: "j6-launcher",
       launcher,
       baseDir: linked[1] || "/",
     } satisfies ServerInstallation;
   }
-  const match = /^(.*)\/lib\/node_modules\/t3\/(?:dist\/bin\.mjs|bin\/t3\.mjs)$/.exec(entry);
+  const match = /^(.*)\/lib\/node_modules\/j6\/(?:dist\/bin\.mjs|bin\/j6\.mjs)$/.exec(entry);
   if (!match) {
     const runner = detectCliRunner(entry);
     return runner === null
@@ -116,13 +116,13 @@ export const resolveServerInstallation = Effect.gen(function* () {
   )
     return null;
 
-  const packageRoot = path.join(prefix, "lib/node_modules/t3");
+  const packageRoot = path.join(prefix, "lib/node_modules/j6");
   const manifest = yield* fs
     .readFileString(path.join(packageRoot, "package.json"))
     .pipe(Effect.flatMap(decodeInstallManifest));
-  if (manifest.name !== "t3" || !manifest.bin) return null;
-  const bin = yield* fs.realPath(path.join(packageRoot, manifest.bin.t3));
-  const globalBin = yield* fs.realPath(path.join(prefix, "bin/t3"));
+  if (manifest.name !== "j6" || !manifest.bin) return null;
+  const bin = yield* fs.realPath(path.join(packageRoot, manifest.bin.j6));
+  const globalBin = yield* fs.realPath(path.join(prefix, "bin/j6"));
   if (globalBin !== bin || bin !== entry) return null;
   return { kind: "npm-global", prefix } satisfies ServerInstallation;
 }).pipe(Effect.orElseSucceed(() => null));
@@ -130,7 +130,7 @@ export const resolveServerInstallation = Effect.gen(function* () {
 /** The original package spec is unavailable at startup; infer its channel from the version. */
 function suggestedPackageSpec(version: string): string {
   const channel = /^[^-+]+-(nightly|preview)\./.exec(version)?.[1];
-  return channel === undefined ? "t3" : `t3@${channel}`;
+  return channel === undefined ? "j6" : `j6@${channel}`;
 }
 
 function formatCliCommand(input: {
@@ -140,7 +140,7 @@ function formatCliCommand(input: {
 }): string {
   const runner = detectCliRunner(input.entryPath);
   if (runner === null) {
-    return `t3 ${input.subcommand}`;
+    return `j6 ${input.subcommand}`;
   }
   return `${runner} ${suggestedPackageSpec(input.version)} ${input.subcommand}`;
 }
@@ -166,7 +166,7 @@ export const hostShellWord = (platform: NodeJS.Platform, value: string) =>
 /** Script installs have no single launcher; desktop shims and standalone binaries do. */
 const resolveInstallLauncher = Effect.gen(function* () {
   const fs = yield* FileSystem.FileSystem;
-  const shim = (yield* HostProcess.Environment).T3CODE_CLI_PATH?.trim();
+  const shim = (yield* HostProcess.Environment).J6CODE_CLI_PATH?.trim();
   if (shim && (yield* fs.exists(shim).pipe(Effect.orElseSucceed(() => false)))) {
     return Option.some(shim);
   }
@@ -176,7 +176,7 @@ const resolveInstallLauncher = Effect.gen(function* () {
 });
 
 /**
- * Uses this install's `t3` on PATH, the originating runner, or its absolute launcher path.
+ * Uses this install's `j6` on PATH, the originating runner, or its absolute launcher path.
  * Arguments are quoted for POSIX shells or PowerShell on Windows.
  */
 export const resolveHostCliCommand = Effect.fn("invocation.resolveHostCliCommand")(function* (
@@ -185,16 +185,16 @@ export const resolveHostCliCommand = Effect.fn("invocation.resolveHostCliCommand
 ) {
   const platform = yield* HostProcess.Platform;
   const withArgs = (prefix: string) =>
-    // An empty subcommand names the root `t3` command.
+    // An empty subcommand names the root `j6` command.
     [prefix.trimEnd(), ...args.map((arg) => hostShellWord(platform, arg))].join(" ");
   const command = yield* resolveCliCommand(subcommand);
-  if (command !== `t3 ${subcommand}`) return { command: withArgs(command), launcher: false };
-  const onPath = yield* resolveCommandPath("t3");
+  if (command !== `j6 ${subcommand}`) return { command: withArgs(command), launcher: false };
+  const onPath = yield* resolveCommandPath("j6");
   if (onPath !== null) {
-    const shim = (yield* HostProcess.Environment).T3CODE_CLI_PATH?.trim();
+    const shim = (yield* HostProcess.Environment).J6CODE_CLI_PATH?.trim();
     const fs = yield* FileSystem.FileSystem;
     const real = (file: string) => fs.realPath(file).pipe(Effect.orElseSucceed(() => null));
-    // Windows `t3.cmd` shims are text files that never realpath to the executable they run.
+    // Windows `j6.cmd` shims are text files that never realpath to the executable they run.
     const own = shim
       ? yield* real(shim)
       : platform !== "win32" && (yield* HostProcess.IsExecutable)
@@ -207,7 +207,7 @@ export const resolveHostCliCommand = Effect.fn("invocation.resolveHostCliCommand
     if (own === null || own === (yield* real(onPath))) {
       const path = yield* Path.Path;
       const searchPath = (yield* HostProcess.Environment).PATH ?? "";
-      // With an empty or relative PATH entry, plain `t3` depends on the directory it runs from.
+      // With an empty or relative PATH entry, plain `j6` depends on the directory it runs from.
       const cwdDependent =
         platform !== "win32" &&
         searchPath.length > 0 &&
@@ -238,7 +238,7 @@ export const resolveHostCliHint = (
 
 /**
  * `sudo` resets PATH on most distributions, which drops a user-installed Node
- * (nvm, fnm, a tarball) and with it `npx` or a global `t3`, so the command
+ * (nvm, fnm, a tarball) and with it `npx` or a global `j6`, so the command
  * carries PATH through unless Node is on root's PATH too. An absolute launcher
  * needs neither.
  */

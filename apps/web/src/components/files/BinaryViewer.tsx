@@ -1,6 +1,6 @@
 /* oxlint-disable react/no-array-index-key -- Read-only cells retain their database row and column positions. */
-import { decodeFilePreviewText, filePreviewKind } from "@t3tools/shared/filePreview";
-import { formatAttachmentSize } from "@t3tools/client-runtime/state/attachments";
+import { decodeFilePreviewText, filePreviewKind } from "@j6/shared/filePreview";
+import { formatAttachmentSize } from "@j6/client-runtime/state/attachments";
 import { ChevronLeftIcon, ChevronRightIcon, FileIcon, FolderIcon } from "lucide-react";
 import { msg, T, useGT, useMessages } from "gt-react";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
@@ -63,7 +63,7 @@ function ArchiveFile(props: { readonly path: string; readonly bytes: Uint8Array<
       return null;
     }
   })();
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Create an object URL for the extracted image and revoke it when the entry changes or unmounts.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Create an object URL for the extracted image and revoke it when the entry changes or unmounts.
   useEffect(() => {
     if (kind !== "image") return;
     const image = archiveImageUrl(props.path, props.bytes);
@@ -126,7 +126,7 @@ export default function BinaryViewer(props: {
     }, 15_000);
     workerRef.current?.postMessage(request);
   };
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Own the binary fetch, archive or database worker, message subscription, and request timeout for this file.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Own the binary fetch, archive or database worker, message subscription, and request timeout for this file.
   useEffect(() => {
     const controller = new AbortController();
     const worker = new Worker(new URL("./binaryPreview.worker.ts", import.meta.url), {

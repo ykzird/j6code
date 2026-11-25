@@ -14,7 +14,7 @@ import {
   type ThreadId,
   type ThreadIssueKey,
   type ThreadIssueLinkSource,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as SecureRandom from "effect/crypto/SecureRandom";
 import * as Effect from "effect/Effect";
@@ -53,7 +53,7 @@ export class ThreadIssueService extends Context.Service<
       key: ThreadIssueKey,
     ) => Effect.Effect<IssueLinkedThreadsResult, IssueOperationError>;
   }
->()("t3/orchestration-v2/ThreadIssueService") {}
+>()("j6/orchestration-v2/ThreadIssueService") {}
 
 const make = Effect.gen(function* () {
   const orchestrator = yield* Orchestrator.OrchestratorV2;

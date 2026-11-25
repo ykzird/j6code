@@ -1,5 +1,5 @@
 import { DEFAULT_THEMES, preloadHighlighter } from "@pierre/diffs";
-import { EnvironmentId, ThreadId, type ProjectReadFileResult } from "@t3tools/contracts";
+import { EnvironmentId, ThreadId, type ProjectReadFileResult } from "@j6/contracts";
 import { AsyncResult } from "effect/reactivity";
 import { StrictMode, type ReactNode } from "react";
 import { describe, expect, it, vi } from "vite-plus/test";
@@ -18,13 +18,13 @@ const state = vi.hoisted(() => ({
   optimistic: null as ProjectReadFileResult | null,
   writeFile: vi.fn(),
   assetUrl: { _tag: "Loading" } as import("~/assets/assetUrls").AssetUrlState,
-  assetResources: [] as Array<import("@t3tools/contracts").AssetResource>,
+  assetResources: [] as Array<import("@j6/contracts").AssetResource>,
   mintUrl: vi.fn<() => Promise<string | null>>(),
   browserAssetMints: 0,
   openedBrowserUrls: [] as string[],
 }));
 
-vi.mock(import("@t3tools/client-runtime/state/runtime"), async (original) => ({
+vi.mock(import("@j6/client-runtime/state/runtime"), async (original) => ({
   ...(await original()),
   runAtomCommand: ((_registry: unknown, _command: unknown, request: unknown) =>
     state.writeFile(request)) as never,
@@ -68,7 +68,7 @@ vi.mock(import("~/assets/assetUrls"), async (original) => ({
   useAssetUrlRefresh: () => state.mintUrl,
   useAssetUrlState: (
     _environmentId: unknown,
-    resource: import("@t3tools/contracts").AssetResource | null,
+    resource: import("@j6/contracts").AssetResource | null,
   ) => {
     if (resource) state.assetResources.push(resource);
     return state.assetUrl;
@@ -173,7 +173,7 @@ import FilePreviewPanel from "./FilePreviewPanel";
 const environmentId = EnvironmentId.make("markdown-preview-test");
 const threadRef = { environmentId, threadId: ThreadId.make("thread") };
 function setup() {
-  const keys = ["t3code.fileExplorerOpen", "t3code.renderMarkdown"];
+  const keys = ["j6code.fileExplorerOpen", "j6code.renderMarkdown"];
   const previous = keys.map((key) => localStorage.getItem(key));
   localStorage.setItem(keys[0]!, "false");
   localStorage.setItem(keys[1]!, "true");
@@ -303,7 +303,7 @@ describe("source file focus", () => {
 
   it("focuses the editor when a file row is clicked or activated with Enter", async () => {
     using _settings = setup();
-    localStorage.setItem("t3code.fileExplorerOpen", "true");
+    localStorage.setItem("j6code.fileExplorerOpen", "true");
     const style = document.createElement("style");
     style.textContent = appCss;
     document.head.append(style);
@@ -413,7 +413,7 @@ describe("source file scroll", () => {
       expectedIncludedLine,
     }) => {
       using _settings = setup();
-      localStorage.setItem("t3code.renderMarkdown", "false");
+      localStorage.setItem("j6code.renderMarkdown", "false");
       const style = document.createElement("style");
       style.textContent = appCss;
       document.head.append(style);

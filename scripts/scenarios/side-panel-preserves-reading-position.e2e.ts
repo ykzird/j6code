@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 const text = Array.from(
   { length: 70 },
@@ -12,16 +12,16 @@ const text = Array.from(
 test(
   "Opening a side panel preserves the visible text in the conversation and draft",
   WEB,
-  async ({ t3, app, screen, browser }) => {
-    const project = await t3.project("demo");
-    const thread = await t3.thread({
+  async ({ j6, app, screen, browser }) => {
+    const project = await j6.project("demo");
+    const thread = await j6.thread({
       project,
       title: "Reading position",
       messages: ["Start"],
       model: "multi-turn",
     });
     await browser.setViewport({ width: 1440, height: 1000 });
-    await t3.open(thread);
+    await j6.open(thread);
     await screen.getByRole("button", "Toggle thread details panel").tap();
     await screen.getByRole("textbox").fill(text);
     await screen.getByRole("textbox").press("Enter");

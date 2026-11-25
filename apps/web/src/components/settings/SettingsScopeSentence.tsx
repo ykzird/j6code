@@ -1,5 +1,5 @@
-import { resolveEnvironmentMachineKind } from "@t3tools/contracts";
-import { fileDisplayName } from "@t3tools/shared/path";
+import { resolveEnvironmentMachineKind } from "@j6/contracts";
+import { fileDisplayName } from "@j6/shared/path";
 import { useLocation } from "@tanstack/react-router";
 import { CheckIcon, ChevronDownIcon, FolderIcon, LayersIcon } from "lucide-react";
 import { Fragment, useState, type ReactNode } from "react";

@@ -1,4 +1,4 @@
-import type { PreviewAnnotationPoint } from "@t3tools/contracts";
+import type { PreviewAnnotationPoint } from "@j6/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import {

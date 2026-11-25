@@ -20,9 +20,9 @@ import type {
   IssueState,
   IssueTemplate,
   PullRequestState,
-} from "@t3tools/contracts";
-import { decodeJsonResult } from "@t3tools/shared/schemaJson";
-import type { TrackerIssueSummary } from "@t3tools/source-control-core/server/IssueTracker";
+} from "@j6/contracts";
+import { decodeJsonResult } from "@j6/shared/schemaJson";
+import type { TrackerIssueSummary } from "@j6/source-control-core/server/IssueTracker";
 
 /** GitLab's ceiling on `per_page`, which is what every bounded read asks for. */
 export const PAGE_SIZE = 100;

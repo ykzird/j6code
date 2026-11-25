@@ -5,7 +5,7 @@ import {
   type PullRequestChecksState,
   type PullRequestUnavailableError,
   type PullRequestWatchUntil,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
 import * as SecureRandom from "effect/crypto/SecureRandom";
@@ -77,7 +77,7 @@ export class PullRequestWatchService extends Context.Service<
       | PullRequestUnavailableError
     >;
   }
->()("t3/pullRequest/PullRequestWatchService") {}
+>()("j6/pullRequest/PullRequestWatchService") {}
 
 const make = Effect.gen(function* () {
   const engine = yield* Orchestrator.OrchestratorV2;

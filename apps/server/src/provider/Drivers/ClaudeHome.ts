@@ -1,12 +1,12 @@
-import type { ClaudeSettings, ProviderInstanceEnvironment } from "@t3tools/contracts";
+import type { ClaudeSettings, ProviderInstanceEnvironment } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
 import * as Schema from "effect/Schema";
 
-import { mergeProviderInstanceEnvironment } from "@t3tools/provider-core/server/instanceEnvironment";
-import { expandHomePath } from "@t3tools/provider-core/server/pathExpansion";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import { mergeProviderInstanceEnvironment } from "@j6/provider-core/server/instanceEnvironment";
+import { expandHomePath } from "@j6/provider-core/server/pathExpansion";
+import * as HostProcess from "@j6/shared/HostProcess";
 
 import { readClaudeSettingsEnv } from "./ClaudeSkills.ts";
 
@@ -63,8 +63,8 @@ const CLAUDE_HOST_SESSION_VARIABLES = [
 ];
 
 /**
- * Base env for the Claude processes T3 Code runs, before `makeClaudeEnvironment`.
- * Claude Code reads its entrypoint from the process env, not its settings `env`, so T3 Code applies that override itself.
+ * Base env for the Claude processes J6 Code runs, before `makeClaudeEnvironment`.
+ * Claude Code reads its entrypoint from the process env, not its settings `env`, so J6 Code applies that override itself.
  */
 export const mergeClaudeProcessEnvironment = Effect.fn("mergeClaudeProcessEnvironment")(function* (
   config: Pick<ClaudeSettings, "homePath">,
@@ -73,11 +73,11 @@ export const mergeClaudeProcessEnvironment = Effect.fn("mergeClaudeProcessEnviro
 ) {
   const baseEnvironment: NodeJS.ProcessEnv = {
     ...hostEnvironment,
-    CLAUDE_CODE_ENTRYPOINT: "t3-code",
+    CLAUDE_CODE_ENTRYPOINT: "j6-code",
   };
   for (const name of CLAUDE_HOST_SESSION_VARIABLES) delete baseEnvironment[name];
   // The desktop runs the server as Node through Electron. Commands Claude runs inherit its env, so
-  // an Electron app they start (T3 Code itself, VS Code) would run as Node and exit.
+  // an Electron app they start (J6 Code itself, VS Code) would run as Node and exit.
   delete baseEnvironment.ELECTRON_RUN_AS_NODE;
   const environment = yield* mergeProviderInstanceEnvironment(instanceEnvironment, baseEnvironment);
   const settingsEntrypoint = (yield* readClaudeSettingsEnv(config, undefined, environment))

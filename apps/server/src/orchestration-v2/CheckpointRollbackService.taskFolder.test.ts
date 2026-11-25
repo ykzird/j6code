@@ -15,7 +15,7 @@ import {
   RunAttemptId,
   RunId,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -42,7 +42,7 @@ import * as CheckpointCaptureService from "./CheckpointCaptureService.ts";
 import * as CheckpointRollbackService from "./CheckpointRollbackService.ts";
 import * as CheckpointService from "./CheckpointService.ts";
 import * as EventSink from "./EventSink.ts";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
 import * as ProjectionStore from "./ProjectionStore.ts";
 import * as ProjectStore from "./ProjectStore.ts";
 import * as ProviderSessionManager from "./ProviderSessionManager.ts";
@@ -77,7 +77,7 @@ const layerFor = (state: State, options: Options) => {
       const path = yield* Path.Path;
       const config = yield* ServerConfig.ServerConfig;
       const base = yield* fileSystem.realPath(
-        yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-rewind-worktrees-" }),
+        yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-rewind-worktrees-" }),
       );
       const real = path.join(base, "real");
       yield* fileSystem.makeDirectory(real);
@@ -86,7 +86,7 @@ const layerFor = (state: State, options: Options) => {
       return { ...config, worktreesDir: path.join(base, "linked") };
     }),
   ).pipe(
-    Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "t3-rewind-" })),
+    Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "j6-rewind-" })),
     Layer.provide(layerNode),
   );
   const layerGit = GitVcsDriver.layer.pipe(
@@ -207,7 +207,7 @@ const taskFolderThread = Effect.fn(function* (state: State, options: Options) {
   const { committed } = state;
   const now = yield* DateTime.now;
   const tmp = yield* fileSystem.realPath(
-    yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-rewind-" }),
+    yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-rewind-" }),
   );
   const run = (cwd: string, ...args: ReadonlyArray<string>) =>
     git.execute({ operation: "rewind-test", cwd, args }).pipe(

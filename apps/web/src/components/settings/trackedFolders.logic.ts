@@ -1,12 +1,12 @@
-import type { ProjectTrackedFolder } from "@t3tools/contracts";
-import { hasTrailingPathSeparator } from "@t3tools/client-runtime/state/projects";
-import { splitsSurrogatePair } from "@t3tools/shared/assistantCitations";
+import type { ProjectTrackedFolder } from "@j6/contracts";
+import { hasTrailingPathSeparator } from "@j6/client-runtime/state/projects";
+import { splitsSurrogatePair } from "@j6/shared/assistantCitations";
 import {
   fileBasename,
   isAbsolutePath,
   normalizeProjectPathForDispatch,
   workspaceRelativeFilePath,
-} from "@t3tools/shared/path";
+} from "@j6/shared/path";
 
 /** Relative to the project folder when inside it, absolute otherwise. */
 export function trackedFolderDisplayPath(path: string, workspaceRoot: string): string {

@@ -6,8 +6,8 @@ import {
   type WorkflowRunReference,
   WorkflowRunStatus,
   WorkflowStep,
-} from "@t3tools/contracts";
-import { splitsSurrogatePair } from "@t3tools/shared/assistantCitations";
+} from "@j6/contracts";
+import { splitsSurrogatePair } from "@j6/shared/assistantCitations";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
 import * as Duration from "effect/Duration";
@@ -447,7 +447,7 @@ export class WorkflowStore extends Context.Service<
     /** Places given to a queued step whose wait is still not woken: a crash lost the wake. */
     readonly placesUnwoken: Effect.Effect<ReadonlyArray<PlaceRow>>;
   }
->()("t3/workflows/WorkflowStore") {}
+>()("j6/workflows/WorkflowStore") {}
 
 /** A place in a pool as it was given: `state` is what it was before, `queued` or `returning`. */
 export interface PlaceRow {

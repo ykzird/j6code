@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vite-plus/test";
-import type { KeybindingCommand } from "@t3tools/contracts";
-import { compileResolvedKeybindingsConfig } from "@t3tools/shared/keybindings";
+import type { KeybindingCommand } from "@j6/contracts";
+import { compileResolvedKeybindingsConfig } from "@j6/shared/keybindings";
 import { resolveShortcutCommand } from "./keybindings";
 import * as editableFocus from "./lib/editableFocus";
 

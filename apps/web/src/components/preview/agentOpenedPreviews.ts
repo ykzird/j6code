@@ -2,14 +2,14 @@ import {
   parseScopedThreadKey,
   scopedThreadKey,
   scopeThreadRef,
-} from "@t3tools/client-runtime/environment";
+} from "@j6/client-runtime/environment";
 import type {
   DeviceServiceState,
   EnvironmentId,
   PreviewSessionSnapshot,
   ScopedThreadRef,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { AsyncResult } from "effect/reactivity";
 
 import { getClientSettings } from "../../hooks/useSettings";

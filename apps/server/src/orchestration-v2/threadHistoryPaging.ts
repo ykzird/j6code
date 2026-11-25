@@ -4,7 +4,7 @@ import type {
   OrchestrationV2TurnItem,
   ThreadId,
   TurnItemId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Schema from "effect/Schema";
 
 /**

@@ -1,4 +1,4 @@
-import type { EnvironmentSpeechModel, SpeechBenchmarkTier } from "@t3tools/contracts";
+import type { EnvironmentSpeechModel, SpeechBenchmarkTier } from "@j6/contracts";
 import { T, useLocale, Var } from "gt-react";
 
 import { languageLabel } from "./SpeechLanguageSelect";

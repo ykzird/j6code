@@ -7,8 +7,8 @@ import type {
   AuthCreatePairingCredentialInput,
   AuthRevokeClientSessionInput,
   AuthRevokePairingLinkInput,
-} from "@t3tools/contracts";
-import { WS_METHODS } from "@t3tools/contracts";
+} from "@j6/contracts";
+import { WS_METHODS } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import type { HttpClient } from "effect/http";
 import * as Stream from "effect/Stream";

@@ -1,4 +1,4 @@
-import type { ScreenReaderAnnouncements } from "@t3tools/contracts";
+import type { ScreenReaderAnnouncements } from "@j6/contracts";
 import { memo, useEffect, useRef } from "react";
 
 import { useLiveRegion } from "../../hooks/useLiveRegion";
@@ -9,7 +9,7 @@ import {
   nextThreadAnnouncement,
   type ThreadActivitySnapshot,
   type ThreadAnnouncementMemory,
-} from "@t3tools/client-runtime/state/thread-activity-announcement";
+} from "@j6/client-runtime/state/thread-activity-announcement";
 import {
   nextTurnDetailAnnouncement,
   NO_TURN_DETAIL,
@@ -80,7 +80,7 @@ export const ThreadActivityAnnouncer = memo(function ThreadActivityAnnouncer({
     waiting: { label: string; timer: ReturnType<typeof setTimeout> } | null;
   }>({ quietUntil: 0, waiting: null });
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- writes the turn's status, messages and steps to the aria-live region after commit
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- writes the turn's status, messages and steps to the aria-live region after commit
   useEffect(() => {
     const step = stepRef.current;
     const write = (text: string, quietMs: number) => {

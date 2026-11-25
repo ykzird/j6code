@@ -1,6 +1,6 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { expect, it } from "@effect/vitest";
-import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@t3tools/contracts";
+import { ProviderDriverKind, ProviderInstanceId, type ServerProvider } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
@@ -8,12 +8,12 @@ import * as Path from "effect/Path";
 import * as Sink from "effect/Sink";
 import * as Stream from "effect/Stream";
 import * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as HttpClient from "effect/http/HttpClient";
 import * as HttpClientResponse from "effect/http/HttpClientResponse";
 
-import * as ProviderLatestVersions from "@t3tools/provider-core/server/ProviderLatestVersions";
-import { enrichProviderSnapshotWithVersionAdvisory } from "@t3tools/provider-core/server/maintenanceResolver";
+import * as ProviderLatestVersions from "@j6/provider-core/server/ProviderLatestVersions";
+import { enrichProviderSnapshotWithVersionAdvisory } from "@j6/provider-core/server/maintenanceResolver";
 import { fetchLatestFxVersion, makeFxMaintenance } from "./maintenance.ts";
 
 const snapshot: ServerProvider = {
@@ -44,7 +44,7 @@ it.layer(maintenanceLayer)("fx maintenance", (it) => {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
       const prefix = yield* fs
-        .makeTempDirectoryScoped({ prefix: "t3-fx-brew-" })
+        .makeTempDirectoryScoped({ prefix: "j6-fx-brew-" })
         .pipe(Effect.flatMap((directory) => fs.realPath(directory)));
       const brewPath = path.join(prefix, "bin", "brew");
       yield* fs.makeDirectory(path.dirname(brewPath), { recursive: true });
@@ -152,7 +152,7 @@ it.layer(maintenanceLayer)("fx maintenance", (it) => {
       const resolver = makeFxMaintenance(Effect.succeed("0.0.15"));
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const directory = yield* fs.makeTempDirectoryScoped({ prefix: "t3-fx-mise-" });
+      const directory = yield* fs.makeTempDirectoryScoped({ prefix: "j6-fx-mise-" });
       const wrapperPath = path.join(directory, "fx");
       for (const { managedPath, env } of [
         { managedPath: "/home/fx/.local/share/mise/installs/fx/0.0.15/bin/fx", env: {} },

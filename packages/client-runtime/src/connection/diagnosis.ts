@@ -1,8 +1,8 @@
 import {
   t3ConnectTroubleshootingUrl,
   type T3ConnectTroubleshootingSection,
-} from "@t3tools/contracts";
-import type { RelayEnvironmentStatusResponse } from "@t3tools/contracts/relay";
+} from "@j6/contracts";
+import type { RelayEnvironmentStatusResponse } from "@j6/contracts/relay";
 import * as DateTime from "effect/DateTime";
 
 import type {
@@ -28,7 +28,7 @@ export interface ConnectionDiagnosis {
   readonly hops: ReadonlyArray<ConnectionDiagnosisHop>;
   readonly steps: ReadonlyArray<string>;
   readonly facts: ReadonlyArray<readonly [label: string, value: string]>;
-  /** The troubleshooting guide section for this failure. Null for direct routes, except a pending T3 Connect sign-in. */
+  /** The troubleshooting guide section for this failure. Null for direct routes, except a pending J6 Connect sign-in. */
   readonly moreInfoUrl: string | null;
 }
 
@@ -107,28 +107,28 @@ function headline(
     case "offline":
       return resolve(msg("This device is offline"));
     case "session_pending":
-      return resolve(msg("This device is still loading its T3 Connect sign-in"));
+      return resolve(msg("This device is still loading its J6 Connect sign-in"));
     case "approval_pending":
       return resolve(msg("{host} is waiting for someone to approve this device", { host }));
     case "outdated":
-      return resolve(msg("{host} runs an older T3 Code", { host }));
+      return resolve(msg("{host} runs an older J6 Code", { host }));
     case "clock_skew":
       return resolve(msg("This device's clock is off"));
     case "not_linked":
-      return resolve(msg("{host} is not linked to your T3 Connect account", { host }));
+      return resolve(msg("{host} is not linked to your J6 Connect account", { host }));
     case "relay_error":
-      return resolve(msg("T3 Connect returned an error"));
+      return resolve(msg("J6 Connect returned an error"));
     case "tunnel_pending":
       return resolve(msg("{host}'s tunnel is still being set up", { host }));
     case "tunnel_not_enabled":
-      return resolve(msg("T3 Connect is not turned on for {host}", { host }));
+      return resolve(msg("J6 Connect is not turned on for {host}", { host }));
     case "released":
     case "tunnel_down":
       return resolve(msg("{host}'s tunnel is offline", { host }));
     case "origin_unreachable":
-      return resolve(msg("Tunnel works, but T3 Code on {host} did not answer", { host }));
+      return resolve(msg("Tunnel works, but J6 Code on {host} did not answer", { host }));
     case "invalid_response":
-      return resolve(msg("T3 Code on {host} sent an unexpected answer", { host }));
+      return resolve(msg("J6 Code on {host} sent an unexpected answer", { host }));
     case "dns":
       return resolve(msg("{host}'s tunnel address did not resolve", { host }));
     case "tls":
@@ -146,19 +146,19 @@ function headline(
       return resolve(msg("This device could not prepare the connection"));
     case "relay":
       return failure?.reason === "authentication"
-        ? resolve(msg("T3 Connect did not accept this device's sign-in"))
-        : resolve(msg("This device can't reach T3 Connect"));
+        ? resolve(msg("J6 Connect did not accept this device's sign-in"))
+        : resolve(msg("This device can't reach J6 Connect"));
     case "tunnel":
       // The relay already reached the host when this device fails on its own.
       return failure?.reason === "network" ||
         failure?.reason === "transport" ||
         failure?.reason === "timeout"
         ? resolve(msg("This device can't reach {host}'s tunnel", { host }))
-        : resolve(msg("T3 Connect could not reach {host}'s tunnel", { host }));
+        : resolve(msg("J6 Connect could not reach {host}'s tunnel", { host }));
     case "server":
       return failure?.reason === "authentication" || failure?.reason === "permission"
-        ? resolve(msg("T3 Code on {host} did not accept this device", { host }))
-        : resolve(msg("T3 Code on {host} did not answer", { host }));
+        ? resolve(msg("J6 Code on {host} did not accept this device", { host }))
+        : resolve(msg("J6 Code on {host} did not answer", { host }));
   }
 }
 
@@ -169,15 +169,15 @@ function steps(
   resolve: MFunctionType,
 ): string[] {
   const checkHost = resolve(
-    msg("On {host}, check Settings > Sharing & access or run `t3 connect status`.", { host }),
+    msg("On {host}, check Settings > Sharing & access or run `j6 connect status`.", { host }),
   );
   switch (located.cause) {
     case "offline":
-      return [resolve(msg("Connect this device to the internet. T3 Code reconnects on its own."))];
+      return [resolve(msg("Connect this device to the internet. J6 Code reconnects on its own."))];
     case "session_pending":
       return [
-        resolve(msg("Wait a moment. T3 Code retries on its own.")),
-        resolve(msg("If it keeps waiting, reload or restart T3 Code on this device.")),
+        resolve(msg("Wait a moment. J6 Code retries on its own.")),
+        resolve(msg("If it keeps waiting, reload or restart J6 Code on this device.")),
       ];
     case "approval_pending": {
       const code =
@@ -197,7 +197,7 @@ function steps(
               ),
             ),
         resolve(
-          msg("Or run `t3 auth connect-device approve {code}` on {host}.", {
+          msg("Or run `j6 auth connect-device approve {code}` on {host}.", {
             code: code ?? "<code>",
             host,
           }),
@@ -205,7 +205,7 @@ function steps(
       ];
     }
     case "outdated":
-      return [resolve(msg("Update T3 Code on {host}.", { host }))];
+      return [resolve(msg("Update J6 Code on {host}.", { host }))];
     case "clock_skew":
       return [
         resolve(
@@ -217,29 +217,29 @@ function steps(
     case "not_linked":
       return [
         resolve(
-          msg("Check that this device is signed in to the same T3 Connect account as the host."),
+          msg("Check that this device is signed in to the same J6 Connect account as the host."),
         ),
         resolve(
-          msg("On {host}, open Settings > Sharing & access and turn T3 Connect on.", { host }),
+          msg("On {host}, open Settings > Sharing & access and turn J6 Connect on.", { host }),
         ),
       ];
     case "tunnel_pending":
-      return [resolve(msg("Wait a minute. T3 Code retries on its own.")), checkHost];
+      return [resolve(msg("Wait a minute. J6 Code retries on its own.")), checkHost];
     case "relay_error":
       return [
-        resolve(msg("Wait a few minutes. T3 Code retries on its own.")),
+        resolve(msg("Wait a few minutes. J6 Code retries on its own.")),
         resolve(msg("If it keeps failing, copy the diagnostics and report it.")),
       ];
     case "tunnel_not_enabled":
       return [
         resolve(
-          msg("On {host}, open Settings > Sharing & access and turn T3 Connect on.", { host }),
+          msg("On {host}, open Settings > Sharing & access and turn J6 Connect on.", { host }),
         ),
       ];
     case "released":
     case "tunnel_down":
       return [
-        resolve(msg("Make sure {host} is awake and T3 Code is running on it.", { host })),
+        resolve(msg("Make sure {host} is awake and J6 Code is running on it.", { host })),
         checkHost,
         resolve(
           msg(
@@ -250,7 +250,7 @@ function steps(
       ];
     case "origin_unreachable":
     case "invalid_response":
-      return [resolve(msg("Open or restart T3 Code on {host}.", { host })), checkHost];
+      return [resolve(msg("Open or restart J6 Code on {host}.", { host })), checkHost];
     // The relay saw these on its way to the host, so the fix is on the host.
     case "dns":
     case "tls":
@@ -264,17 +264,17 @@ function steps(
   switch (located.hop) {
     case "device":
       return [
-        resolve(msg("Restart T3 Code on this device.")),
+        resolve(msg("Restart J6 Code on this device.")),
         resolve(
           msg("If it keeps failing, remove {host} from this device and add it again.", { host }),
         ),
       ];
     case "relay":
       return failure?.reason === "authentication"
-        ? [resolve(msg("Sign out of T3 Connect and sign in again."))]
+        ? [resolve(msg("Sign out of J6 Connect and sign in again."))]
         : [
             resolve(msg("Check this device's internet connection.")),
-            resolve(msg("A VPN, firewall, or ad blocker on this device can block T3 Connect.")),
+            resolve(msg("A VPN, firewall, or ad blocker on this device can block J6 Connect.")),
           ];
     case "tunnel":
       return failure?.reason === "network" ||
@@ -296,7 +296,7 @@ function steps(
             ),
           ]
         : [
-            resolve(msg("Make sure T3 Code is running on {host}.", { host })),
+            resolve(msg("Make sure J6 Code is running on {host}.", { host })),
             resolve(msg("Retry. If it keeps failing, copy the diagnostics.")),
           ];
   }
@@ -308,9 +308,9 @@ function helpSection(
 ): T3ConnectTroubleshootingSection {
   switch (located.cause) {
     case "offline":
-      return "this-device-cant-reach-t3-connect";
+      return "this-device-cant-reach-j6-connect";
     case "outdated":
-      return "the-host-runs-an-older-t3-code";
+      return "the-host-runs-an-older-j6-code";
     case "clock_skew":
       return "the-clock-is-off";
     case "session_pending":
@@ -319,20 +319,20 @@ function helpSection(
     case "tunnel_not_enabled":
       return "sign-in-account-or-link-problems";
     case "relay_error":
-      return "t3-connect-returned-an-error";
+      return "j6-connect-returned-an-error";
     case "released":
     case "tunnel_down":
     case "tunnel_pending":
       return "the-hosts-tunnel-is-offline";
     case "origin_unreachable":
     case "invalid_response":
-      return "the-tunnel-works-but-t3-code-does-not-answer";
+      return "the-tunnel-works-but-j6-code-does-not-answer";
     case "dns":
     case "tls":
     case "refused":
     case "timeout":
     case "unknown":
-      return "the-t3-connect-address-does-not-resolve-or-answer";
+      return "the-j6-connect-address-does-not-resolve-or-answer";
     case null:
       break;
   }
@@ -342,21 +342,21 @@ function helpSection(
     failure?.reason === "timeout";
   switch (located.hop) {
     case "device":
-      return "this-device-cant-reach-t3-connect";
+      return "this-device-cant-reach-j6-connect";
     case "relay":
       return failure?.reason === "authentication"
         ? "sign-in-account-or-link-problems"
-        : "this-device-cant-reach-t3-connect";
+        : "this-device-cant-reach-j6-connect";
     case "tunnel":
-      return onThisDevice ? "this-device-cant-reach-t3-connect" : "the-hosts-tunnel-is-offline";
+      return onThisDevice ? "this-device-cant-reach-j6-connect" : "the-hosts-tunnel-is-offline";
     case "server":
       return failure?.reason === "authentication" || failure?.reason === "permission"
         ? "sign-in-account-or-link-problems"
-        : "the-tunnel-works-but-t3-code-does-not-answer";
+        : "the-tunnel-works-but-j6-code-does-not-answer";
   }
 }
 
-const T3_CONNECT_NAME = "T3 Connect";
+const T3_CONNECT_NAME = "J6 Connect";
 
 const HOP_ORDER = {
   relay: ["device", "relay", "tunnel", "server"],
@@ -372,7 +372,7 @@ function hopLabel(hop: ConnectionHop, host: string, resolve: MFunctionType): str
     case "tunnel":
       return resolve(msg("{host} tunnel", { host }));
     case "server":
-      return resolve(msg("T3 Code on {host}", { host }));
+      return resolve(msg("J6 Code on {host}", { host }));
   }
 }
 
@@ -429,7 +429,7 @@ export function presentConnectionDiagnosis(
   );
   add(
     resolve(msg("Route", { $context: "diagnostics field label" })),
-    relayPath ? "T3 Connect" : resolve(msg("Direct", { $context: "connection route" })),
+    relayPath ? "J6 Connect" : resolve(msg("Direct", { $context: "connection route" })),
   );
   add(resolve(msg("App version")), input.clientVersion);
   add(resolve(msg("Host version")), input.serverVersion);
@@ -453,7 +453,7 @@ const HOP_MARK = { ok: "ok", failed: "FAILED", unchecked: "not checked" } as con
 /** One plain-text block for bug reports. */
 export function connectionDiagnosisText(hostLabel: string, diagnosis: ConnectionDiagnosis): string {
   return [
-    `T3 Code connection to ${hostLabel}: ${diagnosis.headline}`,
+    `J6 Code connection to ${hostLabel}: ${diagnosis.headline}`,
     "",
     ...diagnosis.hops.map((hop) => `${hop.label}: ${HOP_MARK[hop.result]}`),
     "",

@@ -1,4 +1,4 @@
-import { resolveEventKeys } from "@t3tools/shared/keybindingMatching";
+import { resolveEventKeys } from "@j6/shared/keybindingMatching";
 import { isMacPlatform } from "../../lib/utils";
 import { SELECTION_MULTI_CLICK_INTERVAL_MS } from "../../lib/selectionActions";
 import { collectWrappedTerminalLinkLine, extractTerminalLinks } from "../../terminal-links";
@@ -702,7 +702,7 @@ export class GhosttyTerminalSurface {
     canvas.setAttribute("aria-hidden", "true");
 
     const input = document.createElement("textarea");
-    input.className = "t3-ghostty-input";
+    input.className = "j6-ghostty-input";
     input.setAttribute("aria-label", m(msg("Terminal input")));
     input.autocapitalize = "off";
     input.autocomplete = "off";

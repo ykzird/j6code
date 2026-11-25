@@ -5,7 +5,7 @@ import type {
   SelectedLineRange,
 } from "@pierre/diffs";
 import { FileDiff } from "@pierre/diffs/react";
-import type { PullRequestReviewGuideExcerpt, PullRequestReviewPosition } from "@t3tools/contracts";
+import type { PullRequestReviewGuideExcerpt, PullRequestReviewPosition } from "@j6/contracts";
 import { ArrowUpRightIcon } from "lucide-react";
 import { T, useGT, Var } from "gt-react";
 import { useState } from "react";
@@ -33,7 +33,7 @@ import {
   toViewerSide,
 } from "../PullRequestReviewAnnotation";
 import type { PendingReviewComment } from "../pullRequestReviewStore";
-import { excerptRows, fileDiffRows, rowsToPatch } from "@t3tools/client-runtime/review-guide-tour";
+import { excerptRows, fileDiffRows, rowsToPatch } from "@j6/client-runtime/review-guide-tour";
 import type { PullRequestCompletionScope } from "../PullRequestMarkdownTextarea";
 import { excerptLoader } from "./GuideExcerpt.logic";
 import { GuideNoteMarker } from "./GuideNotes";
@@ -364,7 +364,7 @@ export function GuideCommentDraft({
     const comment = buildDiffReviewComment({
       id: `pull-request-guide:${diffReviewSelectionId(path, draft.range)}`,
       sectionId: `pull-request-guide:${path}`,
-      // oxlint-disable-next-line t3code/no-untranslated-copy -- context title sent to the agent
+      // oxlint-disable-next-line j6code/no-untranslated-copy -- context title sent to the agent
       sectionTitle: "Review guide",
       filePath: path,
       fileDiff: file,

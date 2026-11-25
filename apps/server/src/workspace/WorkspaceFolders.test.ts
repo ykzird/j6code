@@ -1,6 +1,6 @@
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, it } from "@effect/vitest";
-import { ProjectId, type ProjectTrackedFolder } from "@t3tools/contracts";
+import { ProjectId, type ProjectTrackedFolder } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
@@ -49,7 +49,7 @@ const layerFor = (project?: {
 const makeTempDir = Effect.gen(function* () {
   const fileSystem = yield* FileSystem.FileSystem;
   return yield* fileSystem.realPath(
-    yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3code-workspace-folders-" }),
+    yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6code-workspace-folders-" }),
   );
 });
 
@@ -178,7 +178,7 @@ it.layer(NodeServices.layer)("WorkspaceFolders", (it) => {
       // A link to a repository elsewhere is not inside the project.
       yield* fileSystem.symlink(outside, path.join(workspaceRoot, "linked"));
       yield* fileSystem.writeFileString(
-        path.join(workspaceRoot, "t3.json"),
+        path.join(workspaceRoot, "j6.json"),
         JSON.stringify({ ignoreRepositories: ["vendor/big"] }),
       );
       // The stored list is only trusted for what someone added.
@@ -208,7 +208,7 @@ it.layer(NodeServices.layer)("WorkspaceFolders", (it) => {
     }),
   );
 
-  it.effect("does not walk a project's folders when t3.json ignores the whole project", () =>
+  it.effect("does not walk a project's folders when j6.json ignores the whole project", () =>
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
@@ -217,7 +217,7 @@ it.layer(NodeServices.layer)("WorkspaceFolders", (it) => {
         yield* fileSystem.makeDirectory(path.join(workspaceRoot, folder), { recursive: true });
       }
       yield* fileSystem.writeFileString(
-        path.join(workspaceRoot, "t3.json"),
+        path.join(workspaceRoot, "j6.json"),
         JSON.stringify({ ignoreRepositories: ["."] }),
       );
       const probed: Array<string> = [];

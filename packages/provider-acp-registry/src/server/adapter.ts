@@ -20,11 +20,11 @@ import {
   makeCopilotSubagentRouting,
 } from "./copilotAcp.ts";
 import { prefersHttpMcpTransport } from "./mcpTransport.ts";
-import { defaultInstanceIdForDriver, ProviderDriverKind } from "@t3tools/contracts";
-import { readCustomModelEntries } from "@t3tools/shared/model";
+import { defaultInstanceIdForDriver, ProviderDriverKind } from "@j6/contracts";
+import { readCustomModelEntries } from "@j6/shared/model";
 import { AcpRegistrySettings } from "../settings.ts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { resolveSelfInvocation, type SelfInvocation } from "@t3tools/shared/nodeRuntime";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { resolveSelfInvocation, type SelfInvocation } from "@j6/shared/nodeRuntime";
 import * as SecureRandom from "effect/crypto/SecureRandom";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -37,9 +37,9 @@ import * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
 import type * as EffectAcpSchema from "effect-acp/compat";
 import * as EffectAcpErrors from "effect-acp/errors";
 
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
-import * as ProviderContinuationRequests from "@t3tools/provider-core/server/ProviderContinuationRequests";
-import * as ProviderHost from "@t3tools/provider-core/server/ProviderHost";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
+import * as ProviderContinuationRequests from "@j6/provider-core/server/ProviderContinuationRequests";
+import * as ProviderHost from "@j6/provider-core/server/ProviderHost";
 import {
   acpRegistryLiveCatalogKey,
   normalizeAcpRegistryCommands,
@@ -48,24 +48,24 @@ import {
 } from "./probe.ts";
 import * as AcpRegistrySupport from "./AcpRegistrySupport.ts";
 import * as AcpRegistryRuntimeCoordinator from "./AcpRegistryRuntimeCoordinator.ts";
-import * as AcpSessionRuntime from "@t3tools/provider-acp/server/AcpSessionRuntime";
-import { makeAcpNativeLoggerFactory } from "@t3tools/provider-acp/server/nativeLogging";
-import * as ProviderEventLoggers from "@t3tools/provider-core/server/ProviderEventLoggers";
-import { mergeProviderInstanceEnvironment } from "@t3tools/provider-core/server/instanceEnvironment";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
-import { makeProviderFailure } from "@t3tools/provider-core/server/failure";
+import * as AcpSessionRuntime from "@j6/provider-acp/server/AcpSessionRuntime";
+import { makeAcpNativeLoggerFactory } from "@j6/provider-acp/server/nativeLogging";
+import * as ProviderEventLoggers from "@j6/provider-core/server/ProviderEventLoggers";
+import { mergeProviderInstanceEnvironment } from "@j6/provider-core/server/instanceEnvironment";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
+import { makeProviderFailure } from "@j6/provider-core/server/failure";
 import {
   ProviderAdapterDriverCreateError,
   type ProviderAdapterDriver,
   type ProviderAdapterDriverCreateInput,
-} from "@t3tools/provider-core/server/adapterDriver";
+} from "@j6/provider-core/server/adapterDriver";
 import {
   AcpProviderCapabilitiesV2,
   makeAcpAdapterV2,
   type AcpAdapterV2ExtensionContext,
   type AcpAdapterV2Flavor,
   type AcpAdapterV2RuntimeInput,
-} from "@t3tools/provider-acp/server/adapter";
+} from "@j6/provider-acp/server/adapter";
 
 export const ACP_REGISTRY_PROVIDER = ProviderDriverKind.make("acpRegistry");
 export const ACP_REGISTRY_DEFAULT_INSTANCE_ID = defaultInstanceIdForDriver(ACP_REGISTRY_PROVIDER);
@@ -260,7 +260,7 @@ export const makeAcpRegistryAdapterV2 = Effect.fn("makeAcpRegistryAdapterV2")(fu
   const copilotRouting = isCopilot ? makeCopilotSubagentRouting() : undefined;
   // Copilot CLI 1.0.105 rejects stdio MCP servers from the client, and Command Code cannot
   // start the stdio bridge on Windows (it spawns MCP commands through cmd.exe, which splits
-  // the unquoted "T3 Code (Beta).exe" path). Both take T3's MCP endpoint over ACP HTTP.
+  // the unquoted "J6 Code (Beta).exe" path). Both take T3's MCP endpoint over ACP HTTP.
   const useHttpMcpServers =
     copilotRouting !== undefined || prefersHttpMcpTransport(options.settings);
   const flavor: AcpAdapterV2Flavor = {

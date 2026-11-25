@@ -5,21 +5,21 @@
 #   curl -fsSL https://github.com/ykzird/j6code/install.sh | sh
 #
 # Environment:
-#   T3CODE_CHANNEL           release train to follow: stable, nightly, or preview
+#   J6CODE_CHANNEL           release train to follow: stable, nightly, or preview
 #                            (default: stable; preview is a maintainers' test train)
-#   T3CODE_VERSION           exact version to install (overrides T3CODE_CHANNEL)
-#   T3CODE_HOME              J6 home directory (default: ~/.t3)
-#   T3CODE_INSTALL_BIN_DIR   where the `t3` command goes (default: ~/.local/bin)
-#   T3CODE_RELEASE_BASE_URL  mirror for releases/download (default: GitHub)
+#   J6CODE_VERSION           exact version to install (overrides J6CODE_CHANNEL)
+#   J6CODE_HOME              J6 home directory (default: ~/.j6)
+#   J6CODE_INSTALL_BIN_DIR   where the `j6` command goes (default: ~/.local/bin)
+#   J6CODE_RELEASE_BASE_URL  mirror for releases/download (default: GitHub)
 #
-# The archive is unpacked into $T3CODE_HOME/runtime/versions/<version>, the
-# same layout `t3 service install` uses, so the service reuses this download
+# The archive is unpacked into $J6CODE_HOME/runtime/versions/<version>, the
+# same layout `j6 service install` uses, so the service reuses this download
 # instead of fetching the release again.
 set -eu
 
 repo="ykzird/j6code"
-base_url="${T3CODE_RELEASE_BASE_URL:-https://github.com/${repo}/releases/download}"
-t3_home="${T3CODE_HOME:-$HOME/.t3}"
+base_url="${J6CODE_RELEASE_BASE_URL:-https://github.com/${repo}/releases/download}"
+t3_home="${J6CODE_HOME:-$HOME/.j6}"
 case "$t3_home" in
   /*) ;;
   *)
@@ -28,8 +28,8 @@ case "$t3_home" in
     t3_home="${t3_cwd%??}/$t3_home"
     ;;
 esac
-bin_dir="${T3CODE_INSTALL_BIN_DIR:-$HOME/.local/bin}"
-# Trailing slashes would put `//` in the paths the t3 command guard compares.
+bin_dir="${J6CODE_INSTALL_BIN_DIR:-$HOME/.local/bin}"
+# Trailing slashes would put `//` in the paths the j6 command guard compares.
 while [ "${t3_home%/}" != "$t3_home" ] && [ "$t3_home" != / ]; do t3_home="${t3_home%/}"; done
 while [ "${bin_dir%/}" != "$bin_dir" ] && [ "$bin_dir" != / ]; do bin_dir="${bin_dir%/}"; done
 # Absolute, so the PATH hint never adds a folder that changes with the working directory.
@@ -171,7 +171,7 @@ case "$(uname -m)" in
   *) fail "unsupported architecture $(uname -m)" ;;
 esac
 if [ "${platform}-${arch}" = darwin-x64 ]; then
-  fail "there is no t3 CLI for Intel Macs. Install the desktop app from https://github.com/ykzird/j6code/download, or run a server from source: https://github.com/${repo}/blob/main/docs/user/install.md#intel-macs"
+  fail "there is no j6 CLI for Intel Macs. Install the desktop app from https://github.com/ykzird/j6code/download, or run a server from source: https://github.com/${repo}/blob/main/docs/user/install.md#intel-macs"
 fi
 command -v tar >/dev/null 2>&1 || fail "tar is required"
 if command -v sha256sum >/dev/null 2>&1; then
@@ -182,13 +182,13 @@ else
   fail "sha256sum or shasum is required"
 fi
 
-channel="${T3CODE_CHANNEL:-stable}"
-version="${T3CODE_VERSION:-}"
+channel="${J6CODE_CHANNEL:-stable}"
+version="${J6CODE_VERSION:-}"
 if [ -z "$version" ]; then
   case "$channel" in
     stable) tag_pattern='v\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)' ;;
     nightly | preview) tag_pattern="v\([0-9][^\"]*-${channel}\.[0-9]*\.[0-9]*\)" ;;
-    *) fail "T3CODE_CHANNEL must be stable, nightly, or preview" ;;
+    *) fail "J6CODE_CHANNEL must be stable, nightly, or preview" ;;
   esac
   tmp_index="$(mktemp)"
   if [ "$channel" = stable ]; then
@@ -206,22 +206,22 @@ if [ -z "$version" ]; then
     done
   fi
   rm -f "$tmp_index"
-  [ -n "$version" ] || fail "could not find a ${channel} release; set T3CODE_VERSION"
+  [ -n "$version" ] || fail "could not find a ${channel} release; set J6CODE_VERSION"
 fi
 case "$version" in
   *-preview.*)
     printf '%s\n' \
-      "t3 ${version} is a preview build." \
+      "j6 ${version} is a preview build." \
       "  Preview builds are cut by maintainers from unreleased branches to exercise the release" \
       "  pipeline. They can be broken, receive no fixes, and are never offered as updates." \
-      "  Set T3CODE_CHANNEL=stable (the default) for a supported build." >&2
-    if [ "$channel" != "preview" ] && [ -z "${T3CODE_VERSION:-}" ]; then
+      "  Set J6CODE_CHANNEL=stable (the default) for a supported build." >&2
+    if [ "$channel" != "preview" ] && [ -z "${J6CODE_VERSION:-}" ]; then
       fail "refusing a preview build that was not explicitly requested"
     fi
     ;;
 esac
 
-stem="t3-${version}-${platform}-${arch}"
+stem="j6-${version}-${platform}-${arch}"
 archive="${stem}.tar.gz"
 versions_dir="${t3_home}/runtime/versions"
 target_dir="${versions_dir}/${version}"
@@ -242,12 +242,12 @@ else
   fetch_status=0
   fetch "${base_url}/v${version}/SHA256SUMS" "${staging}/SHA256SUMS" || fetch_status=$?
   if [ "$fetch_status" -eq 44 ]; then
-    fail "t3 ${version} has no release archive for ${platform}-${arch}; releases before the self-contained CLI can only be installed with \`npm install -g t3@${version}\`"
+    fail "j6 ${version} has no release archive for ${platform}-${arch}; releases before the self-contained CLI can only be installed with \`npm install -g j6@${version}\`"
   elif [ "$fetch_status" -ne 0 ]; then
     fail "could not download the release checksums"
   fi
   expected="$(grep " \*\{0,1\}${archive}\$" "${staging}/SHA256SUMS" | cut -d' ' -f1)"
-  [ -n "$expected" ] || fail "t3 ${version} has no release archive for ${platform}-${arch}"
+  [ -n "$expected" ] || fail "j6 ${version} has no release archive for ${platform}-${arch}"
   download "${base_url}/v${version}/${archive}" "${staging}/${archive}" || fail "could not download ${archive}"
 
   step "Verifying the download..."
@@ -257,7 +257,7 @@ else
   step "Extracting J6 Code..."
   tar -xzf "${staging}/${archive}" -C "$staging" --strip-components=1
   rm -f "${staging}/${archive}" "${staging}/SHA256SUMS"
-  "${staging}/t3" --version >/dev/null || fail "the downloaded executable does not run"
+  "${staging}/j6" --version >/dev/null || fail "the downloaded executable does not run"
   printf '%s\n' "$version" > "${staging}/.install-complete"
 
   rm -rf "$target_dir"
@@ -267,10 +267,10 @@ else
   trap - EXIT
 fi
 
-step "Setting up the t3 command..."
+step "Setting up the j6 command..."
 mkdir -p "$bin_dir"
 # Exec by absolute path: through a symlink, argv0 is the link, and the Cursor SDK looks for its
-# helpers beside it. t3 update and t3 install write the same script.
+# helpers beside it. j6 update and j6 install write the same script.
 nl='
 '
 launcher_head="#!/bin/sh${nl}exec '"
@@ -292,23 +292,23 @@ script_t3() {
   [ -n "$unquoted" ] && [ "$(launcher_script "$unquoted"; printf x)" = "${contents}x" ] && printf '%s' "$unquoted"
   return 0
 }
-# Replace only this home's own t3 launchers: into its versions, or the desktop app's launcher.
+# Replace only this home's own j6 launchers: into its versions, or the desktop app's launcher.
 # Anything else (a user's script, a copied binary) belongs to someone else.
-# Exactly <versions>/<version>/t3 ($1 under $2), never another program inside a version.
+# Exactly <versions>/<version>/j6 ($1 under $2), never another program inside a version.
 version_t3() {
   case "$1" in "$2"/*) ;; *) return 1 ;; esac
-  case "${1#"$2"/}" in */*/*) return 1 ;; */t3) return 0 ;; *) return 1 ;; esac
+  case "${1#"$2"/}" in */*/*) return 1 ;; */j6) return 0 ;; *) return 1 ;; esac
 }
 slot_empty=true
-if [ -e "${bin_dir}/t3" ] || [ -L "${bin_dir}/t3" ]; then
+if [ -e "${bin_dir}/j6" ] || [ -L "${bin_dir}/j6" ]; then
   slot_empty=false
   owned=false
   real_versions_dir="$(CDPATH='' cd -P -- "$versions_dir" && pwd)"
-  if [ -L "${bin_dir}/t3" ]; then
-    existing="$(readlink "${bin_dir}/t3" 2>/dev/null || true)"
+  if [ -L "${bin_dir}/j6" ]; then
+    existing="$(readlink "${bin_dir}/j6" 2>/dev/null || true)"
     case "$existing" in /*) ;; *) existing="${bin_dir}/${existing}" ;; esac
   else
-    existing="$(script_t3 "${bin_dir}/t3")"
+    existing="$(script_t3 "${bin_dir}/j6")"
   fi
   if [ -n "$existing" ]; then
     # Through a symlinked J6 home the path names the alias; resolve its folder to compare.
@@ -318,33 +318,33 @@ if [ -e "${bin_dir}/t3" ] || [ -L "${bin_dir}/t3" ]; then
       */./* | */../* | */. | */..) ;;
       *)
         if version_t3 "$existing" "$versions_dir" || version_t3 "$existing" "$real_versions_dir" ||
-          [ "$existing" = "${t3_home}/bin/t3" ]; then owned=true; fi
+          [ "$existing" = "${t3_home}/bin/j6" ]; then owned=true; fi
         ;;
     esac
     if [ -n "$existing_dir" ] && version_t3 "${existing_dir}/${existing##*/}" "$real_versions_dir"; then
       owned=true
     fi
   fi
-  "$owned" || fail "another t3 is already at ${bin_dir}/t3. Remove it and run this again, or run ${target_dir}/t3 directly."
+  "$owned" || fail "another j6 is already at ${bin_dir}/j6. Remove it and run this again, or run ${target_dir}/j6 directly."
 fi
-launcher_tmp="$(mktemp "${bin_dir}/.t3.XXXXXX")"
+launcher_tmp="$(mktemp "${bin_dir}/.j6.XXXXXX")"
 trap 'rm -f "$launcher_tmp"' EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
-launcher_script "${target_dir}/t3" > "$launcher_tmp"
+launcher_script "${target_dir}/j6" > "$launcher_tmp"
 chmod 755 "$launcher_tmp"
 # An empty spot is hard-linked without -f, so a file that appears after the check above is kept.
 if "$slot_empty"; then
-  ln "$launcher_tmp" "${bin_dir}/t3" || fail "could not write ${bin_dir}/t3; something else was created there."
+  ln "$launcher_tmp" "${bin_dir}/j6" || fail "could not write ${bin_dir}/j6; something else was created there."
 else
   # Known race, accepted: a file written here after the ownership check above is overwritten.
   # mv replaces a legacy symlink rather than writing through it.
-  mv -f "$launcher_tmp" "${bin_dir}/t3"
+  mv -f "$launcher_tmp" "${bin_dir}/j6"
 fi
 rm -f "$launcher_tmp"
 trap - EXIT
 # Pruning keeps what this launcher points at; a background service cannot see bin_dir otherwise.
-launcher="$(CDPATH='' cd -P -- "$bin_dir" && pwd)/t3"
+launcher="$(CDPATH='' cd -P -- "$bin_dir" && pwd)/j6"
 launchers="${t3_home}/runtime/launchers"
 grep -qxF "$launcher" "$launchers" 2>/dev/null || printf '%s\n' "$launcher" >> "$launchers"
 if "$interactive"; then printf '\r\033[2K' >&2; fi
@@ -357,7 +357,7 @@ read_from() {
     /*) case "$1" in *[!A-Za-z0-9_./-]*) ;; *) printf '%s' "$1" ;; esac ;;
   esac
 }
-# A command to paste for zsh, Linux bash, or fish, like `t3 install` prints. macOS bash reads only
+# A command to paste for zsh, Linux bash, or fish, like `j6 install` prints. macOS bash reads only
 # one of several startup files, so no single file is safe to change there.
 path_command=
 path_rest="$bin_dir"
@@ -365,7 +365,7 @@ path_prefix=
 case "$bin_dir" in "$HOME"/*) path_rest="${bin_dir#"$HOME"}" path_prefix='$HOME' ;; esac
 case "$path_rest" in *[!A-Za-z0-9_./-]*) path_rest= ;; esac
 if [ -n "$path_rest" ]; then
-  # Last on PATH, so it never shadows another t3.
+  # Last on PATH, so it never shadows another j6.
   path_line="export PATH=\"\$PATH:${path_prefix}${path_rest}\""
   shell_name="${SHELL:-}"
   case "${shell_name##*/}" in
@@ -381,12 +381,12 @@ if [ -n "$path_rest" ]; then
       [ -z "$config_dir" ] || path_command="mkdir -p ${fish_dir} && printf '\\n%s\\n' 'fish_add_path --append --path ${path_prefix}${path_rest}' >> ${fish_dir}/config.fish" ;;
   esac
 fi
-# A t3 earlier on PATH runs instead; the PATH command adds this folder last.
-# A PATH entry with a trailing slash gives `dir//t3`.
-first_t3="$(command -v t3 2>/dev/null | tr -s / || true)"
-case "$first_t3" in "" | "${bin_dir}/t3") first_t3= ;; esac
+# A j6 earlier on PATH runs instead; the PATH command adds this folder last.
+# A PATH entry with a trailing slash gives `dir//j6`.
+first_t3="$(command -v j6 2>/dev/null | tr -s / || true)"
+case "$first_t3" in "" | "${bin_dir}/j6") first_t3= ;; esac
 if [ -n "$first_t3" ]; then
-  printf '  Another t3 at %s runs first, so run %s%s/t3%s to use this one.\n\n' "$first_t3" "$bold" "$bin_dir" "$reset"
+  printf '  Another j6 at %s runs first, so run %s%s/j6%s to use this one.\n\n' "$first_t3" "$bold" "$bin_dir" "$reset"
 else
   case ":${PATH}:" in
     *":${bin_dir}:"* | *":${bin_dir}/:"*) printf '  Run %st3%s to use J6 Code here, or %st3 up%s to use it from your other devices.\n\n' "$bold" "$reset" "$bold" "$reset" ;;

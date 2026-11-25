@@ -1,9 +1,9 @@
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, it } from "@effect/vitest";
-import { AuthSessionId, ProjectId, RunId, ThreadId } from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import * as NetService from "@t3tools/shared/Net";
+import { AuthSessionId, ProjectId, RunId, ThreadId } from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
+import * as NetService from "@j6/shared/Net";
 import * as ConfigProvider from "effect/ConfigProvider";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -58,7 +58,7 @@ it.effect("list includes delegated threads across pages and still leaves out sub
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-thread-list-" });
+    const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-thread-list-" });
     yield* persistServerRuntimeState({
       path: path.join(baseDir, "userdata", "server-runtime.json"),
       state: yield* makePersistedServerRuntimeState({
@@ -145,7 +145,7 @@ it.effect("list includes delegated threads across pages and still leaves out sub
         NodeServices.layer,
         NodeCrypto.layer,
         NetService.layer,
-        ConfigProvider.layer(ConfigProvider.fromEnv({ env: { T3CODE_PORT: "3773" } })),
+        ConfigProvider.layer(ConfigProvider.fromEnv({ env: { J6CODE_PORT: "3773" } })),
       ),
     ),
   ),
@@ -158,7 +158,7 @@ it.effect(
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
       const root = yield* fs
-        .makeTempDirectoryScoped({ prefix: "t3-thread-project-path-" })
+        .makeTempDirectoryScoped({ prefix: "j6-thread-project-path-" })
         .pipe(Effect.flatMap((directory) => fs.realPath(directory)));
       const home = path.join(root, "home");
       const cwd = path.join(root, "current");
@@ -233,7 +233,7 @@ it.effect(
           NodeServices.layer,
           NodeCrypto.layer,
           NetService.layer,
-          ConfigProvider.layer(ConfigProvider.fromEnv({ env: { T3CODE_PORT: "3773" } })),
+          ConfigProvider.layer(ConfigProvider.fromEnv({ env: { J6CODE_PORT: "3773" } })),
         ),
       ),
     ),
@@ -243,7 +243,7 @@ it.effect("does not sign in to whatever took over a dead server's port", () =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-thread-dead-server-" });
+    const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-thread-dead-server-" });
     const state = yield* makePersistedServerRuntimeState({
       config: { host: "127.0.0.1", devUrl: undefined },
       port: 3_773,
@@ -272,7 +272,7 @@ it.effect("does not sign in to whatever took over a dead server's port", () =>
         NodeServices.layer,
         NodeCrypto.layer,
         NetService.layer,
-        ConfigProvider.layer(ConfigProvider.fromEnv({ env: { T3CODE_PORT: "3773" } })),
+        ConfigProvider.layer(ConfigProvider.fromEnv({ env: { J6CODE_PORT: "3773" } })),
       ),
     ),
   ),
@@ -529,7 +529,7 @@ it.effect("--output-schema reads a ~/ path from the home directory", () =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-thread-schema-" });
+    const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-thread-schema-" });
     yield* fs.writeFileString(path.join(home, "schema.json"), '{"type":"object"}');
 
     const output = yield* readOutputSchema(Option.some("~/schema.json")).pipe(
@@ -729,18 +729,18 @@ it.live("resolves a path inside a git worktree of the project's repository to th
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const root = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-thread-worktree-" });
+    const root = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-thread-worktree-" });
     const repo = path.join(root, "sample");
-    const worktree = path.join(root, "worktrees", "sample", "t3-8ff64c24");
+    const worktree = path.join(root, "worktrees", "sample", "j6-8ff64c24");
     const feature = path.join(root, "wt", "feature");
-    const featureWorktree = path.join(root, "worktrees", "feature", "t3-1a2b3c4d");
+    const featureWorktree = path.join(root, "worktrees", "feature", "j6-1a2b3c4d");
     yield* fileSystem.makeDirectory(path.join(repo, "pkg"), { recursive: true });
     yield* fileSystem.writeFileString(path.join(repo, "pkg", "index.ts"), "export {};\n");
     yield* git(repo, ["init", "--quiet", "-b", "main"]);
     yield* commitAll(repo);
-    yield* git(repo, ["worktree", "add", "--quiet", "-b", "t3/8ff64c24", worktree]);
+    yield* git(repo, ["worktree", "add", "--quiet", "-b", "j6/8ff64c24", worktree]);
     yield* git(repo, ["worktree", "add", "--quiet", "-b", "feature", feature]);
-    yield* git(feature, ["worktree", "add", "--quiet", "-b", "t3/1a2b3c4d", featureWorktree]);
+    yield* git(feature, ["worktree", "add", "--quiet", "-b", "j6/1a2b3c4d", featureWorktree]);
 
     const project = (id: string, workspaceRoot: string) => ({
       id: ProjectId.make(id),

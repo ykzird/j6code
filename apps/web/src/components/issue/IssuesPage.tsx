@@ -7,9 +7,9 @@ import {
   issueFilterScopes,
   issueTrackerKey,
   type HeldIssuePage,
-} from "@t3tools/client-runtime/issue-list";
-import { issueTrackerDetailText } from "@t3tools/client-runtime/state/issue-trackers";
-import { issueEntryKey } from "@t3tools/client-runtime/state/issues";
+} from "@j6/client-runtime/issue-list";
+import { issueTrackerDetailText } from "@j6/client-runtime/state/issue-trackers";
+import { issueEntryKey } from "@j6/client-runtime/state/issues";
 import type {
   EnvironmentId,
   IssueInvolvement,
@@ -19,7 +19,7 @@ import type {
   IssueTrackerKind,
   IssueTrackerSummary,
   ProjectId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   ArrowDownUpIcon,
@@ -94,7 +94,7 @@ import {
   type RightPanelSurface,
 } from "~/rightPanelStore";
 import { useAtomCommand } from "~/state/use-atom-command";
-import { squashAtomCommandFailure } from "@t3tools/client-runtime/state/runtime";
+import { squashAtomCommandFailure } from "@j6/client-runtime/state/runtime";
 import { useProjects } from "~/state/entities";
 import { useEnvironments, useIssuesSupported } from "~/state/environments";
 import { issueEnvironment, useIssueList } from "~/state/issues";
@@ -433,7 +433,7 @@ export function IssuesPage() {
   };
 
   // A link into the page names an issue before any row was pressed.
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- opens the URL-linked issue in the right panel store
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- opens the URL-linked issue in the right panel store
   useEffect(() => {
     if (
       rightPanelRef === null ||
@@ -496,7 +496,7 @@ export function IssuesPage() {
     else toggleRightPanel();
   });
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- subscribes to the document right panel shortcut
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- subscribes to the document right panel shortcut
   useEffect(() => {
     document.addEventListener("keydown", onRightPanelKeyDown);
     return () => document.removeEventListener("keydown", onRightPanelKeyDown);
@@ -510,7 +510,7 @@ export function IssuesPage() {
   const listBody: ReactNode = !issuesSupported ? (
     <PullRequestsUnavailableState
       title={gt("Issues unavailable")}
-      error={gt("Update this environment's T3 Code server to browse issues.")}
+      error={gt("Update this environment's J6 Code server to browse issues.")}
     />
   ) : noneAnswered && list.isPending ? (
     <PullRequestListGhost />
@@ -794,7 +794,7 @@ export function IssuesPage() {
             open={rightPanelState.isOpen}
             keybindings={keybindings}
             getShortcutContext={getShortcutContext}
-            widthStorageKey="t3code:issue-panel-width"
+            widthStorageKey="j6code:issue-panel-width"
             defaultWidth={typeof window === "undefined" ? 640 : Math.floor(window.innerWidth / 2)}
             surfaces={presence.value?.surfaces ?? []}
             environmentId={panelEnvironmentId}

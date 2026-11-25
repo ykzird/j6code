@@ -6,11 +6,11 @@ import {
   ProviderInstanceId,
   type ServerSettings,
   type ServerSettingsPatch,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { describe, expect, it, vi } from "vite-plus/test";
-import { applyServerSettingsPatch } from "@t3tools/shared/serverSettings";
+import { applyServerSettingsPatch } from "@j6/shared/serverSettings";
 import * as Cause from "effect/Cause";
-import { resolveWorktreeCleanup } from "@t3tools/shared/projectSettings";
+import { resolveWorktreeCleanup } from "@j6/shared/projectSettings";
 
 import type { SidebarProjectSnapshot } from "../../sidebarProjectGrouping";
 import {
@@ -283,7 +283,7 @@ describe("scoped settings writes", () => {
     const unsupported = [
       {
         label: server.label,
-        message: "This environment does not support this setting. Update T3 Code on it.",
+        message: "This environment does not support this setting. Update J6 Code on it.",
       },
     ];
 
@@ -765,7 +765,7 @@ describe("scoped settings mixed values", () => {
 describe("project overrides at environment scope", () => {
   const laptop = EnvironmentId.make("laptop");
   const fleet = ProjectId.make("fleet");
-  const t3 = ProjectId.make("t3");
+  const j6 = ProjectId.make("j6");
   const environment = (
     environmentId: EnvironmentId,
     overrides: ServerSettings["projectSettingsOverrides"],
@@ -784,12 +784,12 @@ describe("project overrides at environment scope", () => {
       [
         environment(laptop, {
           [fleet]: { defaultAutoPull: true, defaultThreadEnvMode: "local" },
-          [t3]: { defaultAutoPull: true },
+          [j6]: { defaultAutoPull: true },
         }),
       ],
       [
         { environmentId: laptop, projectId: fleet },
-        { environmentId: laptop, projectId: t3 },
+        { environmentId: laptop, projectId: j6 },
       ],
       ["defaultAutoPull"],
     );
@@ -799,7 +799,7 @@ describe("project overrides at environment scope", () => {
         label: laptop,
         previous: expect.anything(),
         patch: {
-          projectSettingsOverrides: { [fleet]: { defaultThreadEnvMode: "local" }, [t3]: null },
+          projectSettingsOverrides: { [fleet]: { defaultThreadEnvMode: "local" }, [j6]: null },
         },
       },
     ]);

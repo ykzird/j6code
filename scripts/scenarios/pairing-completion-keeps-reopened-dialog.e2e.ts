@@ -1,12 +1,12 @@
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 test(
   "Finishing a pairing link leaves a reopened Create link dialog open",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    await t3.project("demo");
+  async ({ j6, app, browser, screen }) => {
+    await j6.project("demo");
     const pairingToken = "**/api/auth/pairing-token";
     const requested = Promise.withResolvers<void>();
     const release = Promise.withResolvers<void>();
@@ -17,7 +17,7 @@ test(
       await route.continue();
     });
 
-    await t3.open("/settings/access");
+    await j6.open("/settings/access");
     const authorizedClients = browser.locator("#authorized-clients");
     const open = authorizedClients.getByRole("button", "Create link", { exact: true });
     const dialog = screen.getByRole("dialog", "Create pairing link", { exact: true });

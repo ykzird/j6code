@@ -1,6 +1,6 @@
 import { msg } from "gt-i18n";
 import { translatableMessage } from "../errors/translatable.ts";
-import { remapComposerContextAttachments } from "@t3tools/shared/composerContextReferences";
+import { remapComposerContextAttachments } from "@j6/shared/composerContextReferences";
 import {
   type ThreadLinkedPullRequest,
   CommandId,
@@ -30,9 +30,9 @@ import {
   type ThreadEnvMode,
   type UploadChatAttachment,
   type GuestMessageId,
-} from "@t3tools/contracts";
-import { derivePendingBackgroundWork } from "@t3tools/shared/orchestrationV2PendingBackgroundWork";
-import { visibleThreadPullRequests } from "@t3tools/shared/threadPullRequests";
+} from "@j6/contracts";
+import { derivePendingBackgroundWork } from "@j6/shared/orchestrationV2PendingBackgroundWork";
+import { visibleThreadPullRequests } from "@j6/shared/threadPullRequests";
 import * as SecureRandom from "effect/crypto/SecureRandom";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
@@ -149,7 +149,7 @@ export interface VisitThreadInput extends ThreadCommandInput {
 export type MarkThreadUnreadInput = ThreadCommandInput;
 
 export interface UpdateThreadMetadataInput extends ThreadCommandInput {
-  readonly limitRecovery?: import("@t3tools/contracts").OrchestrationV2LimitRecoveryUpdate | null;
+  readonly limitRecovery?: import("@j6/contracts").OrchestrationV2LimitRecoveryUpdate | null;
   readonly title?: string;
   readonly modelSelection?: ModelSelection;
   readonly branch?: string | null;
@@ -197,8 +197,8 @@ export interface StartThreadTurnInput extends ThreadCommandInput {
     readonly role: "user";
     readonly text: string;
     readonly attachments: ReadonlyArray<ChatAttachment | UploadChatAttachment>;
-    readonly context?: import("@t3tools/contracts").OrchestrationMessageContext;
-    readonly idleCompaction?: import("@t3tools/contracts").OrchestrationV2IdleCompaction;
+    readonly context?: import("@j6/contracts").OrchestrationMessageContext;
+    readonly idleCompaction?: import("@j6/contracts").OrchestrationV2IdleCompaction;
   };
   readonly modelSelection?: ModelSelection;
   readonly titleSeed?: string;
@@ -228,7 +228,7 @@ export interface RespondToThreadApprovalInput extends ThreadCommandInput {
 export interface RespondToThreadUserInputInput extends ThreadCommandInput {
   readonly requestId: RuntimeRequestId;
   readonly answers: ProviderUserInputAnswers;
-  readonly attachmentsByQuestionId?: import("@t3tools/contracts").UserInputAttachments;
+  readonly attachmentsByQuestionId?: import("@j6/contracts").UserInputAttachments;
 }
 
 export interface DismissThreadUserInputInput extends ThreadCommandInput {
@@ -291,7 +291,7 @@ export interface EditQueuedRunInput extends ThreadCommandInput {
   readonly edit?: {
     readonly messageId: MessageId;
     readonly attachments: ReadonlyArray<ChatAttachment | UploadChatAttachment>;
-    readonly context?: import("@t3tools/contracts").OrchestrationMessageContext;
+    readonly context?: import("@j6/contracts").OrchestrationMessageContext;
   };
 }
 

@@ -2,7 +2,7 @@ import * as NetAddress from "effect/net/NetAddress";
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, it } from "@effect/vitest";
-import { AgentScope } from "@t3tools/shared/AgentScope";
+import { AgentScope } from "@j6/shared/AgentScope";
 import {
   EnvironmentId,
   MessageId,
@@ -23,7 +23,7 @@ import {
   RunId,
   ThreadId,
   TurnItemId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
@@ -42,8 +42,8 @@ import { HttpServer } from "effect/http";
 import { ProviderWorkspaceMissingError } from "../provider/Errors.ts";
 import * as ServerEnvironment from "../environment/ServerEnvironment.ts";
 import * as ProjectService from "../project/ProjectService.ts";
-import * as McpProviderSession from "@t3tools/provider-core/server/mcpSession";
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
+import * as McpProviderSession from "@j6/provider-core/server/mcpSession";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
 import * as McpSessionRegistry from "../mcp/McpSessionRegistry.ts";
 import * as SqlitePersistence from "../persistence/Sqlite.ts";
 import * as ServerSettings from "../serverSettings.ts";
@@ -54,7 +54,7 @@ import {
 import * as EffectOutbox from "./EffectOutbox.ts";
 import * as EventSink from "./EventSink.ts";
 import * as EventStore from "./EventStore.ts";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
 import * as ProjectionStore from "./ProjectionStore.ts";
 import * as ProviderAdapterRegistry from "./ProviderAdapterRegistry.ts";
 import * as ProviderEventIngestor from "./ProviderEventIngestor.ts";
@@ -64,11 +64,11 @@ import * as GitVcsDriver from "../vcs/GitVcsDriver.ts";
 import * as ThreadCommandExecutor from "./ThreadCommandExecutor.ts";
 import * as ProviderSessionManager from "./ProviderSessionManager.ts";
 import * as CommandOutputHub from "./CommandOutputHub.ts";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
 import {
   makeProviderFailure,
   makeProviderRetryTurnItem,
-} from "@t3tools/provider-core/server/failure";
+} from "@j6/provider-core/server/failure";
 
 const layerTestDatabase = SqlitePersistence.layerMemory;
 const layerTestStores = Layer.merge(EventStore.layer, ProjectionStore.layer).pipe(
@@ -3550,7 +3550,7 @@ const openSessionWithBackgroundCommand = (fixtureName: string) =>
         completedAt: status === "completed" ? startedAt : null,
         updatedAt: startedAt,
         type: "dynamic_tool",
-        toolName: "mcp__t3-code__t3_worktree_handoff",
+        toolName: "mcp__j6-code__t3_worktree_handoff",
         input: {},
       }) satisfies OrchestrationV2TurnItem;
     const cutOffNodeId = idAllocator.derive.nodeFromProviderItem({
@@ -3907,7 +3907,7 @@ it.effect.each(["stream failure", "detach"] as const)(
           },
           {
             kind: "task",
-            label: "mcp__t3-code__t3_worktree_handoff",
+            label: "mcp__j6-code__t3_worktree_handoff",
             id: seededToolCalls.cutOff.id,
           },
         ];

@@ -1,4 +1,4 @@
-import { AuthProvidersManageScope } from "@t3tools/contracts";
+import { AuthProvidersManageScope } from "@j6/contracts";
 import { readEnvironmentScope, useEnvironmentScope } from "../../state/session";
 import { useAtomValue } from "@effect/atom-react";
 import {
@@ -6,10 +6,10 @@ import {
   ProviderInstanceId,
   type EnvironmentId,
   type ServerProvider,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { T, useGT } from "gt-react";
 import { useState, type ReactNode } from "react";
-import { usesChatGptSharing } from "@t3tools/shared/usageLimits";
+import { usesChatGptSharing } from "@j6/shared/usageLimits";
 
 import { useEnvironmentSettings } from "../../hooks/useSettings";
 import { randomUUID } from "../../lib/utils";

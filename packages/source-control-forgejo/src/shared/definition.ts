@@ -1,5 +1,5 @@
-import { SourceControlProviderKind } from "@t3tools/contracts";
-import { canonicalRepositoryPath } from "@t3tools/shared/git";
+import { SourceControlProviderKind } from "@j6/contracts";
+import { canonicalRepositoryPath } from "@j6/shared/git";
 import {
   buildCommitUrl,
   changeRequestUrlBelow,
@@ -14,7 +14,7 @@ import {
   repositoryUrlFromPagePath,
   projectChangeRequestHost,
   remoteWebOrigin,
-} from "@t3tools/source-control-core/shared/definition";
+} from "@j6/source-control-core/shared/definition";
 import { icon } from "./icon.ts";
 
 const CHECKOUT_COMMAND = /^tea\s+(?:pr|pulls?)\s+(?:checkout|co)\s+(.+)$/i;

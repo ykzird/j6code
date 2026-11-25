@@ -2,7 +2,7 @@ import type {
   PullRequestCheck,
   PullRequestCheckStatus,
   PullRequestChecksState,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Option from "effect/Option";
 

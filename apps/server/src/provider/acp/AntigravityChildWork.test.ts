@@ -201,7 +201,7 @@ it.layer(NodeServices.layer)("readAntigravityChildWork", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const outside = yield* fs.makeTempDirectoryScoped({ prefix: "t3-agy-outside-" });
+      const outside = yield* fs.makeTempDirectoryScoped({ prefix: "j6-agy-outside-" });
       const secret = path.join(outside, "transcript.jsonl");
       yield* fs.writeFileString(secret, JSON.stringify(transcriptLines[3]) + "\n");
       const named = yield* makeProfile({
@@ -349,7 +349,7 @@ it.layer(NodeServices.layer)("readAntigravityChildWork", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const profile = yield* fs.makeTempDirectoryScoped({ prefix: "t3-agy-detached-" });
+      const profile = yield* fs.makeTempDirectoryScoped({ prefix: "j6-agy-detached-" });
       const sibling = "b468c0e1-d2f3-4a5b-6c7d-8e9f0a1b2c3d";
       const writeJson = (segments: ReadonlyArray<string>, value: unknown) => {
         const file = path.join(profile, "antigravity-acp", "brain", ...segments);
@@ -503,7 +503,7 @@ it.layer(NodeServices.layer)("readAntigravityChildWork", (it) => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const profile = yield* fs.makeTempDirectoryScoped({ prefix: "t3-agy-killed-" });
+      const profile = yield* fs.makeTempDirectoryScoped({ prefix: "j6-agy-killed-" });
       const killed = "0a591388-d9d9-439d-a2a0-90932fd25b39";
       const writeJson = (segments: ReadonlyArray<string>, value: unknown) => {
         const file = path.join(profile, "antigravity-acp", "brain", ...segments);
@@ -547,7 +547,7 @@ it.layer(NodeServices.layer)("readAntigravityChildWork", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const profile = yield* fs.makeTempDirectoryScoped({ prefix: "t3-agy-swarm-disk-" });
+        const profile = yield* fs.makeTempDirectoryScoped({ prefix: "j6-agy-swarm-disk-" });
         const workerOne = "11111111-1111-4000-8000-111111111111";
         const workerTwo = "22222222-2222-4000-8000-222222222222";
         const workerKilled = "33333333-3333-4000-8000-333333333333";
@@ -683,7 +683,7 @@ it.layer(NodeServices.layer)("readAntigravityChildWork", (it) => {
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const profile = yield* fs.makeTempDirectoryScoped({ prefix: "t3-agy-pending-reply-" });
+        const profile = yield* fs.makeTempDirectoryScoped({ prefix: "j6-agy-pending-reply-" });
         const write = (segments: ReadonlyArray<string>, body: string) => {
           const file = path.join(
             profile,
@@ -767,7 +767,7 @@ it.layer(NodeServices.layer)("readAntigravityChildWork", (it) => {
         expect(yield* pending()).toBe(false);
 
         // Symlinked transcript fails closed.
-        const outside = yield* fs.makeTempDirectoryScoped({ prefix: "t3-agy-pending-outside-" });
+        const outside = yield* fs.makeTempDirectoryScoped({ prefix: "j6-agy-pending-outside-" });
         const external = path.join(outside, "transcript.jsonl");
         yield* fs.writeFileString(
           external,

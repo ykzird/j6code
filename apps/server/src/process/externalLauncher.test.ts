@@ -16,10 +16,10 @@ import * as Sink from "effect/Sink";
 import * as Stream from "effect/Stream";
 import { ChildProcess, ChildProcessSpawner } from "effect/process";
 
-import { EDITORS } from "@t3tools/contracts";
-import { resolveEditorCommand } from "@t3tools/shared/editor";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { SpawnExecutableResolution } from "@t3tools/shared/shell";
+import { EDITORS } from "@j6/contracts";
+import { resolveEditorCommand } from "@j6/shared/editor";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { SpawnExecutableResolution } from "@j6/shared/shell";
 import * as ExternalLauncher from "./externalLauncher.ts";
 import { WindowsVerbatimSpawn } from "./windowsVerbatimSpawn.ts";
 
@@ -121,7 +121,7 @@ it.effect.skipIf(windowsHost)("opens home-relative targets using the server home
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const bin = yield* fs.makeTempDirectoryScoped({ prefix: "t3-app-open-" });
+    const bin = yield* fs.makeTempDirectoryScoped({ prefix: "j6-app-open-" });
     for (const name of ["open", "code", "idea"]) {
       yield* fs.writeFileString(path.join(bin, name), "#!/bin/sh\n");
       yield* fs.chmod(path.join(bin, name), 0o755);
@@ -165,7 +165,7 @@ it.effect.skipIf(windowsHost)("reports a Finder reveal that open -R rejects", ()
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-editors-" });
+    const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-editors-" });
     const open = path.join(binDir, "open");
     yield* fileSystem.writeFileString(open, "#!/bin/sh\n");
     yield* fileSystem.chmod(open, 0o755);
@@ -203,7 +203,7 @@ it.effect.skipIf(windowsHost)(
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-editors-" });
+      const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-editors-" });
       const codePath = path.join(binDir, "code");
       yield* fileSystem.writeFileString(codePath, "#!/bin/sh\n");
       yield* fileSystem.chmod(codePath, 0o755);
@@ -250,8 +250,8 @@ it.effect.skipIf(windowsHost)(
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-editors-" });
-      const project = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-project-" });
+      const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-editors-" });
+      const project = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-project-" });
       for (const name of ["code", "zeditor", "idea"]) {
         const executable = path.join(binDir, name);
         yield* fileSystem.writeFileString(executable, "#!/bin/sh\n");
@@ -330,7 +330,7 @@ it.effect.skipIf(windowsHost)(
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-editors-" });
+      const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-editors-" });
       const codiumPath = path.join(binDir, "codium");
       yield* fileSystem.writeFileString(codiumPath, "#!/bin/sh\n");
       yield* fileSystem.chmod(codiumPath, 0o755);
@@ -403,7 +403,7 @@ it.effect.skipIf(windowsHost)(
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-editors-" });
+      const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-editors-" });
       for (const name of ["xdg-open", "xdg-mime"]) {
         const filePath = path.join(binDir, name);
         yield* fileSystem.writeFileString(filePath, "#!/bin/sh\n");
@@ -463,7 +463,7 @@ it.effect("launches an installed editor with platform-safe arguments", () =>
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-editors-" });
+    const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-editors-" });
     yield* fileSystem.writeFileString(path.join(binDir, "code.CMD"), "@echo off\r\n");
 
     let spawned: ChildProcess.StandardCommand | undefined;
@@ -647,14 +647,14 @@ it.effect.skipIf(windowsHost)(
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-editors-" });
+      const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-editors-" });
       for (const name of ["explorer.exe", "powershell.exe", "xdg-open"]) {
         const filePath = path.join(binDir, name);
         yield* fileSystem.writeFileString(filePath, "#!/bin/sh\n");
         yield* fileSystem.chmod(filePath, 0o755);
       }
 
-      const target = "/home/t3/workspace [draft]/author's ‘$media/clip|draft.mp4";
+      const target = "/home/j6/workspace [draft]/author's ‘$media/clip|draft.mp4";
       let spawned: ChildProcess.StandardCommand | undefined;
       const result = yield* Effect.gen(function* () {
         const launcher = yield* ExternalLauncher.ExternalLauncher;
@@ -689,11 +689,11 @@ it.effect.skipIf(windowsHost)(
       assert.include(decodedCommand, "'Directory', 'Folder'");
       assert.include(
         decodedCommand,
-        "Invoke-Item -LiteralPath '\\\\wsl.localhost\\Ubuntu-24.04\\home\\t3\\workspace [draft]\\author''s ‘‘$media'",
+        "Invoke-Item -LiteralPath '\\\\wsl.localhost\\Ubuntu-24.04\\home\\j6\\workspace [draft]\\author''s ‘‘$media'",
       );
       assert.include(
         decodedCommand,
-        "'\\\\wsl.localhost\\Ubuntu-24.04\\home\\t3\\workspace [draft]\\author''s ‘‘$media\\clip|draft.mp4'",
+        "'\\\\wsl.localhost\\Ubuntu-24.04\\home\\j6\\workspace [draft]\\author''s ‘‘$media\\clip|draft.mp4'",
       );
     }).pipe(Effect.scoped, Effect.provide(NodeServices.layer)),
 );
@@ -713,7 +713,7 @@ it.effect.each([
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-editors-" });
+    const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-editors-" });
     yield* fileSystem.writeFileString(path.join(binDir, "explorer.EXE"), "");
     const spawned: ChildProcess.StandardCommand[] = [];
     const verbatim: Array<readonly [string, ReadonlyArray<string>]> = [];
@@ -722,7 +722,7 @@ it.effect.each([
       return yield* launcher
         .launchEditor({
           editor: "file-manager",
-          cwd: "C:/Users/t3/my project/a,b.ts",
+          cwd: "C:/Users/j6/my project/a,b.ts",
           reveal: true,
         })
         .pipe(Effect.exit);
@@ -734,7 +734,7 @@ it.effect.each([
         layerTest({
           platform: "win32",
           env: { PATH: binDir, PATHEXT: ".COM;.EXE;.BAT;.CMD", SYSTEMROOT: "C:\\Windows" },
-          existingPaths: ["C:/Users/t3/my project/a,b.ts"],
+          existingPaths: ["C:/Users/j6/my project/a,b.ts"],
           onSpawn: (command) => spawned.push(command),
           spawnResult: (command) => (command.command.endsWith("reg.exe") ? registry : undefined),
         }),
@@ -748,7 +748,7 @@ it.effect.each([
     if (native) {
       assert.isTrue(Exit.isSuccess(exit));
       assert.deepEqual(verbatim, [
-        ["C:\\Windows\\explorer.exe", ['/select,"C:\\Users\\t3\\my project\\a,b.ts"']],
+        ["C:\\Windows\\explorer.exe", ['/select,"C:\\Users\\j6\\my project\\a,b.ts"']],
       ]);
     } else {
       assert.deepEqual(verbatim, []);
@@ -771,7 +771,7 @@ it.effect("does not ask Explorer to select a file that does not exist", () =>
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-editors-" });
+    const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-editors-" });
     yield* fileSystem.writeFileString(path.join(binDir, "explorer.EXE"), "");
     const missing = path.join(binDir, "CLAUDE.md");
     const verbatim: Array<readonly [string, ReadonlyArray<string>]> = [];
@@ -805,7 +805,7 @@ for (const wsl of [false, true]) {
       Effect.gen(function* () {
         const fileSystem = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-editors-" });
+        const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-editors-" });
         for (const name of ["xdg-open", "xdg-mime", "gdbus", ...(wsl ? ["explorer.exe"] : [])]) {
           const filePath = path.join(binDir, name);
           yield* fileSystem.writeFileString(filePath, "#!/bin/sh\n");
@@ -866,7 +866,7 @@ for (const cwd of ["/workspace with spaces/", "/workspace with spaces/file.ts:12
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-zed-collision-" });
+        const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-zed-collision-" });
         const executable = path.join(home, "Applications/Zed.app/Contents/MacOS/cli");
         const binDir = path.join(home, "zfs/bin");
         yield* fs.makeDirectory(path.dirname(executable), { recursive: true });
@@ -916,7 +916,7 @@ for (const [title, id, first, extra, onDarwin, onLinux = onDarwin] of [
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-editor-check-" });
+        const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-editor-check-" });
         const commands = {
           cursor: "cursor",
           none: undefined,
@@ -980,7 +980,7 @@ for (const { layout, pathNames, fallbackNames, expected } of [
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-zed-linux-" });
+      const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-zed-linux-" });
       const binDir = path.join(home, "bin");
       const fallbackDir = path.join(home, ".local/bin");
       for (const [dir, names] of [
@@ -1038,7 +1038,7 @@ it.effect.skipIf(windowsHost)("prefers zeditor in a later Linux fallback directo
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-zed-fallback-" });
+    const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-zed-fallback-" });
     const localBin = path.join(home, ".local/bin");
     const systemBin = path.join(home, "system-bin");
     for (const [dir, name] of [
@@ -1071,7 +1071,7 @@ it.effect.skipIf(windowsHost)("does not offer the OpenZFS zed daemon as Zed on L
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-zed-zfs-" });
+    const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-zed-zfs-" });
     const binDir = path.join(home, "bin");
     const systemBin = path.join(home, "system-bin");
     yield* fs.makeDirectory(binDir, { recursive: true });
@@ -1117,7 +1117,7 @@ it.effect.skipIf(windowsHost)("does not open Zed with the OpenZFS zed daemon on 
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-zed-zfs-launch-" });
+    const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-zed-zfs-launch-" });
     const binDir = path.join(home, "bin");
     const systemBin = path.join(home, "system-bin");
     yield* fs.makeDirectory(binDir, { recursive: true });
@@ -1162,7 +1162,7 @@ it.effect.each([
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-editor-versioned-" });
+      const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-editor-versioned-" });
       const executable = path.join(home, installPath);
       yield* fs.makeDirectory(path.dirname(executable), { recursive: true });
       yield* fs.writeFileString(executable, "#!/bin/sh\n");
@@ -1206,7 +1206,7 @@ it.effect("matches macOS bundles on the name boundary only", () =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const unrelatedHome = yield* fs.makeTempDirectoryScoped({ prefix: "t3-editor-unrelated-" });
+    const unrelatedHome = yield* fs.makeTempDirectoryScoped({ prefix: "j6-editor-unrelated-" });
     const unrelated = path.join(
       unrelatedHome,
       "Applications/WebStormHelper.app/Contents/MacOS/webstorm",
@@ -1227,7 +1227,7 @@ it.effect("matches macOS bundles on the name boundary only", () =>
 
     assert.notInclude(yield* editorsFor(unrelatedHome), "webstorm");
 
-    const exactHome = yield* fs.makeTempDirectoryScoped({ prefix: "t3-editor-exact-" });
+    const exactHome = yield* fs.makeTempDirectoryScoped({ prefix: "j6-editor-exact-" });
     const exact = path.join(exactHome, "Applications/WebStorm.app/Contents/MacOS/webstorm");
     yield* fs.makeDirectory(path.dirname(exact), { recursive: true });
     yield* fs.writeFileString(exact, "#!/bin/sh\n");
@@ -1241,7 +1241,7 @@ it.effect("keeps the macOS VS Code Insiders bundle out of stable VS Code", () =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-editor-insiders-" });
+    const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-editor-insiders-" });
     // The real Insiders bundle ships both `code-insiders` and `code`.
     const bin = path.join(
       home,
@@ -1297,7 +1297,7 @@ it.effect.each([
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-toolbox-numbered-" });
+      const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-toolbox-numbered-" });
       const dir = path.join(home, scripts);
       yield* fs.makeDirectory(dir, { recursive: true });
       for (const name of ["idea10", "idea2"]) {
@@ -1344,7 +1344,7 @@ for (const { platform, installPath, onPath } of [
       Effect.gen(function* () {
         const fs = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
-        const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-agy-cli-" });
+        const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-agy-cli-" });
         const executable = path.join(home, installPath);
         yield* fs.makeDirectory(path.dirname(executable), { recursive: true });
         yield* fs.writeFileString(executable, "#!/bin/sh\n");
@@ -1374,7 +1374,7 @@ it.effect.skipIf(windowsHost)("ignores unusable app bundles and keeps PATH launc
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const home = yield* fs.makeTempDirectoryScoped({ prefix: "t3-editor-priority-" });
+    const home = yield* fs.makeTempDirectoryScoped({ prefix: "j6-editor-priority-" });
     const executable = path.join(home, "Applications/Cursor.app/Contents/Resources/app/bin/code");
     const env = { HOME: home, PATH: path.join(home, "bin") };
     const discover = Effect.gen(function* () {
@@ -1478,7 +1478,7 @@ it.effect(
           ConfigProvider.layer(
             ConfigProvider.fromEnv({
               env: {
-                PATH: "C:\\t3-editor-discovery-cache-test",
+                PATH: "C:\\j6-editor-discovery-cache-test",
                 PATHEXT: ".COM;.EXE;.BAT;.CMD",
               },
             }),
@@ -1496,7 +1496,7 @@ it.effect.each(["Zed Nightly", "Zed Preview"])(
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const root = yield* fs.makeTempDirectoryScoped({ prefix: "t3-zed-channels-" });
+      const root = yield* fs.makeTempDirectoryScoped({ prefix: "j6-zed-channels-" });
       // A user folder naming Zed and a channel does not mark either install.
       const programs = path.join(root, "Users", "zedpreview", "Programs");
       const prereleaseBin = path.join(programs, channel, "bin");
@@ -1545,7 +1545,7 @@ const launchWindowsShimEditor = (cwd: string) =>
   Effect.gen(function* () {
     const fileSystem = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-editors-" });
+    const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-editors-" });
     yield* fileSystem.writeFileString(path.join(binDir, "code.CMD"), "@echo off\r\n");
     let spawned: ChildProcess.StandardCommand | undefined;
     const exit = yield* Effect.gen(function* () {

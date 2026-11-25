@@ -4,27 +4,27 @@
 #   irm https://github.com/ykzird/j6code/install.ps1 | iex
 #
 # Environment:
-#   T3CODE_CHANNEL           release train to follow: stable, nightly, or preview
+#   J6CODE_CHANNEL           release train to follow: stable, nightly, or preview
 #                            (default: stable; preview is a maintainers' test train)
-#   T3CODE_VERSION           exact version to install (overrides T3CODE_CHANNEL)
-#   T3CODE_HOME              J6 home directory (default: ~\.t3)
-#   T3CODE_INSTALL_BIN_DIR   where t3.exe is linked (default: ~\.local\bin)
-#   T3CODE_RELEASE_BASE_URL  mirror for releases/download (default: GitHub)
+#   J6CODE_VERSION           exact version to install (overrides J6CODE_CHANNEL)
+#   J6CODE_HOME              J6 home directory (default: ~\.j6)
+#   J6CODE_INSTALL_BIN_DIR   where j6.exe is linked (default: ~\.local\bin)
+#   J6CODE_RELEASE_BASE_URL  mirror for releases/download (default: GitHub)
 #
-# The archive is unpacked into $T3CODE_HOME\runtime\versions\<version>, the
-# same layout `t3 service install` uses, so the service reuses this download.
+# The archive is unpacked into $J6CODE_HOME\runtime\versions\<version>, the
+# same layout `j6 service install` uses, so the service reuses this download.
 $ErrorActionPreference = "Stop"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 $repo = "ykzird/j6code"
-$baseUrl = if ($env:T3CODE_RELEASE_BASE_URL) { $env:T3CODE_RELEASE_BASE_URL.TrimEnd("/") } else { "https://github.com/$repo/releases/download" }
-$t3Home = if ($env:T3CODE_HOME) { $env:T3CODE_HOME } else { Join-Path $HOME ".t3" }
-$binDir = if ($env:T3CODE_INSTALL_BIN_DIR) { $env:T3CODE_INSTALL_BIN_DIR } else { Join-Path $HOME ".local\bin" }
+$baseUrl = if ($env:J6CODE_RELEASE_BASE_URL) { $env:J6CODE_RELEASE_BASE_URL.TrimEnd("/") } else { "https://github.com/$repo/releases/download" }
+$t3Home = if ($env:J6CODE_HOME) { $env:J6CODE_HOME } else { Join-Path $HOME ".j6" }
+$binDir = if ($env:J6CODE_INSTALL_BIN_DIR) { $env:J6CODE_INSTALL_BIN_DIR } else { Join-Path $HOME ".local\bin" }
 # Absolute, so PATH never gets a folder that changes with the working directory.
 $binDir = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($binDir)
 
 function Fail([string] $message) {
-  Write-Error "t3 install: $message"
+  Write-Error "j6 install: $message"
   exit 1
 }
 
@@ -144,39 +144,39 @@ $arch = switch ($rawArch) {
   default { Fail "unsupported architecture $rawArch" }
 }
 
-$channel = if ($env:T3CODE_CHANNEL) { $env:T3CODE_CHANNEL } else { "stable" }
-$version = $env:T3CODE_VERSION
+$channel = if ($env:J6CODE_CHANNEL) { $env:J6CODE_CHANNEL } else { "stable" }
+$version = $env:J6CODE_VERSION
 if (-not $version) {
   $tagPattern = switch ($channel) {
     "stable" { '^v\d+\.\d+\.\d+$' }
     "nightly" { '^v\d+\.\d+\.\d+-nightly\.\d+\.\d+$' }
     "preview" { '^v\d+\.\d+\.\d+-preview\.\d+\.\d+$' }
-    default { Fail "T3CODE_CHANNEL must be stable, nightly, or preview" }
+    default { Fail "J6CODE_CHANNEL must be stable, nightly, or preview" }
   }
   if ($channel -eq "stable") {
     # release.yml marks only plain stable releases latest. This is a github.com
     # page, so it is not cut off by a page of newer nightlies or the API quota.
-    $release = Invoke-Retrying { Invoke-RestMethod -Uri "https://github.com/$repo/releases/latest" -Headers @{ "User-Agent" = "t3-install"; "Accept" = "application/json" } }
+    $release = Invoke-Retrying { Invoke-RestMethod -Uri "https://github.com/$repo/releases/latest" -Headers @{ "User-Agent" = "j6-install"; "Accept" = "application/json" } }
     $tag = ($release | Where-Object { $_.tag_name -match $tagPattern }).tag_name
   } else {
     $tag = $null
     for ($page = 1; -not $tag -and $page -le 10; $page++) {
-      $releases = Invoke-Retrying { Invoke-RestMethod -Uri "https://api.github.com/repos/$repo/releases?per_page=100&page=$page" -Headers @{ "User-Agent" = "t3-install" } }
+      $releases = Invoke-Retrying { Invoke-RestMethod -Uri "https://api.github.com/repos/$repo/releases?per_page=100&page=$page" -Headers @{ "User-Agent" = "j6-install" } }
       $tag = ($releases | Where-Object { -not $_.draft -and $_.tag_name -match $tagPattern } | Select-Object -First 1).tag_name
       if (-not $releases) { break }
     }
   }
-  if (-not $tag) { Fail "could not find a $channel release; set T3CODE_VERSION" }
+  if (-not $tag) { Fail "could not find a $channel release; set J6CODE_VERSION" }
   $version = $tag.Substring(1)
 }
 if ($version -match '-preview\.') {
-  Write-Warning "t3 $version is a preview build. Preview builds are cut by maintainers from unreleased branches to exercise the release pipeline. They can be broken, receive no fixes, and are never offered as updates. Set T3CODE_CHANNEL=stable (the default) for a supported build."
-  if ($channel -ne "preview" -and -not $env:T3CODE_VERSION) {
+  Write-Warning "j6 $version is a preview build. Preview builds are cut by maintainers from unreleased branches to exercise the release pipeline. They can be broken, receive no fixes, and are never offered as updates. Set J6CODE_CHANNEL=stable (the default) for a supported build."
+  if ($channel -ne "preview" -and -not $env:J6CODE_VERSION) {
     Fail "refusing a preview build that was not explicitly requested"
   }
 }
 
-$stem = "t3-$version-win32-$arch"
+$stem = "j6-$version-win32-$arch"
 $archive = "$stem.zip"
 $versionsDir = Join-Path $t3Home "runtime\versions"
 $targetDir = Join-Path $versionsDir $version
@@ -197,7 +197,7 @@ if ((Test-Path $marker) -and ((Get-Content $marker -Raw).Trim() -eq $version)) {
     } catch {
       $status = $_.Exception.Response.StatusCode.value__
       if ($status -eq 404) {
-        Fail "t3 $version has no release archive for win32-$arch; releases before the self-contained CLI can only be installed with 'npm install -g t3@$version'"
+        Fail "j6 $version has no release archive for win32-$arch; releases before the self-contained CLI can only be installed with 'npm install -g j6@$version'"
       }
       throw
     }
@@ -221,7 +221,7 @@ if ((Test-Path $marker) -and ((Get-Content $marker -Raw).Trim() -eq $version)) {
     Get-ChildItem (Join-Path $staging $stem) | Move-Item -Destination $staging
     Remove-Item (Join-Path $staging $stem), (Join-Path $staging $archive), (Join-Path $staging "SHA256SUMS") -Recurse -Force
 
-    & (Join-Path $staging "t3.exe") --version | Out-Null
+    & (Join-Path $staging "j6.exe") --version | Out-Null
     if ($LASTEXITCODE -ne 0) { Fail "the downloaded executable does not run" }
     Set-Content -Path (Join-Path $staging ".install-complete") -Value $version -NoNewline
 
@@ -233,29 +233,29 @@ if ((Test-Path $marker) -and ((Get-Content $marker -Raw).Trim() -eq $version)) {
   }
 }
 
-Step "Setting up the t3 command..."
+Step "Setting up the j6 command..."
 New-Item -ItemType Directory -Force -Path $binDir | Out-Null
-$shim = Join-Path $binDir "t3.cmd"
-# Replace only a shim that runs a version in this home; never the desktop app's or another t3.
+$shim = Join-Path $binDir "j6.cmd"
+# Replace only a shim that runs a version in this home; never the desktop app's or another j6.
 if (Test-Path -LiteralPath $shim) {
   $existingTarget = ""
   # The shim is UTF-8 without a BOM; Windows PowerShell 5.1 reads files as ANSI by default.
-  # Only a shim exactly as written here counts; a user's wrapper that also runs t3.exe does not.
+  # Only a shim exactly as written here counts; a user's wrapper that also runs j6.exe does not.
   $existing = [System.IO.File]::ReadAllText($shim, [System.Text.Encoding]::UTF8)
   if ($existing -match '^@echo off\r?\n"([^"]+)" %\*\s*$') { $existingTarget = $Matches[1] }
   # Full paths, so a target like versions\..\other cannot pass as ours.
   $ownedPrefix = [System.IO.Path]::GetFullPath($versionsDir).TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
   if ($existingTarget) { $existingTarget = [System.IO.Path]::GetFullPath($existingTarget) }
-  # Exactly <version>\t3.exe, never another program inside a version.
+  # Exactly <version>\j6.exe, never another program inside a version.
   $owned = $existingTarget.StartsWith($ownedPrefix, [System.StringComparison]::OrdinalIgnoreCase) -and
-    ($existingTarget.Substring($ownedPrefix.Length) -match '^[^\\/]+\\t3\.exe$')
+    ($existingTarget.Substring($ownedPrefix.Length) -match '^[^\\/]+\\j6\.exe$')
   if (-not $owned) {
-    Fail "another t3 is already at $shim. Remove it and run this again, or run $(Join-Path $targetDir 't3.exe') directly."
+    Fail "another j6 is already at $shim. Remove it and run this again, or run $(Join-Path $targetDir 'j6.exe') directly."
   }
 }
 # UTF-8 without a BOM: cmd.exe reads the shim as-is, and ASCII would corrupt
 # non-ASCII characters in the user's home path.
-[System.IO.File]::WriteAllText($shim, "@echo off`r`n`"$(Join-Path $targetDir 't3.exe')`" %*", (New-Object System.Text.UTF8Encoding $false))
+[System.IO.File]::WriteAllText($shim, "@echo off`r`n`"$(Join-Path $targetDir 'j6.exe')`" %*", (New-Object System.Text.UTF8Encoding $false))
 # Pruning keeps what this shim points at; a background service cannot see $binDir otherwise.
 $launchers = Join-Path $t3Home "runtime\launchers"
 $shimPath = (Resolve-Path -LiteralPath $shim).Path
@@ -270,16 +270,16 @@ if ($binDir.Contains(";")) {
 } else {
   # Either side may end in a separator. Trim only here: a drive root keeps its `\` for Join-Path.
   $added = ($env:PATH -split ";" | ForEach-Object { $_.TrimEnd('\', '/') }) -notcontains $binDir.TrimEnd('\', '/')
-  # `irm | iex` runs in the user's own session, so t3 works in this window right away.
-  # Last, so it never shadows another t3.
+  # `irm | iex` runs in the user's own session, so j6 works in this window right away.
+  # Last, so it never shadows another j6.
   if ($added) { $env:Path = "$env:Path;$binDir" }
-  # A t3 earlier on PATH runs instead, so name this one in full.
-  $first = Get-Command t3 -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+  # A j6 earlier on PATH runs instead, so name this one in full.
+  $first = Get-Command j6 -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
   if ($first -and [System.IO.Path]::GetFullPath($first.Source) -ne [System.IO.Path]::GetFullPath($shimPath)) {
-    Write-Host "  Another t3 at $($first.Source) runs first, so run ${bold}& '$($shim.Replace("'", "''"))'$reset to use this one.`n"
+    Write-Host "  Another j6 at $($first.Source) runs first, so run ${bold}& '$($shim.Replace("'", "''"))'$reset to use this one.`n"
   } elseif ($added) {
-    Write-Host "  Run ${bold}t3$reset to get started. For new windows, add $binDir to your PATH.`n"
+    Write-Host "  Run ${bold}j6$reset to get started. For new windows, add $binDir to your PATH.`n"
   } else {
-    Write-Host "  Run ${bold}t3$reset to use J6 Code here, or ${bold}t3 up$reset to use it from your other devices.`n"
+    Write-Host "  Run ${bold}j6$reset to use J6 Code here, or ${bold}j6 up$reset to use it from your other devices.`n"
   }
 }

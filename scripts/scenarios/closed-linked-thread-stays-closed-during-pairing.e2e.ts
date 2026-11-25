@@ -5,16 +5,16 @@ import * as Schema from "effect/Schema";
 
 import { T3_HOME } from "../e2e.config.ts";
 import { SECOND_HOME, startSecondServer } from "./second-server.ts";
-import { environmentId, makeState, rpcClient, runPromise, test, WEB } from "./t3.ts";
+import { environmentId, makeState, rpcClient, runPromise, test, WEB } from "./j6.ts";
 
 const decodeCredential = Schema.decodeUnknownSync(Schema.Struct({ credential: Schema.String }));
 
 test(
   "A closed linked-thread tab does not take over the conversation when pairing finishes",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    const project = await t3.project("primary");
-    const parent = await t3.thread({
+  async ({ j6, app, browser, screen }) => {
+    const project = await j6.project("primary");
+    const parent = await j6.thread({
       project,
       title: "Current work",
       messages: ["Keep this conversation open"],
@@ -69,7 +69,7 @@ test(
           if (location.pathname !== `/${via}/${parentId}`) return;
           const id = `linked-thread:${encodeURIComponent(via)}:${encodeURIComponent(linked)}:${encodeURIComponent(childId)}`;
           localStorage.setItem(
-            "t3code:right-panel-state:v2",
+            "j6code:right-panel-state:v2",
             JSON.stringify({
               version: 16,
               state: {
@@ -114,7 +114,7 @@ test(
         await route.continue();
       });
       try {
-        await t3.open(parent);
+        await j6.open(parent);
         await screen.getByText(linkedPrompt, { exact: true }).waitFor();
         const originalUrl = await browser.url();
         await screen.getByRole("button", "Connect to interact", { exact: true }).tap();

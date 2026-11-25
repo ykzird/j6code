@@ -1,6 +1,6 @@
 import { msg, useGT, useMessages } from "gt-react";
 import { useRef } from "react";
-import { BranchNamingMode, DEFAULT_SERVER_SETTINGS } from "@t3tools/contracts";
+import { BranchNamingMode, DEFAULT_SERVER_SETTINGS } from "@j6/contracts";
 
 import { Input } from "../ui/input";
 import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "../ui/select";
@@ -92,7 +92,7 @@ export function BranchNamingSettings() {
           settingKeys={["branchNamePrefix"]}
           title={gt("Branch prefix")}
           description={gt(
-            "For example, t3 or t3/ produces t3/add-search. Leave empty for no prefix.",
+            "For example, j6 or j6/ produces j6/add-search. Leave empty for no prefix.",
           )}
           resetAction={
             prefixMixed ||

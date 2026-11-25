@@ -1,6 +1,6 @@
 // @effect-diagnostics nodeBuiltinImport:off globalFetchInEffect:off - verifies generated remote scripts using real shell and Node processes.
 import * as Effect from "effect/Effect";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import { expect, it } from "@effect/vitest";
 import * as NodeChildProcess from "node:child_process";
 import * as NodeFSP from "node:fs/promises";
@@ -26,7 +26,7 @@ const completeSdk = async (sdk: string, adb = "echo Android Debug Bridge") => {
 /** Runs the probe through the SSH shell setup, then `after` in that same shell. */
 const probeAndroid = (setup: (home: string) => Promise<Record<string, string>>, after = "true") =>
   Effect.promise(async () => {
-    const home = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-ssh-sdk-"));
+    const home = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-ssh-sdk-"));
     try {
       const env = await setup(home);
       await executable(NodePath.join(home, "bin/npm"), "echo 10.0.0");
@@ -108,7 +108,7 @@ it.effect("finds Android Studio Java for a non-interactive SSH session", () =>
   Effect.gen(function* () {
     if ((yield* HostProcess.Platform) === "win32") return;
     yield* Effect.promise(async () => {
-      const home = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-ssh-java-"));
+      const home = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-ssh-java-"));
       try {
         const javaHome = NodePath.join(home, ".local/opt/android-studio/jbr");
         await NodeFSP.mkdir(NodePath.join(javaHome, "bin"), { recursive: true });
@@ -158,9 +158,9 @@ it.effect("stops a daemon left for its owner when starting without agent tools",
   Effect.gen(function* () {
     if ((yield* HostProcess.Platform) === "win32") return;
     yield* Effect.promise(async () => {
-      const home = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-ssh-start-"));
+      const home = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-ssh-start-"));
       try {
-        const state = NodePath.join(home, ".t3/device/hosts/owner");
+        const state = NodePath.join(home, ".j6/device/hosts/owner");
         const daemonFile = NodePath.join(state, "daemon.json");
         const calls = NodePath.join(home, "calls");
         const failMarker = NodePath.join(home, "fail-stop");
@@ -205,9 +205,9 @@ it.effect("keeps a daemon record its missing agent CLI cannot stop", () =>
   Effect.gen(function* () {
     if ((yield* HostProcess.Platform) === "win32") return;
     yield* Effect.promise(async () => {
-      const home = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-ssh-start-"));
+      const home = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-ssh-start-"));
       try {
-        const state = NodePath.join(home, ".t3/device/hosts/owner");
+        const state = NodePath.join(home, ".j6/device/hosts/owner");
         const daemonFile = NodePath.join(state, "daemon.json");
         await NodeFSP.mkdir(NodePath.join(home, "bin"));
         await NodeFSP.mkdir(state, { recursive: true });
@@ -245,7 +245,7 @@ it.effect("starts the hub requiring a session token and reports the one it print
   Effect.gen(function* () {
     if ((yield* HostProcess.Platform) === "win32") return;
     yield* Effect.promise(async () => {
-      const home = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "t3-ssh-hub-"));
+      const home = await NodeFSP.mkdtemp(NodePath.join(NodeOS.tmpdir(), "j6-ssh-hub-"));
       const run = (mode: "start" | "stop") =>
         NodeChildProcess.spawnSync(process.execPath, [], {
           input: remoteDeviceScript("owner", mode),
@@ -257,10 +257,10 @@ it.effect("starts the hub requiring a session token and reports the one it print
           encoding: "utf8",
         });
       try {
-        const state = NodePath.join(home, ".t3/device/hosts/owner");
+        const state = NodePath.join(home, ".j6/device/hosts/owner");
         const install = NodePath.join(
           home,
-          ".t3/device/tools",
+          ".j6/device/tools",
           `expo-device-hub@${DEVICE_HUB_VERSION}`,
         );
         const entry = NodePath.join(install, "node_modules/expo-device-hub/dist/server/cli.mjs");

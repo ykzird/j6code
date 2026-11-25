@@ -1,4 +1,4 @@
-import type { WorktreeLayoutCommandKind } from "@t3tools/contracts";
+import type { WorktreeLayoutCommandKind } from "@j6/contracts";
 import { msg, T, useMessages, Var } from "gt-react";
 import { useSyncExternalStore } from "react";
 
@@ -47,7 +47,7 @@ export function WorktreeLayoutApprovalDialogHost() {
           <AlertDialogDescription>
             <T>
               <Var>{request?.projectTitle ?? ""}</Var> sets up worktree threads with its own
-              commands from <code>t3.json</code>. They run on this environment's machine with your
+              commands from <code>j6.json</code>. They run on this environment's machine with your
               permissions, outside any agent sandbox. You are asked again whenever their text
               changes.
             </T>

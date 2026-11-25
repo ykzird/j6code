@@ -1,4 +1,4 @@
-import * as NodeSqliteClient from "@t3tools/shared/nodeSqliteClient";
+import * as NodeSqliteClient from "@j6/shared/nodeSqliteClient";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -124,7 +124,7 @@ export const feedbackCommand = Command.make("feedback", {
     Flag.withDescription("What went wrong."),
   ),
   subject: Flag.String("subject").pipe(
-    Flag.withDescription("The T3 tool name, t3 command such as `t3 thread send`, or `general`."),
+    Flag.withDescription("The T3 tool name, j6 command such as `j6 thread send`, or `general`."),
   ),
   expected: Flag.String("expected").pipe(Flag.withDescription("What you expected.")),
   actual: Flag.String("actual").pipe(Flag.withDescription("What happened instead.")),
@@ -134,7 +134,7 @@ export const feedbackCommand = Command.make("feedback", {
   ),
 }).pipe(
   Command.withDescription(
-    "Send feedback about T3 Code to the T3 team. Needs Agent feedback set to Automatic in Settings > Labs; to approve a report first, ask your agent in a thread.",
+    "Send feedback about J6 Code to the T3 team. Needs Agent feedback set to Automatic in Settings > Labs; to approve a report first, ask your agent in a thread.",
   ),
   Command.withHandler(({ baseDir, kind, subject, expected, actual, workaround }) =>
     withThreadTools(

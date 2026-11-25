@@ -2,7 +2,7 @@ import {
   AuthOrchestrationReadScope,
   EnvironmentHttpApi,
   requiredScopesForProjectMutation,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as HttpApiBuilder from "effect/http-api/HttpApiBuilder";
 

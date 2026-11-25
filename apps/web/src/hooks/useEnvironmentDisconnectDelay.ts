@@ -1,5 +1,5 @@
-import { deadlineAfter } from "@t3tools/client-runtime/clock";
-import type { EnvironmentId } from "@t3tools/contracts";
+import { deadlineAfter } from "@j6/client-runtime/clock";
+import type { EnvironmentId } from "@j6/contracts";
 import { useState } from "react";
 
 import { useDeadlinePassed } from "./useDeadline";

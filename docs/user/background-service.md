@@ -39,38 +39,38 @@ installing one.
 
 `j6 uninstall` removes the background service, the `j6` launcher, and the
 downloaded versions after showing you the list and asking once. Your projects,
-threads, and settings under `~/.t3/userdata` are kept, along with `service.env`
+threads, and settings under `~/.j6/userdata` are kept, along with `service.env`
 under J6 home. Pass `--yes` from a script.
 
 ## Local network access
 
 A new service answers only on this machine. Other devices reach it through
 J6 Connect, or directly once you choose the local network in `j6 up` (or run
-`j6 up --lan`, which sets `T3CODE_LAN=true` in `service.env`). It then listens on
+`j6 up --lan`, which sets `J6CODE_LAN=true` in `service.env`). It then listens on
 your local network and Tailscale addresses, so the desktop and mobile apps on
 the same network connect directly instead of through J6 Connect. It still does
 not answer on public addresses. Anyone on the same network can reach the port,
 so a pairing code is all that keeps them out. The hosted web app at github.com/ykzird/j6code
 stays on J6 Connect, because browsers block plain HTTP from an HTTPS page.
 
-A service installed before `T3CODE_LAN` existed keeps listening on the local
+A service installed before `J6CODE_LAN` existed keeps listening on the local
 network. `j6 status` says so, and `j6 up --no-lan` turns it off. Any
-`T3CODE_HOST` value replaces this setting.
+`J6CODE_HOST` value replaces this setting.
 
 ## Configure the service environment
 
 Put custom environment variables in `service.env` under the service's J6 home
-directory, normally `~/.t3/service.env`. This file survives service installation
+directory, normally `~/.j6/service.env`. This file survives service installation
 and updates. For example:
 
 ```dotenv
-T3CODE_PORT=3773
-T3CODE_HOST=127.0.0.1
+J6CODE_PORT=3773
+J6CODE_HOST=127.0.0.1
 ```
 
 Use `KEY=VALUE` entries, quoting values that contain spaces or `#`. Values are
 literal: shell commands and variable expansion are not evaluated. Entries
-override the inherited service environment, except for `PATH`, `T3CODE_HOME`,
+override the inherited service environment, except for `PATH`, `J6CODE_HOME`,
 `J6_BOOT_SERVICE_UNIT`, and `J6_SERVICE_LAUNCHER_CONTEXT` (including case variants).
 
 Run `j6 service restart` after changing the file. Changes apply when the service
@@ -79,7 +79,7 @@ For a service installed before env-file support, run `j6 service install` once
 with an up-to-date CLI.
 A missing file is ignored; other read failures stop service startup.
 If the file contains credentials, restrict access to that file with `chmod 600`
-(for the default J6 home, `chmod 600 ~/.t3/service.env`).
+(for the default J6 home, `chmod 600 ~/.j6/service.env`).
 
 ## Platform support
 
@@ -155,10 +155,10 @@ On macOS, check **System Settings → General → Login Items** if the service n
 longer starts at login. If agent work cannot access Desktop, Documents, or
 Downloads, it may need Full Disk Access for the `j6` executable listed in
 `ProgramArguments` in
-`~/Library/LaunchAgents/com.t3tools.t3code.service.plist`.
+`~/Library/LaunchAgents/com.ykzird.j6code.service.plist`.
 
 For failures after signing in to J6 Connect, see
-[connection troubleshooting](./t3-connect-troubleshooting.md).
+[connection troubleshooting](./j6-connect-troubleshooting.md).
 
 ## Reclaim database space
 

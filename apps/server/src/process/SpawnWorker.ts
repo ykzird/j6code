@@ -6,9 +6,9 @@ import * as NodeWorkerThreads from "node:worker_threads";
 import * as NodeChildProcessSpawner from "@effect/platform-node-shared/NodeChildProcessSpawner";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
-import { supportsEnvChdir } from "@t3tools/shared/envTrampoline";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { windowsSystem32Path } from "@t3tools/shared/windowsSystem";
+import { supportsEnvChdir } from "@j6/shared/envTrampoline";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { windowsSystem32Path } from "@j6/shared/windowsSystem";
 
 // Windows runs CreateProcess synchronously on the calling thread, and antivirus or a busy disk can
 // hold it for seconds; Linux's spawn waits for chdir and the PATH search, which a hung mount

@@ -1,5 +1,5 @@
 import { useAtomMount, useAtomValue } from "@effect/atom-react";
-import { asLaunchingThread } from "@t3tools/client-runtime/state/thread-inbox";
+import { asLaunchingThread } from "@j6/client-runtime/state/thread-inbox";
 import { ThreadHoverCard, ThreadHoverCardPopup } from "../ThreadHoverCard";
 import { ThreadTerminalStatusButton } from "../ThreadStatusIndicators";
 import { discardComposerDraft } from "../../lib/discardComposerDraft";
@@ -8,7 +8,7 @@ import { contextMenuSourceOf } from "../../contextMenuSource";
 import { requestCustomSnooze } from "../CustomSnoozeDialog";
 import { useSupportsMultiplePullRequests } from "~/hooks/useSupportsMultiplePullRequests";
 import { useDeadlinePassed } from "~/hooks/useDeadline";
-import { resolveThreadCurrentPullRequestLink } from "@t3tools/client-runtime/thread-pull-requests";
+import { resolveThreadCurrentPullRequestLink } from "@j6/client-runtime/thread-pull-requests";
 import { useDraggable } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -16,28 +16,28 @@ import {
   canSnooze,
   hasQueuedTurnStart,
   QUEUED_TURN_START_GRACE_MS,
-} from "@t3tools/client-runtime/state/thread-settled";
-import { formatDiffCount } from "@t3tools/client-runtime/diff-count";
+} from "@j6/client-runtime/state/thread-settled";
+import { formatDiffCount } from "@j6/client-runtime/diff-count";
 import {
   resolveSettledThreadTimestamp,
   resolveThreadActivityTimestamp,
-} from "@t3tools/client-runtime/state/thread-sort";
-import { type EnvironmentThreadSearchMatch } from "@t3tools/client-runtime/state/thread-search";
+} from "@j6/client-runtime/state/thread-sort";
+import { type EnvironmentThreadSearchMatch } from "@j6/client-runtime/state/thread-search";
 import {
   formatWorkingDurationLabel,
   resolveThreadProviderStack,
-} from "@t3tools/client-runtime/state/models";
-import { scopeThreadRef, scopedThreadKey } from "@t3tools/client-runtime/environment";
-import { toServerClock } from "@t3tools/client-runtime/clock";
+} from "@j6/client-runtime/state/models";
+import { scopeThreadRef, scopedThreadKey } from "@j6/client-runtime/environment";
+import { toServerClock } from "@j6/client-runtime/clock";
 import {
   AuthOrchestrationOperateScope,
   type ContextMenuSource,
   type EnvironmentId,
   type EnvironmentMachineKind,
   type ScopedThreadRef,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
-import type { TimestampFormat } from "@t3tools/contracts/settings";
+import type { TimestampFormat } from "@j6/contracts/settings";
 import {
   AlarmClockIcon,
   AlarmClockOffIcon,
@@ -90,7 +90,7 @@ import {
 } from "../../state/session";
 import { formatRelativeTime, parseTimestampDate } from "../../timestampFormat";
 import type { SidebarThreadSummary } from "../../types";
-import type { EnvironmentProject } from "@t3tools/client-runtime/state/shell";
+import type { EnvironmentProject } from "@j6/client-runtime/state/shell";
 import { cn } from "~/lib/utils";
 import { textDirection } from "~/textDirection";
 import { EnvironmentMachineIcon } from "../EnvironmentMachineIcon";

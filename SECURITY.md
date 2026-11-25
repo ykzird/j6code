@@ -7,7 +7,7 @@ The rest of this file is for agents and maintainers auditing J6 Code or triaging
 reports. It defines who is trusted with what, which boundaries a real finding
 crosses, and what is intended. The reasoning behind each boundary lives in
 [environment auth](docs/internals/04_environment-auth.md),
-[J6 Connect](docs/internals/06_t3-connect.md), and
+[J6 Connect](docs/internals/06_j6-connect.md), and
 [remote environments](docs/internals/05_remote.md); read those before reporting
 in their area.
 
@@ -100,7 +100,7 @@ revocation and ceilings hold, not what a full-scope session can do once issued.
   that mode is in scope (see 3).
 - A compromised relay signing key can mint for linked environments. That is
   the stated trust assumption; device approval is the mitigation.
-- `T3CODE_DEV_AUTH_TOKEN` and dev startup URLs are administrative by design and
+- `J6CODE_DEV_AUTH_TOKEN` and dev startup URLs are administrative by design and
   ignored outside development servers.
 - A webhook URL is a credential for one task. Unless the task requires a
   signature, whoever holds the URL can start that task's run, and the request's
@@ -163,7 +163,7 @@ revocation and ceilings hold, not what a full-scope session can do once issued.
 - Check the reported commit against `main`. Reports often trail fixes.
 - Prove a finding with a failing test at the lowest layer that shows it, as
   [Verifying](AGENTS.md#verifying) describes. Do not run a PoC against
-  `~/.t3/userdata` or any live environment; use a dev server on seeded data.
+  `~/.j6/userdata` or any live environment; use a dev server on seeded data.
 - Treat report attachments as untrusted. Extract them into an empty directory
   outside the worktree and read PoCs before running anything.
 - Fix confirmed findings rather than filing them. Keep advisory details out of

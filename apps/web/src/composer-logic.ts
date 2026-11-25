@@ -1,19 +1,19 @@
-import type { ClientSettings } from "@t3tools/contracts/settings";
+import type { ClientSettings } from "@j6/contracts/settings";
 import type {
   AssistantCitation,
   EnvironmentId,
   ResolvedKeybindingsConfig,
-} from "@t3tools/contracts";
-import type { ComposerPathSearchTarget } from "@t3tools/client-runtime/state/threads";
+} from "@j6/contracts";
+import type { ComposerPathSearchTarget } from "@j6/client-runtime/state/threads";
 import {
   serializeAssistantCitation,
   withAssistantCitationComment,
-} from "@t3tools/shared/assistantCitations";
+} from "@j6/shared/assistantCitations";
 import {
   detectComposerPullRequestTrigger,
   isCurrencyAmountQuery,
   isPathWord,
-} from "@t3tools/shared/composerTrigger";
+} from "@j6/shared/composerTrigger";
 import {
   splitPromptIntoComposerSegments,
   type ComposerPromptSegment,
@@ -337,4 +337,4 @@ export function extendReplacementRangeForTrailingSpace(
   return text[rangeEnd] === " " ? rangeEnd + 1 : rangeEnd;
 }
 
-export { replaceTextRange } from "@t3tools/shared/composerTrigger";
+export { replaceTextRange } from "@j6/shared/composerTrigger";

@@ -11,15 +11,15 @@ import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
 import * as ChildProcess from "effect/process/ChildProcess";
 import * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { windowsSystem32Path } from "@t3tools/shared/windowsSystem";
-import { resolveSpawnCommand } from "@t3tools/shared/shell";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { windowsSystem32Path } from "@j6/shared/windowsSystem";
+import { resolveSpawnCommand } from "@j6/shared/shell";
 import {
   MAX_TOOL_OUTPUT_IMAGES,
   MAX_TOOL_OUTPUT_IMAGE_BASE64_LENGTH,
-} from "@t3tools/shared/toolOutput";
+} from "@j6/shared/toolOutput";
 
-import { signalProcessGroup } from "@t3tools/provider-core/server/processGroup";
+import { signalProcessGroup } from "@j6/provider-core/server/processGroup";
 
 export class PiRpcError extends Schema.TaggedError<PiRpcError>()("PiRpcError", {
   operation: Schema.String,
@@ -446,7 +446,7 @@ export const makePiRpcConnection = Effect.fnUntraced(function* (options: PiRpcSp
     record: PiRpcRecord,
     timeoutMs = DEFAULT_REQUEST_TIMEOUT_MS,
   ): Effect.fn.Return<unknown, PiRpcError | PiRpcTimeoutError> {
-    const id = `t3-${nextRequestId++}`;
+    const id = `j6-${nextRequestId++}`;
     const deferred = yield* Deferred.make<unknown, PiRpcError>();
     pendingRequests.set(id, { deferred });
     yield* send({ ...record, id }).pipe(

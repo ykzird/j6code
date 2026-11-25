@@ -1,7 +1,7 @@
 import { assert, describe, it } from "@effect/vitest";
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Fiber from "effect/Fiber";
@@ -165,7 +165,7 @@ describe("BrowserSession", () => {
           storage.root !== "" && partition.startsWith("persist:")
             ? `${storage.root}/Partitions/${partition}`
             : null,
-        getUserAgent: vi.fn(() => "Mozilla/5.0 Electron/41.5.0 t3code/0.0.27"),
+        getUserAgent: vi.fn(() => "Mozilla/5.0 Electron/41.5.0 j6code/0.0.27"),
         setPermissionRequestHandler: vi.fn(),
         setPermissionCheckHandler: vi.fn(),
         setUserAgent: vi.fn(),
@@ -184,7 +184,7 @@ describe("BrowserSession", () => {
       const first = yield* browserSessions.getSession("scope-a");
       const second = yield* browserSessions.getSession("scope-a");
 
-      assert.strictEqual(partition, "persist:t3code-preview-f051bb2c68cb7b2fe969");
+      assert.strictEqual(partition, "persist:j6code-preview-f051bb2c68cb7b2fe969");
       assert.strictEqual(first, second);
       assert.strictEqual(fromPartition.mock.calls.length, 1);
     }).pipe(Effect.provide(layer)),
@@ -203,7 +203,7 @@ describe("BrowserSession", () => {
 
       assert.strictEqual(
         yield* browserSessions.getPartition("scope-a"),
-        "persist:t3code-preview-f051bb2c68cb7b2fe969",
+        "persist:j6code-preview-f051bb2c68cb7b2fe969",
       );
     }).pipe(Effect.provide(layer)),
   );
@@ -215,8 +215,8 @@ describe("BrowserSession", () => {
       const legacyDefault = yield* browserSessions.getPartition("a::b");
       const nondefaultProfile = yield* browserSessions.getPartition("a::b", true, "profile");
 
-      assert.strictEqual(legacyDefault, "persist:t3code-preview-78f0be89237d77f7a70e");
-      assert.strictEqual(nondefaultProfile, "persist:t3code-preview-profile-78f0be89237d77f7a70e");
+      assert.strictEqual(legacyDefault, "persist:j6code-preview-78f0be89237d77f7a70e");
+      assert.strictEqual(nondefaultProfile, "persist:j6code-preview-profile-78f0be89237d77f7a70e");
       assert.notStrictEqual(nondefaultProfile, legacyDefault);
       assert.isTrue(browserSessions.isPartition(legacyDefault));
       assert.isTrue(browserSessions.isPartition(nondefaultProfile));
@@ -553,7 +553,7 @@ describe("BrowserSession", () => {
       getMediaAccessStatus.mockReset();
       getMediaAccessStatus.mockReturnValue("not-determined");
 
-      // A device macOS has not decided yet: ask the OS, which adds T3 Code to Privacy & Security.
+      // A device macOS has not decided yet: ask the OS, which adds J6 Code to Privacy & Security.
       assert.isTrue(yield* requestMedia("https://first.test/", ["video"]));
       assert.deepStrictEqual(askForMediaAccess.mock.calls, [["camera"]]);
       assert.strictEqual(showMessageBox.mock.calls.length, 1);
@@ -583,7 +583,7 @@ describe("BrowserSession", () => {
       // Only the microphone is blocked, so the message does not send the user looking for Camera.
       assert.strictEqual(
         showMessageBox.mock.calls[2]?.[0].message,
-        "macOS blocked T3 Code from using your microphone",
+        "macOS blocked J6 Code from using your microphone",
       );
       assert.isFalse(yield* requestMedia("https://second.test/", ["video", "audio"]));
       assert.strictEqual(showMessageBox.mock.calls.length, 3);
@@ -627,7 +627,7 @@ describe("BrowserSession", () => {
       assert.strictEqual(askForMediaAccess.mock.calls.length, 0);
       assert.strictEqual(
         yield* Deferred.await(recoveryShown),
-        "macOS blocked T3 Code from using your camera and microphone",
+        "macOS blocked J6 Code from using your camera and microphone",
       );
     }).pipe(Effect.provide(layerDarwin)),
   );
@@ -951,7 +951,7 @@ describe("BrowserSession", () => {
       assert.strictEqual(showMessageBox.mock.calls.length, 1);
       assert.isFalse(
         yield* (yield* FileSystem.FileSystem).exists(
-          `${browserSession!.storagePath}/t3code-certificate-approvals.json`,
+          `${browserSession!.storagePath}/j6code-certificate-approvals.json`,
         ),
       );
     }).pipe(Effect.scoped, Effect.provide(Layer.merge(layer, NodeServices.layer))),
@@ -1023,7 +1023,7 @@ describe("BrowserSession", () => {
       yield* browserSessions.getSession("scope-a");
       const browserSession = sessions.get(partition);
       // What a clear whose removal failed leaves behind: memory forgot, the file did not.
-      const file = `${browserSession!.storagePath}/t3code-certificate-approvals.json`;
+      const file = `${browserSession!.storagePath}/j6code-certificate-approvals.json`;
       yield* fileSystem.makeDirectory(browserSession!.storagePath!, { recursive: true });
       yield* fileSystem.writeFileString(
         file,

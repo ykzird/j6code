@@ -2,11 +2,11 @@ import { useAtomValue } from "@effect/atom-react";
 import type { FileContents } from "@pierre/diffs";
 import { Editor, type EditorFactory, type EditorOptions, type Marker } from "@pierre/diffs/edit";
 import { EditProvider, File, Virtualizer } from "@pierre/diffs/react";
-import { type EnvironmentId, type WorkflowDefinitionProblem } from "@t3tools/contracts";
+import { type EnvironmentId, type WorkflowDefinitionProblem } from "@j6/contracts";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
+} from "@j6/client-runtime/state/runtime";
 import { useBlocker } from "@tanstack/react-router";
 import { T, useGT, Var } from "gt-react";
 import { FileCode2Icon, PlusIcon } from "lucide-react";
@@ -216,7 +216,7 @@ function Surface({
     enableBeforeUnload: () => dirty && !released.current,
   });
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- the editor draws markers itself and takes them only through its own method
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- the editor draws markers itself and takes them only through its own method
   useEffect(() => {
     editorRef.current?.setMarkers(markersOf(problems));
   }, [problems]);

@@ -21,7 +21,7 @@ export class DesktopWebLinks extends Context.Service<
     readonly receive: (url: string) => Effect.Effect<void>;
     readonly setRendererReady: (ready: boolean) => Effect.Effect<void>;
   }
->()("@t3tools/desktop/app/DesktopWebLinks") {}
+>()("@j6/desktop/app/DesktopWebLinks") {}
 
 const make = Effect.gen(function* () {
   const electronWindow = yield* ElectronWindow.ElectronWindow;

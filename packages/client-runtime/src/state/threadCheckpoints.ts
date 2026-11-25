@@ -6,7 +6,7 @@ import type {
   OrchestrationV2CheckpointFileTotals,
   OrchestrationV2ThreadProjection,
   RunId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 
 import { deriveTurnRepositoryChanges, type TurnRepositoryChanges } from "./threadRepositories.ts";

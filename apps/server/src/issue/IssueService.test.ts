@@ -2,7 +2,7 @@ import { describe, expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
-import * as SourceControlRateLimit from "@t3tools/source-control-core/server/SourceControlRateLimit";
+import * as SourceControlRateLimit from "@j6/source-control-core/server/SourceControlRateLimit";
 import {
   IssueTrackerAccountId,
   IssueTrackerKind,
@@ -10,18 +10,18 @@ import {
   SourceControlProviderKind,
   type OrchestrationProjectShell,
   type ProjectId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   IssueTrackerError,
   type IssueTrackerApi,
   type StandaloneIssueTrackerApi,
   type TrackerIssueDetail,
-} from "@t3tools/source-control-core/server/IssueTracker";
-import { IssueTrackerAccount } from "@t3tools/source-control-core/server/IssueTrackerHost";
+} from "@j6/source-control-core/server/IssueTracker";
+import { IssueTrackerAccount } from "@j6/source-control-core/server/IssueTrackerHost";
 
 import { PersistenceSqlError } from "../persistence/Errors.ts";
 import * as IssueTrackerBindings from "../persistence/IssueTrackerBindings.ts";
-import { normalizeGitRemoteUrl } from "@t3tools/shared/git";
+import { normalizeGitRemoteUrl } from "@j6/shared/git";
 
 import * as ProjectService from "../project/ProjectService.ts";
 import * as RepositoryIdentityResolver from "../project/RepositoryIdentityResolver.ts";

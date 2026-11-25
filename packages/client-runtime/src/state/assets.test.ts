@@ -6,7 +6,7 @@ import {
   EnvironmentId,
   ThreadId,
   WS_METHODS,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

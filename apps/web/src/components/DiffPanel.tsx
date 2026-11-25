@@ -5,14 +5,14 @@ import type { FileDiffContentsLoader, FileDiffMetadata } from "@pierre/diffs";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
-import { safeErrorLogAttributes } from "@t3tools/client-runtime/errors";
+} from "@j6/client-runtime/state/runtime";
+import { safeErrorLogAttributes } from "@j6/client-runtime/errors";
 import {
   CHECKPOINT_DIFF_TRUNCATED_MARKER,
   type ReviewBranchCommitsResult,
   type ScopedThreadRef,
   type RunId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   ArrowRightIcon,
   CheckIcon,
@@ -49,7 +49,7 @@ import {
   useDiffPanelStore,
 } from "../diffPanelStore";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { isTestChangedFile } from "@t3tools/shared/changedFileKind";
+import { isTestChangedFile } from "@j6/shared/changedFileKind";
 import { useHideTestFiles } from "./diffs/useHideTestFiles";
 import { useRenderedAppearance } from "../hooks/useTheme";
 import { useStableCallback } from "../hooks/useStableCallback";
@@ -119,7 +119,7 @@ import { useReviewFilePatches } from "./diffs/useReviewFilePatches";
 import { DiffFileLoadingBoundary } from "./diffs/DiffFileLoadingBoundary";
 import { DiffFileStatus } from "./diffs/DiffFileStatus";
 import { useThreadRouteRef } from "../hooks/useThreadRouteTarget";
-import { projectCommitUrl } from "@t3tools/client-runtime/change-request-links";
+import { projectCommitUrl } from "@j6/client-runtime/change-request-links";
 import {
   isRelativePathInsideFolder,
   repositorySectionForPath,
@@ -127,7 +127,7 @@ import {
   threadGitRepositories,
   turnDiffSections,
   type TurnDiffSection,
-} from "@t3tools/client-runtime/state/thread-repositories";
+} from "@j6/client-runtime/state/thread-repositories";
 import { useOpenLink } from "../browser/useOpenLink";
 
 type DiffThemeType = "light" | "dark";
@@ -136,7 +136,7 @@ const ALL_REPOSITORIES = "__all_repositories__";
 const THREAD_FOLDER = "__thread_folder__";
 const NO_GIT_REPOSITORIES: ReturnType<typeof threadChangedRepositories> = Object.freeze([]);
 const NO_TURN_DIFF_SECTIONS: ReadonlyArray<TurnDiffSection> = [];
-const DIFF_FILE_TREE_STORAGE_KEY = "t3code.diffFileTreeOpen";
+const DIFF_FILE_TREE_STORAGE_KEY = "j6code.diffFileTreeOpen";
 
 const EMPTY_COLLAPSED_DIFF_FILE_KEYS: ReadonlySet<string> = new Set();
 
@@ -381,7 +381,7 @@ export default function DiffPanel({
   );
   const toolCallItem = toolCallDetail.data?.item;
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- rewrites the persisted diff store selection to the latest turn when the selected turn disappears
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- rewrites the persisted diff store selection to the latest turn when the selected turn disappears
   useEffect(() => {
     if (!routeThreadRef || storedDiffSelection.kind !== "turn") return;
     useDiffPanelStore.getState().reconcileTurnSelection(
@@ -721,7 +721,7 @@ export default function DiffPanel({
   const refreshBranchDiffPreview = refreshPreviewQuery;
   const diffRefreshKey = `diff:${activeThreadRefreshKey ?? ""}`;
 
-  // The panel stays mounted while hidden, and edits made outside T3 Code bump no mutation id, so
+  // The panel stays mounted while hidden, and edits made outside J6 Code bump no mutation id, so
   // showing it revalidates the diff; that also stands in for focus events missed while hidden.
   // A git diff is too costly to repeat on a timer nobody asked for. A diff read within the floor,
   // such as a mutation's refetch while hidden, already counts as that revalidation.
@@ -832,7 +832,7 @@ export default function DiffPanel({
   // A file another view asked to reveal (a chat diff link): retried as the diff loads until it
   // holds the file, then not again until a new request, so it does not undo what the user did since.
   const externalRevealRef = useRef<string | null>(null);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- reveals an externally requested file in the diff viewer, retrying as the diff DOM loads
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- reveals an externally requested file in the diff viewer, retrying as the diff DOM loads
   useEffect(() => {
     if (!selectedFilePath) {
       externalRevealRef.current = null;
@@ -1788,7 +1788,7 @@ export default function DiffPanel({
                 {fileTreeOpen ? (
                   <FileExplorerPane
                     resizable
-                    storageKey="t3code:diff-file-tree-width"
+                    storageKey="j6code:diff-file-tree-width"
                     defaultWidthFraction={0.4}
                     resizeLabel={gt("Resize Changes files")}
                   >

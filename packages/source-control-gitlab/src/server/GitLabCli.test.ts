@@ -6,13 +6,13 @@ import * as Layer from "effect/Layer";
 import * as Path from "effect/Path";
 import { ChildProcessSpawner } from "effect/process";
 
-import { VcsProcessExitError } from "@t3tools/contracts";
+import { VcsProcessExitError } from "@j6/contracts";
 
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import type * as SourceControlHost from "@t3tools/source-control-core/server/SourceControlHost";
-import * as TestSourceControlHost from "@t3tools/source-control-testing/TestSourceControlHost";
+import * as HostProcess from "@j6/shared/HostProcess";
+import type * as SourceControlHost from "@j6/source-control-core/server/SourceControlHost";
+import * as TestSourceControlHost from "@j6/source-control-testing/TestSourceControlHost";
 import * as GitLabCli from "./GitLabCli.ts";
-import { userFacingSourceControlDetail } from "@t3tools/source-control-core/server/SourceControlProvider";
+import { userFacingSourceControlDetail } from "@j6/source-control-core/server/SourceControlProvider";
 
 const mockedRun = vi.fn<SourceControlHost.SourceControlHost["Service"]["process"]["run"]>();
 const layer = it.layer(
@@ -54,7 +54,7 @@ layer("GitLabCli.layer", (it) => {
               source_project_id: 101,
               target_project_id: 100,
               source_project: {
-                path_with_namespace: "octocat/t3code",
+                path_with_namespace: "octocat/j6code",
               },
             }),
           ),
@@ -80,7 +80,7 @@ layer("GitLabCli.layer", (it) => {
         closedAt: "2026-08-23T10:00:00Z",
         mergedAt: null,
         isCrossRepository: true,
-        headRepositoryNameWithOwner: "octocat/t3code",
+        headRepositoryNameWithOwner: "octocat/j6code",
         headRepositoryOwnerLogin: "octocat",
       });
       expect(mockedRun).toHaveBeenCalledWith(
@@ -111,8 +111,8 @@ layer("GitLabCli.layer", (it) => {
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const bodyDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-gitlab-mr-body-" });
-      const bodyFile = path.join(bodyDir, "t3code-pr-body.md");
+      const bodyDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-gitlab-mr-body-" });
+      const bodyFile = path.join(bodyDir, "j6code-pr-body.md");
       yield* fileSystem.writeFileString(bodyFile, "## Summary\n\nFixes the thing.\n");
       mockedRun.mockReturnValueOnce(Effect.succeed(processOutput("{}")));
 
@@ -136,7 +136,7 @@ layer("GitLabCli.layer", (it) => {
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const bodyDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-gitlab-mr-body-" });
+      const bodyDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-gitlab-mr-body-" });
       const glab = yield* GitLabCli.GitLabCli;
       const error = yield* glab
         .createMergeRequest({
@@ -266,7 +266,7 @@ layer("GitLabCli.layer", (it) => {
   it.effect("creates same-project MRs without a repository lookup, drafts by title prefix", () =>
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
-      const bodyFile = yield* fileSystem.makeTempFileScoped({ prefix: "t3-gitlab-mr-body-" });
+      const bodyFile = yield* fileSystem.makeTempFileScoped({ prefix: "j6-gitlab-mr-body-" });
       mockedRun.mockReturnValueOnce(Effect.succeed(processOutput("{}")));
       const glab = yield* GitLabCli.GitLabCli;
       yield* glab.createMergeRequest({

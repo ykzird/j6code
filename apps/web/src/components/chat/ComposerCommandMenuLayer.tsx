@@ -36,7 +36,7 @@ export function ComposerCommandMenuLayer(props: {
   const { anchor, canOverflowTop = false } = props;
   const [position, setPosition] = useState<ComposerCommandMenuPosition | null>(null);
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- positions the menu from the composer's DOM rect, tracking window resize, scroll and ancestor resizes
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- positions the menu from the composer's DOM rect, tracking window resize, scroll and ancestor resizes
   useLayoutEffect(() => {
     if (!anchor) return;
 

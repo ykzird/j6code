@@ -12,7 +12,7 @@ import type {
   WorkflowDefinitionChangeResult,
   WorkflowDefinitionFiles,
   WorkflowDefinitionProblem,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as Config from "effect/Config";
 import * as Context from "effect/Context";
@@ -39,7 +39,7 @@ import * as WorkflowForge from "./WorkflowForge.ts";
 import * as Workflows from "./Workflows.ts";
 
 /** A folder of definition files, or one file, in place of the folder in the T3 home. */
-const definitionsOverride = Config.String("T3CODE_WORKFLOWS").pipe(Config.option);
+const definitionsOverride = Config.String("J6CODE_WORKFLOWS").pipe(Config.option);
 
 // An editor saves in several writes, and a save from here is followed by its own file event.
 const RELOAD_SETTLE = "300 millis";
@@ -76,7 +76,7 @@ export class WorkflowDefinitions extends Context.Service<
     /** Take a file away, unless runs still need what it defines. */
     readonly remove: (name: string) => Effect.Effect<WorkflowDefinitionChangeResult>;
   }
->()("t3/workflows/WorkflowRuntime/WorkflowDefinitions") {}
+>()("j6/workflows/WorkflowRuntime/WorkflowDefinitions") {}
 
 const isDefinition = (value: unknown): value is WorkflowDefinition =>
   typeof value === "object" &&
@@ -128,7 +128,7 @@ const within = <A>(work: Promise<A>, ms: number): Promise<A | undefined> => {
 
 const evaluate = async (url: string, evaluation: Evaluation): Promise<ReadonlyArray<unknown>> => {
   const api = await import("./api.ts");
-  const { Duration, Effect: effect, Option: option, Schedule, Schema: schema, ...t3 } = api;
+  const { Duration, Effect: effect, Option: option, Schedule, Schema: schema, ...j6 } = api;
   const workflow = ((...input: Parameters<typeof api.workflow>) => {
     const current = evaluating.getStore();
     if (current === undefined || !current.open) {
@@ -141,7 +141,7 @@ const evaluate = async (url: string, evaluation: Evaluation): Promise<ReadonlyAr
     return definition;
   }) as typeof api.workflow;
   Object.assign(globalThis, {
-    T3: { ...t3, workflow },
+    T3: { ...j6, workflow },
     Effect: effect,
     Schema: schema,
     Option: option,
@@ -943,7 +943,7 @@ export const gate = Effect.fn("WorkflowRuntime.gate")(function* <E, R>(
 
 /**
  * The workflow service for this server, and its definition files: those in the `workflows`
- * folder of the T3 home, or wherever `T3CODE_WORKFLOWS` points instead. A file that does not
+ * folder of the T3 home, or wherever `J6CODE_WORKFLOWS` points instead. A file that does not
  * load is reported and never stops the server. Nothing runs until `workflowsEnabled` is on.
  */
 export const layer = Layer.effectContext(

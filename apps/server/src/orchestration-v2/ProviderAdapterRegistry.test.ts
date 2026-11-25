@@ -7,7 +7,7 @@ import {
   ProviderSessionId,
   ThreadId,
   ProviderSetupError,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -15,13 +15,13 @@ import * as Fiber from "effect/Fiber";
 import * as Layer from "effect/Layer";
 import * as Stream from "effect/Stream";
 
-import * as ProviderAuthFlow from "@t3tools/provider-core/server/providerAuthFlow";
+import * as ProviderAuthFlow from "@j6/provider-core/server/providerAuthFlow";
 import type { ProviderAuthController } from "../provider/ProviderAuthService.ts";
-import type { ProviderInstance } from "@t3tools/provider-core/server/driver";
+import type { ProviderInstance } from "@j6/provider-core/server/driver";
 import * as ModelManifest from "../provider/ModelManifest.ts";
 import * as ProviderInstanceRegistry from "../provider/ProviderInstanceRegistry.ts";
 import * as ProviderAdapterRegistry from "./ProviderAdapterRegistry.ts";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
 
 const driver = ProviderDriverKind.make("codex");
 const personalId = ProviderInstanceId.make("codex_personal");
@@ -115,7 +115,7 @@ it.effect("refuses a session only when a fresh probe still rates the version bro
   Effect.gen(function* () {
     const opened = { ...personalAdapter, openSession: () => Effect.succeed({} as never) };
     const refused = yield* openOn(makeInstance(personalId, opened, "0.100.0"));
-    assert.include(JSON.stringify(refused), "0.100.0 does not work with this T3 Code release");
+    assert.include(JSON.stringify(refused), "0.100.0 does not work with this J6 Code release");
     // Updated since the last probe.
     assert.isTrue(
       Exit.isSuccess(yield* openOn(makeInstance(personalId, opened, "0.100.0", "0.200.0"))),

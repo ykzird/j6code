@@ -1,14 +1,14 @@
-import { pullRequestFilterProjects } from "@t3tools/client-runtime/pull-request-project-filter";
-import type { EnvironmentProject } from "@t3tools/client-runtime/state/models";
+import { pullRequestFilterProjects } from "@j6/client-runtime/pull-request-project-filter";
+import type { EnvironmentProject } from "@j6/client-runtime/state/models";
 import {
   ISSUE_LIST_MAX_EXCLUDED_PROJECTS,
   type EnvironmentId,
   type IssueListInput,
   type ProjectId,
-} from "@t3tools/contracts";
-import { splitsSurrogatePair } from "@t3tools/shared/assistantCitations";
+} from "@j6/contracts";
+import { splitsSurrogatePair } from "@j6/shared/assistantCitations";
 
-import type { IssueListTarget } from "@t3tools/client-runtime/state/issues";
+import type { IssueListTarget } from "@j6/client-runtime/state/issues";
 
 import type { IssuesSearch } from "./IssuesPage";
 

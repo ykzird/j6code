@@ -1,5 +1,5 @@
-import { RunId } from "@t3tools/contracts";
-import type { TimestampFormat } from "@t3tools/contracts/settings";
+import { RunId } from "@j6/contracts";
+import type { TimestampFormat } from "@j6/contracts/settings";
 import { describe, expect, it, vi } from "vite-plus/test";
 
 import { usageLimitRecoveryBannerItem } from "./UsageLimitRecoveryBanner";

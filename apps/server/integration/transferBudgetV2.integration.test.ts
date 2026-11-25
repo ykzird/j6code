@@ -32,7 +32,7 @@ import {
   type OrchestrationV2ThreadStreamItem,
   type OrchestrationV2ShellStreamItem,
   type ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";
@@ -643,9 +643,9 @@ it.live("reports V2 thread HTTP and WebSocket transfer budgets", () =>
     const fs = yield* FileSystem.FileSystem;
     const report = formatTransferBudgetReport(runs);
     const outputPaths = yield* Config.all({
-      report: Config.String("T3CODE_TRANSFER_BUDGET_REPORT_PATH").pipe(Config.withDefault("")),
-      result: Config.String("T3CODE_TRANSFER_BUDGET_RESULT_PATH").pipe(Config.withDefault("")),
-      scenarios: Config.String("T3CODE_TRANSFER_BUDGET_SCENARIOS_PATH").pipe(
+      report: Config.String("J6CODE_TRANSFER_BUDGET_REPORT_PATH").pipe(Config.withDefault("")),
+      result: Config.String("J6CODE_TRANSFER_BUDGET_RESULT_PATH").pipe(Config.withDefault("")),
+      scenarios: Config.String("J6CODE_TRANSFER_BUDGET_SCENARIOS_PATH").pipe(
         Config.withDefault(""),
       ),
     });

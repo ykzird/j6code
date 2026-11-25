@@ -4,11 +4,11 @@ import {
   DeviceToolVersions,
   deviceToolInstallMessage,
   type SshDeviceHostConfig,
-} from "@t3tools/contracts";
-import { runSshCommand, baseSshArgs, resolveSshCommand } from "@t3tools/ssh/command";
-import { SshCommandError } from "@t3tools/ssh/errors";
-import * as NetService from "@t3tools/shared/Net";
-import { waitForHttpReady } from "@t3tools/shared/httpReadiness";
+} from "@j6/contracts";
+import { runSshCommand, baseSshArgs, resolveSshCommand } from "@j6/ssh/command";
+import { SshCommandError } from "@j6/ssh/errors";
+import * as NetService from "@j6/shared/Net";
+import { waitForHttpReady } from "@j6/shared/httpReadiness";
 import * as Digest from "effect/crypto/Digest";
 import * as Exit from "effect/Exit";
 import * as Effect from "effect/Effect";
@@ -36,7 +36,7 @@ export class SshWindowsHostError extends Schema.TaggedError<SshWindowsHostError>
   { cause: Schema.Defect() },
 ) {
   override get message(): string {
-    return "Connected over SSH, but this host runs Windows, and SSH device hosts currently need macOS or Linux. To use this machine's devices, run T3 Code on it and connect to that environment.";
+    return "Connected over SSH, but this host runs Windows, and SSH device hosts currently need macOS or Linux. To use this machine's devices, run J6 Code on it and connect to that environment.";
   }
 }
 export const isSshWindowsHostError = Schema.is(SshWindowsHostError);
@@ -50,7 +50,7 @@ export class SshConnectError extends Schema.TaggedError<SshConnectError>()("SshC
   cause: Schema.Defect(),
 }) {
   override get message(): string {
-    const here = "the machine running this T3 Code server";
+    const here = "the machine running this J6 Code server";
     const detail = this.detail.replace(/\.$/u, "");
     switch (this.reason) {
       case "host_key_unknown":
@@ -304,7 +304,7 @@ export const make = Effect.fn("SshDeviceHost.make")(function* (
         preHostArgs: identityArgs(config),
         // Match the hub cwd so relative executables and PATH entries resolve identically.
         remoteCommandArgs: commandArgs(
-          `cd "$HOME/.t3/device/hosts/${owner}" && exec ${[command, ...args].map(quoteRemoteArg).join(" ")}`,
+          `cd "$HOME/.j6/device/hosts/${owner}" && exec ${[command, ...args].map(quoteRemoteArg).join(" ")}`,
         ),
         keepErrorOutputTail: true,
         ...(options?.stdin === undefined ? {} : { stdin: options.stdin }),

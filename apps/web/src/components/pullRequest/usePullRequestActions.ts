@@ -1,9 +1,9 @@
 import { useAtomCommand } from "~/state/use-atom-command";
-import { scopeProjectRef } from "@t3tools/client-runtime/environment";
+import { scopeProjectRef } from "@j6/client-runtime/environment";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
+} from "@j6/client-runtime/state/runtime";
 import type {
   EnvironmentId,
   ProjectId,
@@ -13,20 +13,20 @@ import type {
   PullRequestRef,
   PullRequestSummary,
   ScopedThreadRef,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { msg } from "gt-react";
 import { useRef, useState } from "react";
 import {
   sourceControlClients,
   type ChangeRequestTerminology,
-} from "@t3tools/client-runtime/source-control-clients";
-import { resolveProjectSettings } from "@t3tools/shared/projectSettings";
+} from "@j6/client-runtime/source-control-clients";
+import { resolveProjectSettings } from "@j6/shared/projectSettings";
 import { useClientSettings, useEnvironmentSettings } from "~/hooks/useSettings";
 import {
   deriveLogicalProjectKeyFromSettings,
   derivePhysicalProjectKey,
   selectProjectGroupingSettings,
-} from "@t3tools/client-runtime/state/project-grouping";
+} from "@j6/client-runtime/state/project-grouping";
 import { buildPhysicalToLogicalProjectKeyMap } from "~/sidebarProjectGrouping";
 import { useProjects } from "~/state/entities";
 import { usePrimaryEnvironmentId } from "~/state/environments";

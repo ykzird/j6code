@@ -1,5 +1,5 @@
 import { ChatGptUsageButton } from "../settings/ChatGptUsageButton";
-import { usesChatGptSharing } from "@t3tools/shared/usageLimits";
+import { usesChatGptSharing } from "@j6/shared/usageLimits";
 import { RefreshIcon } from "~/components/ui/refresh-icon";
 import { useAtomValue } from "@effect/atom-react";
 import type { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
@@ -9,19 +9,19 @@ import {
   type EnvironmentId,
   type UsageProviderKind,
   type UsageSummaryInput,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { CircleAlertIcon, ChevronDownIcon, InfoIcon, SlidersHorizontalIcon } from "lucide-react";
 import { T, useGT, useLocale, useMessages, Var } from "gt-react";
 import { useEffect, useEffectEvent, useRef, useState } from "react";
-import { settlePromise } from "@t3tools/client-runtime/state/runtime";
+import { settlePromise } from "@j6/client-runtime/state/runtime";
 import * as AsyncResult from "effect/reactivity/AsyncResult";
 import * as Cause from "effect/Cause";
-import { refreshUsageLimits } from "@t3tools/client-runtime/state/usage";
+import { refreshUsageLimits } from "@j6/client-runtime/state/usage";
 import {
   updatingProvidersLabel,
   usageEnvironmentProgress,
   usageLoadingState,
-} from "@t3tools/client-runtime/state/usage-progress";
+} from "@j6/client-runtime/state/usage-progress";
 
 import {
   isCompatibleUsageContractVersion,
@@ -29,7 +29,7 @@ import {
   type DailyTotals,
   type HourlyTotals,
   type MergedUsage,
-} from "@t3tools/shared/usageMerge";
+} from "@j6/shared/usageMerge";
 
 import { cn } from "../../lib/utils";
 import { usePrimarySettings } from "../../hooks/useSettings";
@@ -53,8 +53,8 @@ import {
   formatTokens,
   formatUsd,
   makeWindow,
-} from "@t3tools/shared/usageFormat";
-import { formatUsageContractMismatch, usageSourceMessages } from "@t3tools/shared/usageFormatCopy";
+} from "@j6/shared/usageFormat";
+import { formatUsageContractMismatch, usageSourceMessages } from "@j6/shared/usageFormatCopy";
 import { Button, InlineButton } from "../ui/button";
 import { ProviderInstanceIcon } from "../chat/ProviderInstanceIcon";
 import {
@@ -155,7 +155,7 @@ function UsageModelDialogHost({
   readonly onSetPrice: (model: string) => void;
 }) {
   const selectedKey = useAtomValue(selectedUsageModelKeyAtom);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- clears the shared selected-model atom on unmount
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- clears the shared selected-model atom on unmount
   useEffect(() => () => selectUsageModel(null), []);
   const model =
     selectedKey === null
@@ -300,7 +300,7 @@ export function UsagePage() {
     if (periodOption && !showingLimits) selectWindow(periodOption.days);
   });
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- window capture keydown listener for usage metric, period, and close shortcuts
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- window capture keydown listener for usage metric, period, and close shortcuts
   useEffect(() => {
     globalThis.window.addEventListener("keydown", onUsageKeyDown, true);
     return () => globalThis.window.removeEventListener("keydown", onUsageKeyDown, true);
@@ -347,7 +347,7 @@ export function UsagePage() {
   const autoRefreshLimits = useEffectEvent(() => {
     void refreshLimits(true);
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- refreshes provider limits from the server when the connected environment set changes
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- refreshes provider limits from the server when the connected environment set changes
   useEffect(() => {
     if (showingLimits && connectedLimitsEnvironments) autoRefreshLimits();
   }, [showingLimits, connectedLimitsEnvironments]);

@@ -1,4 +1,4 @@
-import { UNFINISHED_DRIVE_PATH } from "@t3tools/shared/markdownLinks";
+import { UNFINISHED_DRIVE_PATH } from "@j6/shared/markdownLinks";
 
 const SKIPPED_TAGS = new Set(["BUTTON", "INPUT", "SCRIPT", "STYLE", "TEMPLATE"]);
 const SKIPPED_CLASS_NAMES = ["select-none", "sr-only"];
@@ -197,7 +197,7 @@ function serializeBlockquote(quote: Element, inTableCell: boolean, marker = ""):
 
 function serializeInsight(insight: Element, inTableCell: boolean): string {
   const body = serializeQuoteBody(insight, inTableCell);
-  // oxlint-disable-next-line t3code/no-untranslated-copy -- markdown written to the clipboard
+  // oxlint-disable-next-line j6code/no-untranslated-copy -- markdown written to the clipboard
   return `★ Insight ${"─".repeat(37)}\n${body ? `${body}\n` : ""}${"─".repeat(49)}\n\n`;
 }
 

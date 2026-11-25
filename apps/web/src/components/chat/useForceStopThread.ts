@@ -1,8 +1,8 @@
 import { msg } from "gt-react";
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { m } from "~/i18n/messages";
 import { useAtomValue } from "@effect/atom-react";
-import type { EnvironmentId, RunId, ThreadId } from "@t3tools/contracts";
+import type { EnvironmentId, RunId, ThreadId } from "@j6/contracts";
 import { useState } from "react";
 
 import { useServerConfigs } from "../../state/entities";
@@ -10,7 +10,7 @@ import { orchestrationEnvironment } from "../../state/orchestration";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
+} from "@j6/client-runtime/state/runtime";
 import { useAtomCommand } from "../../state/use-atom-command";
 import { toastManager } from "../ui/toast";
 

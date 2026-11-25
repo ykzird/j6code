@@ -1,6 +1,6 @@
 import { errorDisplayMessage } from "../errors/translatable.ts";
 import * as Schema from "effect/Schema";
-import { replaceTextRange } from "@t3tools/shared/composerTrigger";
+import { replaceTextRange } from "@j6/shared/composerTrigger";
 
 import {
   VoiceTranscriptionError,

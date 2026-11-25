@@ -1,4 +1,4 @@
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -194,7 +194,7 @@ const isWsl = Effect.fn("isWsl")(function* () {
 });
 
 // Names this environment instead of the machine, e.g. for staged demos and scenario captures.
-const labelOverride = Config.String("T3CODE_ENVIRONMENT_LABEL").pipe(
+const labelOverride = Config.String("J6CODE_ENVIRONMENT_LABEL").pipe(
   Config.option,
   Config.map(Option.flatMap((label) => Option.fromNullishOr(normalizeLabel(label)))),
 );

@@ -22,10 +22,10 @@ import {
   type OrchestrationV2ServerCommand,
   type OrchestrationV2ProjectedTurnItem,
   type OrchestrationV2ThreadShell,
-} from "@t3tools/contracts";
-import { pinOrderKeyBetween } from "@t3tools/shared/pinOrderKey";
+} from "@j6/contracts";
+import { pinOrderKeyBetween } from "@j6/shared/pinOrderKey";
 import * as DateTime from "effect/DateTime";
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as TestClock from "effect/testing/TestClock";
@@ -78,7 +78,7 @@ const declaredFailure = (result: McpSchema.CallToolResult) => {
   const text = result.content[0];
   return result.isError === true && text?.type === "text" ? JSON.parse(text.text) : undefined;
 };
-import { htmlRenderFromToolItem } from "@t3tools/shared/toolOutput";
+import { htmlRenderFromToolItem } from "@j6/shared/toolOutput";
 
 const decodeMcpAttachmentInput = Schema.decodeUnknownEffect(McpAttachmentInput);
 const decodeThreadReadResult = Schema.decodeUnknownEffect(OrchestratorMcpThreadReadResult);
@@ -356,12 +356,12 @@ it.effect("returns an HTML render reference that Codex and Claude tool rows both
         Effect.provideService(McpSchema.McpServerClient, client),
       );
     const reference = htmlRenderFromToolItem({
-      toolName: "t3-code.html_render",
+      toolName: "j6-code.html_render",
       output: result.structuredContent,
     });
     expect(reference).toMatchObject({ title: "Revenue", height: 240 });
     expect(
-      htmlRenderFromToolItem({ toolName: "mcp__t3-code__html_render", output: result.content }),
+      htmlRenderFromToolItem({ toolName: "mcp__j6-code__html_render", output: result.content }),
     ).toEqual(reference);
     // Only a full-access thread may have the server read a file for it.
     const byPath = (name: string, caller: McpInvocationContext.McpInvocationScope) =>
@@ -369,7 +369,7 @@ it.effect("returns an HTML render reference that Codex and Claude tool rows both
         .callTool({
           name,
           arguments: {
-            path: "/t3-missing-dir/revenue.html",
+            path: "/j6-missing-dir/revenue.html",
             ...(name === "html_render" ? { title: "Revenue", height: 240 } : {}),
           },
         })
@@ -390,7 +390,7 @@ it.effect("returns an HTML render reference that Codex and Claude tool rows both
         Layer.provideMerge(McpHttpServer.layerInProcessMcpServer),
         Layer.provide(McpProviderSessions.layer),
         Layer.provide(PreviewBrowser.layer),
-        Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "t3-mcp-html-render-" })),
+        Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "j6-mcp-html-render-" })),
         Layer.provide(
           DocumentText.layer.pipe(
             Layer.provideMerge(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
@@ -1418,7 +1418,7 @@ it.effect("only the caller that prepared a pending upload can discard it", () =>
         Layer.provideMerge(McpHttpServer.layerInProcessMcpServer),
         Layer.provide(McpToolAccessTestkit.liveThreadsLayer),
         Layer.provide(AssetSigner.layer.pipe(Layer.provideMerge(ServerSecretStore.layer))),
-        Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "t3-mcp-attachment-" })),
+        Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "j6-mcp-attachment-" })),
         Layer.provide(
           DocumentText.layer.pipe(
             Layer.provideMerge(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
@@ -1512,7 +1512,7 @@ it.effect.each([
           }),
         ),
         Layer.provide(AssetSigner.layer.pipe(Layer.provideMerge(ServerSecretStore.layer))),
-        Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "t3-mcp-attachment-" })),
+        Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "j6-mcp-attachment-" })),
         Layer.provide(
           DocumentText.layer.pipe(
             Layer.provideMerge(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),

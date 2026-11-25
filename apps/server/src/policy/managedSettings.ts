@@ -6,7 +6,7 @@ import {
   type RuntimeMode,
   ServerSettings,
   withIdleCompaction,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Exit from "effect/Exit";
 import * as Schema from "effect/Schema";
 import * as SchemaAST from "effect/SchemaAST";

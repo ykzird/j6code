@@ -2,7 +2,7 @@ import {
   EnvironmentId,
   type OrchestrationV2ArchivedShellSnapshot,
   type ScopedThreadRef,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Arr from "effect/Array";
 import { pipe } from "effect/Function";
 import * as Order from "effect/Order";

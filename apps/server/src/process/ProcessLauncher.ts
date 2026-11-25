@@ -13,7 +13,7 @@ import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
 import * as Path from "effect/Path";
 import * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 
 import * as NonBlockingSpawner from "./NonBlockingSpawner.ts";
 import type { LauncherEvent, LauncherSpawnRequest } from "./processLauncherWorker.ts";
@@ -28,7 +28,7 @@ const SPAWN_REPLY_TIMEOUT = "10 seconds";
  */
 export class ProcessLauncher extends Context.Reference<{
   readonly currentPid: Effect.Effect<number | undefined>;
-}>("t3/process/ProcessLauncher", {
+}>("j6/process/ProcessLauncher", {
   defaultValue: () => ({ currentPid: Effect.undefined }),
 }) {}
 

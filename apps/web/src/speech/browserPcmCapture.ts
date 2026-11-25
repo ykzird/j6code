@@ -5,7 +5,7 @@ import {
   type VoiceStreamingSession,
   type VoiceInputErrorCode,
   type VoiceTranscriptionOptions,
-} from "@t3tools/client-runtime/voice-input";
+} from "@j6/client-runtime/voice-input";
 import * as Schema from "effect/Schema";
 import { requestMicrophone } from "./requestMicrophone";
 import workletUrl from "./pcmWorklet.ts?worker&url";
@@ -101,7 +101,7 @@ export function createBrowserPcmCapture(
         audioContext = context;
         await context.audioWorklet.addModule(workletUrl);
         captureSignal.throwIfAborted();
-        const node = new AudioWorkletNode(context, "t3-pcm-capture", { channelCount: 1 });
+        const node = new AudioWorkletNode(context, "j6-pcm-capture", { channelCount: 1 });
         worklet = node;
         node.port.onmessage = ({
           data,

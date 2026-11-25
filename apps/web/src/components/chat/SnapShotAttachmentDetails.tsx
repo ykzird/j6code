@@ -1,4 +1,4 @@
-import type { SnapShotSource } from "@t3tools/contracts";
+import type { SnapShotSource } from "@j6/contracts";
 import { T, useGT } from "gt-react";
 import { CheckIcon, CopyIcon, ImageIcon, TextIcon } from "lucide-react";
 import { Suspense, useRef, useState } from "react";

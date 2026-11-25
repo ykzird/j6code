@@ -7,8 +7,8 @@ import {
   type ProviderInstanceId,
   ProviderSetupError,
   type ProviderSetupInput,
-} from "@t3tools/contracts";
-import { resolveCommandPath } from "@t3tools/shared/shell";
+} from "@j6/contracts";
+import { resolveCommandPath } from "@j6/shared/shell";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -24,7 +24,7 @@ import * as AntigravityInstallation from "./AntigravityInstallation.ts";
 import { deriveProviderInstanceConfigMap } from "./ProviderInstanceRegistryHydration.ts";
 import * as ProviderInstanceRegistry from "./ProviderInstanceRegistry.ts";
 import * as ProviderRegistry from "./ProviderRegistry.ts";
-import { mergeProviderInstanceEnvironment } from "@t3tools/provider-core/server/instanceEnvironment";
+import { mergeProviderInstanceEnvironment } from "@j6/provider-core/server/instanceEnvironment";
 
 const ANTIGRAVITY = ProviderDriverKind.make("antigravity");
 const hasBinaryPath = Schema.is(Schema.Struct({ binaryPath: Schema.String }));
@@ -47,7 +47,7 @@ export class ProviderInstallation extends Context.Service<
       input: ProviderSetupInput,
     ) => Effect.Effect<ProviderInstallState, ProviderSetupError>;
   }
->()("t3/provider/providerInstallation") {}
+>()("j6/provider/providerInstallation") {}
 
 const make = Effect.fn("makeProviderInstallation")(function* () {
   const antigravityInstallation = yield* AntigravityInstallation.AntigravityInstallation;
@@ -111,7 +111,7 @@ const make = Effect.fn("makeProviderInstallation")(function* () {
       return yield* new ProviderSetupError({
         instanceId,
         operation,
-        detail: "Choose managed setup to install Codex in T3 Code.",
+        detail: "Choose managed setup to install Codex in J6 Code.",
       });
     }
     if (managedOnly && config.binaryPath && (!isCodex || config.binaryPath !== "codex")) {
@@ -119,7 +119,7 @@ const make = Effect.fn("makeProviderInstallation")(function* () {
         instanceId,
         operation,
         detail:
-          "This instance uses a custom executable. Clear its binary path to manage installation in T3 Code.",
+          "This instance uses a custom executable. Clear its binary path to manage installation in J6 Code.",
       });
     }
     return { installation, driver: instance.driverKind };

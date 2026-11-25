@@ -11,7 +11,7 @@ export const VoiceWaveform = memo(function VoiceWaveform(props: { level: number 
   const barsRef = useRef<Array<HTMLSpanElement | null>>([]);
   const levelsRef = useRef(Array<number>(WAVEFORM_BAR_COUNT).fill(0));
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- updates native waveform bar styles when microphone levels arrive
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- updates native waveform bar styles when microphone levels arrive
   useEffect(() => {
     const levels = levelsRef.current;
     levels.copyWithin(0, 1);

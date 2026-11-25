@@ -28,7 +28,7 @@ let macProcessAuditToken: Promise<MacProcessAuditToken> | undefined;
 /** Signals a kernel process identity so a PID reused after verification cannot receive the signal. */
 export const loadMacProcessAuditToken = (): Promise<MacProcessAuditToken> =>
   (macProcessAuditToken ??= import("ffi-rs").then(({ DataType, load, open }) => {
-    const library = "t3-macos-process-identity";
+    const library = "j6-macos-process-identity";
     open({ library, path: "/usr/lib/libSystem.B.dylib" });
     const self = load({
       library,

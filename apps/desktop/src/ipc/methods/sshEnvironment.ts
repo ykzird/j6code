@@ -3,8 +3,8 @@ import {
   fetchRemoteSessionState,
   RemoteEnvironmentAuthUndeclaredStatusError,
   type RemoteEnvironmentAuthError,
-} from "@t3tools/client-runtime/authorization";
-import { fetchRemoteEnvironmentDescriptor } from "@t3tools/client-runtime/environment";
+} from "@j6/client-runtime/authorization";
+import { fetchRemoteEnvironmentDescriptor } from "@j6/client-runtime/environment";
 import {
   EnvironmentAuthInvalidError,
   DesktopDiscoveredSshHostSchema,
@@ -23,9 +23,9 @@ import {
   EnvironmentScopeRequiredError,
   AuthAccessTokenResult,
   AuthSessionState,
-} from "@t3tools/contracts";
-import { SshHttpBridgeError } from "@t3tools/ssh/errors";
-import { resolveLoopbackSshHttpBaseUrl } from "@t3tools/ssh/tunnel";
+} from "@j6/contracts";
+import { SshHttpBridgeError } from "@j6/ssh/errors";
+import { resolveLoopbackSshHttpBaseUrl } from "@j6/ssh/tunnel";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 

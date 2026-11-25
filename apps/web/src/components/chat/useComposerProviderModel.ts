@@ -10,13 +10,13 @@ import {
   ProviderDriverKind,
   type ScopedThreadRef,
   type ServerProvider,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   NO_PROVIDER_MODEL_SELECTION,
   providerInstanceEntriesFor,
   type ProviderInstanceEntry,
 } from "../../providerInstances";
-import { type UnifiedSettings } from "@t3tools/contracts/settings";
+import { type UnifiedSettings } from "@j6/contracts/settings";
 import { getComposerPromptInjectionState, getComposerProviderState } from "./composerProviderState";
 import { resolveComposerProviderSelection } from "../ChatView.logic";
 

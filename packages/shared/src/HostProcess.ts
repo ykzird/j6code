@@ -5,26 +5,26 @@ import * as NodeDns from "node:dns";
 import * as NodeOS from "node:os";
 import * as NodeSea from "node:sea";
 
-export const Platform = Context.Reference<NodeJS.Platform>("@t3tools/shared/HostProcess/Platform", {
+export const Platform = Context.Reference<NodeJS.Platform>("@j6/shared/HostProcess/Platform", {
   defaultValue: () => process.platform,
 });
 
 export const Architecture = Context.Reference<NodeJS.Architecture>(
-  "@t3tools/shared/HostProcess/Architecture",
+  "@j6/shared/HostProcess/Architecture",
   {
     defaultValue: () => process.arch,
   },
 );
 
 export const KernelRelease = Context.Reference<string>(
-  "@t3tools/shared/HostProcess/KernelRelease",
+  "@j6/shared/HostProcess/KernelRelease",
   {
     defaultValue: () => NodeOS.release(),
   },
 );
 
 export const LinuxLibc = Context.Reference<"gnu" | "musl">(
-  "@t3tools/shared/HostProcess/LinuxLibc",
+  "@j6/shared/HostProcess/LinuxLibc",
   {
     defaultValue: () => {
       try {
@@ -39,11 +39,11 @@ export const LinuxLibc = Context.Reference<"gnu" | "musl">(
   },
 );
 
-export const Hostname = Context.Reference<string>("@t3tools/shared/HostProcess/Hostname", {
+export const Hostname = Context.Reference<string>("@j6/shared/HostProcess/Hostname", {
   defaultValue: () => NodeOS.hostname(),
 });
 
-export const Username = Context.Reference<string | null>("@t3tools/shared/HostProcess/Username", {
+export const Username = Context.Reference<string | null>("@j6/shared/HostProcess/Username", {
   defaultValue: () => {
     try {
       return NodeOS.userInfo().username.trim() || null;
@@ -54,46 +54,46 @@ export const Username = Context.Reference<string | null>("@t3tools/shared/HostPr
 });
 
 export const HomeDirectory = Context.Reference<string>(
-  "@t3tools/shared/HostProcess/HomeDirectory",
+  "@j6/shared/HostProcess/HomeDirectory",
   {
     defaultValue: () => NodeOS.homedir(),
   },
 );
 
 export const Environment = Context.Reference<NodeJS.ProcessEnv>(
-  "@t3tools/shared/HostProcess/Environment",
+  "@j6/shared/HostProcess/Environment",
   {
     defaultValue: () => process.env,
   },
 );
 
 export const WorkingDirectory = Context.Reference<string>(
-  "@t3tools/shared/HostProcess/WorkingDirectory",
+  "@j6/shared/HostProcess/WorkingDirectory",
   {
     defaultValue: () => process.cwd(),
   },
 );
 
 export const ExecutablePath = Context.Reference<string>(
-  "@t3tools/shared/HostProcess/ExecutablePath",
+  "@j6/shared/HostProcess/ExecutablePath",
   {
     defaultValue: () => process.execPath,
   },
 );
 
 export const Arguments = Context.Reference<ReadonlyArray<string>>(
-  "@t3tools/shared/HostProcess/Arguments",
+  "@j6/shared/HostProcess/Arguments",
   {
     defaultValue: () => process.argv,
   },
 );
 
 /** Original shell command spelling; argv[0] and execPath instead identify the resolved binary. */
-export const InvokedAs = Context.Reference<string>("@t3tools/shared/HostProcess/InvokedAs", {
+export const InvokedAs = Context.Reference<string>("@j6/shared/HostProcess/InvokedAs", {
   defaultValue: () => process.argv0,
 });
 
-export const IsExecutable = Context.Reference<boolean>("@t3tools/shared/HostProcess/IsExecutable", {
+export const IsExecutable = Context.Reference<boolean>("@j6/shared/HostProcess/IsExecutable", {
   defaultValue: () => NodeSea.isSea(),
 });
 
@@ -108,7 +108,7 @@ export class HostnameLookupError extends Schema.TaggedError<HostnameLookupError>
 
 /** Includes hostname-resolved addresses absent from interfaces, such as Debian's 127.0.1.1 used by Firefox locks. */
 export const Addresses = Context.Reference<Effect.Effect<ReadonlySet<string>>>(
-  "@t3tools/shared/HostProcess/Addresses",
+  "@j6/shared/HostProcess/Addresses",
   {
     // The enclosing operation owns the span for this inline handler.
     defaultValue: Effect.fnUntraced(function* () {
@@ -128,7 +128,7 @@ export const Addresses = Context.Reference<Effect.Effect<ReadonlySet<string>>>(
   },
 );
 
-export const UserId = Context.Reference<number | undefined>("@t3tools/shared/HostProcess/UserId", {
+export const UserId = Context.Reference<number | undefined>("@j6/shared/HostProcess/UserId", {
   defaultValue: () => process.getuid?.(),
 });
 

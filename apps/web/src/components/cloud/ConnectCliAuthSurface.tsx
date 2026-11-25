@@ -1,5 +1,5 @@
 import { useAuth, useClerk } from "@clerk/react";
-import { readConnectAuthorizeRequest } from "@t3tools/shared/connectAuth";
+import { readConnectAuthorizeRequest } from "@j6/shared/connectAuth";
 import { msg, T, useGT, useMessages } from "gt-react";
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 
@@ -17,7 +17,7 @@ const invalidLinkMessage = {
   context: msg("Authorization request"),
   title: msg("This connect link is incomplete"),
   description: msg(
-    "The link is missing its authorization request. Re-run `t3 connect` in your terminal and open the freshly printed URL.",
+    "The link is missing its authorization request. Re-run `j6 connect` in your terminal and open the freshly printed URL.",
   ),
 } as const;
 
@@ -44,7 +44,7 @@ export function ConnectCliAuthorizeSurface() {
   };
   const openSignInOnLoad = useEffectEvent(openSignIn);
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- opens Clerk sign-in or navigates the window to the authorize URL once Clerk has loaded
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- opens Clerk sign-in or navigates the window to the authorize URL once Clerk has loaded
   useEffect(() => {
     if (!request || !isLoaded || redirecting.current) {
       return;
@@ -83,8 +83,8 @@ export function ConnectCliAuthorizeSurface() {
         title={gt("Connecting your terminal")}
         description={
           isSignedIn
-            ? gt("Redirecting to authorize T3 Connect for your CLI…")
-            : gt("Sign in to continue authorizing T3 Connect for your CLI.")
+            ? gt("Redirecting to authorize J6 Connect for your CLI…")
+            : gt("Sign in to continue authorizing J6 Connect for your CLI.")
         }
       />
       {loadFailed ? (

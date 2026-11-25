@@ -5,9 +5,9 @@ import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 
 import { run } from "./shell.ts";
-import { runPromise, test, WEB } from "./t3.ts";
+import { runPromise, test, WEB } from "./j6.ts";
 
-const SOCKET = `t3-scenario-divider-${process.pid}`;
+const SOCKET = `j6-scenario-divider-${process.pid}`;
 
 const tmux = (...args: ReadonlyArray<string>) =>
   runPromise(
@@ -23,9 +23,9 @@ const paneWidths = async () =>
 test(
   "Dragging a tmux pane divider in the web terminal resizes the panes",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    const project = await t3.project("demo");
-    const thread = await t3.thread({ project, title: "Panes", messages: ["hello"] });
+  async ({ j6, app, browser, screen }) => {
+    const project = await j6.project("demo");
+    const thread = await j6.thread({ project, title: "Panes", messages: ["hello"] });
     const read = (file: string) =>
       runPromise(
         Effect.gen(function* () {
@@ -33,7 +33,7 @@ test(
           return yield* fs.readFileString(`${project}/${file}`);
         }).pipe(Effect.orElseSucceed(() => "")),
       );
-    await t3.open(thread);
+    await j6.open(thread);
 
     await screen.getByRole("button", "Toggle terminal drawer").tap();
     const terminal = screen.getByLabel("Terminal input");

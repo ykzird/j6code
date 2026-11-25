@@ -33,7 +33,7 @@ export async function runCliCommand() {
   } else if (command === "__cursor-sdk-worker") {
     const [NodeServices, { runCursorSdkWorker }] = await Promise.all([
       import("@effect/platform-node/NodeServices"),
-      import("@t3tools/provider-cursor/server/worker"),
+      import("@j6/provider-cursor/server/worker"),
     ]);
     await runCursorSdkWorker(NodeServices.layer);
   } else {
@@ -43,7 +43,7 @@ export async function runCliCommand() {
     attachConsoleStdin();
     const importStart = performance.now();
     const { runCli } = await import("./binCli.ts");
-    if (process.env.T3CODE_STARTUP_PROFILE_DIR) {
+    if (process.env.J6CODE_STARTUP_PROFILE_DIR) {
       performance.measure("server.import.binCli", { start: importStart });
     }
     runCli();

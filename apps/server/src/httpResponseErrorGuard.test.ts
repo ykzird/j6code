@@ -245,10 +245,10 @@ describe("rejectRequestsUntilServing", () => {
     expect(startup.headers["cache-control"]).toBe("no-store");
     expect(startup.headers["content-security-policy"]).toContain("default-src 'none'");
     progress = { current: 3, total: 7 };
-    const step = await fetchResponse(port, "/.well-known/t3/environment");
+    const step = await fetchResponse(port, "/.well-known/j6/environment");
     expect(JSON.parse(step.body)).toEqual({ status: "starting", migration: progress });
     progress = null;
-    const finished = await fetchResponse(port, "/.well-known/t3/environment");
+    const finished = await fetchResponse(port, "/.well-known/j6/environment");
     expect(JSON.parse(finished.body)).toEqual({ status: "starting", migration: null });
     const finishingPage = await fetchResponse(port, "/", false, "text/html");
     expect(finishingPage.body).not.toContain("Upgrading database");

@@ -1,10 +1,10 @@
-import { squashAtomCommandFailure } from "@t3tools/client-runtime/state/runtime";
+import { squashAtomCommandFailure } from "@j6/client-runtime/state/runtime";
 import {
   findProjectByPath,
   inferProjectTitleFromPath,
-} from "@t3tools/client-runtime/state/projects";
+} from "@j6/client-runtime/state/projects";
 import { useAtomValue } from "@effect/atom-react";
-import type { DesktopAppActivationRequest } from "@t3tools/contracts";
+import type { DesktopAppActivationRequest } from "@j6/contracts";
 import { msg } from "gt-react";
 
 import { handleDesktopAppActivationRequest } from "../desktopAppActivation";
@@ -22,7 +22,7 @@ import { useNewThreadHandler } from "./useHandleNewThread";
 
 /**
  * Opens a folder on this computer as a project in this computer's environment: an
- * existing project opens (and unarchives), a new one is added. Used by `t3 <dir>`
+ * existing project opens (and unarchives), a new one is added. Used by `j6 <dir>`
  * activations and folders dropped on the sidebar. `ready` is false until that
  * environment's projects have loaded, so a known folder is not added twice.
  */
@@ -74,7 +74,7 @@ export function useOpenLocalWorkspace() {
           const error = squashAtomCommandFailure(result);
           throw error instanceof Error
             ? error
-            : new Error(m(msg("T3 Code could not add the project.")));
+            : new Error(m(msg("J6 Code could not add the project.")));
         }
         return projectId;
       },

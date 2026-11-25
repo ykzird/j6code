@@ -1,7 +1,7 @@
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { describe, expect, it } from "@effect/vitest";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as ConfigProvider from "effect/ConfigProvider";
 import * as Context from "effect/Context";
 import * as Deferred from "effect/Deferred";
@@ -23,8 +23,8 @@ import * as Stream from "effect/Stream";
 import * as TestClock from "effect/testing/TestClock";
 import { ChildProcess, ChildProcessSpawner } from "effect/process";
 import { HttpClient, HttpClientResponse } from "effect/http";
-import type { RelayManagedEndpointRuntimeConfig } from "@t3tools/contracts/relay";
-import * as RelayClient from "@t3tools/shared/relayClient";
+import type { RelayManagedEndpointRuntimeConfig } from "@j6/contracts/relay";
+import * as RelayClient from "@j6/shared/relayClient";
 
 import * as ServerSecretStore from "../auth/ServerSecretStore.ts";
 import * as ServerConfig from "../config.ts";
@@ -76,7 +76,7 @@ const runtimeDependencies = (
     relayClientLayer,
     secretStoreLayer,
     RelayClientLedger.layerTest,
-    ServerConfig.layerTest(process.cwd(), { prefix: "t3-managed-endpoint-" }),
+    ServerConfig.layerTest(process.cwd(), { prefix: "j6-managed-endpoint-" }),
   ).pipe(Layer.provideMerge(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)));
 
 const buildCloudManagedEndpointRuntime = (
@@ -277,7 +277,7 @@ describe("CloudManagedEndpointRuntime", () => {
   it.effect("reads the public hostname and its origin from cloudflared's remote config", () =>
     Effect.gen(function* () {
       let ingress: unknown = [
-        { hostname: "env.example.t3.codes", service: "http://127.0.0.1:3773" },
+        { hostname: "env.example.j6.codes", service: "http://127.0.0.1:3773" },
         { service: "http_status:404" },
       ];
       const httpClient = HttpClient.make((request) =>
@@ -325,7 +325,7 @@ describe("CloudManagedEndpointRuntime", () => {
 
       expect(yield* runtime.inspectConnector).toMatchObject({
         readyConnections: 4,
-        hostname: "env.example.t3.codes",
+        hostname: "env.example.j6.codes",
         origin: "http://127.0.0.1:3773",
       });
       // Before the edge pushes a config, the origin is unknown rather than wrong.
@@ -580,7 +580,7 @@ describe("CloudManagedEndpointRuntime", () => {
       Effect.gen(function* () {
         const context = yield* Layer.build(
           ServerSecretStore.layer.pipe(
-            Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "t3-transport-test-" })),
+            Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "j6-transport-test-" })),
             Layer.provide(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
           ),
         );
@@ -644,7 +644,7 @@ describe("CloudManagedEndpointRuntime", () => {
     Effect.gen(function* () {
       const context = yield* Layer.build(
         ServerSecretStore.layer.pipe(
-          Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "t3-transport-test-" })),
+          Layer.provide(ServerConfig.layerTest(process.cwd(), { prefix: "j6-transport-test-" })),
           Layer.provide(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
         ),
       );
@@ -794,7 +794,7 @@ describe("CloudManagedEndpointRuntime", () => {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
       for (const rotationBlocked of [false, true]) {
-        const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-relay-client-log-" });
+        const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-relay-client-log-" });
         const logPath = path.join(baseDir, "userdata", "logs", "relay-client.ndjson");
         const existingLog = "x".repeat(1024 * 1024);
         if (rotationBlocked) {
@@ -1033,19 +1033,19 @@ describe("CloudManagedEndpointRuntime", () => {
         providerKind: "cloudflare_tunnel",
         connectorToken: "token-1",
         tunnelId: "tunnel-1",
-        tunnelName: "t3-code-env-1",
+        tunnelName: "j6-code-env-1",
       });
       yield* runtime.applyConfig({
         providerKind: "cloudflare_tunnel",
         connectorToken: "token-1",
         tunnelId: "tunnel-1",
-        tunnelName: "t3-code-env-1",
+        tunnelName: "j6-code-env-1",
       });
       yield* runtime.applyConfig({
         providerKind: "cloudflare_tunnel",
         connectorToken: "token-2",
         tunnelId: "tunnel-1",
-        tunnelName: "t3-code-env-1",
+        tunnelName: "j6-code-env-1",
       });
       const stopped = yield* runtime.applyConfig(null);
 

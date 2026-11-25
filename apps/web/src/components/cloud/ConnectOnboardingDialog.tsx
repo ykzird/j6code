@@ -1,13 +1,13 @@
 import { useAuth } from "@clerk/react";
 import { useAtomValue } from "@effect/atom-react";
-import { managedCapabilityDenial } from "@t3tools/client-runtime/contract-labels";
+import { managedCapabilityDenial } from "@j6/client-runtime/contract-labels";
 import {
   AuthAccessWriteScope,
   AuthRelayReadScope,
   AuthRelayWriteScope,
   type AuthSessionState,
   type EnvironmentId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { AsyncResult, Atom } from "effect/reactivity";
 import { msg, T, useGT, useMessages } from "gt-react";
 import { useState } from "react";
@@ -225,9 +225,9 @@ function ConfiguredConnectOnboardingDialog() {
     if (!ok) return;
     toastManager.add({
       type: "success",
-      title: gt("T3 Connect enabled"),
+      title: gt("J6 Connect enabled"),
       description: exposeEnvironment
-        ? gt("This environment is available to your other devices through T3 Connect.")
+        ? gt("This environment is available to your other devices through J6 Connect.")
         : gt("This environment publishes agent activity to your mobile clients."),
     });
     setStep("devices");
@@ -251,7 +251,7 @@ function ConfiguredConnectOnboardingDialog() {
     >
       <WizardPopup>
         <WizardHeader
-          title={gt("Set up T3 Connect")}
+          title={gt("Set up J6 Connect")}
           description={
             <T>
               Mesh your devices together. Publish this environment and connect the rest, all in one
@@ -371,7 +371,7 @@ function PublishStep({
         <OnboardingToggleRow
           title={gt("Publish this environment")}
           description={gt(
-            "Make this environment available to your other devices through T3 Connect.",
+            "Make this environment available to your other devices through J6 Connect.",
           )}
           checked={exposeEnvironment}
           disabled={disabled}
@@ -390,7 +390,7 @@ function PublishStep({
           <OnboardingToggleRow
             title={gt("Require approval for new devices")}
             description={gt(
-              "Devices that sign in to your T3 Connect account wait until someone already connected here approves them.",
+              "Devices that sign in to your J6 Connect account wait until someone already connected here approves them.",
             )}
             checked={requireDeviceApproval}
             disabled={disabled || requireDeviceApprovalLocked}
@@ -415,8 +415,8 @@ function OnboardingTunnelLimitAlert({
   return (
     <TunnelLimitAlert
       upgrade={upgrade}
-      onLinkT3Chat={onOpenAccountPage ? () => onOpenAccountPage("t3-chat") : null}
-      onManageTunnels={onOpenAccountPage ? () => onOpenAccountPage("t3-connect") : null}
+      onLinkT3Chat={onOpenAccountPage ? () => onOpenAccountPage("j6-chat") : null}
+      onManageTunnels={onOpenAccountPage ? () => onOpenAccountPage("j6-connect") : null}
     />
   );
 }

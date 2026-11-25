@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/react";
-import type { EnvironmentId } from "@t3tools/contracts";
+import type { EnvironmentId } from "@j6/contracts";
 import { Link } from "@tanstack/react-router";
 import { T } from "gt-react";
 import { CheckIcon } from "lucide-react";
@@ -46,7 +46,7 @@ export function HostedEmptyState() {
               ) : cloudEnabled ? (
                 <T>Your agents run on your computer.</T>
               ) : (
-                <T>Your agents run on your computer. Start T3 Code there first.</T>
+                <T>Your agents run on your computer. Start J6 Code there first.</T>
               )}
             </EmptyDescription>
           </EmptyHeader>
@@ -97,7 +97,7 @@ function T3ConnectSteps() {
         )}
       </SetupStep>
       <SetupStep number={2}>
-        <RunOnComputer command="t3 connect" />
+        <RunOnComputer command="j6 connect" />
         {isSignedIn ? (
           <div className="mt-4 space-y-1.5">
             <CloudEnvironmentConnectRows
@@ -132,7 +132,7 @@ function PairingSteps() {
   return (
     <>
       <SetupStep number={1}>
-        <RunOnComputer command="t3 pair" />
+        <RunOnComputer command="j6 pair" />
       </SetupStep>
       <SetupStep number={2}>
         <Button render={<Link to="/settings/connections" />} size="sm">

@@ -1,7 +1,7 @@
 import { classifyCodexManagedError } from "../provider/CodexManagedErrors.ts";
-import { modelSelectionsEqual } from "@t3tools/shared/model";
-import { projectComposerContextForProvider } from "@t3tools/shared/composerContextReferences";
-import { expandAssistantCitationsForProvider } from "@t3tools/shared/assistantCitations";
+import { modelSelectionsEqual } from "@j6/shared/model";
+import { projectComposerContextForProvider } from "@j6/shared/composerContextReferences";
+import { expandAssistantCitationsForProvider } from "@j6/shared/assistantCitations";
 import {
   CommandId,
   PROVIDER_SEND_TURN_MAX_INPUT_CHARS,
@@ -21,7 +21,7 @@ import {
   RunAttemptId,
   NodeId,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
 import * as DateTime from "effect/DateTime";
@@ -63,23 +63,23 @@ import {
   contextUsageForHandoff,
   historicalMessage,
   latestNativeContextUsage,
-} from "@t3tools/provider-core/server/handoffBudget";
+} from "@j6/provider-core/server/handoffBudget";
 import {
   deliverContextHandoffs,
   isSlashCommandMessage,
   withInlineContext,
 } from "./ContextHandoffDelivery.ts";
 import { isProviderCommand, outputInstructions } from "./runOutput.ts";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
 import * as ProjectionStore from "./ProjectionStore.ts";
-import { unsentManualContinuationSource } from "@t3tools/shared/orchestrationV2ManualContinuation";
+import { unsentManualContinuationSource } from "@j6/shared/orchestrationV2ManualContinuation";
 import * as ProviderSessionManager from "./ProviderSessionManager.ts";
 import {
   ContextHandoffBackgroundWorkError,
   knownProviderFailureMessage,
   makeProviderFailure,
-} from "@t3tools/provider-core/server/failure";
+} from "@j6/provider-core/server/failure";
 import * as RunExecutionService from "./RunExecutionService.ts";
 import * as RuntimePolicy from "./RuntimePolicy.ts";
 import * as TurnItemPositionStore from "./TurnItemPositionStore.ts";
@@ -250,7 +250,7 @@ export const isProviderTurnStartRunStateMissingError = Schema.is(
 const RESUME_PROMPT = "Continue where you left off.";
 
 const START_GAVE_UP_MESSAGE =
-  "T3 Code could not start this turn. Send the message again; if it keeps failing, check the server logs.";
+  "J6 Code could not start this turn. Send the message again; if it keeps failing, check the server logs.";
 
 const startFailureMessage = (error: Error): string => {
   const nestedCause = "cause" in error ? error.cause : undefined;
@@ -281,7 +281,7 @@ export interface ProviderTurnStartServiceV2Shape {
 export class ProviderTurnStartServiceV2 extends Context.Service<
   ProviderTurnStartServiceV2,
   ProviderTurnStartServiceV2Shape
->()("t3/orchestration-v2/ProviderTurnStartService/ProviderTurnStartServiceV2") {}
+>()("j6/orchestration-v2/ProviderTurnStartService/ProviderTurnStartServiceV2") {}
 
 export const layer: Layer.Layer<
   ProviderTurnStartServiceV2,

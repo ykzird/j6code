@@ -1,4 +1,4 @@
-import { decodeSpeechPcmRequest } from "@t3tools/shared/speech";
+import { decodeSpeechPcmRequest } from "@j6/shared/speech";
 import {
   AuthFilesystemReadScope,
   AuthOrchestrationOperateScope,
@@ -11,7 +11,7 @@ import {
   requiredScopesForServerSettingsPatch,
   SPEECH_MAX_OPTIONS_BYTES,
   TextGenerationError,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as ByteSize from "effect/ByteSize";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";

@@ -4,8 +4,8 @@ import * as NodeChildProcess from "node:child_process";
 import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
-import * as NetService from "@t3tools/shared/Net";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as NetService from "@j6/shared/Net";
+import * as HostProcess from "@j6/shared/HostProcess";
 import { assert, describe, it } from "@effect/vitest";
 import * as ByteSize from "effect/ByteSize";
 import * as ConfigProvider from "effect/ConfigProvider";
@@ -57,7 +57,7 @@ function mockProcess(exit: number | PlatformError.PlatformError) {
 
 const devServerInput = {
   mode: "dev:server",
-  t3Home: "/tmp/t3code-dev-runner",
+  t3Home: "/tmp/j6code-dev-runner",
   browser: undefined,
   autoBootstrapProjectFromCwd: undefined,
   logWebSocketEvents: undefined,
@@ -75,7 +75,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
     it.effect("forwards the reusable auth token to web dev and removes it for desktop", () =>
       Effect.gen(function* () {
         const input = {
-          baseEnv: { T3CODE_DEV_AUTH_TOKEN: "reusable-dev-auth-token-that-is-long-enough" },
+          baseEnv: { J6CODE_DEV_AUTH_TOKEN: "reusable-dev-auth-token-that-is-long-enough" },
           serverOffset: 0,
           webOffset: 0,
           t3Home: undefined,
@@ -89,8 +89,8 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
         const web = yield* createDevRunnerEnv({ ...input, mode: "dev" });
         const desktop = yield* createDevRunnerEnv({ ...input, mode: "dev:desktop" });
 
-        assert.equal(web.T3CODE_DEV_AUTH_TOKEN, input.baseEnv.T3CODE_DEV_AUTH_TOKEN);
-        assert.equal(desktop.T3CODE_DEV_AUTH_TOKEN, undefined);
+        assert.equal(web.J6CODE_DEV_AUTH_TOKEN, input.baseEnv.J6CODE_DEV_AUTH_TOKEN);
+        assert.equal(desktop.J6CODE_DEV_AUTH_TOKEN, undefined);
       }),
     );
 
@@ -111,11 +111,11 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
         const byDefault = yield* createDevRunnerEnv({ ...input, baseEnv: {} });
         const optedIn = yield* createDevRunnerEnv({
           ...input,
-          baseEnv: { T3CODE_TELEMETRY_ENABLED: "true" },
+          baseEnv: { J6CODE_TELEMETRY_ENABLED: "true" },
         });
 
-        assert.equal(byDefault.T3CODE_TELEMETRY_ENABLED, "false");
-        assert.equal(optedIn.T3CODE_TELEMETRY_ENABLED, "true");
+        assert.equal(byDefault.J6CODE_TELEMETRY_ENABLED, "false");
+        assert.equal(optedIn.J6CODE_TELEMETRY_ENABLED, "true");
       }),
     );
 
@@ -125,7 +125,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
           mode: "dev",
           baseEnv: {
             T3_SERVICE_LAUNCHER_CONTEXT: '{"childVersion":"9.9.9"}',
-            T3_BOOT_SERVICE_UNIT: "t3code.service",
+            T3_BOOT_SERVICE_UNIT: "j6code.service",
           },
           serverOffset: 0,
           webOffset: 0,
@@ -166,8 +166,8 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
 
           assert.equal(env.VITE_HTTP_URL, undefined);
           assert.equal(env.VITE_WS_URL, undefined);
-          assert.equal(env.T3CODE_PORT, "13773");
-          assert.equal(env.T3CODE_SINGLE_ORIGIN_DEV, "1");
+          assert.equal(env.J6CODE_PORT, "13773");
+          assert.equal(env.J6CODE_SINGLE_ORIGIN_DEV, "1");
         }),
     );
 
@@ -191,11 +191,11 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
       }),
     );
 
-    it.effect("drops an inherited T3CODE_HOST and T3CODE_LAN from a parent T3 server", () =>
+    it.effect("drops an inherited J6CODE_HOST and J6CODE_LAN from a parent T3 server", () =>
       Effect.gen(function* () {
         const env = yield* createDevRunnerEnv({
           mode: "dev",
-          baseEnv: { T3CODE_PORT: "3773", T3CODE_HOST: "0.0.0.0", T3CODE_LAN: "true" },
+          baseEnv: { J6CODE_PORT: "3773", J6CODE_HOST: "0.0.0.0", J6CODE_LAN: "true" },
           serverOffset: 0,
           webOffset: 0,
           t3Home: undefined,
@@ -207,15 +207,15 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
           devUrl: undefined,
         });
 
-        assert.equal(env.T3CODE_PORT, "13773");
-        assert.equal(env.T3CODE_HOST, undefined);
-        assert.equal(env.T3CODE_LAN, undefined);
+        assert.equal(env.J6CODE_PORT, "13773");
+        assert.equal(env.J6CODE_HOST, undefined);
+        assert.equal(env.J6CODE_LAN, undefined);
       }),
     );
   });
 
   describe("cli", () => {
-    it("ignores the parent T3 server's T3CODE_PORT and T3CODE_HOST", () => {
+    it("ignores the parent T3 server's J6CODE_PORT and J6CODE_HOST", () => {
       const result = NodeChildProcess.spawnSync(
         process.execPath,
         ["scripts/dev-runner.ts", "dev:server", "--dry-run"],
@@ -224,8 +224,8 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
           encoding: "utf8",
           env: {
             ...process.env,
-            T3CODE_PORT: "3773",
-            T3CODE_HOST: "0.0.0.0",
+            J6CODE_PORT: "3773",
+            J6CODE_HOST: "0.0.0.0",
           },
         },
       );
@@ -479,7 +479,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
             Effect.provideService(FileSystem.FileSystem, {
               ...fs,
               exists: (file) =>
-                NodePath.basename(file) === "t3-resource-monitor"
+                NodePath.basename(file) === "j6-resource-monitor"
                   ? Effect.succeed(
                       built !== undefined && NodePath.basename(NodePath.dirname(file)) === built,
                     )
@@ -501,11 +501,11 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
         }),
     );
 
-    it.effect("ignores an ambient T3CODE_HOME when no home is resolved", () =>
+    it.effect("ignores an ambient J6CODE_HOME when no home is resolved", () =>
       Effect.gen(function* () {
         const env = yield* createDevRunnerEnv({
           mode: "dev",
-          baseEnv: { T3CODE_HOME: "/home/user/.t3" },
+          baseEnv: { J6CODE_HOME: "/home/user/.j6" },
           serverOffset: 0,
           webOffset: 0,
           t3Home: undefined,
@@ -517,7 +517,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
           devUrl: undefined,
         });
 
-        assert.equal(env.T3CODE_HOME, undefined);
+        assert.equal(env.J6CODE_HOME, undefined);
       }),
     );
 
@@ -539,19 +539,19 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
             devUrl: undefined,
           }).pipe(
             Effect.provideService(HostProcess.HomeDirectory, "/home/dev"),
-            Effect.map((env) => env.T3CODE_HOME),
+            Effect.map((env) => env.J6CODE_HOME),
           );
 
-        assert.equal(yield* homeFor("~/t3-dev"), path.join("/home/dev", "t3-dev"));
+        assert.equal(yield* homeFor("~/j6-dev"), path.join("/home/dev", "j6-dev"));
         assert.equal(yield* homeFor("~"), "/home/dev");
-        assert.equal(yield* homeFor("~\\t3-dev"), path.join("/home/dev", "t3-dev"));
-        assert.equal(yield* homeFor("  ~/t3-dev  "), path.join("/home/dev", "t3-dev"));
-        assert.equal(yield* homeFor("~someone/t3-dev"), path.resolve("~someone/t3-dev"));
-        assert.equal(yield* homeFor("relative/t3-dev"), path.resolve("relative/t3-dev"));
-        assert.equal(yield* homeFor("/tmp/t3-dev"), path.resolve("/tmp/t3-dev"));
-        // An explicit ~/.t3 would put state in the live userdata; leaving it implicit selects ~/.t3/dev.
-        assert.equal(yield* homeFor("~/.t3"), undefined);
-        assert.equal(yield* homeFor("/home/dev/.t3/"), undefined);
+        assert.equal(yield* homeFor("~\\j6-dev"), path.join("/home/dev", "j6-dev"));
+        assert.equal(yield* homeFor("  ~/j6-dev  "), path.join("/home/dev", "j6-dev"));
+        assert.equal(yield* homeFor("~someone/j6-dev"), path.resolve("~someone/j6-dev"));
+        assert.equal(yield* homeFor("relative/j6-dev"), path.resolve("relative/j6-dev"));
+        assert.equal(yield* homeFor("/tmp/j6-dev"), path.resolve("/tmp/j6-dev"));
+        // An explicit ~/.j6 would put state in the live userdata; leaving it implicit selects ~/.j6/dev.
+        assert.equal(yield* homeFor("~/.j6"), undefined);
+        assert.equal(yield* homeFor("/home/dev/.j6/"), undefined);
       }),
     );
 
@@ -586,7 +586,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
     // A shared origin means a remote browser, where unbundled dev's
     // per-module waterfall pays a tailnet round trip per import level. The
     // runner defaults bundled dev on for the spawned stack, but only
-    // defaults: an explicit T3CODE_BUNDLED_DEV (even "0") must pass through.
+    // defaults: an explicit J6CODE_BUNDLED_DEV (even "0") must pass through.
     describe("--share spawn wiring", () => {
       const shareSpawned = (input: {
         readonly ambientBundledDev?: string | undefined;
@@ -649,17 +649,17 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
               HostProcess.Environment,
               input.ambientBundledDev === undefined
                 ? {}
-                : { T3CODE_BUNDLED_DEV: input.ambientBundledDev },
+                : { J6CODE_BUNDLED_DEV: input.ambientBundledDev },
             ),
           );
 
           return { env: captured, vpArgs, tailscaleCalls };
         });
 
-      it.effect("keeps an explicit T3CODE_BUNDLED_DEV=0 opt-out", () =>
+      it.effect("keeps an explicit J6CODE_BUNDLED_DEV=0 opt-out", () =>
         Effect.gen(function* () {
           const { env } = yield* shareSpawned({ ambientBundledDev: "0" });
-          assert.equal(env?.T3CODE_BUNDLED_DEV, "0");
+          assert.equal(env?.J6CODE_BUNDLED_DEV, "0");
         }),
       );
 
@@ -667,13 +667,13 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
         Effect.gen(function* () {
           const { env, vpArgs, tailscaleCalls } = yield* shareSpawned({ built: true });
           assert.include(vpArgs, "dev:built");
-          assert.equal(env?.T3CODE_BUILT_DEV, "1");
-          assert.equal(env?.T3CODE_BUNDLED_DEV, undefined);
+          assert.equal(env?.J6CODE_BUILT_DEV, "1");
+          assert.equal(env?.J6CODE_BUNDLED_DEV, undefined);
           assert.equal(env?.VITE_DEV_SERVER_URL, `https://host.example.ts.net:${env?.PORT}/`);
           const serve = tailscaleCalls.find((args) => args.includes("--bg"));
           assert.deepEqual(serve?.slice(-2), [
             `--https=${env?.PORT}`,
-            `http://127.0.0.1:${env?.T3CODE_PORT}`,
+            `http://127.0.0.1:${env?.J6CODE_PORT}`,
           ]);
         }),
       );
@@ -682,7 +682,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
         Effect.gen(function* () {
           const { env, tailscaleCalls } = yield* shareSpawned({ built: true, host: "::1" });
           const serve = tailscaleCalls.find((args) => args.includes("--bg"));
-          assert.equal(serve?.at(-1), `http://[::1]:${env?.T3CODE_PORT}`);
+          assert.equal(serve?.at(-1), `http://[::1]:${env?.J6CODE_PORT}`);
         }),
       );
 
@@ -691,7 +691,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
         Effect.gen(function* () {
           const { env, tailscaleCalls } = yield* shareSpawned({ built: true, host: "localhost" });
           const serve = tailscaleCalls.find((args) => args.includes("--bg"));
-          assert.equal(serve?.at(-1), `http://localhost:${env?.T3CODE_PORT}`);
+          assert.equal(serve?.at(-1), `http://localhost:${env?.J6CODE_PORT}`);
         }),
       );
 
@@ -700,7 +700,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
           const { env, vpArgs, tailscaleCalls } = yield* shareSpawned({});
           assert.include(vpArgs, "dev");
           assert.notInclude(vpArgs, "dev:built");
-          assert.equal(env?.T3CODE_BUNDLED_DEV, "1");
+          assert.equal(env?.J6CODE_BUNDLED_DEV, "1");
           const serve = tailscaleCalls.find((args) => args.includes("--bg"));
           assert.equal(serve?.at(-1), `http://localhost:${env?.PORT}`);
         }),
@@ -761,10 +761,10 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
       });
     });
 
-    describe("t3 home precedence", () => {
+    describe("j6 home precedence", () => {
       const makeWorktree = Effect.acquireRelease(
         Effect.sync(() => {
-          const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "t3-devrunner-"));
+          const root = NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "j6-devrunner-"));
           NodeFS.writeFileSync(
             NodePath.join(root, ".git"),
             "gitdir: /elsewhere/.git/worktrees/x\n",
@@ -797,15 +797,15 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
             Effect.provide(Layer.mergeAll(emptyConfigLayer, netServiceLayer, spawnerLayer)),
             Effect.provideService(HostProcess.Platform, "linux"),
             Effect.provideService(HostProcess.WorkingDirectory, input.cwd),
-            // No ~/.t3 here, so these runs never seed from this machine's install.
+            // No ~/.j6 here, so these runs never seed from this machine's install.
             Effect.provideService(HostProcess.HomeDirectory, NodePath.join(input.cwd, "home")),
             Effect.provideService(
               HostProcess.Environment,
-              input.ambientHome === undefined ? {} : { T3CODE_HOME: input.ambientHome },
+              input.ambientHome === undefined ? {} : { J6CODE_HOME: input.ambientHome },
             ),
           );
 
-          return captured?.T3CODE_HOME;
+          return captured?.J6CODE_HOME;
         });
 
       it.effect("prefers an explicit --home-dir over the worktree default", () =>
@@ -815,7 +815,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
           const home = yield* spawnedHome({
             t3Home: "/tmp/explicit-home",
             cwd: root,
-            ambientHome: "/home/user/.t3",
+            ambientHome: "/home/user/.j6",
           });
           assert.equal(home, path.resolve("/tmp/explicit-home"));
         }).pipe(Effect.scoped),
@@ -828,32 +828,32 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
           const home = yield* spawnedHome({
             t3Home: "   ",
             cwd: root,
-            ambientHome: "/home/user/.t3",
+            ambientHome: "/home/user/.j6",
           });
-          assert.equal(home, path.join(path.resolve(root), ".t3"));
+          assert.equal(home, path.join(path.resolve(root), ".j6"));
         }).pipe(Effect.scoped),
       );
 
-      it.effect("prefers the worktree .t3 over an ambient T3CODE_HOME", () =>
+      it.effect("prefers the worktree .j6 over an ambient J6CODE_HOME", () =>
         Effect.gen(function* () {
           const path = yield* Path.Path;
           const root = yield* makeWorktree;
           const home = yield* spawnedHome({
             t3Home: undefined,
             cwd: root,
-            ambientHome: "/home/user/.t3",
+            ambientHome: "/home/user/.j6",
           });
-          assert.equal(home, path.join(path.resolve(root), ".t3"));
+          assert.equal(home, path.join(path.resolve(root), ".j6"));
         }).pipe(Effect.scoped),
       );
 
-      it.effect("seeds a worktree database from ~/.t3 only when it has none", () =>
+      it.effect("seeds a worktree database from ~/.j6 only when it has none", () =>
         Effect.gen(function* () {
           const path = yield* Path.Path;
           const root = yield* makeWorktree;
           const home = path.join(root, "home");
-          NodeFS.mkdirSync(path.join(home, ".t3", "userdata"), { recursive: true });
-          NodeFS.writeFileSync(path.join(home, ".t3", "userdata", "statev2.sqlite"), "");
+          NodeFS.mkdirSync(path.join(home, ".j6", "userdata"), { recursive: true });
+          NodeFS.writeFileSync(path.join(home, ".j6", "userdata", "statev2.sqlite"), "");
 
           const spawnedArgs = (seed: boolean | undefined) =>
             Effect.gen(function* () {
@@ -881,11 +881,11 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
 
           assert.deepStrictEqual(yield* spawnedArgs(false), []);
           const [seedArgs] = yield* spawnedArgs(undefined);
-          assert.includeMembers([...(seedArgs ?? [])], ["--base-dir", path.join(root, ".t3")]);
+          assert.includeMembers([...(seedArgs ?? [])], ["--base-dir", path.join(root, ".j6")]);
 
           // Either database means the worktree already has data.
           for (const name of ["state.sqlite", "statev2.sqlite"]) {
-            const file = path.join(root, ".t3", "userdata", name);
+            const file = path.join(root, ".j6", "userdata", name);
             NodeFS.mkdirSync(path.dirname(file), { recursive: true });
             NodeFS.writeFileSync(file, "");
             assert.deepStrictEqual(yield* spawnedArgs(undefined), []);
@@ -906,7 +906,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
             const path = yield* Path.Path;
             const root = yield* makeWorktree;
             const home = path.join(root, "home");
-            const source = path.join(home, ".t3", "userdata", "statev2.sqlite");
+            const source = path.join(home, ".j6", "userdata", "statev2.sqlite");
             NodeFS.mkdirSync(path.dirname(source), { recursive: true });
             NodeFS.writeFileSync(source, "");
             const spawned: Array<ReadonlyArray<string>> = [];
@@ -953,7 +953,7 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
             );
             assert.deepStrictEqual(spawned.at(-1), [
               "run",
-              "--filter=t3",
+              "--filter=j6",
               "dev",
               ...devServerInput.runArgs,
             ]);
@@ -968,15 +968,15 @@ it.layer(NodeServices.layer)("dev-runner", (it) => {
           }).pipe(Effect.scoped),
       );
 
-      it.effect("falls back to an ambient T3CODE_HOME outside a worktree", () =>
+      it.effect("falls back to an ambient J6CODE_HOME outside a worktree", () =>
         Effect.gen(function* () {
           const path = yield* Path.Path;
           const home = yield* spawnedHome({
             t3Home: undefined,
             cwd: NodeOS.tmpdir(),
-            ambientHome: "/home/user/.t3",
+            ambientHome: "/home/user/.j6",
           });
-          assert.equal(home, path.resolve("/home/user/.t3"));
+          assert.equal(home, path.resolve("/home/user/.j6"));
         }),
       );
     });

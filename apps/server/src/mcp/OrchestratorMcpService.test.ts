@@ -29,9 +29,9 @@ import {
   type OrchestrationV2StoredEvent,
   type OrchestrationV2ThreadProjection,
   type ServerProvider,
-} from "@t3tools/contracts";
-import { checkpointWorkspace } from "@t3tools/provider-testing/replayWorkspace";
-import { formatThreadLink, hostedThreadLink } from "@t3tools/shared/threadLinks";
+} from "@j6/contracts";
+import { checkpointWorkspace } from "@j6/provider-testing/replayWorkspace";
+import { formatThreadLink, hostedThreadLink } from "@j6/shared/threadLinks";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
 import * as Duration from "effect/Duration";
@@ -80,7 +80,7 @@ import { idleThreadProjection, liveThreadShell } from "./McpToolAccess.testkit.t
 import * as OrchestratorMcpService from "./OrchestratorMcpService.ts";
 import { resolveRuntimeMode } from "./delegatedTaskModes.ts";
 import type { ProjectionRecordFilter } from "../orchestration-v2/ProjectionStore.ts";
-import type * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
+import type * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
 
 const decodeTarget = Schema.decodeUnknownEffect(OrchestratorMcpTarget);
 
@@ -1599,7 +1599,7 @@ describe("OrchestratorMcpService provider resolution", () => {
     version: input.enabled === false ? null : "test",
     status: input.enabled === false ? "disabled" : "ready",
     auth: { status: input.enabled === false ? "unknown" : "authenticated" },
-    ...(input.enabled === false ? { message: "Provider is disabled in T3 Code settings." } : {}),
+    ...(input.enabled === false ? { message: "Provider is disabled in J6 Code settings." } : {}),
     checkedAt: "2026-09-13T00:00:00.000Z",
     models:
       input.model === undefined
@@ -2826,7 +2826,7 @@ describe("OrchestratorMcpService provider resolution", () => {
         const fileSystem = yield* FileSystem.FileSystem;
         const git = yield* GitVcsDriver.GitVcsDriver;
         const workspaceRoot = yield* fileSystem.realPath(
-          yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-mcp-delegate-base-" }),
+          yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-mcp-delegate-base-" }),
         );
         for (const args of [
           ["init", "-b", "main"],
@@ -2917,7 +2917,7 @@ describe("OrchestratorMcpService provider resolution", () => {
             NodeCrypto.layer,
             GitVcsDriver.layer.pipe(
               Layer.provideMerge(
-                ServerConfig.layerTest(process.cwd(), { prefix: "t3-mcp-delegate-base-" }),
+                ServerConfig.layerTest(process.cwd(), { prefix: "j6-mcp-delegate-base-" }),
               ),
               Layer.provideMerge(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
             ),
@@ -4140,7 +4140,7 @@ describe("OrchestratorMcpService provider resolution", () => {
       runCount: 0,
       webhook: {
         path: "/hooks/scheduled-task/secret",
-        url: "https://t3.example/hooks/secret",
+        url: "https://j6.example/hooks/secret",
         hasSecret: false,
       },
       ...overrides,
@@ -4274,7 +4274,7 @@ describe("OrchestratorMcpService provider resolution", () => {
           ),
           Effect.provide(service([hook], null, upserted)),
         );
-        assert.equal(created.webhookUrl, "https://t3.example/hooks/secret");
+        assert.equal(created.webhookUrl, "https://j6.example/hooks/secret");
         const converted = yield* OrchestratorMcpService.OrchestratorMcpService.pipe(
           Effect.flatMap((mcp) =>
             mcp.updateScheduledTask(supervisedClient, {
@@ -5362,7 +5362,7 @@ describe("OrchestratorMcpService thread lookup", () => {
       yield* Effect.gen(function* () {
         const mcp = yield* OrchestratorMcpService.OrchestratorMcpService;
         for (const link of [
-          `t3-thread://v2/${ref.environmentId}/${ref.threadId}`,
+          `j6-thread://v2/${ref.environmentId}/${ref.threadId}`,
           formatThreadLink(ref, "Delegated task"),
           hostedThreadLink(ref),
         ]) {

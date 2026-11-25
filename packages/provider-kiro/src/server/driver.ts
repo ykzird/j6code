@@ -1,29 +1,29 @@
-import { ProviderDriverKind, TextGenerationError } from "@t3tools/contracts";
+import { ProviderDriverKind, TextGenerationError } from "@j6/contracts";
 import { KiroSettings } from "../settings.ts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as SecureRandom from "effect/crypto/SecureRandom";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
 
-import type * as ProviderHost from "@t3tools/provider-core/server/ProviderHost";
+import type * as ProviderHost from "@j6/provider-core/server/ProviderHost";
 import {
   defaultProviderContinuationIdentity,
   type ProviderDriver,
   type ProviderInstance,
-} from "@t3tools/provider-core/server/driver";
-import { ProviderDriverError } from "@t3tools/provider-core/server/errors";
-import { mergeProviderInstanceEnvironment } from "@t3tools/provider-core/server/instanceEnvironment";
-import { expandHomePath } from "@t3tools/provider-core/server/pathExpansion";
-import { withInstanceIdentity } from "@t3tools/provider-core/server/instanceIdentity";
-import { makeManualOnlyProviderMaintenanceCapabilities } from "@t3tools/provider-core/server/maintenanceResolver";
-import { makeManagedServerProvider } from "@t3tools/provider-core/server/managedProvider";
+} from "@j6/provider-core/server/driver";
+import { ProviderDriverError } from "@j6/provider-core/server/errors";
+import { mergeProviderInstanceEnvironment } from "@j6/provider-core/server/instanceEnvironment";
+import { expandHomePath } from "@j6/provider-core/server/pathExpansion";
+import { withInstanceIdentity } from "@j6/provider-core/server/instanceIdentity";
+import { makeManualOnlyProviderMaintenanceCapabilities } from "@j6/provider-core/server/maintenanceResolver";
+import { makeManagedServerProvider } from "@j6/provider-core/server/managedProvider";
 import {
   haveProviderSnapshotSettingsChanged,
   makeProviderSnapshotSettingsSource,
   type ProviderSnapshotSettings,
-} from "@t3tools/provider-core/server/snapshotSettings";
-import type { ProviderTextGeneration } from "@t3tools/provider-core/server/textGeneration";
+} from "@j6/provider-core/server/snapshotSettings";
+import type { ProviderTextGeneration } from "@j6/provider-core/server/textGeneration";
 import { type KiroAdapterV2DriverEnv, makeKiroAdapterV2Driver } from "./adapter.ts";
 import {
   buildInitialKiroProviderSnapshot,

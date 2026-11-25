@@ -11,8 +11,8 @@ import * as Path from "effect/Path";
 import * as Sink from "effect/Sink";
 import * as Stream from "effect/Stream";
 import { ChildProcessSpawner } from "effect/process";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { symlinksSupported } from "@t3tools/shared/testing/symlinks";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { symlinksSupported } from "@j6/shared/testing/symlinks";
 
 import { buildSshChildEnvironment, isSshAgentSigningFailure, isSshAuthFailure } from "./auth.ts";
 
@@ -70,7 +70,7 @@ describe("ssh auth", () => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const directory = yield* fs.makeTempDirectoryScoped({ prefix: "t3-ssh-askpass-test-" });
+      const directory = yield* fs.makeTempDirectoryScoped({ prefix: "j6-ssh-askpass-test-" });
       const env = yield* buildSshChildEnvironment({
         authSecret: "super-secret",
         interactiveAuth: true,
@@ -82,7 +82,7 @@ describe("ssh auth", () => {
       assert.equal(env.SSH_ASKPASS, askpassPath);
       assert.equal(env.SSH_ASKPASS_REQUIRE, "force");
       assert.equal(env.T3_SSH_AUTH_SECRET, "super-secret");
-      assert.equal(env.DISPLAY, "t3code");
+      assert.equal(env.DISPLAY, "j6code");
       assert.equal(yield* fs.exists(askpassPath), true);
       assert.include(yield* fs.readFileString(askpassPath), 'printf "%s\\n" "$T3_SSH_AUTH_SECRET"');
     }).pipe(
@@ -94,7 +94,7 @@ describe("ssh auth", () => {
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const temp = yield* fs.makeTempDirectoryScoped({ prefix: "t3-ssh-askpass-test-" });
+      const temp = yield* fs.makeTempDirectoryScoped({ prefix: "j6-ssh-askpass-test-" });
       const dir = path.join(temp, "askpass");
       const cases = [
         {
@@ -229,13 +229,13 @@ describe("ssh auth", () => {
         const runtimeDirectoryOf = (askpass: string) => path.dirname(path.dirname(askpass));
 
         const first = yield* askpassPath();
-        const ownedTarget = yield* fs.makeTempDirectory({ prefix: "t3code-ssh-symlink-target-" });
+        const ownedTarget = yield* fs.makeTempDirectory({ prefix: "j6code-ssh-symlink-target-" });
         yield* fs.remove(runtimeDirectoryOf(first), { recursive: true });
         yield* fs.symlink(ownedTarget, runtimeDirectoryOf(first));
 
         const next = yield* askpassPath();
         assert.notEqual(next, first);
-        assert.equal(yield* fs.exists(path.join(ownedTarget, "t3code-ssh-askpass")), false);
+        assert.equal(yield* fs.exists(path.join(ownedTarget, "j6code-ssh-askpass")), false);
 
         yield* fs.remove(runtimeDirectoryOf(first));
         yield* fs.remove(ownedTarget, { recursive: true });

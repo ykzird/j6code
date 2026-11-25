@@ -1,7 +1,7 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { DownloadIcon, PlusIcon } from "lucide-react";
 import type { ChangeEvent, DragEvent, UIEvent } from "react";
-import { settlePromise } from "@t3tools/client-runtime/state/runtime";
+import { settlePromise } from "@j6/client-runtime/state/runtime";
 import { useEffect, useRef, useState } from "react";
 import { formatBytes } from "../../lib/formatBytes";
 import { cn } from "../../lib/utils";
@@ -132,7 +132,7 @@ function ThemeJsonEditor({
         onChange={(event) => onChange(event.currentTarget.value)}
         onScroll={syncScroll}
         placeholder={
-          // oxlint-disable-next-line t3code/no-untranslated-copy -- example theme JSON
+          // oxlint-disable-next-line j6code/no-untranslated-copy -- example theme JSON
           '{\n  "version": 1,\n  "name": "Aurora",\n  "appearance": "light",\n  "colors": { ... }\n}'
         }
         spellCheck={false}
@@ -178,7 +178,7 @@ export function ThemeImportDialog({
   // so StrictMode's replayed cleanup, undone by its replayed setup, keeps it alive.
   const { controller } = session;
   const mountedController = useRef<AbortController | null>(null);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- unmounting must abort in-flight Open VSX installs
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- unmounting must abort in-flight Open VSX installs
   useEffect(() => {
     mountedController.current = controller;
     return () => {
@@ -538,7 +538,7 @@ function ThemeImportBody({
                   <T>Theme file</T>
                 </p>
                 <p className="truncate text-xs text-muted-foreground">
-                  {fileName ?? gt("Drop T3 Code or VS Code .json files")}
+                  {fileName ?? gt("Drop J6 Code or VS Code .json files")}
                 </p>
               </div>
               {chooseButton()}

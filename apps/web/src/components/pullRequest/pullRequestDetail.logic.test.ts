@@ -1,4 +1,4 @@
-import { SourceControlProviderKind } from "@t3tools/contracts";
+import { SourceControlProviderKind } from "@j6/contracts";
 import {
   GitCommandError,
   ProjectId,
@@ -11,12 +11,12 @@ import {
   type PullRequestState,
   type RepositoryIdentity,
   type ThreadPullRequestLink,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { describe, expect, it } from "vite-plus/test";
 import {
   formatComposerContextReference,
   projectComposerContextForProvider,
-} from "@t3tools/shared/composerContextReferences";
+} from "@j6/shared/composerContextReferences";
 import {
   reviewCommentContextLabel,
   reviewCommentContextRecord,
@@ -2036,7 +2036,7 @@ describe("cached pull request detail", () => {
   // regression: #9294 corrupt cached PR chrome broke reopening
   it("shrugs off corrupt storage and no storage at all", () => {
     const storage = makeStorage();
-    storage.setItem("t3.pullRequests.detail:env-1:project-1:acme/web#7", "{not json");
+    storage.setItem("j6.pullRequests.detail:env-1:project-1:acme/web#7", "{not json");
     expect(readPullRequestDetailSnapshot(storage, "env-1", reference)).toBeNull();
     expect(readPullRequestDetailSnapshot(undefined, "env-1", reference)).toBeNull();
     const hosted = { ...reference, host: "github.com" };

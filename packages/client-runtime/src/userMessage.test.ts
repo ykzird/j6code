@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { ComposerContextId, GuestMessageId, ScheduledTaskId } from "@t3tools/contracts";
-import { ATTACHMENT_ONLY_BOOTSTRAP_PROMPT } from "@t3tools/shared/composerContextReferences";
+import { ComposerContextId, GuestMessageId, ScheduledTaskId } from "@j6/contracts";
+import { ATTACHMENT_ONLY_BOOTSTRAP_PROMPT } from "@j6/shared/composerContextReferences";
 
 import {
   resolveUserMessageFileCards,
@@ -85,7 +85,7 @@ describe("resolveUserMessageFileCards", () => {
     attachmentId: file.id,
   };
   const context = { version: 1 as const, records: [record] };
-  const reference = "[report.pdf](t3-context://v1/file/report)";
+  const reference = "[report.pdf](j6-context://v1/file/report)";
 
   it("shows file cards for bare attachments and bound file references", () => {
     for (const text of ["", " \n", reference]) {
@@ -103,8 +103,8 @@ describe("resolveUserMessageFileCards", () => {
   it("keeps words and unavailable or non-file references in the bubble", () => {
     for (const text of [
       `read ${reference}`,
-      "[missing.pdf](t3-context://v1/file/missing)",
-      "[report.pdf](t3-context://v1/mention/report)",
+      "[missing.pdf](j6-context://v1/file/missing)",
+      "[report.pdf](j6-context://v1/mention/report)",
     ]) {
       expect(resolveUserMessageFileCards({ text, attachments: [file], context })).toBeNull();
     }
@@ -200,7 +200,7 @@ describe("resolveUserMessagePresentation", () => {
     ).toEqual({ text: "Why?", attribution: "guest", scheduledTaskId: undefined, guestName: "Sam" });
   });
 
-  it("attributes older server-sent restart continuations to T3 Code, not another agent", () => {
+  it("attributes older server-sent restart continuations to J6 Code, not another agent", () => {
     const text = "Note: the T3 server restarted.";
     expect(
       resolveUserMessagePresentation({
@@ -209,7 +209,7 @@ describe("resolveUserMessagePresentation", () => {
         creationSource: "server",
         text,
       }),
-    ).toMatchObject({ attribution: "t3code" });
+    ).toMatchObject({ attribution: "j6code" });
     for (const creationSource of ["mcp", "provider"] as const) {
       expect(
         resolveUserMessagePresentation({ role: "user", createdBy: "agent", creationSource, text }),

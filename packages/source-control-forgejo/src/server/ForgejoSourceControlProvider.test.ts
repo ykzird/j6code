@@ -1,4 +1,4 @@
-import { SourceControlProviderKind } from "@t3tools/contracts";
+import { SourceControlProviderKind } from "@j6/contracts";
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -12,13 +12,13 @@ import * as TestClock from "effect/testing/TestClock";
 import * as HttpClient from "effect/http/HttpClient";
 import * as HttpClientRequest from "effect/http/HttpClientRequest";
 import * as HttpClientResponse from "effect/http/HttpClientResponse";
-import { VcsProcessSpawnError, VcsProcessTimeoutError } from "@t3tools/contracts";
-import { firstNonEmptyLine } from "@t3tools/source-control-core/server/discovery";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { SpawnExecutableResolution } from "@t3tools/shared/shell";
-import * as TestSourceControlHost from "@t3tools/source-control-testing/TestSourceControlHost";
+import { VcsProcessSpawnError, VcsProcessTimeoutError } from "@j6/contracts";
+import { firstNonEmptyLine } from "@j6/source-control-core/server/discovery";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { SpawnExecutableResolution } from "@j6/shared/shell";
+import * as TestSourceControlHost from "@j6/source-control-testing/TestSourceControlHost";
 
-import { userFacingSourceControlDetail } from "@t3tools/source-control-core/server/SourceControlProvider";
+import { userFacingSourceControlDetail } from "@j6/source-control-core/server/SourceControlProvider";
 
 import * as ForgejoCli from "./ForgejoCli.ts";
 import * as ForgejoPullRequestProvider from "./ForgejoPullRequestProvider.ts";

@@ -3,8 +3,8 @@ import type {
   PullRequestDetailView,
   PullRequestRef,
   PullRequestConversationThread,
-} from "@t3tools/contracts";
-import { canResolvePullRequestThread } from "@t3tools/client-runtime/pull-request-editing";
+} from "@j6/contracts";
+import { canResolvePullRequestThread } from "@j6/client-runtime/pull-request-editing";
 import { msg, useGT } from "gt-react";
 import { useState } from "react";
 

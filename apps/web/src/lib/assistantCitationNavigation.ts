@@ -1,16 +1,16 @@
-import { scopeThreadRef } from "@t3tools/client-runtime/environment";
+import { scopeThreadRef } from "@j6/client-runtime/environment";
 import { pipe } from "effect/Function";
 import type {
   AssistantCitation,
   OrchestrationV2ThreadShell,
   ScopedThreadRef,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { useRouter, type AnyRouter } from "@tanstack/react-router";
 import {
   formatAssistantCitationHref,
   parseAssistantCitationHref,
-} from "@t3tools/shared/assistantCitations";
+} from "@j6/shared/assistantCitations";
 import * as Base64Url from "effect/encoding/Base64Url";
 import * as Result from "effect/Result";
 import { useEffect } from "react";
@@ -135,7 +135,7 @@ export function useSideChatCitationReveal(
   const environmentId = routeThreadRef?.environmentId;
   const threadId = routeThreadRef?.threadId;
   const sideChatThreadId = sourceRef?.threadId;
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- moves a side chat quote's router location and parent right panel once per activation, including after its shell loads
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- moves a side chat quote's router location and parent right panel once per activation, including after its shell loads
   useEffect(() => {
     if (
       environmentId === undefined ||

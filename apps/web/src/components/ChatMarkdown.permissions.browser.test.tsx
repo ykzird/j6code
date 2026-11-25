@@ -6,7 +6,7 @@ import {
   type AuthEnvironmentScope,
   type EditorId,
   type ThreadPullRequestLink,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { AsyncResult } from "effect/reactivity";
 import { expect, it, vi } from "vite-plus/test";
 import { userEvent } from "vite-plus/test/browser";
@@ -97,7 +97,7 @@ vi.mock(import("../localApi"), async (original) => ({
     }) as never,
 }));
 vi.mock(import("../env"), async (original) => ({ ...(await original()), isElectron: true }));
-vi.mock(import("@t3tools/client-runtime/change-request-links"), async (original) => ({
+vi.mock(import("@j6/client-runtime/change-request-links"), async (original) => ({
   ...(await original()),
   resolvePullRequestPreviewTarget: () => null,
   findProjectForChangeRequest: ((projects: readonly { id: ProjectId }[]) => projects[0]) as never,

@@ -6,7 +6,7 @@ import {
   applyWorkflowRunsUpdate,
   type WorkflowRunsSnapshot,
   type WorkflowRunsUpdate,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import type * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
@@ -185,7 +185,7 @@ export class Workflows extends Context.Service<
      */
     readonly sweep: Effect.Effect<void>;
   }
->()("t3/workflows/Workflows") {}
+>()("j6/workflows/Workflows") {}
 
 const refuse = Effect.fn("Workflows.disabled")(function* () {
   return yield* new WorkflowInputError({
@@ -241,7 +241,7 @@ export const wholeLists = (updates: Stream.Stream<WorkflowRunsUpdate>) =>
   );
 
 export const OFF =
-  'Workflows are off on this server. Turn them on in its Settings → Labs → Workflows, or without a desktop, set "workflowsEnabled": true in userdata/settings.json in its T3 home (~/.t3 by default).';
+  'Workflows are off on this server. Turn them on in its Settings → Labs → Workflows, or without a desktop, set "workflowsEnabled": true in userdata/settings.json in its T3 home (~/.j6 by default).';
 
 const refuseOff = Effect.fn("Workflows.off")(function* () {
   return yield* new WorkflowInputError({ problem: OFF });

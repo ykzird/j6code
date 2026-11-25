@@ -1,5 +1,5 @@
-import { HTML_RENDER_DEFAULT_FONTS, htmlRenderTheme } from "@t3tools/shared/htmlRender";
-import { T3_CODE_DARK_THEME_COLORS } from "@t3tools/shared/themePalettes";
+import { HTML_RENDER_DEFAULT_FONTS, htmlRenderTheme } from "@j6/shared/htmlRender";
+import { T3_CODE_DARK_THEME_COLORS } from "@j6/shared/themePalettes";
 import { expect, it, vi } from "vite-plus/test";
 import { page, userEvent } from "vite-plus/test/browser";
 

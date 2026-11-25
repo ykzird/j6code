@@ -1,5 +1,5 @@
 import { assert, describe, it } from "@effect/vitest";
-import * as NodeSqliteClient from "@t3tools/shared/nodeSqliteClient";
+import * as NodeSqliteClient from "@j6/shared/nodeSqliteClient";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -10,11 +10,11 @@ import * as Ref from "effect/Ref";
 import * as Logger from "effect/Logger";
 import * as Console from "effect/Console";
 import * as NodeUtil from "node:util";
-import type { DatabaseMigrationProgress as Progress } from "@t3tools/contracts";
+import type { DatabaseMigrationProgress as Progress } from "@j6/contracts";
 import {
   databaseMigrationProgress,
   DATABASE_MIGRATION_PROGRESS_MESSAGE,
-} from "@t3tools/shared/databaseMigrationLog";
+} from "@j6/shared/databaseMigrationLog";
 import * as DatabaseMigrationProgress from "./DatabaseMigrationProgress.ts";
 
 import { migrationManifest, runMigrations } from "./Migrations.ts";

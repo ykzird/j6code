@@ -1,5 +1,5 @@
-import type { LinkedThreadTarget } from "@t3tools/client-runtime/linked-thread";
-import { EnvironmentId, ThreadId } from "@t3tools/contracts";
+import type { LinkedThreadTarget } from "@j6/client-runtime/linked-thread";
+import { EnvironmentId, ThreadId } from "@j6/contracts";
 
 /** A linked environment's thread as a right panel tab, read through `viaEnvironmentId`. */
 export type LinkedThreadSurface = {

@@ -5,7 +5,7 @@ import * as NodePath from "node:path";
 import { expect } from "e2e";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { makeState, runPromise, test, WEB } from "./t3.ts";
+import { makeState, runPromise, test, WEB } from "./j6.ts";
 
 const FILE = "location-proof.ts";
 const ACP = `
@@ -42,8 +42,8 @@ for await (const line of createInterface({ input: process.stdin })) {
 test(
   "A running ACP edit names the file a location-only tool_call_update reports",
   WEB,
-  async ({ t3, app, screen }) => {
-    const project = await t3.project("demo", { [`src/${FILE}`]: "export {};\n" });
+  async ({ j6, app, screen }) => {
+    const project = await j6.project("demo", { [`src/${FILE}`]: "export {};\n" });
     const script = NodePath.join(project, "location-acp.mjs");
     const gate = NodePath.join(project, "release-edit");
     const settingsPath = NodePath.join(T3_HOME, "userdata/settings.json");
@@ -89,7 +89,7 @@ test(
       }
       if (threadId === undefined) throw new Error("Could not start the location agent's turn.");
 
-      await t3.open({ threadId });
+      await j6.open({ threadId });
       await screen.getByText("Working for", { exact: false }).first().waitFor({ timeout: 60_000 });
       try {
         await expect(screen.getByRole("button", /^demo\/src\/location-proof\.ts$/)).toBeVisible({

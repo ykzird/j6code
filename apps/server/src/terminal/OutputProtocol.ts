@@ -3,7 +3,7 @@ import {
   type TerminalAttachStreamEvent,
   type TerminalEvent,
   WS_METHODS,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import type * as Arr from "effect/Array";
 import * as Cause from "effect/Cause";
 import * as Clock from "effect/Clock";

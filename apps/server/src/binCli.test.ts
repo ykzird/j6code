@@ -4,7 +4,7 @@ import * as NodeURL from "node:url";
 
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, it } from "@effect/vitest";
-import * as NodeSqliteClient from "@t3tools/shared/nodeSqliteClient";
+import * as NodeSqliteClient from "@j6/shared/nodeSqliteClient";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Stream from "effect/Stream";
@@ -20,7 +20,7 @@ import {
 it.live("keeps migration warnings out of JSON thread output", () =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
-    const root = yield* fs.makeTempDirectoryScoped({ prefix: "t3-cli-json-" });
+    const root = yield* fs.makeTempDirectoryScoped({ prefix: "j6-cli-json-" });
     const stateDir = `${root}/userdata`;
     yield* fs.makeDirectory(stateDir);
     yield* Effect.gen(function* () {
@@ -105,7 +105,7 @@ it.live("keeps migration warnings out of JSON thread output", () =>
           "--base-dir",
           root,
         ],
-        { env: { T3CODE_HOME: root } },
+        { env: { J6CODE_HOME: root } },
       ),
     );
     const { stdout, stderr, exitCode } = yield* Effect.all(

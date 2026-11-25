@@ -4,7 +4,7 @@ import type {
   ProviderInstanceId,
   ServerProvider,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import type { Dispatch, SetStateAction } from "react";
 import {
   dismissProviderStatusBannerForSession,

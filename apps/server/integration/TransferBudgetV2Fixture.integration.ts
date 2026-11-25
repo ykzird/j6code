@@ -19,7 +19,7 @@ import {
   type OrchestrationV2DomainEvent,
   type RepositoryIdentity,
   type OrchestrationV2TurnItem,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 import {
   diagnosticOutput,
@@ -810,7 +810,7 @@ export function staleTodoListThreadBatches(
           ordinalWithinScope: index + 1,
           appRunOrdinal: index + 1,
           ref: CheckpointRef.make(
-            `refs/t3/orchestration-v2/checkpoints/stale-todo-lists/ordinal/${index + 1}`,
+            `refs/j6/orchestration-v2/checkpoints/stale-todo-lists/ordinal/${index + 1}`,
           ),
           status: "ready",
           files: Array.from({ length: 12 }, (_, file) => ({
@@ -841,13 +841,13 @@ export function staleTodoListThreadBatches(
 
 const FLEET_PROJECT_ID = ProjectId.make("transfer-project");
 export const FLEET_PROJECT_IDENTITY: RepositoryIdentity = {
-  canonicalKey: "github.com/t3/transfer-budget",
+  canonicalKey: "github.com/j6/transfer-budget",
   locator: {
     source: "git-remote",
     remoteName: "origin",
-    remoteUrl: "git@github.com:t3/transfer-budget.git",
+    remoteUrl: "git@github.com:j6/transfer-budget.git",
   },
-  owner: "t3",
+  owner: "j6",
   name: "transfer-budget",
 };
 

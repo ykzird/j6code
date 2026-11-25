@@ -12,17 +12,17 @@ import {
   linkRequestTarget,
   linkRequestTargetName,
   rankMachinesByHint,
-} from "@t3tools/client-runtime/link-request";
+} from "@j6/client-runtime/link-request";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
-} from "@t3tools/client-runtime/state/runtime";
+} from "@j6/client-runtime/state/runtime";
 import {
   AuthAccessWriteScope,
   type AuthMcpClientAccess,
   type EnvironmentId,
   type OrchestrationV2ProjectedTurnItem,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Option from "effect/Option";
 import * as Result from "effect/Result";
 import { T, useGT, useMessages, Var } from "gt-react";

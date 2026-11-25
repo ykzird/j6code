@@ -3,7 +3,7 @@ import {
   ClientCapabilities,
   PlatformConnectionSource,
   Persistence,
-} from "@t3tools/client-runtime/platform";
+} from "@j6/client-runtime/platform";
 import {
   BearerConnectionCredential,
   BearerConnectionProfile,
@@ -19,11 +19,11 @@ import {
   PrimaryConnectionTarget,
   sshTargetKey,
   Wakeups,
-} from "@t3tools/client-runtime/connection";
-import { bootstrapRemoteBearerSession } from "@t3tools/client-runtime/authorization";
-import { fetchRemoteEnvironmentDescriptor } from "@t3tools/client-runtime/environment";
-import { managedRelayAccountChanges, managedRelaySessionAtom } from "@t3tools/client-runtime/relay";
-import { EnvironmentRpcRequestObserver } from "@t3tools/client-runtime/rpc";
+} from "@j6/client-runtime/connection";
+import { bootstrapRemoteBearerSession } from "@j6/client-runtime/authorization";
+import { fetchRemoteEnvironmentDescriptor } from "@j6/client-runtime/environment";
+import { managedRelayAccountChanges, managedRelaySessionAtom } from "@j6/client-runtime/relay";
+import { EnvironmentRpcRequestObserver } from "@j6/client-runtime/rpc";
 import {
   AuthStandardClientScopes,
   type DesktopBridge,
@@ -32,7 +32,7 @@ import {
   type DesktopSshEnvironmentTarget,
   type EnvironmentId,
   PRIMARY_LOCAL_ENVIRONMENT_ID,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Clock from "effect/Clock";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -276,7 +276,7 @@ export const provisionDesktopSshEnvironment = Effect.fn(
         reason: "configuration",
         detail: m(
           msg(
-            "{label} runs T3 Code {serverVersion}, but this desktop is {appVersion}, and that server could not accept its pairing. Restart the T3 server on {label} so it runs {appVersion}, then retry.",
+            "{label} runs J6 Code {serverVersion}, but this desktop is {appVersion}, and that server could not accept its pairing. Restart the T3 server on {label} so it runs {appVersion}, then retry.",
             {
               label: descriptor.label,
               serverVersion: descriptor.serverVersion,
@@ -364,7 +364,7 @@ const layerCapabilities = Layer.effectContext(
         if (session === null) {
           return yield* new ConnectionBlockedError({
             reason: "authentication",
-            detail: m(msg("Sign in to T3 Connect to connect this environment.")),
+            detail: m(msg("Sign in to J6 Connect to connect this environment.")),
           });
         }
         const token = yield* session.readClerkToken().pipe(
@@ -379,7 +379,7 @@ const layerCapabilities = Layer.effectContext(
         if (token === null) {
           return yield* new ConnectionBlockedError({
             reason: "authentication",
-            detail: m(msg("The T3 Connect session is unavailable.")),
+            detail: m(msg("The J6 Connect session is unavailable.")),
           });
         }
         return token;

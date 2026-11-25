@@ -8,12 +8,12 @@ import {
   type KnownComposerContextRecord,
   type ScopedThreadRef,
   type ThreadContextRecord,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 
 import { expandAssistantCitationsForProvider } from "./assistantCitations.ts";
 import { replaceThreadLinks, threadLinkCandidates } from "./threadLinks.ts";
 
-const CONTEXT_PROTOCOL = "t3-context:";
+const CONTEXT_PROTOCOL = "j6-context:";
 const COMPOSER_CONTEXT_HREF_PREFIX = `${CONTEXT_PROTOCOL}//v1/`;
 const CONTEXT_KIND_PATTERN = /^[a-z][a-z0-9-]{0,39}$/;
 const CONTEXT_ID_PATTERN = /^[a-z0-9_-]{1,128}$/i;
@@ -159,7 +159,7 @@ export function collectComposerContextReferences(
   text: string,
 ): ComposerContextReferenceOccurrence[] {
   const occurrences: ComposerContextReferenceOccurrence[] = [];
-  if (!text.includes("](t3-context:")) return occurrences;
+  if (!text.includes("](j6-context:")) return occurrences;
   for (const match of text.matchAll(CONTEXT_LINK)) {
     const parsed = parseComposerContextHref(match[3]!);
     if (!parsed) continue;
@@ -476,10 +476,10 @@ export function threadContextsOutsideEnvironment(input: {
 }
 
 export function remapComposerContextAttachments(
-  context: import("@t3tools/contracts").OrchestrationMessageContext | undefined,
+  context: import("@j6/contracts").OrchestrationMessageContext | undefined,
   before: ReadonlyArray<{ readonly id?: string | undefined }>,
   after: ReadonlyArray<{ readonly id: string }>,
-): import("@t3tools/contracts").OrchestrationMessageContext | undefined {
+): import("@j6/contracts").OrchestrationMessageContext | undefined {
   if (context === undefined) return undefined;
   const ids = new Map(
     before.flatMap((attachment, index) => {

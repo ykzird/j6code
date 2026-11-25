@@ -7,7 +7,7 @@ import * as Effect from "effect/Effect";
 import * as Stream from "effect/Stream";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { makeState, rpcClient, runPromise, test, WEB } from "./t3.ts";
+import { makeState, rpcClient, runPromise, test, WEB } from "./j6.ts";
 
 // The agent drops "model-a" from its model list after its first reply, as an agent that lost its
 // network can, and offers it again once the scenario creates the online flag. Each agent process
@@ -65,8 +65,8 @@ for await (const line of createInterface({ input: process.stdin })) {
 test(
   "An ACP agent that refuses the model keeps its native session for the next message",
   WEB,
-  async ({ t3, app, screen, browser }) => {
-    const project = await t3.project("demo");
+  async ({ j6, app, screen, browser }) => {
+    const project = await j6.project("demo");
     const script = NodePath.join(project, "refusing-acp.mjs");
     const onlineFlag = NodePath.join(project, "online.flag");
     const settingsPath = NodePath.join(T3_HOME, "userdata/settings.json");
@@ -143,7 +143,7 @@ test(
 
       // The composer names the model only once the server has the agent's model list offering it,
       // which the server publishes after updating the list the next turn start checks.
-      await t3.open({ threadId: first.threadId });
+      await j6.open({ threadId: first.threadId });
       const modelLabel = browser.locator("[data-chat-provider-model-picker-label]").first();
       await NodeFSP.writeFile(onlineFlag, "online");
       await expect(modelLabel).toHaveText("Model A", { timeout: 30_000 });

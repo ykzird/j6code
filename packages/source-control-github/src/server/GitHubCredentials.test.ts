@@ -7,10 +7,10 @@ import * as Redacted from "effect/Redacted";
 import { HttpClient } from "effect/http";
 import { ChildProcessSpawner } from "effect/process";
 
-import { DEFAULT_SERVER_SETTINGS, SecretProviderId, SecretProviderKind } from "@t3tools/contracts";
-import type * as SourceControlHost from "@t3tools/source-control-core/server/SourceControlHost";
-import { applyServerSettingsPatch } from "@t3tools/shared/serverSettings";
-import * as TestSourceControlHost from "@t3tools/source-control-testing/TestSourceControlHost";
+import { DEFAULT_SERVER_SETTINGS, SecretProviderId, SecretProviderKind } from "@j6/contracts";
+import type * as SourceControlHost from "@j6/source-control-core/server/SourceControlHost";
+import { applyServerSettingsPatch } from "@j6/shared/serverSettings";
+import * as TestSourceControlHost from "@j6/source-control-testing/TestSourceControlHost";
 import * as GitHubCredentials from "./GitHubCredentials.ts";
 
 const TOKEN_VARIABLES = [

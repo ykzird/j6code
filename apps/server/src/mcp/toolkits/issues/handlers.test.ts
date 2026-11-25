@@ -8,12 +8,12 @@ import {
   type OrchestrationProjectShell,
   type ThreadIssueLink,
   SourceControlProviderKind,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { describe, expect, it } from "@effect/vitest";
 import {
   IssueTrackerError,
   type StandaloneIssueTrackerApi,
-} from "@t3tools/source-control-core/server/IssueTracker";
+} from "@j6/source-control-core/server/IssueTracker";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
@@ -61,7 +61,7 @@ const project: OrchestrationProjectShell = {
   defaultModelSelection: null,
   scripts: [],
   repositoryIdentity: {
-    canonicalKey: "github.com/t3tools/t3code",
+    canonicalKey: "github.com/t3tools/j6code",
     locator: {
       source: "git-remote",
       remoteName: "origin",
@@ -102,7 +102,7 @@ function makeThread(issues: ReadonlyArray<ThreadIssueLink>) {
 const detail: IssueDetail = {
   tracker: GITHUB,
   host: "github.com",
-  scope: "t3tools/t3code",
+  scope: "t3tools/j6code",
   key: "7",
   displayKey: "#7",
   title: "Seven",
@@ -164,14 +164,14 @@ const makeHarness = Effect.fn("makeIssuesToolkitHarness")(function* (
             projectId,
             tracker: GITHUB,
             host: "github.com",
-            scope: "t3tools/t3code",
+            scope: "t3tools/j6code",
           }),
         resolveUrl: (url) =>
           Effect.succeed({
             projectId: PROJECT_ID,
             tracker: GITHUB,
             host: "github.com",
-            scope: "t3tools/t3code",
+            scope: "t3tools/j6code",
             key: url.split("/").at(-1)!,
             writable: true,
           }),
@@ -382,7 +382,7 @@ describe("issue toolkit handlers", () => {
         projectId: PROJECT_ID,
         tracker: "github",
         host: "github.com",
-        scope: "t3tools/t3code",
+        scope: "t3tools/j6code",
         key: "7",
         url: "https://github.com/T3Tools/T3Code/issues/7",
         alreadyLinked: false,
@@ -394,7 +394,7 @@ describe("issue toolkit handlers", () => {
             projectId: PROJECT_ID,
             tracker: "github",
             host: "github.com",
-            scope: "t3tools/t3code",
+            scope: "t3tools/j6code",
             key: "7",
           },
           url: "https://github.com/T3Tools/T3Code/issues/7",
@@ -426,7 +426,7 @@ describe("issue toolkit handlers", () => {
         {
           tracker: GITHUB,
           host: "github.com",
-          scope: "t3tools/t3code",
+          scope: "t3tools/j6code",
           key: "7",
           projectId: PROJECT_ID,
           url: detail.url,

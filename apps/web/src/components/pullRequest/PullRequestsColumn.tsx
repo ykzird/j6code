@@ -1,4 +1,4 @@
-import type { PullRequestInvolvement, PullRequestListState } from "@t3tools/contracts";
+import type { PullRequestInvolvement, PullRequestListState } from "@j6/contracts";
 import { T, useGT, useMessages } from "gt-react";
 import { Plug2Icon, SearchIcon } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
@@ -38,7 +38,7 @@ function ExpandableSearch({
 }) {
   const gt = useGT();
   const containerRef = useRef<HTMLDivElement | null>(null);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- focuses the search input DOM node when the topbar search opens
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- focuses the search input DOM node when the topbar search opens
   useEffect(() => {
     if (!open) return;
     containerRef.current?.querySelector("input")?.focus();
@@ -122,7 +122,7 @@ export function PullRequestsColumn({
   const contentArea = workspaceAreaProps("pull-requests", 1, gt("Pull requests"));
   const markerRef = useRef<HTMLDivElement | null>(null);
   const [condensed, setCondensed] = useState(false);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- IntersectionObserver on the scroll marker condenses the topbar
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- IntersectionObserver on the scroll marker condenses the topbar
   useEffect(() => {
     const marker = markerRef.current;
     if (!marker) return;
@@ -140,7 +140,7 @@ export function PullRequestsColumn({
   const [searchOpen, setSearchOpen] = useState(false);
   const topbarSearchRef = useRef<HTMLDivElement | null>(null);
   const searchExpanded = searchOpen || searchValue.length > 0;
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- window keydown listener focuses the visible search input on Cmd/Ctrl+F
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- window keydown listener focuses the visible search input on Cmd/Ctrl+F
   useEffect(() => {
     if (maximizedAway) return;
     const onKeyDown = (event: KeyboardEvent) => {
@@ -158,7 +158,7 @@ export function PullRequestsColumn({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [condensed, maximizedAway]);
   if (!condensed && searchOpen) setSearchOpen(false);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- moves DOM focus to the in-flow search when the topbar search it was typed in unmounts
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- moves DOM focus to the in-flow search when the topbar search it was typed in unmounts
   useEffect(() => {
     if (condensed) return;
     if (!topbarSearchFocusedRef.current) return;

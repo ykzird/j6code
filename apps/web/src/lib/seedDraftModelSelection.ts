@@ -1,6 +1,6 @@
-import type { ScopedProjectRef } from "@t3tools/contracts";
-import { resolveProjectSettings } from "@t3tools/shared/projectSettings";
-import { resolveNewThreadModelSelection } from "@t3tools/shared/usageLimits";
+import type { ScopedProjectRef } from "@j6/contracts";
+import { resolveProjectSettings } from "@j6/shared/projectSettings";
+import { resolveNewThreadModelSelection } from "@j6/shared/usageLimits";
 
 import { type DraftId, useComposerDraftStore } from "../composerDraftStore";
 import { resolveProjectDefaultProviderModelSelection } from "../providerInstances";

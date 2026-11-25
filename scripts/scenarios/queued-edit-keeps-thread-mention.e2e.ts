@@ -5,7 +5,7 @@ import * as Path from "effect/Path";
 import * as Schema from "effect/Schema";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { makeState, runPromise, test, WEB } from "./t3.ts";
+import { makeState, runPromise, test, WEB } from "./j6.ts";
 
 const SettingsJson = Schema.fromJsonString(Schema.Record(Schema.String, Schema.Unknown));
 const decodeSettings = Schema.decodeEffect(SettingsJson);
@@ -28,14 +28,14 @@ const threadRuntimeSettings = Effect.gen(function* () {
 test(
   "An unsaved queued edit keeps its thread mention when the queued run starts",
   WEB,
-  async ({ t3, app, screen }) => {
+  async ({ j6, app, screen }) => {
     const settings = await runPromise(threadRuntimeSettings);
     try {
       // Supervised mode makes the approval recording wait for an answer, which holds its turn open.
       await runPromise(settings.supervise);
-      const project = await t3.project("demo");
-      await t3.thread({ project, title: "Release notes", messages: ["Draft the notes"] });
-      const thread = await t3.thread({
+      const project = await j6.project("demo");
+      await j6.thread({ project, title: "Release notes", messages: ["Draft the notes"] });
+      const thread = await j6.thread({
         project,
         title: "Waiting work",
         messages: ["Change the file"],
@@ -43,7 +43,7 @@ test(
       });
       const { cli } = makeState(T3_HOME);
       await runPromise(cli(["thread", "send", thread.threadId, "Queued message"]));
-      await t3.open(thread);
+      await j6.open(thread);
 
       await screen.getByRole("button", "Edit queued message").tap();
       const composer = screen.getByRole("textbox");

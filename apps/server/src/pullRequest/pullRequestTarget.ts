@@ -1,5 +1,5 @@
-import type { OrchestrationProjectShell, SourceControlProviderKind } from "@t3tools/contracts";
-import { canonicalizeGitCafePullRequestUrl } from "@t3tools/source-control-definitions/registry";
+import type { OrchestrationProjectShell, SourceControlProviderKind } from "@j6/contracts";
+import { canonicalizeGitCafePullRequestUrl } from "@j6/source-control-definitions/registry";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 

@@ -33,7 +33,7 @@ import {
   WrenchIcon,
   XIcon,
 } from "lucide-react";
-import { resolveEventKeys } from "@t3tools/shared/keybindings";
+import { resolveEventKeys } from "@j6/shared/keybindings";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { T, useGT, useMessages } from "gt-react";
 
@@ -156,7 +156,7 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
     setActiveResultIndex(maxResultIndex);
   }
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- window keydown listener for the find and slash search shortcuts
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- window keydown listener for the find and slash search shortcuts
   useEffect(() => {
     const handleKeyDown = (event: globalThis.KeyboardEvent) => {
       if (event.defaultPrevented || event.isComposing) return;
@@ -196,7 +196,7 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- focuses the search input DOM node after the compact search opens
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- focuses the search input DOM node after the compact search opens
   useEffect(() => {
     if (compactSearchOpen) searchInputRef.current?.focus();
   }, [compactSearchOpen]);

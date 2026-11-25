@@ -16,7 +16,7 @@ import {
   ProviderThreadId,
   RunId,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -31,11 +31,11 @@ import * as CheckpointStore from "../checkpointing/CheckpointStore.ts";
 import * as ServerConfig from "../config.ts";
 import * as VcsDriverRegistry from "../vcs/VcsDriverRegistry.ts";
 import * as VcsProcess from "../vcs/VcsProcess.ts";
-import { VcsProcessTimeoutError } from "@t3tools/contracts";
+import { VcsProcessTimeoutError } from "@j6/contracts";
 import * as CheckpointService from "./CheckpointService.ts";
 import * as CheckpointCaptureService from "./CheckpointCaptureService.ts";
 import * as EventSink from "./EventSink.ts";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
 import * as ProjectionStore from "./ProjectionStore.ts";
 import * as ThreadCommandExecutor from "./ThreadCommandExecutor.ts";
 import * as ThreadManagement from "./ThreadManagementService.ts";
@@ -1539,7 +1539,7 @@ it.layer(layerProjectionStoreTest)("CheckpointCaptureServiceV2", (it) => {
         ),
       ).pipe(
         Layer.provide(
-          ServerConfig.ServerConfig.layerTest(process.cwd(), { prefix: "t3-capture-test-" }),
+          ServerConfig.ServerConfig.layerTest(process.cwd(), { prefix: "j6-capture-test-" }),
         ),
         Layer.provide(layerNode),
       );

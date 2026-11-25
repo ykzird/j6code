@@ -1,5 +1,5 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
-import type { DesktopSnapShotState } from "@t3tools/contracts";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
+import type { DesktopSnapShotState } from "@j6/contracts";
 import * as Option from "effect/Option";
 import { Atom, type AtomRegistry } from "effect/reactivity";
 import { msg } from "gt-react";

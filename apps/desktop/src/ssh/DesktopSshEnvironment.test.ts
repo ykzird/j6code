@@ -1,7 +1,7 @@
 import * as NodePath from "@effect/platform-node/NodePath";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { assert, describe, it } from "@effect/vitest";
-import { CLI_RELEASE_BASE_URL_ENV } from "@t3tools/shared/cliRelease";
+import { CLI_RELEASE_BASE_URL_ENV } from "@j6/shared/cliRelease";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 
@@ -12,14 +12,14 @@ import { resolveDesktopSshCliRunner } from "./DesktopSshEnvironment.ts";
 const packagedEnvironment = DesktopEnvironment.DesktopEnvironment.pipe(
   Effect.provide(
     DesktopEnvironment.layer({
-      dirname: "/Applications/T3 Code.app/Contents/Resources/app.asar/dist-electron",
+      dirname: "/Applications/J6 Code.app/Contents/Resources/app.asar/dist-electron",
       homeDirectory: "/Users/alice",
       platform: "darwin",
       processArch: "arm64",
       appVersion: "0.0.22",
-      appPath: "/Applications/T3 Code.app/Contents/Resources/app.asar",
+      appPath: "/Applications/J6 Code.app/Contents/Resources/app.asar",
       isPackaged: true,
-      resourcesPath: "/Applications/T3 Code.app/Contents/Resources",
+      resourcesPath: "/Applications/J6 Code.app/Contents/Resources",
       runningUnderArm64Translation: false,
     }).pipe(
       Layer.provide(
@@ -35,12 +35,12 @@ describe("resolveDesktopSshCliRunner", () => {
       const environment = yield* packagedEnvironment;
 
       const runner = resolveDesktopSshCliRunner(environment, {
-        [CLI_RELEASE_BASE_URL_ENV]: "https://mirror.example.com/t3code",
+        [CLI_RELEASE_BASE_URL_ENV]: "https://mirror.example.com/j6code",
       });
 
       assert.deepStrictEqual(runner, {
         archiveVersion: "0.0.22",
-        releaseBaseUrl: "https://mirror.example.com/t3code",
+        releaseBaseUrl: "https://mirror.example.com/j6code",
       });
     }),
   );

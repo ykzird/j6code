@@ -3,7 +3,7 @@ import type {
   ChatAttachment,
   ServerSettings,
   ServerSettingsError,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import type * as Effect from "effect/Effect";
 import type * as Option from "effect/Option";
@@ -24,7 +24,7 @@ export interface ProviderHostPaths {
 
 export interface ProviderCredentials {
   /** Instances whose bindings are equal share these credentials. */
-  readonly binding: { readonly owner: "t3"; readonly key: string };
+  readonly binding: { readonly owner: "j6"; readonly key: string };
   readonly get: Effect.Effect<Option.Option<Uint8Array>, ProviderCredentialError>;
   readonly set: (credentials: Uint8Array) => Effect.Effect<void, ProviderCredentialError>;
   readonly remove: Effect.Effect<void, ProviderCredentialError>;
@@ -52,7 +52,7 @@ export class ProviderHost extends Context.Service<
     readonly resolveExtractedTextPath?: (path: string) => Effect.Effect<string | undefined>;
     /**
      * Counts a running agent for local server discovery, so listeners carrying its
-     * T3CODE_THREAD_ID show under its thread. Call the returned function when it stops.
+     * J6CODE_THREAD_ID show under its thread. Call the returned function when it stops.
      */
     readonly trackAgent?: () => () => void;
     readonly credentials: (
@@ -62,4 +62,4 @@ export class ProviderHost extends Context.Service<
     /** A driver declares its minimum version in the policy and asks here, not in a constant. */
     readonly compatibility: ProviderCompatibilityLookup;
   }
->()("@t3tools/provider-core/server/ProviderHost") {}
+>()("@j6/provider-core/server/ProviderHost") {}

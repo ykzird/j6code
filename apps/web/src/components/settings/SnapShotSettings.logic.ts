@@ -1,4 +1,4 @@
-import type { ClientSettingsPatch, DesktopSnapShotState, SnapShotSound } from "@t3tools/contracts";
+import type { ClientSettingsPatch, DesktopSnapShotState, SnapShotSound } from "@j6/contracts";
 import { msg } from "gt-react";
 
 import { m, type MessageResolver } from "../../i18n/messages";

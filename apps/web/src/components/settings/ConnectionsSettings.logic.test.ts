@@ -1,4 +1,4 @@
-import { type DesktopWslState, EnvironmentId } from "@t3tools/contracts";
+import { type DesktopWslState, EnvironmentId } from "@j6/contracts";
 import { describe, expect, it, vi } from "vite-plus/test";
 import {
   applyWslEnableSelection,
@@ -56,7 +56,7 @@ describe("parseManualDesktopSshTarget", () => {
 
 describe("resolveCurrentOriginPairingUrl", () => {
   it.each([
-    ["t3code://app/settings/connections", null],
+    ["j6code://app/settings/connections", null],
     ["http://127.0.0.1:3774/settings", null],
     ["http://localhost:5173/", null],
     ["https://host.example.ts.net/settings", "https://host.example.ts.net/pair#token=abc"],

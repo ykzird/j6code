@@ -1,4 +1,4 @@
-import type { EditorId } from "@t3tools/contracts";
+import type { EditorId } from "@j6/contracts";
 import { useAtomValue } from "@effect/atom-react";
 import { Atom } from "effect/reactivity";
 import { flushSync } from "react-dom";

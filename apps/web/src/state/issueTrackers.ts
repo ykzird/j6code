@@ -1,4 +1,4 @@
-import { createIssueTrackerEnvironmentAtoms } from "@t3tools/client-runtime/state/issue-trackers";
+import { createIssueTrackerEnvironmentAtoms } from "@j6/client-runtime/state/issue-trackers";
 
 import { connectionAtomRuntime } from "../connection/runtime";
 

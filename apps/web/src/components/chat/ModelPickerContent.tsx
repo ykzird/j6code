@@ -7,14 +7,14 @@ import {
   type ProviderDriverKind,
   type ResolvedKeybindingsConfig,
   MODEL_PICKER_JUMP_KEYBINDING_COMMANDS,
-} from "@t3tools/contracts";
-import { resolveSelectableModel } from "@t3tools/shared/model";
+} from "@j6/contracts";
+import { resolveSelectableModel } from "@j6/shared/model";
 import { useAtomValue } from "@effect/atom-react";
 import {
   formatProviderUpdateRequiredNotice,
   providerUpdateChannelLags,
-} from "@t3tools/client-runtime/providerUpdateRequiredModels";
-import { groupModelsBySubProvider } from "@t3tools/client-runtime/providerSubProviders";
+} from "@j6/client-runtime/providerUpdateRequiredModels";
+import { groupModelsBySubProvider } from "@j6/client-runtime/providerSubProviders";
 import { useNavigate } from "@tanstack/react-router";
 import { LegendList, type LegendListRef } from "@legendapp/list/react";
 import {
@@ -39,7 +39,7 @@ import {
   parseModelPickerLegacySectionKey,
   parseModelPickerModelKey,
 } from "./modelPickerKeys";
-import { rankModelPickerSearch } from "@t3tools/client-runtime/model-search";
+import { rankModelPickerSearch } from "@j6/client-runtime/model-search";
 import {
   Combobox,
   ComboboxEmpty,
@@ -333,7 +333,7 @@ function ModelPickerList({
 // Capture gives picker shortcuts priority over the composer.
 function WindowKeyDownListener({ onKeyDown }: { onKeyDown: (event: KeyboardEvent) => void }) {
   const handleKeyDown = useEffectEvent(onKeyDown);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- subscribes a capture-phase window keydown listener for the picker's lifetime
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- subscribes a capture-phase window keydown listener for the picker's lifetime
   useEffect(() => {
     const listener = (event: KeyboardEvent) => handleKeyDown(event);
     window.addEventListener("keydown", listener, true);
@@ -388,7 +388,7 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
   const [searchQuery, setSearchQuery] = useState("");
   const modelListRef = useRef<LegendListRef | null>(null);
   const pickerContentRef = useRef<HTMLDivElement>(null);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- publishes this picker's mount to global keydown handlers
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- publishes this picker's mount to global keydown handlers
   useLayoutEffect(() => registerModelPickerContent(), []);
   const highlightedModelKeyRef = useRef<string | null>(null);
   const { favorites } = useEnvironmentModelPreferences(props.environmentId);

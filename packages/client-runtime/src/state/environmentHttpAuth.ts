@@ -5,10 +5,10 @@ import * as Option from "effect/Option";
 import {
   ORCHESTRATION_PROTOCOL_HEADER,
   ORCHESTRATION_PROTOCOL_VERSION_TEXT,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Result from "effect/Result";
 import * as SubscriptionRef from "effect/SubscriptionRef";
-import { withRelayClientTracing } from "@t3tools/shared/relayTracing";
+import { withRelayClientTracing } from "@j6/shared/relayTracing";
 import { FetchHttpClient, type HttpMethod } from "effect/http";
 
 import * as RemoteEnvironmentAuthorization from "../authorization/service.ts";
@@ -97,7 +97,7 @@ const buildEnvironmentAuthHeaders = Effect.fn("environmentHttpAuth.buildEnvironm
 );
 
 /**
- * A DPoP request is T3 Connect work, so its span starts an exported trace that
+ * A DPoP request is J6 Connect work, so its span starts an exported trace that
  * the environment continues; its local caller's span would leave that trace
  * without a root.
  */

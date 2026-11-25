@@ -9,8 +9,8 @@ import {
   ProviderSessionId,
   ThreadId,
   type AntigravitySettings,
-} from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+} from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
@@ -28,12 +28,12 @@ import {
   ANTIGRAVITY_AUTH_STDOUT_PREFIX,
   resolveAntigravityInstanceDirectories,
 } from "../antigravityAuthSupport.ts";
-import * as ProviderEventLoggers from "@t3tools/provider-core/server/ProviderEventLoggers";
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
+import * as ProviderEventLoggers from "@j6/provider-core/server/ProviderEventLoggers";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
 import * as ModelManifest from "../ModelManifest.ts";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
-import { knownProviderFailureMessage } from "@t3tools/provider-core/server/failure";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
+import { knownProviderFailureMessage } from "@j6/provider-core/server/failure";
 import { resolveProviderCompatibility } from "../providerCompatibility.ts";
 import { AntigravityDriver } from "./AntigravityDriver.ts";
 import * as ProviderHostLive from "../ProviderHostLive.ts";
@@ -74,7 +74,7 @@ const makeHarness = Effect.fn("makeAntigravityDriverHarness")(function* (
   const spawner = yield* ChildProcessSpawner.ChildProcessSpawner;
   const nodePath = yield* HostProcess.ExecutablePath;
   const baseEnv = yield* HostProcess.Environment;
-  const root = yield* fs.makeTempDirectoryScoped({ prefix: "t3-antigravity-driver-" });
+  const root = yield* fs.makeTempDirectoryScoped({ prefix: "j6-antigravity-driver-" });
   const instanceId = ProviderInstanceId.make(path.basename(root));
   const mockAgentPath = yield* path.fromFileUrl(
     new URL("../../../scripts/acp-mock-agent.ts", import.meta.url),
@@ -281,7 +281,7 @@ const makeHarness = Effect.fn("makeAntigravityDriverHarness")(function* (
 });
 
 const layerDeps = ServerConfig.layerTest(process.cwd(), {
-  prefix: "t3-antigravity-driver-config-",
+  prefix: "j6-antigravity-driver-config-",
 }).pipe(
   Layer.provideMerge(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
   Layer.provideMerge(
@@ -382,7 +382,7 @@ it.layer(layerTest)("AntigravityDriver", (it) => {
             modelSelection: { instanceId: h.instance.instanceId, model: "gemini-test-low" },
           })
           .pipe(Effect.ignore);
-        const workspace = yield* h.fs.makeTempDirectoryScoped({ prefix: "t3-ag-chat-" });
+        const workspace = yield* h.fs.makeTempDirectoryScoped({ prefix: "j6-ag-chat-" });
         const threadId = ThreadId.make("thread-antigravity-capabilities");
         const runtimePolicy = ProviderAdapter.ProviderAdapterV2RuntimePolicy.make({
           runtimeMode: "approval-required",
@@ -468,7 +468,7 @@ it.layer(layerTest)("AntigravityDriver", (it) => {
       Effect.gen(function* () {
         const h = yield* makeHarness({
           environment: [
-            { name: "T3CODE_THREAD_ID", value: "thread-antigravity-ambient" },
+            { name: "J6CODE_THREAD_ID", value: "thread-antigravity-ambient" },
             { name: "T3_ACP_MCP_ENDPOINT", value: "http://127.0.0.1:9/ambient" },
             { name: "T3_ACP_MCP_AUTHORIZATION", value: "Bearer ambient-token" },
             { name: "T3_ACP_MCP_NODE", value: "/ambient/node" },
@@ -491,7 +491,7 @@ it.layer(layerTest)("AntigravityDriver", (it) => {
         const entrypoint = h.path.resolve(process.argv[1]!);
         yield* Effect.scoped(
           Effect.gen(function* () {
-            const workspace = yield* h.fs.makeTempDirectoryScoped({ prefix: "t3-ag-environment-" });
+            const workspace = yield* h.fs.makeTempDirectoryScoped({ prefix: "j6-ag-environment-" });
             const runtimePolicy = ProviderAdapter.ProviderAdapterV2RuntimePolicy.make({
               runtimeMode: "approval-required",
               interactionMode: "default",
@@ -517,7 +517,7 @@ it.layer(layerTest)("AntigravityDriver", (it) => {
         );
         expect(agentLaunches).toHaveLength(2);
         expect(agentLaunches[1]?.environment).toMatchObject({
-          T3CODE_THREAD_ID: threadId,
+          J6CODE_THREAD_ID: threadId,
           T3_ACP_MCP_ENDPOINT: endpoint,
           T3_ACP_MCP_AUTHORIZATION: "Bearer antigravity-thread-token",
           T3_ACP_MCP_NODE: process.execPath,
@@ -525,7 +525,7 @@ it.layer(layerTest)("AntigravityDriver", (it) => {
         });
         // Model refresh and sign-in launches are not part of a thread.
         expect(agentLaunches[0]?.environment).toMatchObject({
-          T3CODE_THREAD_ID: "thread-antigravity-ambient",
+          J6CODE_THREAD_ID: "thread-antigravity-ambient",
           T3_ACP_MCP_ENDPOINT: "http://127.0.0.1:9/ambient",
           T3_ACP_MCP_AUTHORIZATION: "Bearer ambient-token",
           T3_ACP_MCP_NODE: "/ambient/node",
@@ -546,7 +546,7 @@ it.layer(layerTest)("AntigravityDriver", (it) => {
         const modelSelection = { instanceId: h.instance.instanceId, model: "gemini-test-low" };
         const error = yield* Effect.scoped(
           Effect.gen(function* () {
-            const workspace = yield* h.fs.makeTempDirectoryScoped({ prefix: "t3-ag-old-runtime-" });
+            const workspace = yield* h.fs.makeTempDirectoryScoped({ prefix: "j6-ag-old-runtime-" });
             const runtimePolicy = ProviderAdapter.ProviderAdapterV2RuntimePolicy.make({
               runtimeMode: "approval-required",
               interactionMode: "default",
@@ -561,7 +561,7 @@ it.layer(layerTest)("AntigravityDriver", (it) => {
             yield* session.ensureThread({ threadId, modelSelection, runtimePolicy });
           }),
         ).pipe(Effect.flip);
-        const message = `Antigravity 1.4.5 does not work with this T3 Code release. Update the Antigravity executable at ${old.executablePath} to >=1.5.12 <2, then retry.`;
+        const message = `Antigravity 1.4.5 does not work with this J6 Code release. Update the Antigravity executable at ${old.executablePath} to >=1.5.12 <2, then retry.`;
         expect(knownProviderFailureMessage(error)).toBe(message);
         expect((yield* h.refresh().pipe(Effect.flip)).detail).toBe(message);
         const methods = (yield* h.readRequests).map((request) => request.method);

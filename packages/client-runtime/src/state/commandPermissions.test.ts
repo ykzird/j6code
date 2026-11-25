@@ -24,7 +24,7 @@ import {
   WS_METHODS,
   type AuthSessionState,
   type PeerLinkSummary,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";

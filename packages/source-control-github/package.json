@@ -1,5 +1,5 @@
 {
-  "name": "@t3tools/source-control-github",
+  "name": "@j6/source-control-github",
   "private": true,
   "type": "module",
   "exports": {
@@ -19,17 +19,17 @@
   },
   "dependencies": {
     "@effect/platform-node": "catalog:",
-    "@t3tools/contracts": "workspace:*",
-    "@t3tools/provider-core": "workspace:*",
-    "@t3tools/shared": "workspace:*",
-    "@t3tools/source-control-core": "workspace:*",
+    "@j6/contracts": "workspace:*",
+    "@j6/provider-core": "workspace:*",
+    "@j6/shared": "workspace:*",
+    "@j6/source-control-core": "workspace:*",
     "effect": "catalog:",
     "yaml": "catalog:"
   },
   "devDependencies": {
     "@effect/graphql-generator": "catalog:",
     "@effect/vitest": "catalog:",
-    "@t3tools/source-control-testing": "workspace:*",
+    "@j6/source-control-testing": "workspace:*",
     "@types/node": "catalog:",
     "vite-plus": "catalog:"
   }

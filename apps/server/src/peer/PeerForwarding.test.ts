@@ -12,7 +12,7 @@ import {
   ProviderInstanceId,
   RunId,
   ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { expect, it } from "@effect/vitest";
 import * as Context from "effect/Context";
 import * as Duration from "effect/Duration";
@@ -85,7 +85,7 @@ const usersThread = ThreadId.make("thread:box-users-own");
 const boxThreads = (seen: Ref.Ref<Seen>, linkSession: Ref.Ref<string>) => {
   const base = { ...liveThreadShell(boxThread, { runtimeMode: "auto" }), projectId: boxProject };
   const linked = Ref.get(linkSession).pipe(
-    Effect.map((sessionId) => ({ ...base, linkOrigin: { sessionId, label: "T3 Code · Laptop" } })),
+    Effect.map((sessionId) => ({ ...base, linkOrigin: { sessionId, label: "J6 Code · Laptop" } })),
   );
   const users = { ...liveThreadShell(usersThread, { runtimeMode: "auto" }), projectId: boxProject };
   const run = (status: OrchestrationV2Run["status"]) =>
@@ -191,8 +191,8 @@ const boxProjects = (seen: Ref.Ref<Seen>) =>
           id === boxProject
             ? Option.some({
                 id,
-                title: "t3code",
-                workspaceRoot: "/box/t3code",
+                title: "j6code",
+                workspaceRoot: "/box/j6code",
                 defaultModelSelection: null,
                 scripts: [],
                 createdAt: "2026-10-18T00:00:00.000Z",
@@ -254,7 +254,7 @@ const serveBox = (seen: Ref.Ref<Seen>, linkSession: Ref.Ref<string>) =>
       Layer.provide(Layer.mock(GitVcsDriver.GitVcsDriver)({})),
       Layer.provide(boxProjects(seen)),
       Layer.provide(
-        ServerConfig.layerTest(process.cwd(), { prefix: "t3-peer-forwarding-box-" }).pipe(
+        ServerConfig.layerTest(process.cwd(), { prefix: "j6-peer-forwarding-box-" }).pipe(
           Layer.provide(NodeServices.layer),
         ),
       ),
@@ -308,7 +308,7 @@ const makeLaptop = Effect.gen(function* () {
     Layer.provide(Layer.mock(GitVcsDriver.GitVcsDriver)({})),
     Layer.provide(Layer.mock(SourceControlRepositoryService.SourceControlRepositoryService)({})),
     Layer.provide(
-      ServerConfig.layerTest(process.cwd(), { prefix: "t3-peer-forwarding-laptop-" }).pipe(
+      ServerConfig.layerTest(process.cwd(), { prefix: "j6-peer-forwarding-laptop-" }).pipe(
         Layer.provide(NodeServices.layer),
       ),
     ),
@@ -324,7 +324,7 @@ const makeLaptop = Effect.gen(function* () {
               ? {
                   ...liveThreadShell(threadId, { runtimeMode: "full-access" }),
                   // Work another environment's link started on this laptop.
-                  linkOrigin: { sessionId: "session:desk", label: "T3 Code · Desk" },
+                  linkOrigin: { sessionId: "session:desk", label: "J6 Code · Desk" },
                 }
               : liveThreadShell(
                   threadId,
@@ -587,8 +587,8 @@ it.effect("brings a repository to a linked environment, only through full access
       const seen = yield* Ref.make<Seen>(nothingSeen);
       const b = yield* serveBox(seen, yield* Ref.make(""));
       const a = yield* makeLaptop;
-      const clone = { repository: "pingdotgg/t3code", destinationPath: "/home/box/t3code" };
-      const register = { title: "t3code", workspaceRoot: "/home/box/t3code" };
+      const clone = { repository: "pingdotgg/t3code", destinationPath: "/home/box/j6code" };
+      const register = { title: "j6code", workspaceRoot: "/home/box/j6code" };
 
       yield* linkTo(a.links, b, "full-access");
       const cloned = yield* a.call("thread:laptop-full", "t3_project_clone", {

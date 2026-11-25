@@ -8,7 +8,7 @@ import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import * as Layer from "effect/Layer";
 import { assert, it } from "@effect/vitest";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Deferred from "effect/Deferred";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -21,8 +21,8 @@ import * as TestClock from "effect/testing/TestClock";
 import { ChildProcessSpawner } from "effect/process";
 import { describe, expect } from "vite-plus/test";
 
-import * as AcpSessionRuntime from "@t3tools/provider-acp/server/AcpSessionRuntime";
-import { AgentScope } from "@t3tools/shared/AgentScope";
+import * as AcpSessionRuntime from "@j6/provider-acp/server/AcpSessionRuntime";
+import { AgentScope } from "@j6/shared/AgentScope";
 import * as EffectAcpErrors from "effect-acp/errors";
 import type * as EffectAcpSchema from "effect-acp/compat";
 import type * as EffectAcpProtocol from "effect-acp/protocol";
@@ -34,7 +34,7 @@ const mockAgentArgs = [mockAgentPath];
 const mockRuntimeOptions = {
   spawn: { command: mockAgentCommand, args: mockAgentArgs },
   cwd: process.cwd(),
-  clientInfo: { name: "t3-test", version: "0.0.0" },
+  clientInfo: { name: "j6-test", version: "0.0.0" },
   authMethodId: "test",
 } satisfies AcpSessionRuntime.AcpSessionRuntimeOptions;
 
@@ -364,7 +364,7 @@ describe("AcpSessionRuntime", () => {
         Effect.provideService(AgentScope, {
           ...AgentScope.defaultValue(),
           wrap: ({ command, args }) =>
-            Effect.succeed({ command, args, unit: "t3code-acp-test.scope" }),
+            Effect.succeed({ command, args, unit: "j6code-acp-test.scope" }),
           stop: (unit) => Deferred.succeed(stopped, unit).pipe(Effect.asVoid),
         }),
       );
@@ -372,7 +372,7 @@ describe("AcpSessionRuntime", () => {
       expect(yield* Deferred.isDone(stopped)).toBe(false);
       yield* runtime.notify("_test/exit", {});
       const events = yield* runtime.getEvents().pipe(Stream.take(1), Stream.runCollect);
-      expect(yield* Deferred.await(stopped)).toBe("t3code-acp-test.scope");
+      expect(yield* Deferred.await(stopped)).toBe("j6code-acp-test.scope");
       const event = events[0];
       expect(event).toMatchObject({ _tag: "ConnectionTerminated", error: { code: 19 } });
       if (event?._tag !== "ConnectionTerminated") return;
@@ -614,7 +614,7 @@ describe("AcpSessionRuntime", () => {
         (event) => event.method === "session/new" && event.status === "started",
       );
       expect(created?.payload).toMatchObject({
-        mcpServers: [{ type: "acp", name: "t3-code", serverId: "t3-code" }],
+        mcpServers: [{ type: "acp", name: "j6-code", serverId: "j6-code" }],
       });
       // This agent does not advertise additional directories, so the thread's other folders stay out.
       expect(created?.payload).not.toHaveProperty("additionalDirectories");
@@ -627,11 +627,11 @@ describe("AcpSessionRuntime", () => {
             env: { T3_ACP_MCP_ACP: "1" },
           },
           cwd: process.cwd(),
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
           authMethodId: "test",
-          mcpServers: [{ type: "stdio", name: "t3-code", command: "/usr/bin/node", args: [] }],
-          acpMcpServers: [{ type: "acp", name: "t3-code", serverId: "t3-code" }],
-          extraRoots: ["/tmp/t3-tracked"],
+          mcpServers: [{ type: "stdio", name: "j6-code", command: "/usr/bin/node", args: [] }],
+          acpMcpServers: [{ type: "acp", name: "j6-code", serverId: "j6-code" }],
+          extraRoots: ["/tmp/j6-tracked"],
           requestLogger: (event) =>
             Effect.sync(() => {
               requestEvents.push(event);
@@ -682,7 +682,7 @@ describe("AcpSessionRuntime", () => {
             env: { T3_ACP_V2_MANAGEMENT: "1" },
           },
           cwd: process.cwd(),
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
           authMethodId: "test",
           requestLogger: (event) =>
             Effect.sync(() => {
@@ -727,7 +727,7 @@ describe("AcpSessionRuntime", () => {
             },
           },
           cwd: process.cwd(),
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
           requestLogger: (event) =>
             Effect.sync(() => {
               requestEvents.push(event);
@@ -765,7 +765,7 @@ describe("AcpSessionRuntime", () => {
             },
           },
           cwd: process.cwd(),
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
           onInitialized: (initializeResult) =>
             Effect.sync(() => {
               advertisedAuthMethodName = initializeResult.authMethods?.[0]?.name;
@@ -829,7 +829,7 @@ describe("AcpSessionRuntime", () => {
             args: mockAgentArgs,
           },
           cwd: process.cwd(),
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
           authMethodId: "test",
         }),
       ),
@@ -860,7 +860,7 @@ describe("AcpSessionRuntime", () => {
             args: mockAgentArgs,
           },
           cwd: process.cwd(),
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
           authMethodId: "test",
         }),
       ),
@@ -910,7 +910,7 @@ describe("AcpSessionRuntime", () => {
             },
           },
           cwd: process.cwd(),
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
           authMethodId: "test",
         }),
       ),
@@ -971,7 +971,7 @@ describe("AcpSessionRuntime", () => {
             },
           },
           cwd: process.cwd(),
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
           authMethodId: "test",
         }),
       ),
@@ -1017,7 +1017,7 @@ describe("AcpSessionRuntime", () => {
             env: { T3_ACP_EMIT_BACKGROUND_TOOL_DURING_ANSWER: "1" },
           },
           cwd: process.cwd(),
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
           authMethodId: "test",
         }),
       ),
@@ -1064,7 +1064,7 @@ describe("AcpSessionRuntime", () => {
             },
           },
           cwd: process.cwd(),
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
           authMethodId: "test",
         }),
       ),
@@ -1120,7 +1120,7 @@ describe("AcpSessionRuntime", () => {
           requestEvents.find((event) => event.method === method && event.status === "started")
             ?.payload,
         ).toMatchObject({
-          additionalDirectories: ["/tmp/t3-attachments", "/tmp/t3-tracked"],
+          additionalDirectories: ["/tmp/j6-attachments", "/tmp/j6-tracked"],
           _meta: { negotiated: "0.0.0" },
         });
       }
@@ -1135,13 +1135,13 @@ describe("AcpSessionRuntime", () => {
               T3_ACP_SESSION_LIFECYCLE: "1",
             },
           },
-          additionalDirectories: ["/tmp/t3-attachments"],
-          extraRoots: ["/tmp/t3-tracked"],
+          additionalDirectories: ["/tmp/j6-attachments"],
+          extraRoots: ["/tmp/j6-tracked"],
           sessionMeta: (initializeResult) => ({
             negotiated: initializeResult.agentInfo?.version ?? "none",
           }),
           cwd: process.cwd(),
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
           requestLogger: (event) =>
             Effect.sync(() => {
               requestEvents.push(event);
@@ -1194,7 +1194,7 @@ describe("AcpSessionRuntime", () => {
           },
           cwd: process.cwd(),
           resumeSessionId: "mock-session-1",
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
         }),
       ),
       Effect.scoped,
@@ -1222,7 +1222,7 @@ describe("AcpSessionRuntime", () => {
           },
           cwd: process.cwd(),
           resumeSessionId: "stale-session-id",
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
         }),
       ),
       Effect.scoped,
@@ -1408,7 +1408,7 @@ describe("AcpSessionRuntime", () => {
             },
           },
           cwd: process.cwd(),
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
         }),
       ),
       Effect.scoped,
@@ -1445,7 +1445,7 @@ describe("AcpSessionRuntime", () => {
           },
           cwd: process.cwd(),
           resumeSessionId: "mock-session-1",
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
         }),
       ),
       Effect.scoped,
@@ -1479,7 +1479,7 @@ describe("AcpSessionRuntime", () => {
           cwd: process.cwd(),
           resumeSessionId: "mock-session-1",
           sessionLoadReplayIdleGap: "50 millis",
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
         }),
       ),
       Effect.scoped,
@@ -1511,7 +1511,7 @@ describe("AcpSessionRuntime", () => {
           resumeSessionId: "mock-session-1",
           sessionLoadReplayIdleGap: "50 millis",
           sessionLoadReplayIdleReadiness: true,
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
         }),
       ),
       Effect.scoped,
@@ -1560,7 +1560,7 @@ describe("AcpSessionRuntime", () => {
             },
           },
           cwd: process.cwd(),
-          clientInfo: { name: "t3-test", version: "0.0.0" },
+          clientInfo: { name: "j6-test", version: "0.0.0" },
         }),
       ),
       Effect.scoped,

@@ -1,4 +1,4 @@
-import type { ProviderInstanceId } from "@t3tools/contracts";
+import type { ProviderInstanceId } from "@j6/contracts";
 import * as Arr from "effect/Array";
 import * as Order from "effect/Order";
 

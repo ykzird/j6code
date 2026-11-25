@@ -1,4 +1,4 @@
-import { stripAppImageRuntimeEnv } from "@t3tools/shared/appImageRuntimeEnv";
+import { stripAppImageRuntimeEnv } from "@j6/shared/appImageRuntimeEnv";
 import * as Cause from "effect/Cause";
 import * as Deferred from "effect/Deferred";
 import * as Duration from "effect/Duration";

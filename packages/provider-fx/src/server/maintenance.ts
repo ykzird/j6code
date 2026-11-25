@@ -1,4 +1,4 @@
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Effect from "effect/Effect";
 import * as HttpClient from "effect/http/HttpClient";
 import * as HttpClientRequest from "effect/http/HttpClientRequest";
@@ -12,7 +12,7 @@ import {
   resolveMacPortsOwner,
   resolveMiseProviderMaintenance,
   type ProviderMaintenanceCapabilitiesResolver,
-} from "@t3tools/provider-core/server/maintenanceResolver";
+} from "@j6/provider-core/server/maintenanceResolver";
 import { FX_DRIVER_KIND } from "./acpSupport.ts";
 
 /** The stable release `fx upgrade` and fx's setup script install. */

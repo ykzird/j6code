@@ -5,7 +5,7 @@ import {
   MODEL_PICKER_JUMP_KEYBINDING_COMMANDS,
   type ScopedThreadRef,
   THREAD_JUMP_KEYBINDING_COMMANDS,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   type FilePreviewScroll,
   filePreviewRestoreScrollMessage,
@@ -21,12 +21,12 @@ import {
   readHtmlRenderImageRequest,
   readHtmlRenderKeyDown,
   readHtmlRenderLinkRequest,
-} from "@t3tools/shared/htmlRender";
+} from "@j6/shared/htmlRender";
 import {
   isMacPlatform,
   matchesKeybindingShortcut,
   normalizeEventKey,
-} from "@t3tools/shared/keybindings";
+} from "@j6/shared/keybindings";
 import {
   lazy,
   type ReactNode,
@@ -251,13 +251,13 @@ function FileDocument(props: {
       reveal(next);
     }
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- listens for the frames' scroll reports
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- listens for the frames' scroll reports
   useEffect(() => {
     const onMessage = (event: MessageEvent) => onFrameMessage(event);
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
   }, []);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- swaps in a revision whose load event never arrives
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- swaps in a revision whose load event never arrives
   useEffect(() => {
     if (next === null) return;
     const timer = setTimeout(() => setFrames(showRevision(next)), FILE_DOCUMENT_SWAP_TIMEOUT_MS);
@@ -322,7 +322,7 @@ export function HtmlRenderDocument(props: {
   const postTheme = () => {
     frameRef.current?.contentWindow?.postMessage(htmlRenderThemeMessage(theme), "*");
   };
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- posts the current theme to the sandboxed iframe's window
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- posts the current theme to the sandboxed iframe's window
   useEffect(postTheme, [theme]);
   const keybindings = useAtomValue(primaryServerKeybindingsAtom);
   const environmentKeybindings = useAtomValue(
@@ -357,7 +357,7 @@ export function HtmlRenderDocument(props: {
       "*",
     );
   };
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- posts allowed and blocked shortcuts to the sandboxed iframe's window
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- posts allowed and blocked shortcuts to the sandboxed iframe's window
   useEffect(postShortcuts, [blocked, shortcuts]);
   // Pages can forge key/code pairs; reject pairs matching other bindings and require named keys to match the
   // shortcut.
@@ -400,7 +400,7 @@ export function HtmlRenderDocument(props: {
     void openLink(url, { event: modifiers }).catch((cause: unknown) => console.error(cause));
   });
   const { onFullscreenChange } = props;
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- reports fullscreen to the parent while the image viewer is open, and clears it on unmount
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- reports fullscreen to the parent while the image viewer is open, and clears it on unmount
   useEffect(() => {
     if (expandedImage === null) return;
     onFullscreenChange?.(true);
@@ -437,7 +437,7 @@ export function HtmlRenderDocument(props: {
     }
   });
   // Attach at commit because a fast page may post its initial height before passive effects run.
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- attaches a window message listener for the iframe at commit, before its first height post
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- attaches a window message listener for the iframe at commit, before its first height post
   useLayoutEffect(() => {
     const frame = frameRef.current;
     if (frame === null) return;

@@ -1,7 +1,7 @@
 import * as NodeModule from "node:module";
 
-import type { AntigravitySettings, ServerProviderUsageWindow } from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import type { AntigravitySettings, ServerProviderUsageWindow } from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Clock from "effect/Clock";
 import * as Digest from "effect/crypto/Digest";
 import * as DateTime from "effect/DateTime";
@@ -15,7 +15,7 @@ import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } fr
 import {
   makeUnavailableUsageLimits,
   makeUsageLimits,
-} from "@t3tools/provider-core/server/usageLimits";
+} from "@j6/provider-core/server/usageLimits";
 
 export function antigravityUserAgent(platform: NodeJS.Platform, architecture: NodeJS.Architecture) {
   return `antigravity/hub/2.24.0 (aidev_client; os_type=${platform}; arch=${architecture}; cl=963137146)`;
@@ -181,11 +181,11 @@ export function readWindowsCliCredential(
     throw new Error(`no credential access on ${architecture}`);
   }
   const { DataType, load, open } = requireExternal("ffi-rs") as typeof import("ffi-rs");
-  open({ library: "t3-advapi32", path: "advapi32.dll" });
-  open({ library: "t3-kernel32", path: "kernel32.dll" });
+  open({ library: "j6-advapi32", path: "advapi32.dll" });
+  open({ library: "j6-kernel32", path: "kernel32.dll" });
   const copy = (into: Buffer, from: bigint) =>
     load({
-      library: "t3-kernel32",
+      library: "j6-kernel32",
       funcName: "RtlMoveMemory",
       retType: DataType.Void,
       paramsType: [DataType.U8Array, DataType.BigInt, DataType.BigInt],
@@ -193,7 +193,7 @@ export function readWindowsCliCredential(
     });
   const out = Buffer.alloc(8);
   const read = load({
-    library: "t3-advapi32",
+    library: "j6-advapi32",
     funcName: "CredReadW",
     retType: DataType.I32,
     // CRED_TYPE_GENERIC
@@ -218,7 +218,7 @@ export function readWindowsCliCredential(
     return blob;
   } finally {
     load({
-      library: "t3-advapi32",
+      library: "j6-advapi32",
       funcName: "CredFree",
       retType: DataType.Void,
       paramsType: [DataType.BigInt],

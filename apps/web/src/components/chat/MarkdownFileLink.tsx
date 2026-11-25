@@ -1,12 +1,12 @@
 import { useNativeFileDrag } from "../../useNativeFileDrag";
 import { useAssetUrlState } from "../../assets/assetUrls";
-import { formatFilePathForClipboard } from "@t3tools/client-runtime/media-actions";
+import { formatFilePathForClipboard } from "@j6/client-runtime/media-actions";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
   type AtomCommandResult,
-} from "@t3tools/client-runtime/state/runtime";
-import type { ContextMenuSource, EnvironmentId, ScopedThreadRef } from "@t3tools/contracts";
+} from "@j6/client-runtime/state/runtime";
+import type { ContextMenuSource, EnvironmentId, ScopedThreadRef } from "@j6/contracts";
 import { memo, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { useGT } from "gt-react";
 import { FolderIcon } from "lucide-react";

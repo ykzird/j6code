@@ -1,4 +1,4 @@
-import type { VoiceInputState } from "@t3tools/client-runtime/voice-input";
+import type { VoiceInputState } from "@j6/client-runtime/voice-input";
 import { msg, useGT, useMessages } from "gt-react";
 import { CheckIcon, MicIcon, XIcon } from "lucide-react";
 import { useEffect, useState, type PointerEvent, type ReactElement } from "react";
@@ -64,7 +64,7 @@ function RecordingStatus(props: {
     recordingStartedAt ? Math.max(0, Math.floor((Date.now() - recordingStartedAt) / 1_000)) : 0,
   );
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- owns the timer displaying the native recording duration
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- owns the timer displaying the native recording duration
   useEffect(() => {
     if (preparing) return;
     const startedAt = recordingStartedAt ?? Date.now();

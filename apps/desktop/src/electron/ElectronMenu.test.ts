@@ -1,5 +1,5 @@
 import { assert, describe, it } from "@effect/vitest";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import type * as Electron from "electron";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";

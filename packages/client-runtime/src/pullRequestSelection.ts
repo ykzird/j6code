@@ -1,4 +1,4 @@
-import { PULL_REQUEST_CHANGE_BATCH_LIMIT } from "@t3tools/contracts";
+import { PULL_REQUEST_CHANGE_BATCH_LIMIT } from "@j6/contracts";
 
 /** Picks that differ from the host, keyed by candidate. Nothing is sent until the picker closes. */
 export type SelectionDraft<T> = ReadonlyMap<

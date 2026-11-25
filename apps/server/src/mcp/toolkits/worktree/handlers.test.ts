@@ -13,7 +13,7 @@ import {
   type RuntimeMode,
   ThreadId,
   type WorktreeMcpHandoffResult,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
@@ -99,7 +99,7 @@ const handoffFrom = <A, E>(
   const shell = () => ({ ...McpToolAccessTestkit.liveThreadShell(threadId, modes), projectId });
   const setupScriptRuns: Array<string> = [];
   const git = GitVcsDriver.layer.pipe(
-    Layer.provideMerge(ServerConfig.layerTest(process.cwd(), { prefix: "t3-handoff-" })),
+    Layer.provideMerge(ServerConfig.layerTest(process.cwd(), { prefix: "j6-handoff-" })),
     Layer.provideMerge(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
   );
   const service = WorktreeMcpService.layer.pipe(
@@ -177,7 +177,7 @@ const handoffFrom = <A, E>(
     const path = yield* Path.Path;
     const driver = yield* GitVcsDriver.GitVcsDriver;
     const tmp = yield* fileSystem.realPath(
-      yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-handoff-" }),
+      yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-handoff-" }),
     );
     const run = (cwd: string, ...args: ReadonlyArray<string>) =>
       driver.execute({ operation: "handoff-test", cwd, args });
@@ -209,7 +209,7 @@ const handoffFrom = <A, E>(
         ),
       writeLayout: fileSystem
         .writeFileString(
-          path.join(project, "t3.json"),
+          path.join(project, "j6.json"),
           JSON.stringify({
             worktreeLayout: {
               create: `touch "${marker}" && git worktree add -q -b "$T3_WORKTREE_BRANCH" "$T3_WORKTREE_PROJECT_PATH"`,

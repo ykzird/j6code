@@ -1,5 +1,5 @@
-import { Discovery } from "@t3tools/client-runtime/relay";
-import type { EnvironmentId } from "@t3tools/contracts";
+import { Discovery } from "@j6/client-runtime/relay";
+import type { EnvironmentId } from "@j6/contracts";
 import { T, useGT, Var } from "gt-react";
 import { useState } from "react";
 
@@ -48,10 +48,10 @@ export function RemoveT3ConnectEnvironmentDialog({
         openAccountPage();
       }}
     >
-      <T>T3 Connect settings</T>
+      <T>J6 Connect settings</T>
     </InlineButton>
   ) : (
-    gt("T3 Connect settings")
+    gt("J6 Connect settings")
   );
 
   return (
@@ -75,14 +75,14 @@ export function RemoveT3ConnectEnvironmentDialog({
             <AlertDialogDescription>
               {shown.registration === "registered" ? (
                 <T>
-                  It stays on your T3 Connect account and keeps its host space. Deregister it in{" "}
+                  It stays on your J6 Connect account and keeps its host space. Deregister it in{" "}
                   <Var>{accountPageLink}</Var> to free it.
                 </T>
               ) : shown.registration === "unregistered" ? (
-                gt("It's no longer on your T3 Connect account.")
+                gt("It's no longer on your J6 Connect account.")
               ) : (
                 <T>
-                  This doesn't change your T3 Connect account. To deregister it there, use{" "}
+                  This doesn't change your J6 Connect account. To deregister it there, use{" "}
                   <Var>{accountPageLink}</Var>.
                 </T>
               )}

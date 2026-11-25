@@ -2,7 +2,7 @@ import {
   isOrchestrationV2WorkActive,
   type OrchestrationV2ThreadShell,
   type ThreadId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 
 import type { ThreadStructure } from "./models.ts";

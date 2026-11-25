@@ -1,4 +1,4 @@
-import * as SecretResolver from "@t3tools/secret-provider-core/server/SecretResolver";
+import * as SecretResolver from "@j6/secret-provider-core/server/SecretResolver";
 import * as NodeHttpServer from "@effect/platform-node/NodeHttpServer";
 import { WebSocket } from "@effect/platform-node/NodeWS";
 // @effect-diagnostics-next-line nodeBuiltinImport:off -- Bind an isolated WebSocket negotiation fixture.
@@ -47,10 +47,10 @@ import {
   type ServerConfig,
   type ServerConfigStreamEvent,
   type ServerProvider,
-} from "@t3tools/contracts";
-import { SOCKET_FRAME_PARTS_QUERY_PARAM } from "@t3tools/shared/socketFrameParts";
+} from "@j6/contracts";
+import { SOCKET_FRAME_PARTS_QUERY_PARAM } from "@j6/shared/socketFrameParts";
 import * as Deferred from "effect/Deferred";
-import type { ProviderInstance } from "@t3tools/provider-core/server/driver";
+import type { ProviderInstance } from "@j6/provider-core/server/driver";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
@@ -79,8 +79,8 @@ import * as AssetSigner from "./assets/AssetSigner.ts";
 import * as WorkspacePreviewRevisions from "./assets/WorkspacePreviewRevisions.ts";
 import * as PreviewAutomationBroker from "./mcp/PreviewAutomationBroker.ts";
 import * as ServerBrowser from "./preview/ServerBrowser.ts";
-import * as AcpRegistryRuntimeCoordinator from "@t3tools/provider-acp-registry/server/AcpRegistryRuntimeCoordinator";
-import * as AcpRegistrySupport from "@t3tools/provider-acp-registry/server/AcpRegistrySupport";
+import * as AcpRegistryRuntimeCoordinator from "@j6/provider-acp-registry/server/AcpRegistryRuntimeCoordinator";
+import * as AcpRegistrySupport from "@j6/provider-acp-registry/server/AcpRegistrySupport";
 import * as AgentSessionImporter from "./project/AgentSessionImporter.ts";
 import * as AgentSessionScanner from "./project/AgentSessionScanner.ts";
 
@@ -121,7 +121,7 @@ import * as ProjectSetupScriptRunner from "./project/ProjectSetupScriptRunner.ts
 import * as ProviderAuthService from "./provider/ProviderAuthService.ts";
 import * as AcpRegistrySessions from "./provider/AcpRegistrySessions.ts";
 import * as ProviderInstanceRegistry from "./provider/ProviderInstanceRegistry.ts";
-import * as ProviderLatestVersions from "@t3tools/provider-core/server/ProviderLatestVersions";
+import * as ProviderLatestVersions from "@j6/provider-core/server/ProviderLatestVersions";
 import * as ProviderMaintenanceRunner from "./provider/providerMaintenanceRunner.ts";
 import * as ProviderRegistry from "./provider/ProviderRegistry.ts";
 import * as ProviderSessionManager from "./orchestration-v2/ProviderSessionManager.ts";
@@ -131,7 +131,7 @@ import * as ThreadIssueService from "./orchestration-v2/ThreadIssueService.ts";
 import * as IssueTrackerConnections from "./issue/IssueTrackerConnections.ts";
 import * as PullRequestService from "./pullRequest/PullRequestService.ts";
 import * as PullRequestSyncReactor from "./orchestration-v2/PullRequestSyncReactor.ts";
-import * as RelayClient from "@t3tools/shared/relayClient";
+import * as RelayClient from "@j6/shared/relayClient";
 import * as RemoteOpenTargets from "./environment/RemoteOpenTargets.ts";
 import * as RepositoryIdentityResolver from "./project/RepositoryIdentityResolver.ts";
 import * as ResourceTelemetry from "./resourceTelemetry/ResourceTelemetry.ts";
@@ -175,8 +175,8 @@ import * as ServerSecretStore from "./auth/ServerSecretStore.ts";
 import * as SecretCheck from "./secrets/SecretCheck.ts";
 import * as ServerConfigModule from "./config.ts";
 import * as Keybindings from "./keybindings.ts";
-import { USAGE_LIMITS_COMMAND } from "@t3tools/shared/usageLimits";
-import * as FeatureFlags from "@t3tools/shared/FeatureFlags";
+import { USAGE_LIMITS_COMMAND } from "@j6/shared/usageLimits";
+import * as FeatureFlags from "@j6/shared/FeatureFlags";
 import * as ServerSettings from "./serverSettings.ts";
 import * as ManagedPolicy from "./policy/ManagedPolicy.ts";
 
@@ -187,7 +187,7 @@ import * as ProjectionStore from "./orchestration-v2/ProjectionStore.ts";
 import * as EventSink from "./orchestration-v2/EventSink.ts";
 import * as LegacyV1ThreadImporter from "./orchestration-v2/legacy/LegacyV1ThreadImporter.ts";
 import * as ThreadCommandExecutor from "./orchestration-v2/ThreadCommandExecutor.ts";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
 import { projectIdentitiesDigest } from "./orchestration-v2/ShellStream.ts";
 import * as OrchestrationEventStore from "./persistence/OrchestrationEventStore.ts";
 import * as SqlitePersistence from "./persistence/Sqlite.ts";
@@ -936,7 +936,7 @@ const layerConfigSources = Layer.mergeAll(
   Layer.provideMerge(Layer.fresh(SqlitePersistence.layerMemory)),
   Layer.provideMerge(
     Layer.fresh(
-      ServerConfigModule.layerTest(process.cwd(), { prefix: "t3-config-subscription-test-" }),
+      ServerConfigModule.layerTest(process.cwd(), { prefix: "j6-config-subscription-test-" }),
     ),
   ),
   Layer.provideMerge(Layer.mergeAll(NodeServices.layer, NodeCrypto.layer)),
@@ -1018,7 +1018,7 @@ it.live.each([
             new WebSocket(
               `${origin}/ws?${ORCHESTRATION_PROTOCOL_QUERY_PARAM}=${ORCHESTRATION_PROTOCOL_VERSION}${framed ? `&${SOCKET_FRAME_PARTS_QUERY_PARAM}=1` : ""}`,
               {
-                origin: "t3code://app",
+                origin: "j6code://app",
               },
             ),
         ),
@@ -1774,19 +1774,19 @@ it.effect("a missing thread worktree gets its project's skills in the cwd snapsh
     const instanceId = ProviderInstanceId.make("claudeAgent");
     const projectId = ProjectId.make("project:skills");
     const workspaceRoot = yield* fileSystem.makeTempDirectoryScoped({
-      prefix: "t3-missing-worktree-project-",
+      prefix: "j6-missing-worktree-project-",
     });
     const skillPath = path.join(workspaceRoot, ".claude", "skills", "finalize", "SKILL.md");
     yield* fileSystem.makeDirectory(path.dirname(skillPath), { recursive: true });
     yield* fileSystem.writeFileString(skillPath, "---\nname: finalize\n---\n");
     // Removed with `git worktree remove`; only the next turn start recreates it.
-    const worktreePath = path.join(serverConfig.worktreesDir, "proj", "t3-6f94fb95");
+    const worktreePath = path.join(serverConfig.worktreesDir, "proj", "j6-6f94fb95");
     const thread = {
       id: ThreadId.make("thread:worktree"),
       projectId,
       archivedAt: null,
       worktreePath,
-      branch: "t3/reply-ok",
+      branch: "j6/reply-ok",
     } as unknown as OrchestrationV2ThreadShell;
     const project = {
       id: projectId,
@@ -2520,11 +2520,11 @@ it.effect.each([
       `;
       const identity = isRepository
         ? ({
-            canonicalKey: "github.com/t3/idle",
+            canonicalKey: "github.com/j6/idle",
             locator: {
               source: "git-remote",
               remoteName: "origin",
-              remoteUrl: "git@github.com:t3/idle",
+              remoteUrl: "git@github.com:j6/idle",
             },
           } as const)
         : null;
@@ -2727,7 +2727,7 @@ it.effect("ACP session RPCs list a thread missing its history and repair it on i
     const pending = yield* seedAcpThread("pending", { imported: false, ran: false });
     const complete = yield* seedAcpThread("complete", { imported: true, ran: false });
     const ran = yield* seedAcpThread("ran", { imported: false, ran: true });
-    const owned = yield* seedAcpThread("existing-t3-thread", {
+    const owned = yield* seedAcpThread("existing-j6-thread", {
       imported: false,
       ran: true,
       nativeId: "owned-session",

@@ -1,12 +1,12 @@
-import * as AzureDevOpsDriver from "@t3tools/source-control-azure-devops/server/driver";
-import * as BitbucketDriver from "@t3tools/source-control-bitbucket/server/driver";
-import * as CursorOriginDriver from "@t3tools/source-control-cursor-origin/server/driver";
-import { builtInSourceControlDefinitions } from "@t3tools/source-control-definitions/registry";
-import * as ForgejoDriver from "@t3tools/source-control-forgejo/server/driver";
-import * as GitCafeDriver from "@t3tools/source-control-gitcafe/server/driver";
-import * as GitHubDriver from "@t3tools/source-control-github/server/driver";
-import * as GitLabDriver from "@t3tools/source-control-gitlab/server/driver";
-import * as TanStackSourceDriver from "@t3tools/source-control-tanstack-source/server/driver";
+import * as AzureDevOpsDriver from "@j6/source-control-azure-devops/server/driver";
+import * as BitbucketDriver from "@j6/source-control-bitbucket/server/driver";
+import * as CursorOriginDriver from "@j6/source-control-cursor-origin/server/driver";
+import { builtInSourceControlDefinitions } from "@j6/source-control-definitions/registry";
+import * as ForgejoDriver from "@j6/source-control-forgejo/server/driver";
+import * as GitCafeDriver from "@j6/source-control-gitcafe/server/driver";
+import * as GitHubDriver from "@j6/source-control-github/server/driver";
+import * as GitLabDriver from "@j6/source-control-gitlab/server/driver";
+import * as TanStackSourceDriver from "@j6/source-control-tanstack-source/server/driver";
 
 /**
  * In the shared registry's order, which is the order hosts are listed and probed in. Feature

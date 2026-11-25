@@ -5,8 +5,8 @@ import {
   type KeybindingShortcut,
   type SnapShotModifier,
   type SnapShotShortcut,
-} from "@t3tools/contracts";
-import { parseKeybindingShortcut } from "@t3tools/shared/keybindings";
+} from "@j6/contracts";
+import { parseKeybindingShortcut } from "@j6/shared/keybindings";
 
 import { formatShortcutKeyLabel, formatShortcutLabel, shortcutConflictKey } from "../keybindings";
 import { isMacPlatform, isWindowsPlatform } from "./utils";
@@ -63,7 +63,7 @@ function modifierKeyLabel(modifier: SnapShotModifier, platform: string): string 
     if (modifier === "control") return "⌃";
     return "⌥";
   }
-  // oxlint-disable-next-line t3code/no-untranslated-copy -- key names stay English
+  // oxlint-disable-next-line j6code/no-untranslated-copy -- key names stay English
   if (modifier === "meta") return isWindowsPlatform(platform) ? "⊞" : "Super";
   return modifier === "control" ? "Ctrl" : "Alt";
 }

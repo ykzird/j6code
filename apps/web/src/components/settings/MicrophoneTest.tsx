@@ -1,6 +1,6 @@
-import { errorDisplayMessage } from "@t3tools/client-runtime/errors";
+import { errorDisplayMessage } from "@j6/client-runtime/errors";
 import { m } from "~/i18n/messages";
-import { MICROPHONE_PERMISSION_ERROR } from "@t3tools/client-runtime/voice-input";
+import { MICROPHONE_PERMISSION_ERROR } from "@j6/client-runtime/voice-input";
 import { MicIcon, PauseIcon, PlayIcon, RotateCcwIcon, SquareIcon, XIcon } from "lucide-react";
 import { T, useGT, useMessages } from "gt-react";
 import { useEffect, useRef, useState } from "react";
@@ -70,7 +70,7 @@ export function MicrophoneTest({
     setRecording(null);
     setPhase("idle");
   };
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- releases the microphone and the recording's object URL on unmount
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- releases the microphone and the recording's object URL on unmount
   useEffect(
     () => () => {
       releaseCapture();
@@ -152,7 +152,7 @@ export function MicrophoneTest({
       current.context = context;
       await context.audioWorklet.addModule(workletUrl);
       if (capture.current !== current) return;
-      const worklet = new AudioWorkletNode(context, "t3-pcm-capture", {
+      const worklet = new AudioWorkletNode(context, "j6-pcm-capture", {
         channelCount: 1,
         processorOptions: { meterOnly: true },
       });

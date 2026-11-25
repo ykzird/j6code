@@ -14,7 +14,7 @@ import {
   type PullRequestMergeMethod,
   type PullRequestRef,
   ProjectId,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -226,7 +226,7 @@ export class WorkflowForge extends Context.Service<
       ) => Effect.Effect<void, WorkflowForgeError>;
     };
   }
->()("t3/workflows/WorkflowForge") {}
+>()("j6/workflows/WorkflowForge") {}
 
 const failed =
   (what: string) =>

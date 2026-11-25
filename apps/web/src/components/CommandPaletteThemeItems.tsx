@@ -1,4 +1,4 @@
-import { BUILT_IN_THEMES } from "@t3tools/shared/themePalettes";
+import { BUILT_IN_THEMES } from "@j6/shared/themePalettes";
 import { msg, T, useGT, useMessages } from "gt-react";
 import { MonitorIcon, MoonIcon, PaletteIcon, SunIcon } from "lucide-react";
 

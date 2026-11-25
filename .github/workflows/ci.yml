@@ -98,20 +98,20 @@ jobs:
           key: electron-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('node_modules/.pnpm/electron@*/node_modules/electron/package.json') }}
 
       - name: Ensure Electron runtime is installed
-        run: vp run --filter @t3tools/desktop ensure:electron
+        run: vp run --filter @j6/desktop ensure:electron
 
       # Files/dependencies are repo-wide; export checks cover clean workspaces only.
       - name: Check unused code
         run: vp run knip:check
 
       - name: Check generated GitHub GraphQL operations
-        run: vp run --filter @t3tools/source-control-github generate --check
+        run: vp run --filter @j6/source-control-github generate --check
 
       - name: Check generated Expo GraphQL operations
         run: vp run --filter j6 generate --check
 
       - name: Check generated Linear GraphQL operations
-        run: vp run --filter @t3tools/issue-tracker-linear generate --check
+        run: vp run --filter @j6/issue-tracker-linear generate --check
 
       - name: Check i18n catalogs
         run: vp run i18n:check
@@ -174,7 +174,7 @@ jobs:
 
       - name: Ensure Electron runtime is installed
         id: electron
-        run: vp run --filter @t3tools/desktop ensure:electron
+        run: vp run --filter @j6/desktop ensure:electron
 
       # Runs in the background while the build runs, and reports in the last
       # step: neither result hides the other.
@@ -333,7 +333,7 @@ jobs:
           key: electron-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('node_modules/.pnpm/electron@*/node_modules/electron/package.json') }}
 
       - name: Ensure Electron runtime is installed
-        run: vp run --filter @t3tools/desktop ensure:electron
+        run: vp run --filter @j6/desktop ensure:electron
 
       - name: Test preview artifact validation
         run: python3 -B .github/scripts/stage-preview-bundle.test.py
@@ -354,7 +354,7 @@ jobs:
           TEST_PACKAGES: ${{ needs.changes.outputs.test_packages }}
         run: |
           set -o pipefail
-          filters=(--filter '!t3' --filter '!@t3tools/monorepo' --filter '!@t3tools/web')
+          filters=(--filter '!j6' --filter '!@j6/monorepo' --filter '!@j6/web')
           if [[ -n "$TEST_PACKAGES" ]]; then
             filters=()
             for package in $TEST_PACKAGES; do filters+=(--filter "$package"); done
@@ -425,7 +425,7 @@ jobs:
           fi
 
       - name: Test
-        run: vp run --filter @t3tools/web test --shard ${{ matrix.shard }}/${{ strategy.job-total }}
+        run: vp run --filter @j6/web test --shard ${{ matrix.shard }}/${{ strategy.job-total }}
 
   # apps/server sets `fileParallelism: false`, so its test files run strictly
   # one at a time. Sharding spreads them over separate runners instead of
@@ -472,7 +472,7 @@ jobs:
 
       # No Electron setup here: `j6` (apps/server) has no Electron dependency
       # and none of its tests touch the runtime. Only the non-server `test`
-      # job, which covers @t3tools/desktop, needs the download.
+      # job, which covers @j6/desktop, needs the download.
       # Cache the pinned browser and skip apt unless shared libraries are missing.
       - name: Resolve Playwright version
         id: playwright_version
@@ -514,9 +514,9 @@ jobs:
       - name: Test
         if: steps.changes.outputs.test_server != 'false'
         env:
-          T3CODE_TRANSFER_BUDGET_REPORT_PATH: ${{ runner.temp }}/j6code-transfer-budget.md
-          T3CODE_TRANSFER_BUDGET_RESULT_PATH: ${{ runner.temp }}/thread-transfer-result.json
-          T3CODE_TRANSFER_BUDGET_SCENARIOS_PATH: ${{ runner.temp }}/thread-transfer-scenarios.json
+          J6CODE_TRANSFER_BUDGET_REPORT_PATH: ${{ runner.temp }}/j6code-transfer-budget.md
+          J6CODE_TRANSFER_BUDGET_RESULT_PATH: ${{ runner.temp }}/thread-transfer-result.json
+          J6CODE_TRANSFER_BUDGET_SCENARIOS_PATH: ${{ runner.temp }}/thread-transfer-scenarios.json
         # One process per file spends ~2s starting before its tests run; one file per vCPU overlaps that.
         run: >-
           vp run test:cached -- --shard ${{ matrix.shard }}/${{ strategy.job-total }} --concurrency 4

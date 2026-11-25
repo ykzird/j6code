@@ -1,11 +1,11 @@
 import { assert, describe, it } from "@effect/vitest";
-import { SecretProviderId, VcsProcessTimeoutError } from "@t3tools/contracts";
+import { SecretProviderId, VcsProcessTimeoutError } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Redacted from "effect/Redacted";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import type * as SourceControlHost from "@t3tools/source-control-core/server/SourceControlHost";
-import * as TestSourceControlHost from "@t3tools/source-control-testing/TestSourceControlHost";
+import * as HostProcess from "@j6/shared/HostProcess";
+import type * as SourceControlHost from "@j6/source-control-core/server/SourceControlHost";
+import * as TestSourceControlHost from "@j6/source-control-testing/TestSourceControlHost";
 
 import * as GitCafeCredentials from "./GitCafeCredentials.ts";
 

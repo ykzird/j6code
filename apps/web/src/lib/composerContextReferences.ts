@@ -1,9 +1,9 @@
-import type { ComposerContextId, ComposerContextKind } from "@t3tools/contracts";
+import type { ComposerContextId, ComposerContextKind } from "@j6/contracts";
 import {
   collectComposerContextReferences,
   formatComposerContextReference,
   replaceComposerContextReferences,
-} from "@t3tools/shared/composerContextReferences";
+} from "@j6/shared/composerContextReferences";
 
 export interface ComposerContextReference {
   kind: ComposerContextKind;

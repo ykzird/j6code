@@ -3,14 +3,14 @@ import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 
-import type { GitCommandError } from "@t3tools/contracts";
+import type { GitCommandError } from "@j6/contracts";
 
 import { assert, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
-import * as SourceControlHost from "@t3tools/source-control-core/server/SourceControlHost";
-import * as TestSourceControlHost from "@t3tools/source-control-testing/TestSourceControlHost";
+import * as SourceControlHost from "@j6/source-control-core/server/SourceControlHost";
+import * as TestSourceControlHost from "@j6/source-control-testing/TestSourceControlHost";
 
 import * as AzureDevOpsCli from "./AzureDevOpsCli.ts";
 import * as AzureDevOpsSourceControlProvider from "./AzureDevOpsSourceControlProvider.ts";
@@ -26,7 +26,7 @@ const withRepository = <A, E>(
   Effect.gen(function* () {
     const host = yield* SourceControlHost.SourceControlHost;
     const cwd = yield* Effect.acquireRelease(
-      Effect.sync(() => NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "t3-azure-template-"))),
+      Effect.sync(() => NodeFS.mkdtempSync(NodePath.join(NodeOS.tmpdir(), "j6-azure-template-"))),
       (directory) => Effect.sync(() => NodeFS.rmSync(directory, { recursive: true, force: true })),
     );
     const git = (...args: string[]) =>

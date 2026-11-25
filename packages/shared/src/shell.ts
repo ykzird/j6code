@@ -12,7 +12,7 @@ import * as FileSystem from "effect/FileSystem";
 import * as Option from "effect/Option";
 import * as Path from "effect/Path";
 
-import type { ShellEnvironmentPatch } from "@t3tools/contracts";
+import type { ShellEnvironmentPatch } from "@j6/contracts";
 import * as HostProcess from "./HostProcess.ts";
 import * as Context from "effect/Context";
 const SHELL_ENV_NAME_PATTERN = /^[A-Z0-9_]+$/;
@@ -140,7 +140,7 @@ async function resolveSpawnExecutableWithNode(
 }
 
 export const SpawnExecutableResolution = Context.Reference<SpawnExecutableResolver>(
-  "@t3tools/shared/shell/SpawnExecutableResolution",
+  "@j6/shared/shell/SpawnExecutableResolution",
   {
     defaultValue: () => resolveSpawnExecutableWithNode,
   },
@@ -224,20 +224,20 @@ export function mergePathEntries(
 }
 
 function envCaptureStart(name: string): string {
-  return `__T3CODE_ENV_${name}_START__`;
+  return `__J6CODE_ENV_${name}_START__`;
 }
 
 function envCaptureEnd(name: string): string {
-  return `__T3CODE_ENV_${name}_END__`;
+  return `__J6CODE_ENV_${name}_END__`;
 }
 
 const DEBUG_TRAP_SHELLS = new Set(["bash", "zsh", "sh", "ksh", "ksh93"]);
-const POSIX_CAPTURE_SYNTAX = { assignment: "__T3CODE_PRINTENV=$(", orElse: " || " };
+const POSIX_CAPTURE_SYNTAX = { assignment: "__J6CODE_PRINTENV=$(", orElse: " || " };
 const PRINTENV_CAPTURE_SYNTAX = new Map(
   [...DEBUG_TRAP_SHELLS, "dash", "ash"].map((shell) => [shell, POSIX_CAPTURE_SYNTAX] as const),
-).set("fish", { assignment: "set -l __T3CODE_PRINTENV (", orElse: "; or " });
+).set("fish", { assignment: "set -l __J6CODE_PRINTENV (", orElse: "; or " });
 // Network PATH entries must be probed inside the shell's deadline, away from the desktop thread.
-const PRINTENV_LOOKUP_COMMAND = `/bin/sh -c 'command -v printenv || { [ -n "$1" ] && PATH="$1" command -v printenv; } || printf %s /usr/bin/printenv' t3`;
+const PRINTENV_LOOKUP_COMMAND = `/bin/sh -c 'command -v printenv || { [ -n "$1" ] && PATH="$1" command -v printenv; } || printf %s /usr/bin/printenv' j6`;
 
 export function buildEnvironmentCaptureCommand(
   shell: string,
@@ -286,7 +286,7 @@ export function buildEnvironmentCaptureCommand(
       return [
         `printf '%s\\n' '${envCaptureStart(name)}'`,
         supportsFallback
-          ? `printenv ${name}${orElse}"$__T3CODE_PRINTENV" ${name}${orElse}true`
+          ? `printenv ${name}${orElse}"$__J6CODE_PRINTENV" ${name}${orElse}true`
           : `printenv ${name} || true`,
         `printf '%s\\n' '${envCaptureEnd(name)}'`,
       ].join("; ");
@@ -409,14 +409,14 @@ export type WindowsShellEnvironmentReader = (
 ) => Effect.Effect<Partial<Record<string, string>>>;
 
 export const WindowsShellEnvironment = Context.Reference<WindowsShellEnvironmentReader>(
-  "@t3tools/shared/shell/WindowsShellEnvironment",
+  "@j6/shared/shell/WindowsShellEnvironment",
   {
     defaultValue: () => readEnvironmentFromWindowsShell,
   },
 );
 
 export const CommandAvailability = Context.Reference<CommandAvailabilityChecker>(
-  "@t3tools/shared/shell/CommandAvailability",
+  "@j6/shared/shell/CommandAvailability",
   {
     defaultValue: () => isCommandAvailable,
   },
@@ -600,7 +600,7 @@ interface CommandResolutionCacheEntry {
 }
 
 export const CommandResolutionCache = Context.Reference<Map<string, CommandResolutionCacheEntry>>(
-  "@t3tools/shared/shell/CommandResolutionCache",
+  "@j6/shared/shell/CommandResolutionCache",
   {
     defaultValue: () => new Map(),
   },
@@ -681,7 +681,7 @@ export const makePathDirectoryListings = Cache.makeWith(listPathDirectory, {
 
 /** Windows PATH directory listings for the process; each use rechecks the directory's mtime. */
 export const PathDirectoryListings = Context.Reference(
-  "@t3tools/shared/shell/PathDirectoryListings",
+  "@j6/shared/shell/PathDirectoryListings",
   { defaultValue: () => Effect.runSync(makePathDirectoryListings) },
 );
 
@@ -1049,7 +1049,7 @@ function locateXcodeGitWithXcrun(env: NodeJS.ProcessEnv): string | undefined {
 }
 
 export const XcodeGitLocation = Context.Reference<XcodeGitLocator>(
-  "@t3tools/shared/shell/XcodeGitLocation",
+  "@j6/shared/shell/XcodeGitLocation",
   { defaultValue: () => locateXcodeGitWithXcrun },
 );
 
@@ -1329,7 +1329,7 @@ interface PathSetupInput {
 
 /**
  * The startup file (`~/...`, or absolute under `configHome`) and line that put `directory` last on
- * PATH for new zsh, bash, or fish terminals, so it never shadows another `t3`. Undefined on Windows (writing PATH there would flatten the registry's
+ * PATH for new zsh, bash, or fish terminals, so it never shadows another `j6`. Undefined on Windows (writing PATH there would flatten the registry's
  * `%VAR%` entries), for other shells, macOS bash, or unsafe paths.
  */
 export function pathSetup(

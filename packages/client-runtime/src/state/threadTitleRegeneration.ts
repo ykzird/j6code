@@ -3,7 +3,7 @@ import type {
   OrchestrationV2ShellSnapshot,
   ThreadId,
   ThreadTitleRegenerationOutcome,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import type { Atom, AtomRegistry } from "effect/reactivity";
 

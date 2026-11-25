@@ -1,4 +1,4 @@
-import type { EnvironmentId, ProjectId } from "@t3tools/contracts";
+import type { EnvironmentId, ProjectId } from "@j6/contracts";
 import { T, useGT, useMessages } from "gt-react";
 import { reviewCommentRangeText } from "~/lib/composerContextRecords";
 import { MessageCircle, Trash2 } from "lucide-react";
@@ -71,7 +71,7 @@ export function DiffCommentAnnotation({
   const trimmedText = displayedText.trim();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- focuses the draft textarea on the next animation frame after mount
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- focuses the draft textarea on the next animation frame after mount
   useLayoutEffect(() => {
     if (kind !== "draft" || !focusOnMount) return;
     const frame = window.requestAnimationFrame(() => {

@@ -12,10 +12,10 @@ import {
   type WorkflowRunsSnapshot,
   type WorkflowStep,
   type WorkflowSummary,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
-import { formatDuration } from "@t3tools/shared/orchestrationTiming";
+import { formatDuration } from "@j6/shared/orchestrationTiming";
 
 export interface WorkflowQuestionChoice {
   readonly value: string;

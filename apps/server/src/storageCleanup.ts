@@ -6,7 +6,7 @@ import {
   OrchestrationV2AppThreadJson,
   OrchestrationV2ProviderSessionJson,
   StorageCleanupReportEntry,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Base64Url from "effect/encoding/Base64Url";
 import * as Schema from "effect/Schema";
 import * as SqlClient from "effect/sql/SqlClient";
@@ -19,11 +19,11 @@ import type {
   WorktreeCleanupRules,
   StorageCleanupReport,
   ThreadId,
-} from "@t3tools/contracts";
-import { writeFileStringAtomically } from "@t3tools/shared/atomicWrite";
-import { resolveWorktreeCleanup } from "@t3tools/shared/projectSettings";
-import { resolveWorktreeT3Home } from "@t3tools/shared/devHome";
-import { makeDrainableWorker } from "@t3tools/shared/DrainableWorker";
+} from "@j6/contracts";
+import { writeFileStringAtomically } from "@j6/shared/atomicWrite";
+import { resolveWorktreeCleanup } from "@j6/shared/projectSettings";
+import { resolveWorktreeT3Home } from "@j6/shared/devHome";
+import { makeDrainableWorker } from "@j6/shared/DrainableWorker";
 import * as Context from "effect/Context";
 import * as Deferred from "effect/Deferred";
 import * as Layer from "effect/Layer";
@@ -64,9 +64,9 @@ import { isNonRepositoryGitStderr } from "./vcs/GitVcsDriverCore.ts";
 import { isLinkedWorktree, removeLinkedWorktree } from "./vcs/worktreeRemoval.ts";
 import * as TaskFolders from "./workspace/TaskFolders.ts";
 import { withWorkspaceLease } from "./workspace/workspaceLease.ts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import * as NodeSqliteClient from "@t3tools/shared/nodeSqliteClient";
-import { isNetworkPath } from "@t3tools/shared/path";
+import * as HostProcess from "@j6/shared/HostProcess";
+import * as NodeSqliteClient from "@j6/shared/nodeSqliteClient";
+import { isNetworkPath } from "@j6/shared/path";
 
 const decodeCleanupThread = Schema.decodeUnknownEffect(
   Schema.fromJsonString(OrchestrationV2AppThreadJson),
@@ -323,7 +323,7 @@ export class StorageCleanup extends Context.Service<
     readonly reports: Stream.Stream<StorageCleanupReport | null>;
     readonly drain: Effect.Effect<void>;
   }
->()("t3/storageCleanup") {}
+>()("j6/storageCleanup") {}
 
 const make = Effect.gen(function* () {
   const config = yield* ServerConfig.ServerConfig;
@@ -1027,7 +1027,7 @@ const make = Effect.gen(function* () {
             "--max-count=1",
             "HEAD",
             // Checkpoint refs hold workspace snapshots, not commits a user could lose.
-            "--exclude=refs/t3/*",
+            "--exclude=refs/j6/*",
             "--all",
             "--reflog",
             "--not",
@@ -2039,7 +2039,7 @@ const make = Effect.gen(function* () {
     for (const row of rows) {
       // Derive ownership from tombstones, never from absence in this database:
       // another T3 home can own refs in the same Git repository.
-      const prefixes = [`refs/t3/checkpoints/${Base64Url.encode(row.threadId)}/turn/`];
+      const prefixes = [`refs/j6/checkpoints/${Base64Url.encode(row.threadId)}/turn/`];
       if (row.scopeId !== null) {
         prefixes.push(
           (yield* checkpointRefForScopeOrdinal({
@@ -2087,8 +2087,8 @@ const make = Effect.gen(function* () {
           args: [
             "for-each-ref",
             "--format=%(refname)",
-            "refs/t3/checkpoints/",
-            "refs/t3/orchestration-v2/checkpoints/",
+            "refs/j6/checkpoints/",
+            "refs/j6/orchestration-v2/checkpoints/",
           ],
           maxOutputBytes: 16 * 1024 * 1024,
         });

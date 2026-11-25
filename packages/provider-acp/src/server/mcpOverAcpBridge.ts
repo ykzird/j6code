@@ -6,7 +6,7 @@ import * as Semaphore from "effect/Semaphore";
 import * as Stream from "effect/Stream";
 import type * as AcpSchema from "effect-acp/compat";
 
-import { responsePayloads } from "@t3tools/shared/mcpResponsePayloads";
+import { responsePayloads } from "@j6/shared/mcpResponsePayloads";
 
 const MAX_CONNECTIONS = 16;
 const MAX_MESSAGE_BYTES = 8 * 1024 * 1024;
@@ -151,7 +151,7 @@ export const makeAcpMcpOverAcpBridge = Effect.fn("AcpMcpOverAcpBridge.make")(fun
             () => response.body?.cancel().catch(() => undefined) ?? Promise.resolve(),
           );
           return yield* new AcpMcpOverAcpError({
-            message: `T3 Code MCP endpoint responded with HTTP ${response.status}.`,
+            message: `J6 Code MCP endpoint responded with HTTP ${response.status}.`,
           });
         }
         const payloads = [...(yield* Stream.runCollect(responsePayloads(response, bridgeError)))];
@@ -202,7 +202,7 @@ export const makeAcpMcpOverAcpBridge = Effect.fn("AcpMcpOverAcpBridge.make")(fun
         });
         if (!response.ok && response.status !== 404) {
           return yield* new AcpMcpOverAcpError({
-            message: `T3 Code MCP endpoint rejected disconnect with HTTP ${response.status}.`,
+            message: `J6 Code MCP endpoint rejected disconnect with HTTP ${response.status}.`,
           });
         }
         yield* Effect.promise(
@@ -214,7 +214,7 @@ export const makeAcpMcpOverAcpBridge = Effect.fn("AcpMcpOverAcpBridge.make")(fun
           orElse: () =>
             Effect.fail(
               new AcpMcpOverAcpError({
-                message: "T3 Code MCP endpoint did not answer disconnect.",
+                message: "J6 Code MCP endpoint did not answer disconnect.",
               }),
             ),
         }),
@@ -227,7 +227,7 @@ export const makeAcpMcpOverAcpBridge = Effect.fn("AcpMcpOverAcpBridge.make")(fun
 
   return {
     connect: Effect.fn("mcpOverAcpBridge.connect")(function* (request) {
-      if (request.serverId !== "t3-code") {
+      if (request.serverId !== "j6-code") {
         return yield* new AcpMcpOverAcpError({
           message: `Unknown ACP MCP server "${request.serverId}".`,
         });

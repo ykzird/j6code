@@ -1,6 +1,6 @@
 # Maintainer: maria-rcks <maria at kuuro dot net>
 
-pkgname=t3code-bin
+pkgname=j6code-bin
 pkgver=0.1.7
 pkgrel=1
 pkgdesc='Desktop control surface for local coding agents'
@@ -74,8 +74,8 @@ package() {
   install -Dm755 /dev/stdin "$pkgdir/usr/bin/j6code" <<'EOF'
 #!/bin/sh
 # AppRun computes APPDIR but doesn't export it. The server's AppImage env scrub needs it
-# to keep /opt/t3code-bin/usr/lib etc. out of terminal and agent shells (#28993).
-exec env APPDIR=/opt/t3code-bin /opt/t3code-bin/AppRun "$@"
+# to keep /opt/j6code-bin/usr/lib etc. out of terminal and agent shells (#28993).
+exec env APPDIR=/opt/j6code-bin /opt/j6code-bin/AppRun "$@"
 EOF
   ln -s j6code "$pkgdir/usr/bin/j6-code-desktop"
 
@@ -87,7 +87,7 @@ EOF
       "$pkgdir/usr/share/icons/hicolor/${size_dir##*/}/apps/j6code.png"
   done
 
-  install -Dm644 /dev/stdin "$pkgdir/usr/share/applications/t3code.desktop" <<'EOF'
+  install -Dm644 /dev/stdin "$pkgdir/usr/share/applications/j6code.desktop" <<'EOF'
 [Desktop Entry]
 Name=J6 Code
 Comment=Desktop control surface for local coding agents
@@ -96,7 +96,7 @@ TryExec=j6code
 Terminal=false
 Type=Application
 Icon=j6code
-StartupWMClass=com.t3tools.J6Code
+StartupWMClass=com.ykzird.J6Code
 Categories=Development;
 MimeType=x-scheme-handler/j6code;
 EOF

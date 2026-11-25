@@ -1,5 +1,5 @@
 import { useAtomValue } from "@effect/atom-react";
-import type { EnvironmentId, ProviderDriverKind } from "@t3tools/contracts";
+import type { EnvironmentId, ProviderDriverKind } from "@j6/contracts";
 import { T, Var } from "gt-react";
 import { InfoIcon } from "lucide-react";
 
@@ -36,7 +36,7 @@ export function MultipleAccountsNote({
       <AlertDescription>
         <p>
           <T>
-            We do not recommend managing multiple <Var>{providerName}</Var> accounts in T3 Code.{" "}
+            We do not recommend managing multiple <Var>{providerName}</Var> accounts in J6 Code.{" "}
             <a
               href={MULTIPLE_ACCOUNTS_FAQ_URL}
               target="_blank"

@@ -1,9 +1,9 @@
-import { SourceControlProviderKind } from "@t3tools/contracts";
-import type { ChangeRequestProjectIdentity } from "@t3tools/source-control-core/shared/definition";
+import { SourceControlProviderKind } from "@j6/contracts";
+import type { ChangeRequestProjectIdentity } from "@j6/source-control-core/shared/definition";
 import {
   makeSourceControlDefinitionRegistry,
   recognizeRemoteWith,
-} from "@t3tools/source-control-core/shared/definition";
+} from "@j6/source-control-core/shared/definition";
 import { describe, expect, it } from "vite-plus/test";
 
 import { definition } from "./definition.ts";
@@ -12,17 +12,17 @@ const parse = (url: string) => definition.parseChangeRequestUrl(new URL(url));
 
 describe("Azure DevOps change request URLs", () => {
   it("reads both hosted URL forms", () => {
-    expect(parse("https://dev.azure.com/acme/platform/_git/t3code/pullrequest/17")).toEqual({
+    expect(parse("https://dev.azure.com/acme/platform/_git/j6code/pullrequest/17")).toEqual({
       host: "dev.azure.com",
-      repository: "acme/platform/_git/t3code",
+      repository: "acme/platform/_git/j6code",
       number: 17,
-      repositoryUrl: "https://dev.azure.com/acme/platform/_git/t3code",
+      repositoryUrl: "https://dev.azure.com/acme/platform/_git/j6code",
     });
     expect(
-      parse("https://acme.visualstudio.com/platform/_git/t3code/pullrequest/17"),
+      parse("https://acme.visualstudio.com/platform/_git/j6code/pullrequest/17"),
     ).toMatchObject({
       host: "acme.visualstudio.com",
-      repository: "platform/_git/t3code",
+      repository: "platform/_git/j6code",
       number: 17,
     });
   });
@@ -144,7 +144,7 @@ describe("Azure DevOps repository keys", () => {
       "https://T3Tools@dev.azure.com/T3Tools/Platform/_git/T3Code",
     ]) {
       expect(registry.repositoryKeyFromRemote(remote), remote).toBe(
-        "dev.azure.com/t3tools/platform/_git/t3code",
+        "dev.azure.com/t3tools/platform/_git/j6code",
       );
     }
   });
@@ -214,7 +214,7 @@ describe("Azure DevOps repository keys", () => {
       "https://T3Tools.visualstudio.com/Platform/_git/T3Code",
     ]) {
       expect(registry.repositoryKeyFromRemote(remote), remote).toBe(
-        "t3tools.visualstudio.com/platform/_git/t3code",
+        "t3tools.visualstudio.com/platform/_git/j6code",
       );
     }
   });

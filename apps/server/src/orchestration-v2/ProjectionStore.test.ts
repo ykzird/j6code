@@ -32,7 +32,7 @@ import {
   type ThreadPullRequestLink,
   isLiveSubagentShell,
   isListedThreadLineage,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
 import * as Deferred from "effect/Deferred";
@@ -43,8 +43,8 @@ import * as Schema from "effect/Schema";
 import * as Tracer from "effect/Tracer";
 import * as SqlClient from "effect/sql/SqlClient";
 import * as Statement from "effect/sql/Statement";
-import { projectThreadAwarenessV2 } from "@t3tools/shared/agentAwareness";
-import { MCP_APP_OUTPUT_KEY } from "@t3tools/shared/mcpApp";
+import { projectThreadAwarenessV2 } from "@j6/shared/agentAwareness";
+import { MCP_APP_OUTPUT_KEY } from "@j6/shared/mcpApp";
 
 import * as SqlitePersistence from "../persistence/Sqlite.ts";
 import { CodexProviderCapabilitiesV2 } from "./Adapters/CodexAdapterV2.ts";
@@ -1814,7 +1814,7 @@ it.effect("SQL shells flag only an active turn blocked solely on T3 thread waits
     const delegation = {
       ...wait,
       id: TurnItemId.make("item:thread-wait:delegation"),
-      toolName: "t3-code-thread_opencode2-adapter_delegate_task",
+      toolName: "j6-code-thread_opencode2-adapter_delegate_task",
       input: { task: "Review", mode: "async" },
     };
     yield* updateItem(delegation);
@@ -2316,7 +2316,7 @@ const commandReadsSkipSettledLeafNodes = Effect.gen(function* () {
       parentCheckpointId: null,
       ordinalWithinScope: 1,
       appRunOrdinal: 1,
-      ref: CheckpointRef.make("refs/t3/settled-leaf-nodes/1"),
+      ref: CheckpointRef.make("refs/j6/settled-leaf-nodes/1"),
       status: "ready",
       files: [],
       capturedAt: now,
@@ -3192,7 +3192,7 @@ it.effect("SQL shells read a subagent family and a worktree's threads", () =>
     const store = yield* ProjectionStore.ProjectionStoreV2;
     const now = yield* DateTime.now;
     const projectId = ProjectId.make("project:family");
-    const worktreePath = "/repo/.t3/worktrees/family";
+    const worktreePath = "/repo/.j6/worktrees/family";
     const id = (name: string) => ThreadId.make(`thread:family:${name}`);
     const payloadOf = (input: {
       readonly name: string;
@@ -4306,7 +4306,7 @@ it.layer(layerTest)("ProjectionStoreV2", (it) => {
           parentCheckpointId: null,
           ordinalWithinScope: 0,
           appRunOrdinal: null,
-          ref: CheckpointRef.make("refs/t3/bounded-sql-history/0"),
+          ref: CheckpointRef.make("refs/j6/bounded-sql-history/0"),
           status: "ready",
           files: [],
           capturedAt: now,
@@ -4352,7 +4352,7 @@ it.layer(layerTest)("ProjectionStoreV2", (it) => {
           parentCheckpointId: null,
           ordinalWithinScope: 1_000,
           appRunOrdinal: null,
-          ref: CheckpointRef.make("refs/t3/bounded-sql-history/repository/1000"),
+          ref: CheckpointRef.make("refs/j6/bounded-sql-history/repository/1000"),
           status: "ready",
           files: [{ path: "src/main.ts", kind: "modified", additions: 1, deletions: 0 }],
           capturedAt: now,
@@ -4945,12 +4945,12 @@ it.layer(layerTest)("ProjectionStoreV2", (it) => {
           payload: item,
         });
       for (const inline of [
-        { toolName: "t3-code.delegate_task" },
+        { toolName: "j6-code.delegate_task" },
         { toolName: "mcp__t3_code__delegate_task" },
         { toolName: "mcp__docs__search", output: { next: "Delegate-Task" } },
         { toolName: "view_image", viewedImagePath: "/repo/screenshot.png" },
         { toolName: "mcp__docs__chart", output: { [MCP_APP_OUTPUT_KEY]: { uri: "ui://chart" } } },
-        { toolName: "mcp__t3-code__send_to_user" },
+        { toolName: "mcp__j6-code__send_to_user" },
         // OpenCode Code Mode reports a nested send_to_user call as one `execute` item.
         { toolName: "execute", output: JSON.stringify({ sentMessage: "Draft" }) },
       ]) {
@@ -4999,7 +4999,7 @@ it.layer(layerTest)("ProjectionStoreV2", (it) => {
       }
       // Until its run is scanned, a cursor on inline output is hidden inside a work group.
       yield* sql`UPDATE orchestration_v2_projection_turn_items SET type = 'dynamic_tool',
-        payload_json = json_set(payload_json, '$.type', 'dynamic_tool', '$.toolName', 't3-code.delegate_task'),
+        payload_json = json_set(payload_json, '$.type', 'dynamic_tool', '$.toolName', 'j6-code.delegate_task'),
         inline_work_output = 1 WHERE thread_id = ${threadId} AND ordinal = 4`;
       const sharedRunId = "run:bounded-sql-history:1";
       // A work page of rows that have no run leaves their inline output out too.
@@ -5061,7 +5061,7 @@ it.layer(layerTest)("ProjectionStoreV2", (it) => {
             '$.runId', CASE WHEN ordinal <= 700 THEN 'run:bounded-sql-history:300' ELSE ${sharedRunId} END)
         WHERE thread_id = ${threadId} AND ordinal >= 100`;
       yield* sql`UPDATE orchestration_v2_projection_turn_items SET type = 'dynamic_tool',
-        payload_json = json_set(payload_json, '$.type', 'dynamic_tool', '$.toolName', 't3-code.delegate_task'),
+        payload_json = json_set(payload_json, '$.type', 'dynamic_tool', '$.toolName', 'j6-code.delegate_task'),
         inline_work_output = 1 WHERE thread_id = ${threadId} AND ordinal = 720`;
       const beforeMissingCursor = yield* historyPage(
         threadId,
@@ -8241,7 +8241,7 @@ it.layer(layerTest)("ProjectionStoreV2", (it) => {
   );
 
   it.effect.each([
-    ["T3 Code's idle compaction", "agent", "server", undefined, true, "/compact"],
+    ["J6 Code's idle compaction", "agent", "server", undefined, true, "/compact"],
     ["compacting on return", "user", "web", "onReturn", true, "/compact"],
     ["a typed /compact", "user", "mobile", undefined, false, "/compact"],
     ["a normalized idle command", "agent", "server", undefined, true, " \t\u00a0/COMPACT\u3000\n"],

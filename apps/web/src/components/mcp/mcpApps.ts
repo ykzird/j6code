@@ -11,9 +11,9 @@ import { msg } from "gt-react";
 
 import { m, type MessageResolver } from "~/i18n/messages";
 
-/** How the Connect step hands T3 Code's MCP URL to an app. Every `link` is https. */
+/** How the Connect step hands J6 Code's MCP URL to an app. Every `link` is https. */
 export type McpAppHandoff =
-  /** Opens the app's add form with T3 Code filled in. */
+  /** Opens the app's add form with J6 Code filled in. */
   | { readonly kind: "open"; readonly link: (mcpUrl: string) => string }
   /** Copies the URL, then opens the page it goes on. */
   | { readonly kind: "copy-url"; readonly link: string }
@@ -112,7 +112,7 @@ export const MCP_APPS: readonly McpApp[] = [
       msg("Choose Custom apps, then Add, and paste the URL."),
     ],
     docs: "https://support.google.com/gemini/answer/17209137",
-    // Gemini's sign-in and its tool schema checks do not work with T3 Code yet.
+    // Gemini's sign-in and its tool schema checks do not work with J6 Code yet.
     hidden: true,
   },
   {
@@ -147,8 +147,8 @@ export const MCP_APPS: readonly McpApp[] = [
       commands: (url) => [
         // Its MCP commands refuse to write while the Gateway runs.
         "openclaw gateway stop",
-        `openclaw mcp add t3code --url ${url} --transport streamable-http --auth oauth`,
-        "openclaw mcp login t3code",
+        `openclaw mcp add j6code --url ${url} --transport streamable-http --auth oauth`,
+        "openclaw mcp login j6code",
         "openclaw gateway start",
       ],
     },
@@ -168,12 +168,12 @@ export const MCP_APPS: readonly McpApp[] = [
       commands: (url) => [
         // `add` signs in on its first connection (30 s by default, too short to get a code);
         // `login` would clear that sign-in and need a second code.
-        `hermes mcp add t3code --url ${url} --auth oauth --connect-timeout 315`,
+        `hermes mcp add j6code --url ${url} --auth oauth --connect-timeout 315`,
       ],
     },
     steps: [
-      msg("Add t3code under mcp_servers in ~/.hermes/config.yaml, with the URL and auth: oauth."),
-      msg("Run hermes mcp login t3code."),
+      msg("Add j6code under mcp_servers in ~/.hermes/config.yaml, with the URL and auth: oauth."),
+      msg("Run hermes mcp login j6code."),
     ],
     note: msg("On a remote host, paste the final URL back when asked."),
     docs: "https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp",

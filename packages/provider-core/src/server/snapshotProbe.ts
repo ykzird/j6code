@@ -11,15 +11,15 @@ import type {
   ServerProviderUpdateRequiredModel,
   ServerProviderState,
   ServerProviderUsageLimits,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as PlatformError from "effect/PlatformError";
 import * as Schema from "effect/Schema";
 import * as Stream from "effect/Stream";
 import * as ChildProcess from "effect/process/ChildProcess";
 import * as ChildProcessSpawner from "effect/process/ChildProcessSpawner";
-import { readCustomModelEntries } from "@t3tools/shared/model";
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import { readCustomModelEntries } from "@j6/shared/model";
+import * as HostProcess from "@j6/shared/HostProcess";
 import { createProviderVersionAdvisory } from "./maintenanceResolver.ts";
 import { collectUint8StreamText } from "./collectStreamText.ts";
 
@@ -50,7 +50,7 @@ export const resolveProviderProbeTimeoutMs = (
   defaultTimeoutMs: number,
   environment: NodeJS.ProcessEnv = process.env,
 ): number => {
-  const timeoutMs = Number(environment[`T3CODE_${provider.toUpperCase()}_PROBE_TIMEOUT_MS`]);
+  const timeoutMs = Number(environment[`J6CODE_${provider.toUpperCase()}_PROBE_TIMEOUT_MS`]);
   // Overrides only extend: callers nest these deadlines and size optional work inside them
   // against the defaults. Node timers overflow above a signed 32-bit delay.
   return Number.isInteger(timeoutMs) && timeoutMs > defaultTimeoutMs && timeoutMs <= 2_147_483_647

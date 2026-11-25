@@ -1,4 +1,4 @@
-import type { RuntimeMode } from "@t3tools/contracts";
+import type { RuntimeMode } from "@j6/contracts";
 import { useGT } from "gt-react";
 import { memo, useRef } from "react";
 import { EllipsisIcon } from "lucide-react";

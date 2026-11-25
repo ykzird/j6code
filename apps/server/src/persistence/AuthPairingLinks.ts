@@ -1,5 +1,5 @@
 import * as Context from "effect/Context";
-import * as NodeSqliteClient from "@t3tools/shared/nodeSqliteClient";
+import * as NodeSqliteClient from "@j6/shared/nodeSqliteClient";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Option from "effect/Option";
@@ -7,7 +7,7 @@ import * as Schema from "effect/Schema";
 import * as SqlClient from "effect/sql/SqlClient";
 import * as SqlSchema from "effect/sql/SqlSchema";
 
-import { AuthClientMetadata, AuthEnvironmentScopes } from "@t3tools/contracts";
+import { AuthClientMetadata, AuthEnvironmentScopes } from "@j6/contracts";
 
 import {
   type AuthPairingLinkRepositoryError,
@@ -37,7 +37,7 @@ export const AuthPairingLinkRecord = Schema.Struct({
   expiresAt: Schema.DateTimeUtcFromString,
   consumedAt: Schema.NullOr(Schema.DateTimeUtcFromString),
   revokedAt: Schema.NullOr(Schema.DateTimeUtcFromString),
-  /** Spendable only once `proofKeyThumbprint` is a trusted T3 Connect device. */
+  /** Spendable only once `proofKeyThumbprint` is a trusted J6 Connect device. */
   requiresConnectApproval: SqliteFlag,
   connectApproved: SqliteFlag,
   requestedClient: Schema.NullOr(Schema.fromJsonString(AuthClientMetadata)),
@@ -168,7 +168,7 @@ export class AuthPairingLinkRepository extends Context.Service<
       input: RevokeUnspentByProofKeyInput,
     ) => Effect.Effect<ReadonlyArray<string>, AuthPairingLinkRepositoryError>;
   }
->()("t3/persistence/AuthPairingLinks/AuthPairingLinkRepository") {}
+>()("j6/persistence/AuthPairingLinks/AuthPairingLinkRepository") {}
 
 function toPersistenceSqlOrDecodeError(
   sqlOperation: string,
@@ -493,7 +493,7 @@ export const make = Effect.gen(function* () {
     Result: Schema.Struct({ id: Schema.String }),
     execute: ({ proofKeyThumbprint, keepProofKeyThumbprint, includeUnbound, revokedAt }) =>
       sql`
-        -- Only T3 Connect mints bind a proof key, so bound links are that key's connect credentials.
+        -- Only J6 Connect mints bind a proof key, so bound links are that key's connect credentials.
         UPDATE auth_pairing_links
         SET revoked_at = ${revokedAt}
         WHERE revoked_at IS NULL

@@ -9,13 +9,13 @@ import {
   type WorkspaceListFoldersResult,
   type WorkspaceScanFoldersInput,
   type WorkspaceScanFoldersResult,
-} from "@t3tools/contracts";
-import { expandHomePath } from "@t3tools/provider-core/server/pathExpansion";
-import { splitsSurrogatePair } from "@t3tools/shared/assistantCitations";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { fromLenientJson } from "@t3tools/shared/schemaJson";
-import { T3_PROJECT_FILE_NAME } from "@t3tools/contracts";
-import { parseT3ProjectFile } from "@t3tools/shared/t3ProjectFile";
+} from "@j6/contracts";
+import { expandHomePath } from "@j6/provider-core/server/pathExpansion";
+import { splitsSurrogatePair } from "@j6/shared/assistantCitations";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { fromLenientJson } from "@j6/shared/schemaJson";
+import { T3_PROJECT_FILE_NAME } from "@j6/contracts";
+import { parseT3ProjectFile } from "@j6/shared/t3ProjectFile";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -75,7 +75,7 @@ export class WorkspaceFolders extends Context.Service<
       input: WorkspaceScanFoldersInput,
     ) => Effect.Effect<WorkspaceScanFoldersResult, WorkspaceFoldersError>;
   }
->()("t3/workspace/WorkspaceFolders") {}
+>()("j6/workspace/WorkspaceFolders") {}
 
 const DETECTION_CONCURRENCY = 8;
 // What `ProjectTrackedFolder.name` allows.
@@ -274,7 +274,7 @@ const scanFolders = Effect.fn("WorkspaceFolders.scan")(function* (
 
 /**
  * The repositories inside a project folder, read from disk: the ones a scan finds there, less
- * those the project's `t3.json` leaves out. A folder outside it is never found this way, since
+ * those the project's `j6.json` leaves out. A folder outside it is never found this way, since
  * tracking one grants agents a place they could not reach before.
  */
 export const discoverFolders = Effect.fn("WorkspaceFolders.discover")(function* (

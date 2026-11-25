@@ -3,8 +3,8 @@ import * as NodeSqlite from "node:sqlite";
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { expect, it } from "@effect/vitest";
-import { AuthSessionId } from "@t3tools/contracts";
-import * as NetService from "@t3tools/shared/Net";
+import { AuthSessionId } from "@j6/contracts";
+import * as NetService from "@j6/shared/Net";
 import * as ConfigProvider from "effect/ConfigProvider";
 import * as DateTime from "effect/DateTime";
 import * as Effect from "effect/Effect";
@@ -51,15 +51,15 @@ const listedPaths = (command: Command.Command.Any, path: string): ReadonlyArray<
   ),
 ];
 
-it("feedback subjects name every listed t3 command", () => {
+it("feedback subjects name every listed j6 command", () => {
   expect([...T3_CLI_COMMANDS].sort()).toEqual(
-    [...listedPaths(makeCli({ cloudEnabled: true }), "t3")].sort(),
+    [...listedPaths(makeCli({ cloudEnabled: true }), "j6")].sort(),
   );
 });
 
 const hidden = (tool: string) =>
   new McpBridge.AcpMcpBridgeError({
-    message: "T3 Code MCP tools/call failed.",
+    message: "J6 Code MCP tools/call failed.",
     rpcError: { code: -32602, message: `Tool '${tool}' not found` },
   });
 
@@ -85,7 +85,7 @@ it.effect("points to Labs only when the server hides the feedback tool", () =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-feedback-cli-" });
+    const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-feedback-cli-" });
     const runtimeStatePath = path.join(baseDir, "userdata", "server-runtime.json");
     const runtimeState = yield* makePersistedServerRuntimeState({
       config: { host: "127.0.0.1", devUrl: undefined },
@@ -113,9 +113,9 @@ it.effect("points to Labs only when the server hides the feedback tool", () =>
           Effect.fail(
             new McpBridge.AcpMcpBridgeError({ message: "fetch failed: connection refused" }),
           ),
-        stderr: `Could not reach the T3 Code server at ${runtimeState.origin}.`,
+        stderr: `Could not reach the J6 Code server at ${runtimeState.origin}.`,
       },
-      { args: submit, running: false, stderr: "No running T3 Code server uses" },
+      { args: submit, running: false, stderr: "No running J6 Code server uses" },
     ];
     for (const { args, running, call, stderr } of cases) {
       yield* running === false
@@ -147,7 +147,7 @@ it.effect("points to Labs only when the server hides the feedback tool", () =>
       );
 
     // A file the server rejects reads as the defaults, so Off, as the server would read it.
-    const rejected = yield* fs.makeTempDirectoryScoped({ prefix: "t3-feedback-cli-" });
+    const rejected = yield* fs.makeTempDirectoryScoped({ prefix: "j6-feedback-cli-" });
     yield* fs.makeDirectory(path.join(rejected, "userdata"), { recursive: true });
     yield* fs.writeFileString(
       path.join(rejected, "userdata", "settings.json"),
@@ -156,14 +156,14 @@ it.effect("points to Labs only when the server hides the feedback tool", () =>
     yield* expectOneLine(["list"], rejected, FEEDBACK_OFF_MESSAGE);
 
     // On, a damaged database is one line too.
-    const damaged = yield* fs.makeTempDirectoryScoped({ prefix: "t3-feedback-cli-" });
+    const damaged = yield* fs.makeTempDirectoryScoped({ prefix: "j6-feedback-cli-" });
     yield* fs.makeDirectory(path.join(damaged, "userdata"), { recursive: true });
     yield* turnOn(damaged);
     yield* fs.writeFileString(path.join(damaged, "userdata", "statev2.sqlite"), "not a database");
     yield* expectOneLine(["list"], damaged, "Could not read this machine's feedback reports: ");
 
     // A database from before agent feedback, with no table for it, lists nothing.
-    const older = yield* fs.makeTempDirectoryScoped({ prefix: "t3-feedback-cli-" });
+    const older = yield* fs.makeTempDirectoryScoped({ prefix: "j6-feedback-cli-" });
     yield* fs.makeDirectory(path.join(older, "userdata"), { recursive: true });
     yield* turnOn(older);
     const olderDatabase = new NodeSqlite.DatabaseSync(
@@ -215,7 +215,7 @@ it.effect("points to Labs only when the server hides the feedback tool", () =>
         NodeServices.layer,
         NodeCrypto.layer,
         NetService.layer,
-        ConfigProvider.layer(ConfigProvider.fromEnv({ env: { T3CODE_PORT: "3773" } })),
+        ConfigProvider.layer(ConfigProvider.fromEnv({ env: { J6CODE_PORT: "3773" } })),
       ),
     ),
   ),

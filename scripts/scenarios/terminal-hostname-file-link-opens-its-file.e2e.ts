@@ -5,7 +5,7 @@ import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { runPromise, test, WEB } from "./t3.ts";
+import { runPromise, test, WEB } from "./j6.ts";
 
 const EDITOR_ARGS = `${T3_HOME}/editor-args.txt`;
 
@@ -22,13 +22,13 @@ const readLines = (file: string) =>
 test(
   "Ctrl+click on a GNU ls --hyperlink filename, whose file URI names this machine, opens that file",
   WEB,
-  async ({ t3, app, browser, screen }) => {
+  async ({ j6, app, browser, screen }) => {
     await runPromise(
       Effect.flatMap(FileSystem.FileSystem, (fs) => fs.remove(EDITOR_ARGS, { force: true })),
     );
-    const project = await t3.project("demo", { "one.txt": "hello\n" });
-    const thread = await t3.thread({ project, title: "List", messages: ["List it"] });
-    await t3.open(thread);
+    const project = await j6.project("demo", { "one.txt": "hello\n" });
+    const thread = await j6.thread({ project, title: "List", messages: ["List it"] });
+    await j6.open(thread);
 
     await screen.getByRole("button", "Toggle terminal drawer").tap();
     const input = screen.getByRole("textbox", "Terminal input");

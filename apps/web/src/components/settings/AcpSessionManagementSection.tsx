@@ -1,9 +1,9 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import {
   AuthOrchestrationOperateScope,
   AuthProvidersManageScope,
   AuthOrchestrationReadScope,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { useEnvironmentScope, readEnvironmentScope } from "~/state/session";
 import type {
   AcpRegistryConfigurableProvider,
@@ -12,12 +12,12 @@ import type {
   ProjectId,
   ProviderInstanceId,
   ServerProvider,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
   type AtomCommandResult,
-} from "@t3tools/client-runtime/state/runtime";
+} from "@j6/client-runtime/state/runtime";
 import { useLayoutEffect, useRef, useState } from "react";
 import { msg, T, useGT } from "gt-react";
 import { m } from "../../i18n/messages";
@@ -121,7 +121,7 @@ function InstanceSessionManagement(
   const { projectId } = props;
   const projectGeneration = useRef(0);
   const deletionsDuringList = useRef<Set<string> | null>(null);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- Late continuations must not act on a replaced project scope.
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- Late continuations must not act on a replaced project scope.
   useLayoutEffect(() => {
     return () => {
       projectGeneration.current += 1;

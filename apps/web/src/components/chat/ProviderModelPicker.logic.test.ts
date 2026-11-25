@@ -1,4 +1,4 @@
-import { ProviderDriverKind } from "@t3tools/contracts";
+import { ProviderDriverKind } from "@j6/contracts";
 import { describe, expect, it } from "vite-plus/test";
 
 import { retainedModelWhileProviderLocked } from "./ProviderModelPicker.logic";

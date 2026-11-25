@@ -1,8 +1,8 @@
-import { SourceControlProviderKind } from "@t3tools/contracts";
+import { SourceControlProviderKind } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
-import { randomUuidV4 } from "@t3tools/provider-core/server/randomUuid";
+import { randomUuidV4 } from "@j6/provider-core/server/randomUuid";
 import {
   IsoDateTime,
   NonNegativeInt,
@@ -11,7 +11,7 @@ import {
   type PullRequestCapabilities,
   type PullRequestListFilters,
   type PullRequestStackHead,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   gitHubActionsJobId,
   PullRequestProviderError,
@@ -20,7 +20,7 @@ import {
   type ProviderCheckRerun,
   type ProviderRepositoryRef,
   type PullRequestProviderApi,
-} from "@t3tools/source-control-core/server/PullRequestProvider";
+} from "@j6/source-control-core/server/PullRequestProvider";
 
 import * as GitCafeApi from "./GitCafeApi.ts";
 import * as GitCafeHosts from "./gitCafeHosts.ts";
@@ -1286,7 +1286,7 @@ export const make = Effect.gen(function* () {
           };
         }
         default:
-          return yield* failure(input.action, `GitCafe cannot ${input.action} from T3 Code.`);
+          return yield* failure(input.action, `GitCafe cannot ${input.action} from J6 Code.`);
       }
     }),
     updateChangeRequest: Effect.fn("GitCafePullRequestProvider.updateChangeRequest")(

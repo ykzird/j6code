@@ -3,9 +3,9 @@ import {
   connectionCatalogDisplayUrl,
   hasRelayRoute,
   type EnvironmentPresentation as BaseEnvironmentPresentation,
-} from "@t3tools/client-runtime/connection";
-import { Discovery } from "@t3tools/client-runtime/relay";
-import type { EnvironmentId } from "@t3tools/contracts";
+} from "@j6/client-runtime/connection";
+import { Discovery } from "@j6/client-runtime/relay";
+import type { EnvironmentId } from "@j6/contracts";
 import * as Option from "effect/Option";
 import { useState } from "react";
 
@@ -107,7 +107,7 @@ export function useRelayEnvironmentDiscovery(): Discovery.RelayEnvironmentDiscov
 }
 
 /**
- * The account's T3 Connect machines for a view that keeps one in front of the user. A refresh
+ * The account's J6 Connect machines for a view that keeps one in front of the user. A refresh
  * empties the list until it answers; the machines last seen stay meanwhile.
  */
 export function useRetainedRelayEnvironments() {

@@ -9119,10 +9119,10 @@
   "74a80f881d59c64d": "Comandos que se ejecutan en el checkout de este proyecto o en su worktree, con atajos opcionales.",
   "b021ef2874c6c24b": "Acciones distintas entre checkouts",
   "1e0bbb3a6c4afd6c": "Limita la selección de arriba a un checkout para editar su lista. Añadir una acción aquí la añade a todos los checkouts seleccionados.",
-  "8fadca1175fbcbd8": "t3.json no es válido",
-  "917d2359f549794c": "Existe un t3.json en este checkout, pero no se puede analizar, así que se ignoran todas las acciones e iconos que declara. Revisa la sintaxis JSON y los valores de los iconos.",
+  "8fadca1175fbcbd8": "j6.json no es válido",
+  "917d2359f549794c": "Existe un j6.json en este checkout, pero no se puede analizar, así que se ignoran todas las acciones e iconos que declara. Revisa la sintaxis JSON y los valores de los iconos.",
   "df4cf566c6d08a4b": "Importar scripts",
-  "2aaeffe4fe3d29d7": "Importar de t3.json",
+  "2aaeffe4fe3d29d7": "Importar de j6.json",
   "84f1752d64c3152e": "Añade las acciones que declara este checkout sin editarlas antes.",
   "3b893da0373ab50e": "Añadir acción",
   "5afea423d829496e": "Este proveedor no está disponible en este entorno.",
@@ -9139,7 +9139,7 @@
   "2f65da0a2375c66a": "Automático (mixto)",
   "369304844a14a649": "No hay proveedores disponibles",
   "846ba52561c0e6bb": "Dónde empiezan los nuevos hilos de este proyecto.",
-  "af64dbd4bfce12aa": "Dónde empiezan los nuevos hilos. Los proyectos y su t3.json pueden anularlo.",
+  "af64dbd4bfce12aa": "Dónde empiezan los nuevos hilos. Los proyectos y su j6.json pueden anularlo.",
   "8ab693ae67cd5e86": "Restablecer el espacio de trabajo predeterminado al valor predeterminado",
   "d1d1342ccb83a14b": "Espacio de trabajo predeterminado",
   "a22721e847136f21": "No disponible",
@@ -9170,7 +9170,7 @@
   "9290d5de050e5302": "Método de merge predeterminado de las pull requests",
   "3619911bbdb05fc1": "Última selección",
   "87717de46afcdaed": "Cómo rellenan los submódulos de git los nuevos worktrees de este proyecto.",
-  "3212b4d0725a27c7": "Cómo rellenan los submódulos de git los nuevos worktrees. Los proyectos y su t3.json pueden anularlo.",
+  "3212b4d0725a27c7": "Cómo rellenan los submódulos de git los nuevos worktrees. Los proyectos y su j6.json pueden anularlo.",
   "74a80f6d7962be21": "Restablecer los submódulos del worktree al valor predeterminado",
   "1c97d5a78ca1fdb6": "Submódulos de worktrees",
   "2c2b437431e4cd1d": "No hay proveedores disponibles",
@@ -11789,7 +11789,7 @@
   "dfd5b72fe7308d9e": "Guardado en este dispositivo. Selecciona Todos los proyectos para cambiarlo.",
   "091be13f50490708": "Varía entre los entornos seleccionados",
   "06e9973f7537ed51": "Anulado para este proyecto",
-  "b1d09e365249f87b": "Heredado del t3.json del repositorio",
+  "b1d09e365249f87b": "Heredado del j6.json del repositorio",
   "539b097411fd1307": "Heredado del entorno",
   "6340f81c024cfe12": "Heredado de {environment}",
   "49a60879f4348f46": "Definido en el entorno",
@@ -11917,7 +11917,7 @@
   "00469926c7027e2d": "equilibrado rendimiento ahorro de batería avanzado git fetch proveedor estado actualizar host energía monitor inactivo política",
   "54e33e572cc71746": "espacio de trabajo predeterminado modo borrador local worktree",
   "b2ece956b72c4a48": "Submódulos",
-  "579153f275a1636f": "git submódulo init recursivo nivel superior ninguno worktree t3.json",
+  "579153f275a1636f": "git submódulo init recursivo nivel superior ninguno worktree j6.json",
   "88553740587a9beb": "Iniciar desde el remoto",
   "4a172e139167badc": "worktrees nuevos empiezan remoto origin última rama obtenida local",
   "30aac12099fcaf53": "Añadir proyecto empieza en",
@@ -11989,7 +11989,7 @@
   "4c241258fdc87942": "pull request pr revisión guiada guía recorrido beta experimental",
   "39e4c844a9d56a1d": "pull request pr revisión guiada guía resumen mantenedor",
   "f27f2e85e05f664c": "pull request pr revisión guiada guía preferencias gusto prompt personalizado",
-  "01cff0c3cb858073": "comandos scripts configuración ejecutar servidor de desarrollo checkout worktree t3.json importar",
+  "01cff0c3cb858073": "comandos scripts configuración ejecutar servidor de desarrollo checkout worktree j6.json importar",
   "756e41fd7e0b044c": "carpetas seguidas multi repo espacio de trabajo code-workspace volver a escanear añadir carpeta",
   "c349ea1db3f9e9f1": "Icono del entorno",
   "18bd7981d6c50994": "máquina glifo barra lateral mac mini studio portátil escritorio servidor nube vm",
@@ -12879,7 +12879,7 @@
     {
       "t": "code",
       "i": 2,
-      "c": "t3.json"
+      "c": "j6.json"
     },
     ". Se ejecutan en la máquina de este entorno con tus permisos, fuera de cualquier sandbox de agente. Se te volverá a preguntar cada vez que cambie su texto."
   ],
@@ -12897,7 +12897,7 @@
     {
       "t": "code",
       "i": 1,
-      "c": "t3.json"
+      "c": "j6.json"
     },
     " de este proyecto prepara los hilos en worktrees con sus propios comandos. Se ejecutan en la máquina de este entorno con tus permisos y solo tal como se aprobaron aquí: un comando cuyo texto cambia necesita aprobación de nuevo."
   ],

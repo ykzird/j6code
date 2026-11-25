@@ -2,7 +2,7 @@ import { describe, expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 
-import { EnvironmentAuthInvalidError } from "@t3tools/contracts";
+import { EnvironmentAuthInvalidError } from "@j6/contracts";
 import {
   bootstrapRemoteBearerSession,
   exchangeRemoteDpopAccessToken,
@@ -95,7 +95,7 @@ describe("remote environment authorization", () => {
         credential: "one-time-credential",
         dpopProof: "token-proof",
         clientMetadata: {
-          label: "T3 Code Mobile",
+          label: "J6 Code Mobile",
           deviceType: "mobile",
           os: "iOS",
         },

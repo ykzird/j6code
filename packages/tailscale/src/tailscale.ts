@@ -1,7 +1,7 @@
-import { ExecutionEnvironmentDescriptor } from "@t3tools/contracts";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import * as NetService from "@t3tools/shared/Net";
-import { isLocalLoopbackHost, normalizeHostname } from "@t3tools/shared/hostClassification";
+import { ExecutionEnvironmentDescriptor } from "@j6/contracts";
+import * as HostProcess from "@j6/shared/HostProcess";
+import * as NetService from "@j6/shared/Net";
+import { isLocalLoopbackHost, normalizeHostname } from "@j6/shared/hostClassification";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -13,7 +13,7 @@ import { ChildProcess, ChildProcessSpawner } from "effect/process";
 export const DEFAULT_TAILSCALE_SERVE_PORT = 443;
 /**
  * Bounds `tailscale status` and `tailscale debug prefs`. Allows the 1.8-2.6 s
- * `tailscale status` has been measured at when T3 Code spawns it on Windows.
+ * `tailscale status` has been measured at when J6 Code spawns it on Windows.
  * A CLI that never answers takes longer than this to fail, because the kill
  * that follows the timeout also takes time (`taskkill` on Windows).
  */
@@ -767,7 +767,7 @@ export const probeTailscaleHttpsEndpoint = Effect.fn("tailscale.probeTailscaleHt
   }) {
     const client = yield* HttpClient.HttpClient;
     const descriptor = yield* Effect.gen(function* () {
-      const url = new URL("/.well-known/t3/environment", input.baseUrl);
+      const url = new URL("/.well-known/j6/environment", input.baseUrl);
       const response = yield* client
         .execute(HttpClientRequest.get(url.toString()))
         .pipe(Effect.flatMap(HttpClientResponse.filterStatusOk));

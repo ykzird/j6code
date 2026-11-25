@@ -9,7 +9,7 @@ import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
 import * as HttpClient from "effect/http/HttpClient";
 import { ChildProcessSpawner } from "effect/process";
-import * as NetService from "@t3tools/shared/Net";
+import * as NetService from "@j6/shared/Net";
 import * as Fiber from "effect/Fiber";
 import * as Option from "effect/Option";
 import * as Ref from "effect/Ref";
@@ -317,12 +317,12 @@ it.effect.each([false, true])(
 );
 
 it.effect(
-  "points a stale t3 launcher at the updated AppImage and accepts t3 <dir> with Local environment off",
+  "points a stale j6 launcher at the updated AppImage and accepts j6 <dir> with Local environment off",
   () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "t3-desktop-app-" });
+      const baseDir = yield* fs.makeTempDirectoryScoped({ prefix: "j6-desktop-app-" });
       const launcher = DesktopCliShim.launcherPath({
         path,
         baseDir,
@@ -334,7 +334,7 @@ it.effect(
       yield* fs.writeFileString(
         launcher,
         DesktopCliShim.renderCliShim({
-          target: { kind: "appimage", appImage: removedAppImage, executableName: "t3code" },
+          target: { kind: "appimage", appImage: removedAppImage, executableName: "j6code" },
           shimPath: launcher,
           t3Home: baseDir,
         }),
@@ -365,11 +365,11 @@ it.effect(
       assert.include(
         content,
         `app='${updatedAppImage}'`,
-        "startup left the t3 launcher pointing at the removed AppImage",
+        "startup left the j6 launcher pointing at the removed AppImage",
       );
       assert.isTrue(
         yield* Deferred.isDone(activationStarted),
-        "startup left the t3 <dir> control socket closed",
+        "startup left the j6 <dir> control socket closed",
       );
     }).pipe(Effect.provide(Layer.mergeAll(DesktopShutdown.layer, NodeServices.layer))),
 );

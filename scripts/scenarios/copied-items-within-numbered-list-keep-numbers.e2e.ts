@@ -1,19 +1,19 @@
 /// <reference lib="dom" />
 import { expect } from "e2e";
 
-import { test, WEB } from "./t3.ts";
+import { test, WEB } from "./j6.ts";
 
 test(
   "Copying two items within a numbered list keeps their numbers",
   WEB,
-  async ({ t3, app, browser, screen }) => {
-    const project = await t3.project("demo");
-    const thread = await t3.thread({
+  async ({ j6, app, browser, screen }) => {
+    const project = await j6.project("demo");
+    const thread = await j6.thread({
       project,
       title: "Steps",
       messages: ["Steps:\n\n1. Install\n2. Configure\n3. Deploy\n\nThen report back."],
     });
-    await t3.open(thread);
+    await j6.open(thread);
     await screen.getByRole("button", /^Agent Steps/).tap();
     await screen.getByText("Configure", { exact: true }).waitFor();
 

@@ -1,10 +1,10 @@
-import { errorDisplayMessage } from "@t3tools/client-runtime/errors";
+import { errorDisplayMessage } from "@j6/client-runtime/errors";
 import { useAtomValue } from "@effect/atom-react";
 import { msg } from "gt-react";
 import {
   type CheckpointDiffTarget,
   type ComposerPathSearchTarget,
-} from "@t3tools/client-runtime/state/threads";
+} from "@j6/client-runtime/state/threads";
 import {
   createThreadSearchResultsAtomFamily,
   makeThreadSearchKey,
@@ -13,14 +13,14 @@ import {
   type SettledThreadSearch,
   type ThreadSearchResultsState,
   type ThreadSearchScope,
-} from "@t3tools/client-runtime/state/thread-search";
+} from "@j6/client-runtime/state/thread-search";
 import {
   ProjectSearchContentsError,
   PROJECT_SEARCH_CONTENTS_QUERY_MAX_LENGTH,
   THREAD_SEARCH_QUERY_MAX_LENGTH,
-} from "@t3tools/contracts";
-import { messageSearchTokens } from "@t3tools/shared/paletteSearch";
-import { type VcsRefTarget } from "@t3tools/client-runtime/state/vcs";
+} from "@j6/contracts";
+import { messageSearchTokens } from "@j6/shared/paletteSearch";
+import { type VcsRefTarget } from "@j6/client-runtime/state/vcs";
 import type {
   EnvironmentId,
   OrchestrationV2GetTurnItemResult,
@@ -31,7 +31,7 @@ import type {
   TurnItemId,
   VcsListRefsResult,
   VcsRef,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as Schema from "effect/Schema";
 import { AsyncResult, Atom } from "effect/reactivity";
@@ -92,7 +92,7 @@ const threadSearch = createThreadSearchResultsAtomFamily({
 export function useDebouncedValue<A>(value: A, delayMs: number): A {
   const [debounced, setDebounced] = useState(value);
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- debounce timer that publishes the value after delayMs
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- debounce timer that publishes the value after delayMs
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setDebounced(value);
@@ -154,7 +154,7 @@ export function useThreadSearch(
     : { query: "", matches: EMPTY_THREAD_SEARCH_MATCHES };
   // The shown results' rows stay mounted until newer results replace them.
   const shownKey = visible.query === "" ? null : searchKeyOf(visible.query);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- mounts the shown search results' rows into the thread family registry until newer results replace them
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- mounts the shown search results' rows into the thread family registry until newer results replace them
   useEffect(() => {
     if (shownKey === null) return;
     const environments = (JSON.parse(shownKey) as [ReadonlyArray<EnvironmentId>])[0];
@@ -425,7 +425,7 @@ export function useProjectContentSearch(
       ? result.failure
       : null;
   const { refresh } = result;
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- retry timer: nothing tells the client when the server's first scan ends
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- retry timer: nothing tells the client when the server's first scan ends
   useEffect(() => {
     if (settledScanTimeout === null) return;
     const timer = window.setTimeout(refresh, PROJECT_CONTENT_SEARCH_SCAN_RETRY_MS);

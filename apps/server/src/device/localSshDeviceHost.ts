@@ -1,11 +1,11 @@
 import * as NodeDnsPromises from "node:dns/promises";
 import * as NodeNet from "node:net";
-import type { DeviceHostConfig, SshDeviceHostConfig } from "@t3tools/contracts";
+import type { DeviceHostConfig, SshDeviceHostConfig } from "@j6/contracts";
 import * as NodeOS from "node:os";
 import * as Context from "effect/Context";
-import { runSshCommand } from "@t3tools/ssh/command";
+import { runSshCommand } from "@j6/ssh/command";
 import * as Effect from "effect/Effect";
-import { HostnameLookupError } from "@t3tools/shared/HostProcess";
+import { HostnameLookupError } from "@j6/shared/HostProcess";
 
 export const LocalDeviceHostAddresses = Context.Reference<ReadonlySet<string>>(
   "LocalDeviceHostAddresses",

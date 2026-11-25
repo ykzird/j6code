@@ -1,11 +1,11 @@
-import { scopeProjectRef } from "@t3tools/client-runtime/environment";
-import type { EnvironmentThreadShell } from "@t3tools/client-runtime/state/shell";
+import { scopeProjectRef } from "@j6/client-runtime/environment";
+import type { EnvironmentThreadShell } from "@j6/client-runtime/state/shell";
 import type {
   EnvironmentId,
   ModelSelection,
   ProjectId,
   ScopedProjectRef,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import type { ComposerThreadDraftState, DraftThreadEnvMode } from "../composerDraftStore";
 
 type ComposerModelSelectionState = Pick<

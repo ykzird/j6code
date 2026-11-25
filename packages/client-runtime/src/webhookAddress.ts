@@ -1,5 +1,5 @@
-import type { ScheduledTaskWebhookEndpoint } from "@t3tools/contracts";
-import { isLocalLoopbackHost } from "@t3tools/shared/hostClassification";
+import type { ScheduledTaskWebhookEndpoint } from "@j6/contracts";
+import { isLocalLoopbackHost } from "@j6/shared/hostClassification";
 import { mFallback, msg } from "gt-i18n";
 import type { MFunctionType } from "gt-i18n/types";
 
@@ -21,7 +21,7 @@ export function webhookAddress(
     return {
       address: endpoint.path,
       copyable: false,
-      note: resolve(msg("Link this environment to T3 Connect for a public URL.")),
+      note: resolve(msg("Link this environment to J6 Connect for a public URL.")),
     };
   }
   const url = new URL(endpoint.path, httpBaseUrl);
@@ -29,10 +29,10 @@ export function webhookAddress(
     address: url.href,
     copyable: true,
     note: isLocalLoopbackHost(url.hostname)
-      ? resolve(msg("Only this computer can call this address. Link T3 Connect for a public URL."))
+      ? resolve(msg("Only this computer can call this address. Link J6 Connect for a public URL."))
       : resolve(
           msg(
-            "Works wherever this environment's address is reachable, for example over Tailscale or your own proxy. Link T3 Connect for a public URL.",
+            "Works wherever this environment's address is reachable, for example over Tailscale or your own proxy. Link J6 Connect for a public URL.",
           ),
         ),
   };

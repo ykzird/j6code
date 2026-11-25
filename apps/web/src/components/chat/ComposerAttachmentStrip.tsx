@@ -4,8 +4,8 @@ import type {
   EnvironmentId,
   ScopedThreadRef,
   SnapShotSource,
-} from "@t3tools/contracts";
-import { formatAttachmentSize } from "@t3tools/client-runtime/state/attachments";
+} from "@j6/contracts";
+import { formatAttachmentSize } from "@j6/client-runtime/state/attachments";
 import { T, useGT, useMessages } from "gt-react";
 import { CircleAlertIcon, ImageIcon, PaperclipIcon, PlayIcon, XIcon } from "lucide-react";
 import { type ComponentProps, type Ref, useLayoutEffect, useRef } from "react";
@@ -111,7 +111,7 @@ function SnapShotAttachmentFrame({
 }) {
   const frameRef = useRef<HTMLDivElement>(null);
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- scrolls the mounted tile into view and registers it as the SnapShot animation destination
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- scrolls the mounted tile into view and registers it as the SnapShot animation destination
   useLayoutEffect(() => {
     const frame = frameRef.current;
     if (!frame || (!animationId && !arrival)) return;

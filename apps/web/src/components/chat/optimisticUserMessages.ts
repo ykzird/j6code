@@ -1,5 +1,5 @@
-import type { MessageId, ThreadId } from "@t3tools/contracts";
-import { parseUrl } from "@t3tools/shared/url";
+import type { MessageId, ThreadId } from "@j6/contracts";
+import { parseUrl } from "@j6/shared/url";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import { AsyncResult, Atom } from "effect/reactivity";

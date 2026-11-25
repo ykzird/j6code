@@ -1,6 +1,6 @@
 import { Alert, AlertDescription } from "../ui/alert";
-import type { AuthSessionState } from "@t3tools/contracts";
-import { squashAtomCommandFailure } from "@t3tools/client-runtime/state/runtime";
+import type { AuthSessionState } from "@j6/contracts";
+import { squashAtomCommandFailure } from "@j6/client-runtime/state/runtime";
 import { msg, T, useGT, useMessages, Var } from "gt-react";
 import React, { startTransition, useEffect, useEffectEvent, useRef, useState } from "react";
 
@@ -11,7 +11,7 @@ import {
   submitServerAuthCredential,
 } from "../../environments/primary";
 import { readHostedPairingRequest } from "../../hostedPairing";
-import { resolveRemotePairingTarget } from "@t3tools/shared/remote";
+import { resolveRemotePairingTarget } from "@j6/shared/remote";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { StandalonePage, StandalonePageHeader } from "../ui/standalone-page";
@@ -77,7 +77,7 @@ export function PairingRouteSurface({
     void submitCredential(token);
   });
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- strips the pairing token from the URL and submits it once when the route carries one
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- strips the pairing token from the URL and submits it once when the route carries one
   useEffect(() => {
     if (!autoPairToken || autoSubmitAttemptedRef.current) {
       return;

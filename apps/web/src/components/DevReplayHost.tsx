@@ -1,9 +1,9 @@
 import { m } from "../i18n/messages";
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { useAtomValue } from "@effect/atom-react";
-import { scopeThreadRef } from "@t3tools/client-runtime/environment";
-import { squashAtomCommandFailure } from "@t3tools/client-runtime/state/runtime";
-import { ProviderInstanceId, type ThreadId } from "@t3tools/contracts";
+import { scopeThreadRef } from "@j6/client-runtime/environment";
+import { squashAtomCommandFailure } from "@j6/client-runtime/state/runtime";
+import { ProviderInstanceId, type ThreadId } from "@j6/contracts";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useEffectEvent, useState } from "react";
 import { T, useGT, Var } from "gt-react";
@@ -94,7 +94,7 @@ export function DevReplayHost() {
   const replayFromConsole = useEffectEvent(replay);
   const listScenarios = useEffectEvent(() => scenarios.map((scenario) => scenario.slug));
 
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- exposes the console API on window and listens for the hidden window hotkey
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- exposes the console API on window and listens for the hidden window hotkey
   useEffect(() => {
     window.t3dev = {
       replayScenarios: () => listScenarios(),

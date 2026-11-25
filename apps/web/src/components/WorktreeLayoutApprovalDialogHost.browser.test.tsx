@@ -4,7 +4,7 @@ import {
   EnvironmentId,
   ProjectId,
   type WorktreeLayoutCommand,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { describe, expect, it, vi } from "vite-plus/test";
 import { commands, page, userEvent } from "vite-plus/test/browser";
 
@@ -19,7 +19,7 @@ const state = vi.hoisted(() => ({
   approved: [] as unknown[],
 }));
 
-vi.mock(import("@t3tools/client-runtime/state/runtime"), async (original) => ({
+vi.mock(import("@j6/client-runtime/state/runtime"), async (original) => ({
   ...(await original()),
   runAtomCommand: (async (_registry: unknown, command: string, value: { input: unknown }) => {
     if (command === "approve") state.approved.push(value.input);

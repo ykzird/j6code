@@ -19,7 +19,7 @@ import {
   type TerminalMetadataStreamEvent,
   type TerminalSummary,
   WS_METHODS,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import * as Cause from "effect/Cause";
 import * as Clock from "effect/Clock";
 import * as DateTime from "effect/DateTime";
@@ -1312,12 +1312,12 @@ describe("environment query lifecycle", () => {
       const harness = yield* makeEnvironmentQueryHarness(Effect.void);
       const entry = (name: string): FilesystemBrowseEntry => ({
         name,
-        fullPath: `/tmp/t3-11476-repro/${name}`,
+        fullPath: `/tmp/j6-11476-repro/${name}`,
       });
       let onDisk = [entry("existing")];
       const client = {
         [WS_METHODS.filesystemBrowse]: () =>
-          Effect.sync(() => ({ parentPath: "/tmp/t3-11476-repro/", entries: onDisk })),
+          Effect.sync(() => ({ parentPath: "/tmp/j6-11476-repro/", entries: onDisk })),
       } as unknown as RpcSession.RpcSession["client"];
       yield* SubscriptionRef.set(
         harness.supervisorSession,
@@ -1325,7 +1325,7 @@ describe("environment query lifecycle", () => {
       );
       const atom = createFilesystemEnvironmentAtoms(harness.runtime).browse({
         environmentId: QUERY_ENVIRONMENT.environmentId,
-        input: { partialPath: "/tmp/t3-11476-repro/" },
+        input: { partialPath: "/tmp/j6-11476-repro/" },
       });
       const registry = AtomRegistry.make();
       yield* Effect.addFinalizer(() => Effect.sync(() => registry.dispose()));

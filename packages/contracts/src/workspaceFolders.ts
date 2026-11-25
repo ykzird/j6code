@@ -105,7 +105,7 @@ export type WorkspaceAddTaskFolderRepositoryInput =
 export const WorktreeLayoutCommandKind = Schema.Literals(["create", "remove"]);
 export type WorktreeLayoutCommandKind = typeof WorktreeLayoutCommandKind.Type;
 
-/** One of a project's `worktreeLayout` commands, as its `t3.json` holds it now. */
+/** One of a project's `worktreeLayout` commands, as its `j6.json` holds it now. */
 export const WorktreeLayoutCommand = Schema.Struct({
   kind: WorktreeLayoutCommandKind,
   command: Schema.String,

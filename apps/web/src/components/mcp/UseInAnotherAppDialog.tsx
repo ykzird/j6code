@@ -1,11 +1,11 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { useAuth } from "@clerk/react";
 import { useAtomValue } from "@effect/atom-react";
 import {
   managedCapabilityDenial,
   managedRuntimeModeDenial,
-} from "@t3tools/client-runtime/contract-labels";
-import { offersLinkedEnvironments } from "@t3tools/client-runtime/link-request";
+} from "@j6/client-runtime/contract-labels";
+import { offersLinkedEnvironments } from "@j6/client-runtime/link-request";
 import {
   AuthAccessWriteScope,
   AuthMcpClientAccess,
@@ -14,7 +14,7 @@ import {
   type EnvironmentId,
   mcpClientScopes,
   sessionGrantsScope,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import { useNavigate } from "@tanstack/react-router";
 import { CheckIcon, CopyIcon } from "lucide-react";
 import * as Option from "effect/Option";
@@ -86,7 +86,7 @@ export function UseInAnotherAppDialogHost() {
 function UseInAnotherAppDialog({ requested }: { readonly requested: EnvironmentId | null }) {
   const { environment, label } = useAccessEnvironment(requested);
   const gt = useGT();
-  const title = `${gt("Use T3 Code in another app (MCP)")} · ${label ?? "T3 Code"}`;
+  const title = `${gt("Use J6 Code in another app (MCP)")} · ${label ?? "J6 Code"}`;
   return (
     <Dialog open onOpenChange={(open) => (open ? undefined : close())}>
       <WizardPopup>
@@ -100,7 +100,7 @@ function UseInAnotherAppDialog({ requested }: { readonly requested: EnvironmentI
                 title={
                   environment === null
                     ? gt("Connect to an environment first.")
-                    : gt("T3 Connect is not available in this build.")
+                    : gt("J6 Connect is not available in this build.")
                 }
               />
             </WizardPanel>
@@ -319,7 +319,7 @@ function useGate(environment: EnvironmentPresentation) {
   );
   const runReachabilityCheck = async () => {
     setCheck("running");
-    // A saved machine's address comes from T3 Connect's list, which can be stale.
+    // A saved machine's address comes from J6 Connect's list, which can be stale.
     if (!thisMachine) void refreshDiscovery();
     const prior = readCachedCloudLinkState({ environmentId });
     const result = await runCheck({ target: { environmentId } });
@@ -345,27 +345,27 @@ function useGate(environment: EnvironmentPresentation) {
   const checkOnce = useEffectEvent(() => {
     if (check === "idle") void runReachabilityCheck();
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- asks the server to check its tunnel once one exists
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- asks the server to check its tunnel once one exists
   useEffect(() => {
     if (canCheck) queueMicrotask(checkOnce);
   }, [canCheck]);
-  // T3 Connect lists machines only once something asks, and a saved machine's gate reads that list.
+  // J6 Connect lists machines only once something asks, and a saved machine's gate reads that list.
   const discoverIfUnasked = useEffectEvent(() => {
     if (!thisMachine && !discovery.listed && !discovery.refreshing) void refreshDiscovery();
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- asks T3 Connect for its machine list once the wizard opens signed in
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- asks J6 Connect for its machine list once the wizard opens signed in
   useEffect(() => {
     if (isSignedIn) discoverIfUnasked();
   }, [isSignedIn]);
   const waiting = gate.kind === "offline" || (connecting && gate.kind === "turn-on");
   const refreshLinkState = useEffectEvent(() => controller.linkState.refresh());
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- polls the server's link state while the tunnel starts; the server has no push for it
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- polls the server's link state while the tunnel starts; the server has no push for it
   useEffect(() => {
     if (!waiting) return;
     const interval = window.setInterval(() => refreshLinkState(), 5_000);
     return () => window.clearInterval(interval);
   }, [waiting]);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- stops showing Connecting once a started tunnel has had time to come up
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- stops showing Connecting once a started tunnel has had time to come up
   useEffect(() => {
     if (!connecting) return;
     const timeout = window.setTimeout(() => setConnecting(false), 90_000);
@@ -401,27 +401,27 @@ function GateScreen({
       <T>Check again</T>
     </Button>
   );
-  const offlineTitle = gt("{environment}''s T3 Connect is offline", { environment: name });
-  const cannotCheckTitle = gt("Can't check T3 Connect on {environment}", { environment: name });
+  const offlineTitle = gt("{environment}''s J6 Connect is offline", { environment: name });
+  const cannotCheckTitle = gt("Can't check J6 Connect on {environment}", { environment: name });
   const checkAgain = retry(() => void check());
   switch (gate.kind) {
     case "checking":
       return (
         <p role="status" className="flex items-center gap-2 text-sm text-muted-foreground">
           <Spinner size="sm" tone="muted" />
-          <T>Checking T3 Connect…</T>
+          <T>Checking J6 Connect…</T>
         </p>
       );
     case "sign-in":
       return (
         <GateMessage
-          title={gt("Sign in to T3 Connect")}
+          title={gt("Sign in to J6 Connect")}
           lines={[
             gt(
               "Apps like Poke and Claude run in the cloud. They need a public address to reach {environment}.",
               { environment: name },
             ),
-            gt("T3 Connect gives {environment} that address. Each app still needs your approval.", {
+            gt("J6 Connect gives {environment} that address. Each app still needs your approval.", {
               environment: name,
             }),
           ]}
@@ -433,7 +433,7 @@ function GateScreen({
               openAuthPrompt();
             }}
           >
-            <T>Sign in to T3 Connect</T>
+            <T>Sign in to J6 Connect</T>
           </Button>
         </GateMessage>
       );
@@ -446,7 +446,7 @@ function GateScreen({
         </GateMessage>
       );
     case "update":
-      return <GateMessage title={gt("Update T3 Code on {environment}", { environment: name })} />;
+      return <GateMessage title={gt("Update J6 Code on {environment}", { environment: name })} />;
     case "no-relay-read":
       return (
         <GateMessage
@@ -481,7 +481,7 @@ function GateScreen({
       }
       return (
         <GateMessage
-          title={gt("Turn on T3 Connect for {environment}", { environment: name })}
+          title={gt("Turn on J6 Connect for {environment}", { environment: name })}
           lines={[
             gt("{environment} gets a public https address, with no router setup.", {
               environment: name,
@@ -500,7 +500,7 @@ function GateScreen({
               {tunnelLimit !== null ? (
                 <>
                   <p className="text-sm text-destructive-foreground">
-                    <T>Your T3 Connect account is out of tunnels.</T>
+                    <T>Your J6 Connect account is out of tunnels.</T>
                   </p>
                   <ManageAccessButton environment={environment} label={gt("Manage tunnels")} />
                 </>
@@ -510,10 +510,10 @@ function GateScreen({
             <p className="text-sm text-muted-foreground">{turnOnHere.reason}</p>
           ) : (
             <div className="space-y-2 text-sm">
-              <CommandBlock command="t3 connect link" />
+              <CommandBlock command="j6 connect link" />
               <p>
                 <T>
-                  Restart T3 Code on <Var>{name}</Var>.
+                  Restart J6 Code on <Var>{name}</Var>.
                 </T>
               </p>
               {checkAgain}
@@ -616,10 +616,10 @@ function ConnectStep({
       <p className="text-sm text-muted-foreground">
         {app === null
           ? gt(
-              "When the app opens the sign-in page, choose what it may do and approve with your T3 Connect account.",
+              "When the app opens the sign-in page, choose what it may do and approve with your J6 Connect account.",
             )
           : gt(
-              "When {app} opens the sign-in page, choose what it may do and approve with your T3 Connect account.",
+              "When {app} opens the sign-in page, choose what it may do and approve with your J6 Connect account.",
               { app: app.name },
             )}
       </p>
@@ -912,7 +912,7 @@ function LinkedLine({
   );
 }
 
-/** Opens Sharing & access on this environment, where its clients and T3 Connect tunnels live. */
+/** Opens Sharing & access on this environment, where its clients and J6 Connect tunnels live. */
 function ManageAccessButton({
   environment,
   label,

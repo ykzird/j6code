@@ -1,9 +1,9 @@
-import { SourceControlSignInError, type SourceControlProviderKind } from "@t3tools/contracts";
+import { SourceControlSignInError, type SourceControlProviderKind } from "@j6/contracts";
 import {
   defineSourceControlDriver,
   withOwnServices,
   type SourceControlSignIn,
-} from "@t3tools/source-control-core/server/driver";
+} from "@j6/source-control-core/server/driver";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import { HttpClient } from "effect/http";

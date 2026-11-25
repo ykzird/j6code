@@ -1,4 +1,4 @@
-import type { ServerConfig } from "@t3tools/contracts";
+import type { ServerConfig } from "@j6/contracts";
 import * as Option from "effect/Option";
 import { mFallback, msg } from "gt-i18n";
 import type { MFunctionType } from "gt-i18n/types";
@@ -148,7 +148,7 @@ export function connectionStatusTitle(
 }
 
 /**
- * The T3 Connect address wins whenever it is known: it works for agents anywhere, while the
+ * The J6 Connect address wins whenever it is known: it works for agents anywhere, while the
  * connected route is often a LAN or loopback address. SSH routes ride a local forward that
  * disappears with the client, so they have no stable address.
  */

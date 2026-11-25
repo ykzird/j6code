@@ -1,4 +1,4 @@
-import { EnvironmentHttpApi } from "@t3tools/contracts";
+import { EnvironmentHttpApi } from "@j6/contracts";
 import * as ByteSize from "effect/ByteSize";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -8,7 +8,7 @@ import * as HttpIncomingMessage from "effect/http/HttpIncomingMessage";
 import type * as HttpServerRequest from "effect/http/HttpServerRequest";
 import * as HttpServerResponse from "effect/http/HttpServerResponse";
 import * as HttpTraceContext from "effect/http/HttpTraceContext";
-import { withRelayClientTracing } from "@t3tools/shared/relayTracing";
+import { withRelayClientTracing } from "@j6/shared/relayTracing";
 import * as HttpApiBuilder from "effect/http-api/HttpApiBuilder";
 
 import * as Metrics from "../observability/Metrics.ts";
@@ -21,7 +21,7 @@ import * as ScheduledTaskService from "./ScheduledTaskService.ts";
 export const WEBHOOK_MAX_BODY_BYTES = 1024 * 1024;
 
 // The relay records this outcome header.
-const WEBHOOK_OUTCOME_HEADER = "x-t3-hook-outcome";
+const WEBHOOK_OUTCOME_HEADER = "x-j6-hook-outcome";
 
 const json = (
   status: number,
@@ -76,7 +76,7 @@ export const layer = HttpApiBuilder.group(
       const tooLarge = (error: string) =>
         Metrics.increment(Metrics.webhookDeliveriesTotal, {
           outcome: "body_too_large",
-          source: request.headers["x-t3-relay-delivery-id"] ? "relay" : "direct",
+          source: request.headers["x-j6-relay-delivery-id"] ? "relay" : "direct",
         }).pipe(Effect.as(json(413, { error }, "body_too_large")));
       if (Option.isNone(body)) return yield* tooLarge("body_too_large_or_unreadable");
       if (body.value.byteLength > WEBHOOK_MAX_BODY_BYTES) {
@@ -98,7 +98,7 @@ export const layer = HttpApiBuilder.group(
       const relayDeliveryId = Option.isSome(relay) ? relay.value.deliveryId : undefined;
       const relayReceivedAt = Option.isSome(relay) ? relay.value.receivedAt : undefined;
 
-      // A relay delivery joins the relay's trace, and goes to the T3 Connect
+      // A relay delivery joins the relay's trace, and goes to the J6 Connect
       // tracer with it. Anyone else's traceparent is never trusted.
       const relayParent = Option.isSome(relay)
         ? HttpTraceContext.fromHeaders(request.headers)

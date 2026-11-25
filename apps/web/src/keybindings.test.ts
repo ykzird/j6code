@@ -3,14 +3,14 @@ import {
   compileResolvedKeybindingsConfig,
   DEFAULT_RESOLVED_KEYBINDINGS,
   mergeWithDefaultKeybindings,
-} from "@t3tools/shared/keybindings";
+} from "@j6/shared/keybindings";
 
 import {
   type KeybindingCommand,
   type KeybindingShortcut,
   type KeybindingWhenNode,
   type ResolvedKeybindingsConfig,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   effectiveShortcutsForCommand,
   formatShortcutLabel,

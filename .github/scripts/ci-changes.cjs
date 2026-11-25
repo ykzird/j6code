@@ -21,32 +21,32 @@ const RUNS_EVERYTHING = [
 // Includes cross-package reads absent from package.json dependencies.
 const EXTRA_OWNERS = [
   // Vite configs and tsconfigs of these apps import scripts/lib directly.
-  [/^scripts\/lib\//, ["@t3tools/desktop", "@t3tools/mobile", "@t3tools/web", "t3"]],
+  [/^scripts\/lib\//, ["@j6/desktop", "@j6/mobile", "@j6/web", "j6"]],
   // scripts/build-desktop-artifact.ts reads the GNOME extension manifest.
-  [/^apps\/desktop\/gnome-extension\//, ["@t3tools/scripts"]],
-  [/^native\/browser-secret\//, ["@t3tools/desktop"]],
-  [/^native\/kde-snap-shot\//, ["@t3tools/desktop"]],
-  [/^native\/libghostty-vt\//, ["@t3tools/web"]],
+  [/^apps\/desktop\/gnome-extension\//, ["@j6/scripts"]],
+  [/^native\/browser-secret\//, ["@j6/desktop"]],
+  [/^native\/kde-snap-shot\//, ["@j6/desktop"]],
+  [/^native\/libghostty-vt\//, ["@j6/web"]],
   // apps/server/src/cloud/ConnectReachability.test.ts checks the guide's headings.
-  [/^docs\/user\/t3-connect-troubleshooting\.md$/, ["t3"]],
+  [/^docs\/user\/j6-connect-troubleshooting\.md$/, ["j6"]],
 ];
 const RUST = /^native\/(resource-monitor|kde-snap-shot|hyprland-snap-shot)\//;
 
 // These tests read other packages without declaring dependencies.
 const TEST_ONLY_DEPS = {
   // Evals import the server's source to test its real model-facing text.
-  "@t3tools/evals": ["t3"],
-  "@t3tools/provider-pi": ["@t3tools/client-runtime"],
-  "@t3tools/scripts": [
-    "@t3tools/desktop",
-    "@t3tools/mobile",
-    "@t3tools/web",
-    "t3",
-    "@t3tools/provider-cursor",
+  "@j6/evals": ["j6"],
+  "@j6/provider-pi": ["@j6/client-runtime"],
+  "@j6/scripts": [
+    "@j6/desktop",
+    "@j6/mobile",
+    "@j6/web",
+    "j6",
+    "@j6/provider-cursor",
   ],
 };
 // The server bundles the web build without importing it.
-const BUILD_ONLY_DEPS = { t3: ["@t3tools/web"] };
+const BUILD_ONLY_DEPS = { j6: ["@j6/web"] };
 
 const MOBILE_NATIVE =
   /^apps\/mobile\/.*\.(swift|kt|kts)$|^apps\/mobile\/(\.swiftlint\.yml|detekt\.yml|\.editorconfig|Brewfile)$|^scripts\/mobile-native-static-check\.ts$|^package\.json$|^\.github\/workflows\/ci\.yml$|^\.github\/scripts\/ci-changes\.cjs$|^\.github\/actions\/ci-changes\//;
@@ -66,7 +66,7 @@ const DESKTOP_LAUNCH = [
   /^scripts\/(smoke-desktop-app\.ts|fixtures\/desktop-launch\/)/,
 ];
 
-const OWN_TEST_JOB = new Set(["t3", "@t3tools/web", "@t3tools/monorepo"]);
+const OWN_TEST_JOB = new Set(["j6", "@j6/web", "@j6/monorepo"]);
 
 function readWorkspace() {
   const patterns = [];
@@ -115,7 +115,7 @@ function ownersOf(file, packages) {
   if (path.posix.basename(file) === "package.json") return null;
   if (RUNS_EVERYTHING.some((pattern) => pattern.test(file))) return null;
   // scripts/build-desktop-artifact.test.ts reads the crates' sources.
-  if (RUST.test(file)) return ["@t3tools/scripts", ...extra];
+  if (RUST.test(file)) return ["@j6/scripts", ...extra];
 
   const owner = packages
     .filter((pkg) => file.startsWith(`${pkg.dir}/`))
@@ -156,7 +156,7 @@ function decide(files, packages, full) {
         }
       }
     }
-    scriptsChanged = affected.has("@t3tools/scripts");
+    scriptsChanged = affected.has("@j6/scripts");
     for (const [name, deps] of Object.entries(TEST_ONLY_DEPS)) {
       if (deps.some((dep) => affected.has(dep))) affected.add(name);
     }
@@ -176,13 +176,13 @@ function decide(files, packages, full) {
     affected: [...affected].sort(),
     outputs: {
       typecheck: affected.size > 0,
-      build: has("@t3tools/desktop") || has("t3") || has("@t3tools/web") || desktopLaunch,
+      build: has("@j6/desktop") || has("j6") || has("@j6/web") || desktopLaunch,
       desktop_launch: desktopLaunch,
       test: tested.length > 0,
       // Empty means every package the Test job covers.
       test_packages: everything ? "" : tested.map((pkg) => pkg.name).join(" "),
-      test_web: has("@t3tools/web"),
-      test_server: has("t3"),
+      test_web: has("@j6/web"),
+      test_server: has("j6"),
       rust: everything || rust,
       release_smoke: scriptsChanged,
       mobile_native: files === null || files.some((file) => MOBILE_NATIVE.test(file)),

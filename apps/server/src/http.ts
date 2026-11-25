@@ -3,21 +3,21 @@ import {
   AuthOrchestrationOperateScope,
   AuthOrchestrationReadScope,
   EnvironmentHttpApi,
-} from "@t3tools/contracts";
-import { isDevProxiedPath } from "@t3tools/shared/devProxy";
+} from "@j6/contracts";
+import { isDevProxiedPath } from "@j6/shared/devProxy";
 import {
   injectMcpAppCookieBootstrap,
   injectMcpAppDocumentBootstrap,
   injectMcpAppThemeBootstrap,
-} from "@t3tools/shared/mcpApp";
-import { FILE_PREVIEW_SCROLL_SCRIPT } from "@t3tools/shared/htmlRender";
+} from "@j6/shared/mcpApp";
+import { FILE_PREVIEW_SCROLL_SCRIPT } from "@j6/shared/htmlRender";
 import {
   DESKTOP_READINESS_CHALLENGE_MAX_LENGTH,
   DESKTOP_READINESS_CHALLENGE_PARAM,
   DESKTOP_READINESS_PROOF_PATH,
   desktopReadinessProof,
-} from "@t3tools/shared/desktopReadinessProof";
-import { decodeOtlpTraceRecords } from "@t3tools/shared/observability";
+} from "@j6/shared/desktopReadinessProof";
+import { decodeOtlpTraceRecords } from "@j6/shared/observability";
 import * as ByteSize from "effect/ByteSize";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";

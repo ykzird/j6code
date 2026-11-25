@@ -1,4 +1,4 @@
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Config from "effect/Config";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -45,7 +45,7 @@ export interface SshPasswordPromptShape {
 }
 
 export class SshPasswordPrompt extends Context.Service<SshPasswordPrompt, SshPasswordPromptShape>()(
-  "@t3tools/ssh/auth/SshPasswordPrompt",
+  "@j6/ssh/auth/SshPasswordPrompt",
 ) {
   static readonly disabledLayer = Layer.succeed(
     SshPasswordPrompt,
@@ -65,7 +65,7 @@ export interface SshChildEnvironmentOptions {
   readonly authSecret?: string | null;
 }
 
-const SSH_ASKPASS_DIR_NAME = "t3code-ssh-askpass";
+const SSH_ASKPASS_DIR_NAME = "j6code-ssh-askpass";
 
 function joinSshAskpassPath(
   directory: string,
@@ -77,21 +77,21 @@ function joinSshAskpassPath(
 }
 
 const ASKPASS_POSIX_SCRIPT = `#!/bin/sh
-# Invoked by ssh via SSH_ASKPASS when T3 Code re-runs ssh with a cached password
+# Invoked by ssh via SSH_ASKPASS when J6 Code re-runs ssh with a cached password
 # from the renderer's in-app prompt. We never expose a native dialog here - if
 # T3_SSH_AUTH_SECRET is missing, that's a caller bug and we fail loudly.
 if [ "\${T3_SSH_AUTH_SECRET+x}" = "x" ]; then
   printf "%s\\n" "$T3_SSH_AUTH_SECRET"
   exit 0
 fi
-printf 'T3 Code ssh-askpass invoked without T3_SSH_AUTH_SECRET.\\n' >&2
+printf 'J6 Code ssh-askpass invoked without T3_SSH_AUTH_SECRET.\\n' >&2
 exit 1
 `;
 
 // Windows has no helper form every ssh can start. Win32-OpenSSH starts `"<node>" "<this file>"`
 // directly; Cygwin/MSYS ssh (Git for Windows) execs ssh-askpass.sh through its own sh. Either
 // way ssh appends the prompt as a plain trailing argument, which the helpers never read.
-const ASKPASS_WINDOWS_NODE_SCRIPT = `// Invoked by ssh via SSH_ASKPASS when T3 Code re-runs ssh with a cached password
+const ASKPASS_WINDOWS_NODE_SCRIPT = `// Invoked by ssh via SSH_ASKPASS when J6 Code re-runs ssh with a cached password
 // from the renderer's in-app prompt. Answers from T3_SSH_AUTH_SECRET only and
 // never reads its arguments; if the secret is missing, that's a caller bug and
 // we fail loudly.
@@ -99,7 +99,7 @@ if ("T3_SSH_AUTH_SECRET" in process.env) {
   process.stdout.write((process.env.T3_SSH_AUTH_SECRET || "") + "\\n");
   process.exit(0);
 }
-process.stderr.write("T3 Code ssh-askpass invoked without T3_SSH_AUTH_SECRET.\\n");
+process.stderr.write("J6 Code ssh-askpass invoked without T3_SSH_AUTH_SECRET.\\n");
 process.exit(1);
 `;
 
@@ -188,7 +188,7 @@ const ensureDefaultSshAskpassHelpers = Effect.fn("ssh/auth.ensureDefaultSshAskpa
       }
     }
     runtimeDirectory ??= yield* fs.realPath(
-      yield* fs.makeTempDirectory({ prefix: "t3code-ssh-runtime-" }),
+      yield* fs.makeTempDirectory({ prefix: "j6code-ssh-runtime-" }),
     );
     const helperPath = yield* ensureSshAskpassHelpers({
       directory: path.join(runtimeDirectory, SSH_ASKPASS_DIR_NAME),
@@ -250,7 +250,7 @@ export const buildSshChildEnvironment = Effect.fn("ssh/auth.buildSshChildEnviron
       };
     }
     // Win32-OpenSSH uses a value that starts with a quote as the command line as written; an
-    // unquoted one is split after a lower-case ".exe" only. The single-executable t3.exe ignores
+    // unquoted one is split after a lower-case ".exe" only. The single-executable j6.exe ignores
     // a script argument, so it loads the helper through NODE_OPTIONS instead.
     const execPath = yield* HostProcess.ExecutablePath;
     const preload = (yield* HostProcess.IsExecutable)
@@ -271,7 +271,7 @@ export const buildSshChildEnvironment = Effect.fn("ssh/auth.buildSshChildEnviron
     SSH_ASKPASS: helperPath,
     SSH_ASKPASS_REQUIRE: "force",
     ...authSecretEnv,
-    ...(baseEnv.DISPLAY || hostDisplay ? {} : { DISPLAY: "t3code" }),
+    ...(baseEnv.DISPLAY || hostDisplay ? {} : { DISPLAY: "j6code" }),
   };
 });
 

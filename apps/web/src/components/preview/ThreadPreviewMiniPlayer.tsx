@@ -1,7 +1,7 @@
-import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
+import { thrownErrorMessage } from "@j6/client-runtime/errors";
 import { m } from "~/i18n/messages";
-import { FILL_PREVIEW_VIEWPORT, type ScopedThreadRef } from "@t3tools/contracts";
-import { previewPdfAssetUrl } from "@t3tools/shared/preview";
+import { FILL_PREVIEW_VIEWPORT, type ScopedThreadRef } from "@j6/contracts";
+import { previewPdfAssetUrl } from "@j6/shared/preview";
 import { useEnvironmentHttpBaseUrl } from "~/state/environments";
 import { PanelRightIcon, PictureInPicture2, XIcon } from "lucide-react";
 import {
@@ -15,7 +15,7 @@ import {
 import { T, useGT } from "gt-react";
 import { create } from "zustand";
 import { useAtomValue } from "@effect/atom-react";
-import { scopedThreadKey } from "@t3tools/client-runtime/environment";
+import { scopedThreadKey } from "@j6/client-runtime/environment";
 
 import { useChatCanvas } from "../chat/ChatCanvasContext";
 import type { ChatCanvasPreview } from "../chat/chatCanvasLayout";
@@ -55,10 +55,10 @@ import { useRightPanelStore } from "~/rightPanelStore";
 import { useDeviceState } from "~/state/device";
 
 import { DeviceStreamView } from "../device/DeviceStreamView";
-import type { DeviceScreenSize } from "@t3tools/client-runtime/device/stream";
+import type { DeviceScreenSize } from "@j6/client-runtime/device/stream";
 import { Atom } from "effect/reactivity";
 import { deviceScreenKey, deviceStreamScreenAtom } from "../device/deviceStreamSession";
-import type { PreviewStreamViewport } from "@t3tools/client-runtime/preview/server-browser-stream";
+import type { PreviewStreamViewport } from "@j6/client-runtime/preview/server-browser-stream";
 import { previewBridge } from "./previewBridge";
 import { PreviewUnreachable } from "./PreviewUnreachable";
 import { showPreviewPopup } from "./showPreviewPopup";
@@ -468,7 +468,7 @@ function MiniPlayerShell({
   const [pillOpen, setPillOpen] = useState(false);
   const handleTappedRef = useRef(false);
   const handleRef = useRef<HTMLDivElement | null>(null);
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- document pointerdown listener closes the open pill on an outside press
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- document pointerdown listener closes the open pill on an outside press
   useEffect(() => {
     if (!pillOpen) return;
     const dismiss = (event: PointerEvent) => {
@@ -523,7 +523,7 @@ function MiniPlayerShell({
   const endInterruptedGesture = useEffectEvent(() => {
     finishGesture();
   });
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- window blur ends a gesture whose release went to another window, and unmount ends one in progress
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- window blur ends a gesture whose release went to another window, and unmount ends one in progress
   useEffect(() => {
     window.addEventListener("blur", endInterruptedGesture);
     return () => {

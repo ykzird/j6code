@@ -4,13 +4,13 @@ import type {
   PullRequestChangeBreakdown,
   ReviewDiffPreviewSource,
   VcsStatusResult,
-} from "@t3tools/contracts";
-import { summarizeChangedFiles } from "@t3tools/shared/changedFileKind";
-import { isTemporaryWorktreeBranch } from "@t3tools/shared/git";
+} from "@j6/contracts";
+import { summarizeChangedFiles } from "@j6/shared/changedFileKind";
+import { isTemporaryWorktreeBranch } from "@j6/shared/git";
 import { msg } from "gt-react";
 import { m, type MessageResolver } from "../i18n/messages";
 import { changeRequestTermKind } from "./pullRequest/changeRequestTerm";
-import type { ChangeRequestTerminology } from "@t3tools/client-runtime/source-control-clients";
+import type { ChangeRequestTerminology } from "@j6/client-runtime/source-control-clients";
 import {
   changeRequestTerminologyFor,
   type DefaultBranchActionDialogCopy,
@@ -18,13 +18,13 @@ import {
   type GitActionIconName,
   type GitDialogAction,
   vcsActionLabelText,
-} from "@t3tools/client-runtime/state/vcs";
+} from "@j6/client-runtime/state/vcs";
 
 export {
   requiresDefaultBranchConfirmation,
   type DefaultBranchConfirmableAction,
   type GitActionIconName,
-} from "@t3tools/client-runtime/state/vcs";
+} from "@j6/client-runtime/state/vcs";
 
 export interface GitActionMenuItem {
   id: "commit" | "push" | "pr";

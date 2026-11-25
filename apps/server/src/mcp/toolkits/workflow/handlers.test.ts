@@ -1,6 +1,6 @@
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto";
 import { expect, it } from "@effect/vitest";
-import { EnvironmentId, ProviderInstanceId, ThreadId } from "@t3tools/contracts";
+import { EnvironmentId, ProviderInstanceId, ThreadId } from "@j6/contracts";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Stream from "effect/Stream";
@@ -14,7 +14,7 @@ import * as McpToolAccessTestkit from "../../McpToolAccess.testkit.ts";
 import * as WorkflowHandlers from "./handlers.ts";
 import { WorkflowToolkit } from "./tools.ts";
 
-const fullAccess = { sessionId: "session-1", label: "t3 CLI", access: "full-access" } as const;
+const fullAccess = { sessionId: "session-1", label: "j6 CLI", access: "full-access" } as const;
 const supervised = { sessionId: "session-2", label: "Bot", access: "approval-required" } as const;
 
 const handlersWith = (
@@ -271,7 +271,7 @@ it.effect("an answer sent through the tool names the client that sent it", () =>
         }),
       ),
     );
-    expect(named).toEqual(["t3 CLI"]);
+    expect(named).toEqual(["j6 CLI"]);
   }),
 );
 
@@ -354,7 +354,7 @@ it.effect(
         "Tool 't3_workflow' not found",
       ]);
       expect(result.sent).toBe(false);
-      expect(named).toEqual(["t3 CLI"]);
+      expect(named).toEqual(["j6 CLI"]);
     }),
 );
 
@@ -375,7 +375,7 @@ it.effect("withdraw names the caller who withdrew the question and says whether 
         }),
       ),
     );
-    expect(calls).toEqual([["run-1", "wanted", { by: "t3 CLI", reason: "settled elsewhere" }]]);
+    expect(calls).toEqual([["run-1", "wanted", { by: "j6 CLI", reason: "settled elsewhere" }]]);
     expect(result).toEqual({ withdrawal: "not_open", steps: [], references: [] });
   }),
 );

@@ -5,7 +5,7 @@ import * as NodePath from "node:path";
 import { expect } from "e2e";
 
 import { T3_HOME } from "../e2e.config.ts";
-import { makeState, runPromise, test, WEB } from "./t3.ts";
+import { makeState, runPromise, test, WEB } from "./j6.ts";
 
 const COMPLETION = "The background command printed DONE.";
 const ACP = `
@@ -50,8 +50,8 @@ for await (const line of createInterface({ input: process.stdin })) {
 test(
   "Hermes sends its background completion reply when launched through a wrapper",
   WEB,
-  async ({ t3, app, screen }) => {
-    const project = await t3.project("demo");
+  async ({ j6, app, screen }) => {
+    const project = await j6.project("demo");
     const script = NodePath.join(project, "hermes-acp.mjs");
     const gate = NodePath.join(project, "process-exited");
     const settingsPath = NodePath.join(T3_HOME, "userdata/settings.json");
@@ -111,7 +111,7 @@ test(
       }
       if (threadId === undefined) throw new Error("Could not start the Hermes foreground turn.");
 
-      await t3.open({ threadId });
+      await j6.open({ threadId });
       await screen
         .getByText("Started it in the background.", { exact: true })
         .waitFor({ timeout: 60_000 });

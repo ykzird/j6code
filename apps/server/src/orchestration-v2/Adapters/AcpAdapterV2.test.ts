@@ -5,9 +5,9 @@ import {
   normalizeDevinToolCall,
   extractDevinSubagentUpdate,
   makeAcpRegistryAdapterV2,
-} from "@t3tools/provider-acp-registry/testing";
-import { AcpRegistrySettings } from "@t3tools/provider-acp-registry/settings";
-import { AcpRegistryCatalog } from "@t3tools/provider-acp-registry/server/AcpRegistrySupport";
+} from "@j6/provider-acp-registry/testing";
+import { AcpRegistrySettings } from "@j6/provider-acp-registry/settings";
+import { AcpRegistryCatalog } from "@j6/provider-acp-registry/server/AcpRegistrySupport";
 import {
   decodeAcpReplayTranscript,
   makeAcpReplayCompletenessAssertion,
@@ -37,11 +37,11 @@ import {
   type OrchestrationV2UserInputQuestion,
   type ProviderOptionDescriptor,
   type ProviderUserInputAnswers,
-} from "@t3tools/contracts";
-import { GrokSettings } from "@t3tools/provider-grok/settings";
-import * as HostProcess from "@t3tools/shared/HostProcess";
-import { deriveBlockedOnThreadWait } from "@t3tools/shared/orchestrationV2PendingBackgroundWork";
-import { resolveSelfInvocation } from "@t3tools/shared/nodeRuntime";
+} from "@j6/contracts";
+import { GrokSettings } from "@j6/provider-grok/settings";
+import * as HostProcess from "@j6/shared/HostProcess";
+import { deriveBlockedOnThreadWait } from "@j6/shared/orchestrationV2PendingBackgroundWork";
+import { resolveSelfInvocation } from "@j6/shared/nodeRuntime";
 import * as DateTime from "effect/DateTime";
 import * as Deferred from "effect/Deferred";
 import * as Duration from "effect/Duration";
@@ -66,27 +66,27 @@ import * as EffectAcpErrors from "effect-acp/errors";
 import type * as EffectAcpProtocol from "effect-acp/protocol";
 import type * as EffectAcpSchema from "effect-acp/compat";
 
-import { writeFakeCli } from "@t3tools/provider-testing/fakeCli";
-import * as TestProviderHost from "@t3tools/provider-testing/TestProviderHost";
-import * as McpProviderSessions from "@t3tools/provider-core/server/McpProviderSessions";
-import * as ProviderHost from "@t3tools/provider-core/server/ProviderHost";
-import * as AcpSessionRuntime from "@t3tools/provider-acp/server/AcpSessionRuntime";
+import { writeFakeCli } from "@j6/provider-testing/fakeCli";
+import * as TestProviderHost from "@j6/provider-testing/TestProviderHost";
+import * as McpProviderSessions from "@j6/provider-core/server/McpProviderSessions";
+import * as ProviderHost from "@j6/provider-core/server/ProviderHost";
+import * as AcpSessionRuntime from "@j6/provider-acp/server/AcpSessionRuntime";
 import {
   ACP_EMPTY_OPTION_VALUE,
   ACP_SESSION_MODE_OPTION_ID,
   acpProviderOptionDescriptors,
-} from "@t3tools/provider-acp/server/sessionConfig";
+} from "@j6/provider-acp/server/sessionConfig";
 import {
   extractXAiAcpSubagentUpdate,
   makeGrokAdapterV2,
   makeXAiPromptCompletionRuntime,
   normalizeXAiAcpToolCallState,
   registerXAiBackgroundTaskTracking,
-} from "@t3tools/provider-grok/testing";
-import * as IdAllocator from "@t3tools/provider-core/server/IdAllocator";
-import * as ProviderAdapter from "@t3tools/provider-core/server/ProviderAdapter";
+} from "@j6/provider-grok/testing";
+import * as IdAllocator from "@j6/provider-core/server/IdAllocator";
+import * as ProviderAdapter from "@j6/provider-core/server/ProviderAdapter";
 import { makeTurnInput } from "./AcpAdapterV2.testkit.ts";
-import type * as ProviderContinuationRequests from "@t3tools/provider-core/server/ProviderContinuationRequests";
+import type * as ProviderContinuationRequests from "@j6/provider-core/server/ProviderContinuationRequests";
 import {
   AcpProviderCapabilitiesV2,
   acpPerTurnPromptUsage,
@@ -100,15 +100,15 @@ import {
   type AcpAdapterV2Flavor,
   type AcpAdapterV2RuntimeInput,
   type AcpAdapterV2SubagentUpdate,
-} from "@t3tools/provider-acp/server/adapter";
+} from "@j6/provider-acp/server/adapter";
 
 import { appendUserInputAttachmentPaths } from "../../provider/userInputAttachments.ts";
 
-import { makeGrokAcpAdapterFlavor } from "@t3tools/provider-grok/testing";
+import { makeGrokAcpAdapterFlavor } from "@j6/provider-grok/testing";
 import {
   acpRegistryPromptFailure,
   registerMistralVibeAcpExtensions,
-} from "@t3tools/provider-acp-registry/testing";
+} from "@j6/provider-acp-registry/testing";
 
 const DEFAULT_GROK_SETTINGS = Schema.decodeSync(GrokSettings)({});
 const DROID_SETTINGS = Schema.decodeSync(AcpRegistrySettings)({ agentId: "factory-droid" });
@@ -156,7 +156,7 @@ const bundledReplayAgentPath = Deferred.await(bundledAgents).pipe(
 const bundleAgents = Effect.gen(function* () {
   const fileSystem = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
-  const outDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-acp-agents-" });
+  const outDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-acp-agents-" });
   const input = {
     mock: yield* path.fromFileUrl(new URL("../../../scripts/acp-mock-agent.ts", import.meta.url)),
     replay: yield* path.fromFileUrl(
@@ -950,9 +950,9 @@ function assertReinjectedInstructions(
   request: string,
 ) {
   const text = blocks[0]?.text ?? "";
-  assert.include(text, "T3 Code interaction mode: Default");
-  assert.include(text, "## T3 Code browser");
-  assert.include(text, "T3 Code orchestration");
+  assert.include(text, "J6 Code interaction mode: Default");
+  assert.include(text, "## J6 Code browser");
+  assert.include(text, "J6 Code orchestration");
   assert.include(text, `<user_request>\n${request}\n</user_request>`);
   assert.include(blocks[1]?.text ?? "", "<runtime_info>");
 }
@@ -1058,7 +1058,7 @@ const runFormElicitation = (input: {
     const path = yield* Path.Path;
     const mockAgentPath = yield* bundledMockAgentPath;
     const directory = yield* fileSystem.makeTempDirectoryScoped({
-      prefix: "t3-acp-form-elicitation-",
+      prefix: "j6-acp-form-elicitation-",
     });
     const responseLog = path.join(directory, "responses.jsonl");
     const instanceId = ProviderInstanceId.make(`acp-test-form-${input.name}`);
@@ -1478,7 +1478,7 @@ describe("AcpAdapterV2", () => {
       assert.deepEqual(promptRuntimes, [1, 2], "the next turn runs on a fresh runtime");
       // The fresh runtime has no record of what reached the agent, so it sends T3's notes again.
       assert.include(promptTexts[1] ?? "", "<runtime_info>");
-      assert.include(promptTexts[1] ?? "", "T3 Code interaction mode: Default");
+      assert.include(promptTexts[1] ?? "", "J6 Code interaction mode: Default");
       assert.equal(watchedSessions.length, 2);
       assert.equal(watchedSessions[0], watchedSessions[1]);
 
@@ -1654,7 +1654,7 @@ describe("AcpAdapterV2", () => {
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const directory = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-acp-fifo-" });
+      const directory = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-acp-fifo-" });
       const statusPath = path.join(directory, "status.json");
       const instanceId = ProviderInstanceId.make("acp-test-concurrent-prompts");
       const threadId = ThreadId.make("thread-acp-concurrent-prompts");
@@ -2496,7 +2496,7 @@ describe("AcpAdapterV2", () => {
     return Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const directory = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-registry-form-" });
+      const directory = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-registry-form-" });
       const statusPath = path.join(directory, "status.json");
       const expectedResult = typeof result === "function" ? result(directory) : result;
       let preparedAnswers: ProviderUserInputAnswers | undefined = answers;
@@ -2876,9 +2876,9 @@ describe("AcpAdapterV2", () => {
         assert.notInclude(whitespaceCommand.prompt, "<t3_code_instructions>");
         const firstDefault = yield* runTurn(2, defaultPolicy, "First default request.");
         assert.equal(firstDefault.textBlockCount, 2);
-        assert.include(firstDefault.prompt, "T3 Code interaction mode: Default");
-        assert.include(firstDefault.prompt, "## T3 Code browser");
-        assert.include(firstDefault.prompt, "T3 Code orchestration");
+        assert.include(firstDefault.prompt, "J6 Code interaction mode: Default");
+        assert.include(firstDefault.prompt, "## J6 Code browser");
+        assert.include(firstDefault.prompt, "J6 Code orchestration");
         assert.include(firstDefault.prompt, "<runtime_info>");
         assert.notInclude(
           firstDefault.methods,
@@ -2891,14 +2891,14 @@ describe("AcpAdapterV2", () => {
 
         const planPolicy = policy("plan");
         const firstPlan = yield* runTurn(4, planPolicy, "Plan this change.");
-        assert.include(firstPlan.prompt, "T3 Code interaction mode: Plan");
+        assert.include(firstPlan.prompt, "J6 Code interaction mode: Plan");
         assert.deepEqual(firstPlan.modeSets, [planModeId]);
         assert.include(
           (yield* runTurn(5, planPolicy, "Continue planning.")).prompt,
           "Continue planning.",
         );
         const restoredBuild = yield* runTurn(6, defaultPolicy, "Implement the change.");
-        assert.include(restoredBuild.prompt, "T3 Code interaction mode: Default");
+        assert.include(restoredBuild.prompt, "J6 Code interaction mode: Default");
         assert.deepEqual(
           restoredBuild.modeSets,
           [buildModeId],
@@ -3394,7 +3394,7 @@ describe("AcpAdapterV2", () => {
     Effect.gen(function* () {
       const fileSystem = yield* FileSystem.FileSystem;
       const path = yield* Path.Path;
-      const directory = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3-acp-mode-only-" });
+      const directory = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-acp-mode-only-" });
       const statusPath = path.join(directory, "status.json");
       const sessionId = "mode-only-session";
       const modeOption = (currentValue: string) => ({
@@ -3600,7 +3600,7 @@ describe("AcpAdapterV2", () => {
                         title: "Wait for the child",
                         status: "in_progress",
                         rawInput: {
-                          server: "t3-code",
+                          server: "j6-code",
                           tool: "t3_thread_wait",
                           arguments: { threadId: "child" },
                         },
@@ -4653,7 +4653,7 @@ describe("AcpAdapterV2", () => {
           (item) =>
             item.threadId === task?.childThreadId &&
             item.type === "dynamic_tool" &&
-            item.toolName === "t3-code.task_status",
+            item.toolName === "j6-code.task_status",
         ),
       );
       const childMcp = items.find(
@@ -5393,9 +5393,9 @@ describe("AcpAdapterV2", () => {
         results: undefined,
       });
       assert.deepEqual(webItem("grok-web-search", "completed"), {
-        title: "Web search: t3 code",
-        patterns: ["t3 code"],
-        results: [{ url: "https://t3.codes" }, { url: "https://github.com/pingdotgg/t3code" }],
+        title: "Web search: j6 code",
+        patterns: ["j6 code"],
+        results: [{ url: "https://j6.codes" }, { url: "https://github.com/pingdotgg/t3code" }],
       });
       assert.deepEqual(webItem("antigravity-web-search", "completed"), {
         title: "Web search: top story on Hacker News today",
@@ -5417,7 +5417,7 @@ describe("AcpAdapterV2", () => {
         results: [{ url: "https://example.com/streamed_(detail)" }],
       });
       assert.deepEqual(webItem("grok-web-fetch", "completed")?.results, [
-        { url: "https://t3.codes", snippet: "T3 Code page" },
+        { url: "https://j6.codes", snippet: "J6 Code page" },
       ]);
       const completedCompaction = items.find(
         (item) =>
@@ -6813,10 +6813,10 @@ describe("AcpAdapterV2", () => {
         mcpServers: [
           {
             type: "stdio",
-            name: "t3-code",
+            name: "j6-code",
             command: process.execPath,
             args: [
-              process.argv[1] === undefined ? "t3" : NodePath.resolve(process.argv[1]),
+              process.argv[1] === undefined ? "j6" : NodePath.resolve(process.argv[1]),
               "acp-mcp-bridge",
             ],
             env: [
@@ -6869,7 +6869,7 @@ describe("AcpAdapterV2", () => {
           command: process.execPath,
           args: [
             "-e",
-            "process.stdout.write(`${process.env.T3CODE_THREAD_ID ?? ''}\n${process.env.T3_ACP_MCP_AUTHORIZATION ?? ''}`)",
+            "process.stdout.write(`${process.env.J6CODE_THREAD_ID ?? ''}\n${process.env.T3_ACP_MCP_AUTHORIZATION ?? ''}`)",
           ],
         },
         { requestId: "test-terminal-create", method: "terminal/create" },
@@ -6905,7 +6905,7 @@ describe("AcpAdapterV2", () => {
         const selfInvocation = yield* resolveSelfInvocation();
         const mockAgentPath = yield* bundledMockAgentPath;
         const workspace = yield* fileSystem.makeTempDirectoryScoped({
-          prefix: "t3-acp-no-client-fs-",
+          prefix: "j6-acp-no-client-fs-",
         });
         const probePath = path.join(workspace, "planted.txt");
         const probeLogPath = path.join(workspace, "fs-probe.jsonl");
@@ -7213,7 +7213,7 @@ describe("AcpAdapterV2", () => {
         return yield* Effect.die("ACP runtime must register MCP-over-ACP handlers");
       }
       const { connectionId } = yield* mcpConnect(
-        { serverId: "t3-code" },
+        { serverId: "j6-code" },
         { requestId: "stop-mcp-connect", method: "mcp/connect" },
       );
       const call = yield* mcpMessage(
@@ -7672,7 +7672,7 @@ describe("AcpAdapterV2", () => {
         "Bearer rollback-target-token",
       );
       assert.equal(
-        runtimeInputs[1]?.processEnvironment?.T3CODE_THREAD_ID,
+        runtimeInputs[1]?.processEnvironment?.J6CODE_THREAD_ID,
         "thread-acp-rollback-session-target",
       );
       const replacementMcpServer = runtimeInputs[1]?.mcpServers[0];
@@ -7855,7 +7855,7 @@ describe("AcpAdapterV2", () => {
         }),
       );
       const replacementPrompt = yield* Deferred.await(replacementPromptText);
-      assert.include(replacementPrompt, "T3 Code interaction mode: Default");
+      assert.include(replacementPrompt, "J6 Code interaction mode: Default");
       assert.include(replacementPrompt, "<runtime_info>");
     }).pipe(Effect.provide(layerTest)),
   );

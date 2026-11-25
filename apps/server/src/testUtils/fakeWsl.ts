@@ -1,4 +1,4 @@
-import * as HostProcess from "@t3tools/shared/HostProcess";
+import * as HostProcess from "@j6/shared/HostProcess";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
@@ -7,8 +7,8 @@ import * as Path from "effect/Path";
 export const makeFakeWslHost = Effect.gen(function* () {
   const fileSystem = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
-  const mountRoot = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3code-wsl-mnt-" });
-  const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "t3code-wsl-bin-" });
+  const mountRoot = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6code-wsl-mnt-" });
+  const binDir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6code-wsl-bin-" });
   const wslpath = path.join(binDir, "wslpath");
   yield* fileSystem
     .writeFileString(

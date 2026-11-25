@@ -1,4 +1,4 @@
-import type { ScopedThreadRef } from "@t3tools/contracts";
+import type { ScopedThreadRef } from "@j6/contracts";
 import { useEffect, useRef } from "react";
 
 import { appAtomRegistry } from "~/rpc/atomRegistry";
@@ -28,7 +28,7 @@ export function useThreadIntentPrefetch(threadRef: ScopedThreadRef) {
       environmentThreadStateAtom(threadRef.environmentId, threadRef.threadId),
     );
   };
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- releases a held thread subscription when the row unmounts
+  // oxlint-disable-next-line j6code/no-unreasoned-state-sync -- releases a held thread subscription when the row unmounts
   useEffect(
     () => () => {
       clearTimeout(timer.current);

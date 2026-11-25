@@ -46,22 +46,22 @@ import {
   type ThreadPullRequestKey,
   type VcsCreateWorktreeInput,
   type VcsCreateWorktreeResult,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   hasProjectSettingsOverrides,
   resolveProjectSettings,
-} from "@t3tools/shared/projectSettings";
+} from "@j6/shared/projectSettings";
 import {
   mergeGitStatusParts,
   resolveAutoFeatureBranchName,
   sanitizeBranchFragment,
   sanitizeFeatureBranchName,
-} from "@t3tools/shared/git";
-import { isSshRemoteUrl } from "@t3tools/shared/sourceControl";
+} from "@j6/shared/git";
+import { isSshRemoteUrl } from "@j6/shared/sourceControl";
 import {
   type ChangeRequestTerminology,
   UNKNOWN_SOURCE_CONTROL_CLIENT,
-} from "@t3tools/source-control-core/shared/definition";
+} from "@j6/source-control-core/shared/definition";
 import {
   normalizeThreadPullRequestKey,
   threadPullRequestKeyOf,
@@ -72,12 +72,12 @@ import {
   GitManagerError,
   GitPullRequestMaterializationError,
   trimAsciiWhitespace,
-} from "@t3tools/contracts";
+} from "@j6/contracts";
 import {
   historicalMessage,
   renderHistory,
   selectHistory,
-} from "@t3tools/provider-core/server/handoffBudget";
+} from "@j6/provider-core/server/handoffBudget";
 import * as TextGeneration from "../textGeneration/TextGeneration.ts";
 import {
   conventionalCommitsTextGenerationPolicy,
@@ -93,13 +93,13 @@ import * as ProviderRegistry from "../provider/ProviderRegistry.ts";
 import { extractBranchNameFromRemoteRef } from "./remoteRefs.ts";
 import { detachStackFrame } from "./detachStackFrame.ts";
 import * as ServerSettings from "../serverSettings.ts";
-import type { GitManagerServiceError } from "@t3tools/contracts";
+import type { GitManagerServiceError } from "@j6/contracts";
 import * as GitVcsDriver from "../vcs/GitVcsDriver.ts";
 import { isNonRepositoryGitStderr } from "../vcs/GitVcsDriverCore.ts";
-import * as SourceControlProvider from "@t3tools/source-control-core/server/SourceControlProvider";
-import * as SourceControlRateLimit from "@t3tools/source-control-core/server/SourceControlRateLimit";
+import * as SourceControlProvider from "@j6/source-control-core/server/SourceControlProvider";
+import * as SourceControlRateLimit from "@j6/source-control-core/server/SourceControlRateLimit";
 import * as SourceControlProviderRegistry from "../sourceControl/SourceControlProviderRegistry.ts";
-import type { ChangeRequest } from "@t3tools/contracts";
+import type { ChangeRequest } from "@j6/contracts";
 
 export interface GitActionProgressReporter {
   readonly publish: (event: GitActionProgressEvent) => Effect.Effect<void, never>;
@@ -218,7 +218,7 @@ export class GitManager extends Context.Service<
       Scope.Scope
     >;
   }
->()("t3/git/GitManager") {}
+>()("j6/git/GitManager") {}
 
 const COMMIT_TIMEOUT_MS = 10 * 60_000;
 const MAX_PROGRESS_TEXT_LENGTH = 500;
@@ -278,7 +278,7 @@ interface SharedPrLookupGitReads {
 }
 
 const prLookupGitReads = Context.Reference<SharedPrLookupGitReads | null>(
-  "t3/GitManager/prLookupGitReads",
+  "j6/GitManager/prLookupGitReads",
   { defaultValue: () => null },
 );
 
@@ -353,7 +353,7 @@ function resolveHeadRepositoryNameWithOwner(pullRequest: PullRequestHeadRemoteIn
 
 // Both names `resolvePullRequestWorktreeLocalBranchName` gives a fork pull request's branch.
 function isPullRequestWorktreeLocalBranchName(branch: string): boolean {
-  return /^t3code[/-]pr-\d+[/-]/u.test(branch);
+  return /^j6code[/-]pr-\d+[/-]/u.test(branch);
 }
 
 function resolvePullRequestWorktreeLocalBranchName(
@@ -366,18 +366,18 @@ function resolvePullRequestWorktreeLocalBranchName(
 
   const sanitizedHeadBranch = sanitizeBranchFragment(pullRequest.headBranch).trim();
   const suffix = sanitizedHeadBranch.length > 0 ? sanitizedHeadBranch : "head";
-  // Git cannot create a ref whose path is a parent or child of an existing one (`t3code` blocks `t3code/...`).
+  // Git cannot create a ref whose path is a parent or child of an existing one (`j6code` blocks `j6code/...`).
   const isCreatable = (name: string) =>
     !name
       .split("/")
       .slice(0, -1)
       .some((_, index, segments) => localBranches.has(segments.slice(0, index + 1).join("/"))) &&
     ![...localBranches].some((branch) => branch.startsWith(`${name}/`));
-  const preferred = `t3code/pr-${pullRequest.number}/${suffix}`;
+  const preferred = `j6code/pr-${pullRequest.number}/${suffix}`;
   if (isCreatable(preferred)) {
     return preferred;
   }
-  const flat = `t3code-pr-${pullRequest.number}-${suffix.replaceAll("/", "-")}`;
+  const flat = `j6code-pr-${pullRequest.number}-${suffix.replaceAll("/", "-")}`;
   for (let attempt = 1; ; attempt++) {
     const candidate = attempt === 1 ? flat : `${flat}-${attempt}`;
     if (isCreatable(candidate)) {
@@ -2452,7 +2452,7 @@ export const make = Effect.gen(function* () {
     upstreamRef: string | null,
     headContext: Pick<BranchHeadContext, "isCrossRepository" | "remoteName">,
   ) {
-    const configuredRef = yield* gitCore.readConfigValue(cwd, `branch.${branch}.t3-merge-base-ref`);
+    const configuredRef = yield* gitCore.readConfigValue(cwd, `branch.${branch}.j6-merge-base-ref`);
     if (configuredRef?.startsWith("refs/heads/") || configuredRef?.startsWith("refs/remotes/")) {
       const configuredBranch = yield* gitCore.resolveBranchName(cwd, configuredRef);
       if (configuredBranch) return { baseBranch: configuredBranch, baseRef: configuredRef };
@@ -2815,7 +2815,7 @@ export const make = Effect.gen(function* () {
     });
     const bodyFile = path.join(
       tempDir,
-      `t3code-pr-body-${process.pid}-${yield* randomUUIDv4(cwd)}.md`,
+      `j6code-pr-body-${process.pid}-${yield* randomUUIDv4(cwd)}.md`,
     );
     yield* fileSystem.writeFileString(bodyFile, generated.body).pipe(
       Effect.mapError(
@@ -3023,7 +3023,7 @@ export const make = Effect.gen(function* () {
     }
     const bodyFile = path.join(
       tempDir,
-      `t3code-pr-body-${process.pid}-${yield* randomUUIDv4(cwd)}.md`,
+      `j6code-pr-body-${process.pid}-${yield* randomUUIDv4(cwd)}.md`,
     );
     yield* fileSystem
       .writeFileString(bodyFile, input.body)
@@ -3514,7 +3514,7 @@ export const make = Effect.gen(function* () {
     };
   }, withBranchPullRequestGitReads);
 
-  const checkedOutPullRequestKey = (branch: string) => `branch.${branch}.t3-pull-request`;
+  const checkedOutPullRequestKey = (branch: string) => `branch.${branch}.j6-pull-request`;
 
   const branchPullRequest: GitManager["Service"]["branchPullRequest"] = Effect.fn(
     "branchPullRequest",
