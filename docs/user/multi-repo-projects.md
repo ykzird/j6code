@@ -11,7 +11,7 @@ The project folder does not have to be a Git repository itself.
 
 ## Which repositories a project covers
 
-There is no list to keep. A project covers every repository inside its folder: T3 Code looks one
+There is no list to keep. A project covers every repository inside its folder: J6 Code looks one
 level down, and one level further inside folders that are not repositories themselves, such as
 `src` or `packages`. It reads the disk each time, so a repository you clone there is part of the
 project straight away, and one you delete is gone from it. Worktrees of another repository are left
@@ -27,7 +27,7 @@ place they could not reach before.
 - On web and desktop, use **Add folder** under **Repositories**.
 - If the project folder has a `.code-workspace` file, the folders it lists outside the project are
   offered there with an **Add** button, on mobile too.
-- From a script, `t3 project add <path> --track <folder>` adds one.
+- From a script, `j6 project add <path> --track <folder>` adds one.
 
 **Remove** takes an added folder out of the project. It never deletes files. Added folders are
 paths on one machine, so the same project on another machine has its own. A project can cover up to
@@ -117,20 +117,20 @@ place. It receives these environment variables:
 
 | Variable                   | Value                                                      |
 | -------------------------- | ---------------------------------------------------------- |
-| `T3_PROJECT_ROOT`          | The project folder.                                        |
-| `T3_WORKTREE_ROOT`         | The empty folder to fill for this thread.                  |
-| `T3_WORKTREE_PROJECT_PATH` | Where the project folder goes inside it.                   |
-| `T3_WORKTREE_BRANCH`       | The thread's branch name.                                  |
-| `T3_WORKTREE_BASE`         | The base branch, or empty when the thread has none.        |
-| `T3_WORKTREE_REPOSITORIES` | The repositories chosen for the thread, one path per line. |
+| `J6_PROJECT_ROOT`          | The project folder.                                        |
+| `J6_WORKTREE_ROOT`         | The empty folder to fill for this thread.                  |
+| `J6_WORKTREE_PROJECT_PATH` | Where the project folder goes inside it.                   |
+| `J6_WORKTREE_BRANCH`       | The thread's branch name.                                  |
+| `J6_WORKTREE_BASE`         | The base branch, or empty when the thread has none.        |
+| `J6_WORKTREE_REPOSITORIES` | The repositories chosen for the thread, one path per line. |
 
 Every repository of the project that the command checks out at the same relative place becomes the
-thread's checkout of it. `remove` is optional and runs before T3 Code removes whatever is left.
+thread's checkout of it. `remove` is optional and runs before J6 Code removes whatever is left.
 
 What the commands can rely on, and what they must do:
 
 - **Checkouts are linked worktrees on the thread's branch.** Make each one with
-  `git worktree add` from the repository it belongs to, on `T3_WORKTREE_BRANCH`. T3 Code later
+  `git worktree add` from the repository it belongs to, on `J6_WORKTREE_BRANCH`. J6 Code later
   removes, restores, and renames these through Git, so it refuses a clone or a checkout on another
   branch and the thread does not start.
 - **`create` can run more than once.** It runs again when a thread's folder has gone missing, by
@@ -150,7 +150,7 @@ What the commands can rely on, and what they must do:
 
 #### Approve the commands
 
-T3 Code runs `create` and `remove` only after you have approved them. The first time you start a
+J6 Code runs `create` and `remove` only after you have approved them. The first time you start a
 worktree thread in the project from the web or desktop app, it shows both commands in full and asks.
 **Approve and continue** records the approval and starts the thread; **Cancel** leaves your draft as
 it was. You can also review, approve, and revoke each command under **Worktree layout** in the
@@ -188,7 +188,7 @@ so write it for the shell of the machine the project is on; this one is for `sh`
 ```json
 {
   "worktreeLayout": {
-    "create": "(git worktree add \"$T3_WORKTREE_PROJECT_PATH\" \"$T3_WORKTREE_BRANCH\" 2>/dev/null || git worktree add -b \"$T3_WORKTREE_BRANCH\" \"$T3_WORKTREE_PROJECT_PATH\" ${T3_WORKTREE_BASE:-HEAD}) && git -C \"$T3_WORKTREE_PROJECT_PATH\" submodule update --init"
+    "create": "(git worktree add \"$J6_WORKTREE_PROJECT_PATH\" \"$J6_WORKTREE_BRANCH\" 2>/dev/null || git worktree add -b \"$J6_WORKTREE_BRANCH\" \"$J6_WORKTREE_PROJECT_PATH\" ${J6_WORKTREE_BASE:-HEAD}) && git -C \"$J6_WORKTREE_PROJECT_PATH\" submodule update --init"
   }
 }
 ```

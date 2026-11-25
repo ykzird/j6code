@@ -22,18 +22,18 @@ the totals for Codex or Claude Code 2.0.63 and newer, because those runs save no
 
 The server keeps scanned usage history for 92 days by default. Claude Code deletes its own
 transcripts after 30 days, so for older Claude usage this history is the only record left. To keep
-it longer, set `usageHistoryRetentionDays` in `<T3 home>/userdata/settings.json` to a number of days
+it longer, set `usageHistoryRetentionDays` in `<J6 home>/userdata/settings.json` to a number of days
 such as `365`, or to `"unlimited"`. Usage views still show at most 90 days. Lowering the value
 prunes older history on the next refresh, and raising it again does not bring pruned history back.
 While `settings.json` cannot be read, nothing is pruned.
 
 OpenCode reads its SQLite database and older JSON history. Antigravity reads local conversation
-databases, including T3-managed profiles. Set `OPENCODE_DATA_DIR` or `ANTIGRAVITY_DATA_DIR` on the
+databases, including J6-managed profiles. Set `OPENCODE_DATA_DIR` or `ANTIGRAVITY_DATA_DIR` on the
 server to read a different data directory; comma-separated paths read multiple directories.
 
-Cursor reads account usage from Cursor's API for the account you signed in with in T3 or set as
-`CURSOR_API_KEY`. This includes headless T3 sessions and desktop usage across machines; the same
-account counts once across connected environments. T3 does not estimate missing tokens from
+Cursor reads account usage from Cursor's API for the account you signed in with in J6 or set as
+`CURSOR_API_KEY`. This includes headless J6 sessions and desktop usage across machines; the same
+account counts once across connected environments. J6 does not estimate missing tokens from
 conversation text.
 
 Usage includes each configured account's history, including disabled accounts. Custom homes follow
@@ -49,8 +49,8 @@ Use absolute paths or `~/` paths in the account's environment settings; relative
 depend on each project's working directory and cannot be reliably discovered by Usage. Accounts
 sharing a history directory count once.
 
-The server saves its first hostname in `<T3 home>/usage-host-id`, so a recreated container keeps
-its usage identity when T3 home is persisted. Set `T3CODE_HOST_ID` to choose the identity
+The server saves its first hostname in `<J6 home>/usage-host-id`, so a recreated container keeps
+its usage identity when J6 home is persisted. Set `T3CODE_HOST_ID` to choose the identity
 explicitly.
 
 When your app and server support different providers, usage totals may cover only the providers
@@ -158,13 +158,13 @@ context use against the model's limit. A tick on the bar marks where the provide
 automatically, when it reports that point.
 
 OpenCode Go reports its session, weekly, and monthly allowance when OpenCode runs locally in
-the environment. T3 cannot report limits for external OpenCode servers because their credentials
+the environment. J6 cannot report limits for external OpenCode servers because their credentials
 belong to the remote server. Limits need an OpenCode Go API key, or an OpenCode Console connected
 in OpenCode with an API key. A Console browser sign-in alone does not report them. You can also add
 your Go API key as `OPENCODE_API_KEY` in the OpenCode instance's **Environment variables**, then
 refresh provider status. Cursor reports
 its monthly allowance, including separate Auto and API usage, for `CURSOR_AUTH_TOKEN` when it is set,
-otherwise for the account you signed in with in T3 or set as `CURSOR_API_KEY`.
+otherwise for the account you signed in with in J6 or set as `CURSOR_API_KEY`.
 Sign-in and API keys report limits only with Cursor's default API endpoint. If you configure a custom
 Cursor endpoint, use an explicit `CURSOR_AUTH_TOKEN` for limits.
 
@@ -197,7 +197,7 @@ need it.
 
 In **Settings → Providers → Usage providers → Add HTTP source**, choose the environment that can
 reach your quota server and enter the full endpoint URL. If the endpoint requires authentication,
-supply a bearer token. The selected T3 environment sends a read-only GET with
+supply a bearer token. The selected J6 environment sends a read-only GET with
 `Accept: application/json` and shows the result in **Usage → Limits**.
 
 Return JSON in this format, with stable IDs for accounts and their windows.
@@ -234,9 +234,9 @@ a binding still appear in **Usage → Limits**.
 ## Subscription usage widget
 
 Add **Subscription usage** from your iOS or Android widget gallery to see remaining Codex and
-Claude quotas. Tap it to open **Usage → Limits**; on Android this works while T3 is running in
+Claude quotas. Tap it to open **Usage → Limits**; on Android this works while J6 is running in
 the background, otherwise open the app from the launcher. On iOS, use **Edit Widget** to choose
-Session, Weekly, or both for each provider. Reopen T3 to refresh expired readings.
+Session, Weekly, or both for each provider. Reopen J6 to refresh expired readings.
 
 ## Keyboard shortcuts
 

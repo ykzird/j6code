@@ -1,6 +1,6 @@
-# T3 Connect
+# J6 Connect
 
-T3 Connect uses Clerk for cloud identity. The relay manages environment links, bootstrap
+J6 Connect uses Clerk for cloud identity. The relay manages environment links, bootstrap
 credentials, and managed tunnel allocations. Regular HTTP and WebSocket traffic goes directly from
 clients to the environment's tunnel hostname—the relay Worker is not in the data path.
 
@@ -52,10 +52,10 @@ Deployment and Clerk configuration live in the [Connect setup runbook](../operat
 - Idle tunnel reclamation deletes only tunnels whose host has registered recovery (and never
   unallocated orphans) so hosts that cannot self-heal are left alone.
 
-## T3 Chat plan cap link
+## J6 Chat plan cap link
 
-T3 Chat uses WorkOS rather than Clerk, so accounts link by user consent via a shared secret. T3 Chat
-owns the link and plan state; the relay stores no copy and queries T3 Chat only when an account hits
+J6 Chat uses WorkOS rather than Clerk, so accounts link by user consent via a shared secret. J6 Chat
+owns the link and plan state; the relay stores no copy and queries J6 Chat only when an account hits
 its default cap for a new environment, failing closed to the default cap without disrupting existing
 slots.
 

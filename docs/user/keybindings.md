@@ -96,7 +96,7 @@ place of `Cmd`. The on-screen keyboard's Return always inserts a new line.
 ## Edit the configuration file
 
 Keybindings live on the environment's machine, in
-`~/.t3/userdata/keybindings.json` by default. You can edit this file directly.
+`~/.j6/userdata/keybindings.json` by default. You can edit this file directly.
 It is a JSON array of rules:
 
 ```json
@@ -106,10 +106,10 @@ It is a JSON array of rules:
 ]
 ```
 
-T3 Code creates the file with its defaults and adds new defaults on later startups.
+J6 Code creates the file with its defaults and adds new defaults on later startups.
 New defaults do not replace commands you customized. If a new default overlaps one
 of your shortcuts, [rule order](#precedence) decides which runs.
-Invalid rules are ignored; if the file cannot be parsed, T3 Code uses defaults.
+Invalid rules are ignored; if the file cannot be parsed, J6 Code uses defaults.
 
 ## Rule shape
 
@@ -163,7 +163,7 @@ and **Escape** to close find.
 `preview.find` (`mod+f` while a browser has focus) searches the open page in the desktop app. It
 is also in the browser's **⋮** menu and the command palette. A page that handles `mod+f` itself,
 such as a code editor, keeps its own find. Use the **⋮** menu to reach the browser's find there.
-Streamed browser tabs and T3 Code in a web browser do not support it.
+Streamed browser tabs and J6 Code in a web browser do not support it.
 
 ## Precedence
 

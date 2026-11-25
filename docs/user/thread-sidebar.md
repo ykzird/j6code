@@ -2,7 +2,7 @@
 
 Use a new thread for a separate task. Choose **New worktree** when its code changes
 need a separate branch and working directory. Threads in the same checkout share its
-branch, so T3 Code refuses a branch switch there while one of them is working.
+branch, so J6 Code refuses a branch switch there while one of them is working.
 
 ## Resize or hide the sidebar
 
@@ -32,7 +32,7 @@ off **Settings → General → Use last project** to choose a project every time
 When you pick a project that is on more than one machine, the thread starts on
 a connected one if any is connected.
 
-When you change a new thread's project, T3 Code stays in the current environment
+When you change a new thread's project, J6 Code stays in the current environment
 if that project exists there. Otherwise it selects an environment that has it.
 
 ### Start without a project
@@ -45,8 +45,8 @@ list. It starts on your current machine; before sending, pick another machine
 from the machine menu to move it there. To move a draft into a project, pick the
 project in the heading.
 
-Each thread without a project works in its own folder under `~/.t3/scratch` (the
-`scratch` folder of your T3 data directory), named after its date, the first words
+Each thread without a project works in its own folder under `~/.j6/scratch` (the
+`scratch` folder of your J6 data directory), named after its date, the first words
 of its first message, and a short id, like
 `2026-09-25-convert-these-pngs-to-webp-a1b2c3d4`. Deleting a thread keeps its
 folder, so the files the agent wrote stay until you delete them. Branch, worktree, and diff controls stay hidden because
@@ -127,7 +127,7 @@ position, so using **Un-settle** returns it to the top. Pinning and snoozing pre
 position until you move it again. Thread activity does not change the order. The settled shelf
 continues to use settlement time.
 
-If dragging is unavailable for one environment, update the T3 Code server running in that
+If dragging is unavailable for one environment, update the J6 Code server running in that
 environment. Pinned and active reordering require server support. Threads from older servers keep
 their default order until the server is updated.
 
@@ -139,7 +139,7 @@ To change how titles are written, add **Thread title instructions** in **Setting
 Text generation**, under Advanced, such as a length limit or an identifier to put first. They apply to new and
 regenerated titles. Select a project to give it its own instructions.
 
-Agents connected through T3 Code can use the same server-owned metadata workflow to
+Agents connected through J6 Code can use the same server-owned metadata workflow to
 rename a thread, regenerate its title, or link and unlink a pull request. These changes
 appear on web, desktop, and mobile without requiring the originating browser to remain
 open.
@@ -184,7 +184,7 @@ terminals that wait at an idle prompt, and keeps their output. A terminal that
 runs a command, such as a dev server, stays open unless its action has **Stop this action
 when the thread settles** enabled in Settings > Projects > Actions. You can also set
 `"stopOnSettle": true` on a `t3.json` action and import it there. Start the command through
-that action so T3 can stop its terminal and child processes. Commands started through an
+that action so J6 can stop its terminal and child processes. Commands started through an
 agent's own shell tools are managed by the provider.
 
 You can settle or snooze a thread while its environment is offline. The thread shows
@@ -213,7 +213,7 @@ is waiting on prevent automatic settlement. An open pull request does not preven
 settlement unless you turn on **Keep threads with a PR** in **Settings → Threads**,
 but an old closed or merged pull request does not settle work you
 resumed after it closed. Your own messages count as resuming, and so does a
-message an agent sends with `t3_thread_send` or `t3 thread send`. A turn that finished
+message an agent sends with `j6_thread_send` or `j6 thread send`. A turn that finished
 background work or a pull request watch starts on its own does not.
 
 To keep one thread out of the settled shelf no matter how long it sits idle, open its menu,
@@ -276,7 +276,7 @@ you paste it and pastes into a composer as a thread chip (see
 [sharing a thread](./prompt-links.md#share-a-thread)). To copy the thread even
 when it has a PR, choose **Copy → Thread** from its context menu, or **Copy
 thread** from its long-press menu on mobile.
-**Thread ID** copies the bare ID for scripts and the `t3` CLI. See
+**Thread ID** copies the bare ID for scripts and the `j6` CLI. See
 [keybindings](./keybindings.md) for custom configuration.
 
 ## Inspect agent work
@@ -327,7 +327,7 @@ thread's terminals or its Claude agent started, with their ports. Not every one
 serves a web page. A server the agent started stays listed after the agent's
 turn ends.
 Select a server to open it in the browser panel. **Stop** ends the server's job
-and keeps the agent, the terminal, and T3 Code running. Stop needs terminal
+and keeps the agent, the terminal, and J6 Code running. Stop needs terminal
 access to the environment and is not available on Windows.
 
 To choose what the thread details card shows, right-click the card or open

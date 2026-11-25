@@ -70,7 +70,7 @@ jobs:
 
           base_version="$(node -p "require('./apps/desktop/package.json').version")"
           node scripts/update-release-package-versions.ts "${base_version}-pr.${PR_NUMBER}.${GITHUB_RUN_NUMBER}"
-          # Public T3 Connect identifiers (Clerk publishable key, relay URL).
+          # Public J6 Connect identifiers (Clerk publishable key, relay URL).
           cp .env.example .env
 
       # PR heads from before build:desktop:bundle use the full build, which
@@ -92,7 +92,7 @@ jobs:
       # channel. The Linux browser secret helper is not part of a macOS app.
       - name: Build JS bundle
         env:
-          T3CODE_TELEMETRY_CHANNEL: ${{ github.repository == 'pingdotgg/t3code' && 'preview' || 'dev' }}
+          T3CODE_TELEMETRY_CHANNEL: ${{ github.repository == 'ykzird/j6code' && 'preview' || 'dev' }}
         run: vp run ${{ steps.bundle_build.outputs.script }}
 
       # Same layout as release.yml's js-bundle so release-desktop.yml can

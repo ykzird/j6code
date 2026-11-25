@@ -2,16 +2,16 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-repo='pingdotgg/t3code'
+repo='ykzird/j6code'
 tag="${RELEASE_TAG:?RELEASE_TAG is required}"
 pkgrel="${PKGREL:-1}"
 
 if [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   pkgname='t3code-bin'
-  asset_prefix='T3-Code'
+  asset_prefix='J6-Code'
 elif [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-nightly\.[0-9]{8}\.[0-9]+$ ]]; then
   pkgname='t3code-nightly-bin'
-  asset_prefix='T3-Code-Nightly'
+  asset_prefix='J6-Code-Nightly'
 else
   echo "Release $tag does not publish an AUR package."
   exit 0
@@ -23,7 +23,7 @@ release_json="$(gh api "repos/$repo/releases/tags/$tag")"
 declare -A appimage_names appimage_checksums
 for architecture in x86_64 aarch64; do
   upstream_arch="${architecture/aarch64/arm64}"
-  versioned_name="T3-Code-${version}-${upstream_arch}.AppImage"
+  versioned_name="J6-Code-${version}-${upstream_arch}.AppImage"
   versionless_name="${asset_prefix}-${upstream_arch}.AppImage"
   if ! asset="$(jq -er --arg versioned "$versioned_name" \
     --arg versionless "$versionless_name" '
@@ -98,9 +98,9 @@ export GIT_SSH_COMMAND="ssh -i $key_file -o IdentitiesOnly=yes -o UserKnownHosts
 git clone "ssh://aur@aur.archlinux.org/$pkgname.git" "$aur_dir"
 cp PKGBUILD .SRCINFO "$aur_dir/"
 cd "$aur_dir"
-git rm --ignore-unmatch LICENSE .upstream-commit t3code-icon.png
-git config user.name 't3code-ci'
-git config user.email 't3code-ci@users.noreply.github.com'
+git rm --ignore-unmatch LICENSE .upstream-commit j6code-icon.png
+git config user.name 'j6code-ci'
+git config user.email 'j6code-ci@users.noreply.github.com'
 git add -A
 
 if git diff --cached --quiet; then

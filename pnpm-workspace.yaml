@@ -1,7 +1,5 @@
 packages:
   - apps/*
-  - evals
-  - infra/*
   - oxlint-plugin-t3code
   - packages/*
   - scripts
@@ -23,7 +21,6 @@ allowBuilds:
   node-pty: true
   # Ships N-API prebuilds; its install script only rebuilds from source.
   objc-js: false
-  "react-native-enriched-markdown@file:apps/mobile/deps/react-native-enriched-markdown-1.2.0-t3.19-a01cbf49.tgz": true
   sharp: true
   utf-8-validate: false
   workerd: false
@@ -229,43 +226,27 @@ packageExtensions:
       vite-plus: "catalog:"
 
 patchedDependencies:
-  react-native-image-viewing@0.2.2: patches/react-native-image-viewing@0.2.2.patch
   mdast-util-math@3.0.0: patches/mdast-util-math@3.0.0.patch
   micromark-extension-llm-math@3.1.0: patches/micromark-extension-llm-math@3.1.0.patch
   "@legendapp/list@3.9.0": patches/@legendapp__list@3.9.0.patch
   micromark-extension-gfm-table@2.1.1: patches/micromark-extension-gfm-table@2.1.1.patch
   micromark@4.0.2: patches/micromark@4.0.2.patch
   mdast-util-to-hast@13.2.1: patches/mdast-util-to-hast@13.2.1.patch
-  expo-audio@58.0.12: patches/expo-audio@58.0.12.patch
-  expo-video@58.0.14: patches/expo-video@58.0.14.patch
-  expo-network@58.0.5: patches/expo-network@58.0.5.patch
-  "@clerk/expo-native-components@0.4.8": patches/@clerk__expo-native-components@0.4.8.patch
-  "@alchemy.run/test@2.0.0-beta.85": patches/@alchemy.run__test@2.0.0-beta.85.patch
   "@effect/vitest@4.1.5": patches/@effect__vitest@4.1.5.patch
-  expo-sharing@58.0.23: patches/expo-sharing@58.0.23.patch
-  expo-widgets@58.0.29: patches/expo-widgets@58.0.29.patch
   # Android: an RNHostView without a scrolling descendant (an app bar's buttons) is no longer the
   # scroll target a Material bottom sheet picks, so sheet content can sit below its header.
-  "@expo/ui@58.0.29": patches/@expo__ui@58.0.29.patch
   "@ff-labs/fff-node@0.11.0": patches/@ff-labs__fff-node@0.11.0.patch
   # Exports the dependency-light subpaths mobile and the web diff parser import, re-measures
   # editor carets when the code font changes, stops the find bar reclaiming focus from the file,
   # and keeps drag selections intact across virtualized scroll renders.
   "@pierre/diffs@1.7.0-beta.4": patches/@pierre__diffs@1.7.0-beta.4.patch
-  "@react-native-menu/menu@2.0.0": patches/@react-native-menu__menu@2.0.0.patch
-  "@react-navigation/native-stack@7.21.0": patches/@react-navigation%2Fnative-stack@7.21.0.patch
   dbus-next@0.10.2: patches/dbus-next@0.10.2.patch
   node-pty@1.2.0-beta.15: patches/node-pty@1.2.0-beta.15.patch
-  react-native-gesture-handler@3.5.0: patches/react-native-gesture-handler@3.5.0.patch
   # Screens v5 stack, split and tab screens leave at once, like legacy screens. Exiting animations
   # inside one otherwise hold its removal for a later mount, after its stack has moved on.
-  react-native-reanimated@4.8.0: patches/react-native-reanimated@4.8.0.patch
-  react-native-keyboard-controller@1.23.0: patches/react-native-keyboard-controller@1.23.0.patch
   # Android: a nested WebView hands a vertical drag to its scrolling parent at the page's edge.
-  react-native-webview@14.0.1: patches/react-native-webview@14.0.1.patch
   # Android: a Compose host that requests layout in a mount (a new screen's app bar) is laid out
   # before that frame is drawn, instead of a frame later.
-  expo-modules-core@58.1.0: patches/expo-modules-core@58.1.0.patch
   # Observe the owned host exit independently of descendants retaining its stdio.
   "@muse-code/sdk@1.4.6": patches/@muse-code__sdk@1.4.6.patch
   app-builder-lib@26.16.1: patches/app-builder-lib@26.16.1.patch
@@ -279,14 +260,10 @@ patchedDependencies:
   # offer background shells to the host, and refresh a cached model list on a miss.
   "@cursor/sdk@1.5.0": patches/@cursor__sdk@1.5.0.patch
   # A failed Artifacts.cached effect hangs every later caller: https://github.com/alchemy-run/alchemy/issues/2981
-  alchemy@2.0.0-beta.85: patches/alchemy@2.0.0-beta.85.patch
   # Android: a marker orient other than "auto" or a number (auto-start-reverse) no longer throws.
-  react-native-svg@15.16.1: patches/react-native-svg@15.16.1.patch
   # Android: double-tap zoom no longer cancels itself, and taps near a link open it.
-  react-native-pdf-jsi@6.1.0: patches/react-native-pdf-jsi@6.1.0.patch
   # Android: a language change applies at once instead of reading back the old locale
   # before the async native write lands.
-  gt-react-native@11.4.18: patches/gt-react-native@11.4.18.patch
   # The MCP Events extension (SEP-3415) on effect/ai, until Effect ships it.
   effect@4.1.5: patches/effect@4.1.5.patch
   "@generaltranslation/format@0.1.9": patches/@generaltranslation__format@0.1.9.patch

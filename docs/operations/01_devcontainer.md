@@ -9,7 +9,7 @@
 
 ## State and caching
 
-`T3CODE_HOME` points at the workspace's gitignored `.t3`. Named Docker volumes hold the pnpm store and root `node_modules` so container rebuilds stay fast and off slow host bind mounts. The host sees an empty `node_modules`; run tooling inside the container.
+`T3CODE_HOME` points at the workspace's gitignored `.j6`. Named Docker volumes hold the pnpm store and root `node_modules` so container rebuilds stay fast and off slow host bind mounts. The host sees an empty `node_modules`; run tooling inside the container.
 
 ## Out of scope
 
@@ -21,5 +21,5 @@
 Codespaces prebuilds bake in `onCreateCommand` and `updateContentCommand` automatically. Note that prebuild snapshots exclude named caching volumes, so a prebuild-first workflow may prefer dropping the volume mounts. Outside Codespaces, push a prebuilt image with:
 
 ```bash
-devcontainer build --workspace-folder . --push true --image-name <registry>/t3code-devcontainer:latest
+devcontainer build --workspace-folder . --push true --image-name <registry>/j6code-devcontainer:latest
 ```

@@ -50,14 +50,14 @@ without replaying its transitions.
 
 ## Custom themes
 
-On web and desktop, choose **Create theme** to adjust a palette, or import a T3 Code or VS Code
+On web and desktop, choose **Create theme** to adjust a palette, or import a J6 Code or VS Code
 theme. The theme editor's color picker lets you select an area of the app to find the color to
 change. Export your theme as JSON to share it.
 
 ### Custom CSS
 
 For a change that colors cannot make, open **Custom CSS** in the theme editor. The CSS is saved with
-the theme, applies after T3 Code's own styles on web and desktop, and is included in exports. Use
+the theme, applies after J6 Code's own styles on web and desktop, and is included in exports. Use
 `.dark` or `:root:not(.dark)` to target one appearance.
 
 Custom CSS cannot load files. `@import`, `image-set()`, and `url()` are ignored, except `url()`
@@ -67,14 +67,14 @@ to another site. For a full-size image, use a [background image](#background-ima
 Class names in the app change between releases. For rules that keep working, target `data-slot`
 and other `data-` attributes, such as `[data-chat-header]` or `[data-slot="button"]`.
 
-If a rule hides something you need, run `t3 theme set t3-chat` on the server to switch to a
+If a rule hides something you need, run `j6 theme set j6-chat` on the server to switch to a
 built-in theme, or press **Cmd+Option+A** on macOS or **Ctrl+Alt+A** on Windows/Linux to pick
 another theme.
 
 ### Ask an agent
 
-An agent on the same machine as the server can restyle T3 Code for you. Ask it to change the look,
-for example "make T3 Code's chat header taller" or "give T3 Code a solarized theme". It publishes
+An agent on the same machine as the server can restyle J6 Code for you. Ask it to change the look,
+for example "make J6 Code's chat header taller" or "give J6 Code a solarized theme". It publishes
 an [environment theme](#environment-themes) with colors and CSS, and web and desktop clients of that
 server switch to it. It can also switch them to light, dark, or system mode. The thread must run
 in Full access. Ask the agent to set a built-in theme to undo it.
@@ -84,31 +84,31 @@ in Full access. Ask the agent to set a built-in theme to undo it.
 Environment themes and defaults come from the server serving your web app or the desktop app's
 main local environment. With the desktop app's local environment off, they come from the
 [background service](./background-service.md) on the same machine while the app is connected to
-it. app.t3.codes and other connections do not use them.
+it. github.com/ykzird/j6code and other connections do not use them.
 
 Select a published theme in **Settings → Appearance** to follow its palette as the server updates
 it. **Duplicate** makes an independent copy you can edit. A saved custom theme with the same ID
-takes precedence. If the server stops publishing the selected theme, T3 Code falls back to its
+takes precedence. If the server stops publishing the selected theme, J6 Code falls back to its
 standard theme.
 
 Run this on the server to set a default and switch connected clients to it:
 
 ```bash
-t3 theme set nightfall
+j6 theme set nightfall
 ```
 
 Clients that are offline apply it when they reconnect. Each client applies the setting once;
-choosing another theme afterward sticks until the next `t3 theme set`. Run the command again to
+choosing another theme afterward sticks until the next `j6 theme set`. Run the command again to
 reapply it, even if the name is unchanged.
 
-`t3 theme clear` removes the default without changing anyone's current theme. `t3 theme show` lists
+`j6 theme clear` removes the default without changing anyone's current theme. `j6 theme show` lists
 the default and published themes.
 
 ### Publish a theme
 
-Save a theme exported from T3 Code into `~/.t3/userdata/themes/` on the server, or the `themes`
+Save a theme exported from J6 Code into `~/.j6/userdata/themes/` on the server, or the `themes`
 directory under your custom state directory. The filename supplies the theme ID: `nightfall.json`
-can be selected with `t3 theme set nightfall`. Keep the filename stable when updating its colors.
+can be selected with `j6 theme set nightfall`. Keep the filename stable when updating its colors.
 Do not use `system`, `light`, `dark`, or a built-in theme's ID.
 
 For an integration that generates a palette, this shorter format also works:
@@ -126,7 +126,7 @@ For an integration that generates a palette, this shorter format also works:
 }
 ```
 
-Set `appearance` to `light` or `dark` and supply hex colors for `canvas` and `accent`. T3 Code
+Set `appearance` to `light` or `dark` and supply hex colors for `canvas` and `accent`. J6 Code
 generates the rest. The optional `colors` overrides use the names in the theme editor's advanced
 view. An optional `css` string adds [custom CSS](#custom-css).
 
@@ -136,7 +136,7 @@ Invalid files are not published.
 ### Background image
 
 A published theme can have a full-size background image. Ask an agent, for example "use
-~/Pictures/wallpaper.jpg as T3 Code's background", or save a JPEG, PNG, or WebP file of up to
+~/Pictures/wallpaper.jpg as J6 Code's background", or save a JPEG, PNG, or WebP file of up to
 16 MB beside the theme file: `nightfall.jpg` beside `nightfall.json`. The theme's CSS decides
 where the image shows:
 

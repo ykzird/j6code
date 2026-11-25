@@ -1,7 +1,8 @@
 import "vite-plus/test/config";
 import { defineConfig } from "vite-plus";
 import * as NodeURL from "node:url";
-import { remoteCacheUrl } from "./infra/task-cache/src/remoteCache.ts";
+// Remote task cache removed with infra/; local-only caching.
+const remoteCacheUrl = (_dir: string): string | undefined => undefined;
 import { cachedTestTasks } from "./scripts/lib/cached-tests.ts";
 
 const TEST_EXCLUDE = [

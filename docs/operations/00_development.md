@@ -12,7 +12,7 @@ curl -fsSL https://vite.plus | bash
 On Windows, clone with long paths enabled so `.repos/` checks out cleanly:
 
 ```powershell
-git clone -c core.longpaths=true https://github.com/pingdotgg/t3code.git
+git clone -c core.longpaths=true https://github.com/ykzird/j6code.git
 ```
 
 From the repository root:
@@ -26,11 +26,11 @@ Open the pairing URL printed by the dev runner (the bare origin does not authent
 
 ## Forge mirror (optional)
 
-GitHub is the source of truth; [source.tanstack.com/@pingdotgg/t3code](https://source.tanstack.com/@pingdotgg/t3code) is a two-way mirror for parallel agent work:
+GitHub is the source of truth; [source.tanstack.com/@ykzird/j6code](https://source.tanstack.com/@ykzird/j6code) is a two-way mirror for parallel agent work:
 
 ```sh
-git remote set-url origin https://source.tanstack.com/@pingdotgg/t3code.git
-git remote add github https://github.com/pingdotgg/t3code.git
+git remote set-url origin https://source.tanstack.com/@ykzird/j6code.git
+git remote add github https://github.com/ykzird/j6code.git
 src auth login --web && src auth setup-git
 ```
 
@@ -39,11 +39,11 @@ With `origin` on the mirror, use `src` instead of `gh`. PRs into `main` still me
 ## Running dev servers
 
 - `vp run dev` (server + web), `vp run dev:desktop` (Electron), `vp run dev:server`, `vp run dev:web`. See [apps/mobile/README.md](../../apps/mobile/README.md) for mobile.
-- Pass flags directly after the task name (e.g. `vp run dev --home-dir /tmp/t3code-dev`, `--browser`).
+- Pass flags directly after the task name (e.g. `vp run dev --home-dir /tmp/j6code-dev`, `--browser`).
 - **State and ports:** Linked worktrees default to `<worktree>/.t3/userdata` (outranking `T3CODE_HOME`) and seed on first start from a read-only snapshot of `~/.t3/userdata/statev2.sqlite` when it is at most 500 MiB (`--no-seed` or `T3CODE_DEV_SEED=0` skips; `vp run migrate-dev-db` refreshes manually). Plain clones and the main checkout default to `~/.t3/dev`. Never point a dev server at `~/.t3/userdata`. Read actual ports from `[dev-runner]` output (`T3CODE_PORT_OFFSET` / `T3CODE_DEV_INSTANCE` override).
 - **Resource monitor:** First start builds `native/resource-monitor` via Cargo when missing; without Rust, dev starts without process telemetry.
 - **Sharing:** `vp run dev --share` exposes the web port over Tailscale and prints a pairing URL. Add `--built` to serve `apps/web/dist` via `vp build --watch` (no HMR, faster over slow links). Never set `VITE_HTTP_URL` or `VITE_WS_URL` in dev—Vite proxies `/api` and `/ws` single-origin.
-- **Startup profiling:** `vp run profile:startup` captures the first 20 s of Node processes under `.t3/startup-profiles/<timestamp>`.
+- **Startup profiling:** `vp run profile:startup` captures the first 20 s of Node processes under `.j6/startup-profiles/<timestamp>`.
 
 ### Replay provider
 

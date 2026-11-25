@@ -1,38 +1,38 @@
 <p align="center">
-  <a href="https://t3.codes">
-    <img src="./assets/prod/t3-black-web-icon-192x192.png" width="80" height="80" alt="T3 Code logo" />
+  <a href="https://github.com/ykzird/j6code">
+    <img src="./assets/prod/t3-black-web-icon-192x192.png" width="80" height="80" alt="J6 Code logo" />
   </a>
 </p>
 
-<h1 align="center">T3 Code</h1>
+<h1 align="center">J6 Code</h1>
 
 <p align="center">The open-source control plane for coding agents.</p>
 
+> **Unofficial fork.** J6 Code is an unofficial fork of the MIT-licensed T3 Code source code. It is **not** affiliated with, endorsed by, sponsored by, or maintained by T3 Tools, Inc., and is not an official T3 product in any way. The "J6" name comes from the first letter of the author's name and their favorite number, 6.
+
 <p align="center">
-  <a href="https://t3.codes/download"><strong>Download</strong></a> ·
-  <a href="https://apps.apple.com/us/app/t3-code-remote-claude-more/id6787819824">iOS</a> ·
-  <a href="https://play.google.com/store/apps/details?id=com.t3tools.t3code">Android</a> ·
-  <a href="https://app.t3.codes">Web</a> ·
+  <a href="https://github.com/ykzird/j6code/releases"><strong>Download</strong></a> ·
+  <a href="https://github.com/ykzird/j6code">Source</a> ·
   <a href="./docs/README.md">Docs</a> ·
-  <a href="https://discord.gg/jn4EGJjrvv">Discord</a>
+  <a href="https://github.com/ykzird/j6code/discussions">Discussions</a>
 </p>
 
 <p align="center">
-  <a href="https://t3.codes">
-    <img src="./.github/readme/hero.webp" width="100%" alt="T3 Code on desktop with a finished Claude thread, next to the phone app asking to approve a command from Codex" />
+  <a href="https://github.com/ykzird/j6code">
+    <img src="./.github/readme/hero.webp" width="100%" alt="J6 Code on desktop with a finished Claude thread, next to the phone app asking to approve a command from Codex" />
   </a>
 </p>
 
-T3 Code runs the coding agents on your machine and gives them one fast interface. Start a thread at your desk, then approve the next step from your phone.
+J6 Code runs the coding agents on your machine and gives them one fast interface. Start a thread at your desk, then approve the next step from your phone.
 
-It works with Claude Code, Codex, Cursor, OpenCode, Grok Build, Antigravity, Kiro, Pi, Muse Code, fx, and any [ACP](./docs/user/providers-acp.md) agent. If an agent is set up on your computer, T3 Code can control it.
+It works with Claude Code, Codex, Cursor, OpenCode, Grok Build, Antigravity, Kiro, Pi, Muse Code, fx, and any [ACP](./docs/user/providers-acp.md) agent. If an agent is set up on your computer, J6 Code can control it.
 
 ## What you get
 
-- **Your subscriptions.** T3 Code does not resell tokens. It drives the agents you are already signed in to.
+- **Your subscriptions.** J6 Code does not resell tokens. It drives the agents you are already signed in to.
 - **Every agent in one place.** Change models in the middle of a thread. Let Claude hand a task to Codex.
 - **Desktop, web, and phone.** One server, and every client shows the same threads. There are apps for iOS and Android.
-- **Remote ready.** Run agents on any machine. Connect over your local network, Tailscale, or [T3 Connect](./docs/user/remote-access.md).
+- **Remote ready.** Run agents on any machine. Connect over your local network, Tailscale, or [J6 Connect](./docs/user/remote-access.md).
 - **Git built in.** Each thread can work in its own worktree. Review the diff, then commit, push, and open a pull request with one button.
 - **Fast.** Performance is a feature here. We measure it, and we treat a dropped frame as a bug.
 - **Open.** Source code is MIT licensed. If you don't like something, fork it under your own branding (see [Trademarks and forks](#trademarks-and-forks)).
@@ -41,45 +41,37 @@ It works with Claude Code, Codex, Cursor, OpenCode, Grok Build, Antigravity, Kir
 
 ### Desktop app
 
-[Download T3 Code](https://t3.codes/download) for macOS, Windows, or Linux. You can also use a package manager:
-
-| Platform       | Command                                                              |
-| -------------- | -------------------------------------------------------------------- |
-| macOS          | `brew install --cask t3-code`                                        |
-| Windows        | `winget install T3Tools.T3Code` or `scoop install extras/t3code`     |
-| Arch Linux     | `yay -S t3code-bin`                                                  |
-| Nix            | `nix profile add github:NixOS/nixpkgs/nixos-unstable#t3code`         |
-| Debian, Ubuntu | `.deb` from [Releases](https://github.com/pingdotgg/t3code/releases) |
+Download J6 Code for macOS, Windows, or Linux from [GitHub Releases](https://github.com/ykzird/j6code/releases). Package-manager listings (Homebrew, winget, AUR, etc.) are published under the J6 name as they become available.
 
 ### Command line
 
-This installs the `t3` command. Run `t3` to start the server and open the web app.
+This installs the `j6` command. Run `j6` to start the server and open the web app.
 
 ```bash
-curl -fsSL https://t3.codes/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/ykzird/j6code/main/scripts/install.sh | sh
 ```
 
 On Windows, in PowerShell:
 
 ```powershell
-irm https://t3.codes/install.ps1 | iex
+irm https://raw.githubusercontent.com/ykzird/j6code/main/scripts/install.ps1 | iex
 ```
 
-To try it once without an install, run `npx t3@latest`.
+To try it once without an install, run `npx j6@latest`.
 
 ### Phone
 
-Get the app from the [App Store](https://apps.apple.com/us/app/t3-code-remote-claude-more/id6787819824) or [Google Play](https://play.google.com/store/apps/details?id=com.t3tools.t3code). Then follow [remote access](./docs/user/remote-access.md) to connect it to your computer.
+Mobile apps are in development; watch [GitHub Releases](https://github.com/ykzird/j6code/releases). Meanwhile, follow [remote access](./docs/user/remote-access.md) to drive J6 Code from your phone's browser.
 
 ### Sign in to an agent
 
-T3 Code needs one agent that is installed and signed in. For example, install [Claude Code](https://claude.com/product/claude-code) and run `claude auth login`, or install [Codex CLI](https://developers.openai.com/codex/cli) and run `codex login`.
+J6 Code needs one agent that is installed and signed in. For example, install [Claude Code](https://claude.com/product/claude-code) and run `claude auth login`, or install [Codex CLI](https://developers.openai.com/codex/cli) and run `codex login`.
 
-[Provider setup](./docs/user/install.md#providers) has the steps for each agent. [Install T3 Code](./docs/user/install.md) covers nightly builds, AppImage, WSL, and NixOS.
+[Provider setup](./docs/user/install.md#providers) has the steps for each agent. [Install J6 Code](./docs/user/install.md) covers nightly builds, AppImage, WSL, and NixOS.
 
 ## "Wait, what are you selling me?"
 
-Nothing. We built T3 Code because we wanted the best possible development experience with agents. We were inspired by existing solutions like the Codex desktop app, Conductor, Claude Desktop and Cursor Glass, but none met our bar.
+Nothing. We built J6 Code because we wanted the best possible development experience with agents. We were inspired by existing solutions like the Codex desktop app, Conductor, Claude Desktop and Cursor Glass, but none met our bar.
 
 We wanted something performant, remote-ready, and truly open. If we ever go the wrong direction, we want you to have everything you need to fork the source code and build the tool that you want, under your own name and branding.
 
@@ -99,7 +91,7 @@ We wanted something performant, remote-ready, and truly open. If we ever go the 
 We have limited review capacity. Small, focused fixes are the most likely to be merged. Features need an approved discussion first.
 
 - Read [CONTRIBUTING.md](./CONTRIBUTING.md) before you report a bug or open a pull request.
-- Put feature requests in [Ideas](https://github.com/pingdotgg/t3code/discussions/categories/ideas).
+- Put feature requests in [Ideas](https://github.com/ykzird/j6code/discussions/categories/ideas).
 - Build from source with the [development runbook](./docs/operations/00_development.md#first-checkout). The [architecture overview](./docs/internals/01_architecture.md) explains how it works.
 - Get help in [Discord](https://discord.gg/jn4EGJjrvv).
 
@@ -107,15 +99,8 @@ We have limited review capacity. Small, focused fixes are the most likely to be 
 
 The source code in this repository is licensed under the [MIT License](./LICENSE).
 
-## Trademarks and forks
+## License and forks
 
-The MIT license applies **only to the source code**. It does not grant any rights to T3 Tools, Inc.'s trademarks, branding, or trade dress, including the **T3 Code** name, wordmark, logos, and application icons.
+The source code in this repository is licensed under the [MIT License](./LICENSE). The copyright and permission notice in `LICENSE` must be retained in all copies or substantial portions of the software, as the license requires.
 
-If you fork, redistribute, or build on T3 Code's source code:
-
-- **Use your own branding.** Replace the T3 Code name, wordmark, logos, and application icons in any public fork, redistributed build, website, package, or app store listing.
-- **Be explicitly clear that your project is unofficial.** Do not use the T3 Code name, wordmark, logo, or branding in your own projects without making it unmistakably clear that your project is unofficial and not affiliated with or endorsed by T3 Tools, Inc.
-
-Using our name, wordmark, logo, or branding in a way that suggests official status or affiliation is trademark infringement and unlawful. **Any project indicating or implying that it is an official version of T3 Code when it is not will be pursued to the full extent of the law.**
-
-See [TRADEMARK.md](./TRADEMARK.md) for the full trademark and branding policy.
+J6 Code is an independent, unofficial project: an unofficial fork based on the T3 Code source code, distributed under the MIT License. It is not affiliated with or endorsed by T3 Tools, Inc. If you fork or redistribute it, keep the `LICENSE` file intact and use your own branding for anything you publish — see [TRADEMARK.md](./TRADEMARK.md) for the details.

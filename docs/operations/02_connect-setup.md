@@ -1,10 +1,10 @@
-# T3 Connect setup
+# J6 Connect setup
 
-Deployment and client configuration for T3 Connect. See [T3 Connect](../internals/06_t3-connect.md) for trust boundaries and [infra/relay/README.md](../../infra/relay/README.md#deployment) for relay provisioning.
+Deployment and client configuration for J6 Connect. See [J6 Connect](../internals/06_t3-connect.md) for trust boundaries and [infra/relay/README.md](../../infra/relay/README.md#deployment) for relay provisioning.
 
 ## Public application configuration
 
-T3 Connect is disabled in a fresh clone. Copy `.env.example` to `.env` for production, or set these public identifiers in `.env` / `.env.local` (process env > `.env.local` > `.env`):
+J6 Connect is disabled in a fresh clone. Copy `.env.example` to `.env` for production, or set these public identifiers in `.env` / `.env.local` (process env > `.env.local` > `.env`):
 
 ```dotenv
 T3CODE_CLERK_PUBLISHABLE_KEY=<publishable key>
@@ -28,11 +28,11 @@ Create a public OAuth application in Clerk (authorization code + PKCE):
 
 ### JWT template
 
-Create a Clerk JWT template named `t3-relay` with `{ "aud": "t3-code-relay" }`. Set `T3CODE_CLERK_JWT_TEMPLATE=t3-relay` on clients and `CLERK_JWT_AUDIENCE=t3-code-relay` on the relay.
+Create a Clerk JWT template named `j6-relay` with `{ "aud": "j6-code-relay" }`. Set `T3CODE_CLERK_JWT_TEMPLATE=j6-relay` on clients and `CLERK_JWT_AUDIENCE=j6-code-relay` on the relay.
 
 ### Desktop OAuth redirects
 
-Enable Clerk's Native API, add `t3code-dev://app/` and `t3code://app/` to the SSO redirect allowlist, and add `t3code-dev://app` and `t3code://app` to `allowed_origins` via `PATCH https://api.clerk.com/v1/instance` (preserving existing entries).
+Enable Clerk's Native API, add `j6code-dev://app/` and `j6code://app/` to the SSO redirect allowlist, and add `j6code-dev://app` and `j6code://app` to `allowed_origins` via `PATCH https://api.clerk.com/v1/instance` (preserving existing entries).
 
 ### Android native sign-in redirects
 
@@ -73,5 +73,5 @@ Unsigned `dev:desktop` cannot exercise passkeys. For renderer HMR with passkeys,
 
 ```sh
 VITE_DEV_SERVER_URL=http://127.0.0.1:5733 T3CODE_PORT=13773 \
-  "/Applications/T3 Code (Alpha).app/Contents/MacOS/T3 Code (Alpha)"
+  "/Applications/J6 Code (Alpha).app/Contents/MacOS/J6 Code (Alpha)"
 ```

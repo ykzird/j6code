@@ -38,7 +38,7 @@ behavior that is easy to break:
 ## Native media presentations
 
 - iOS uses AVKit for full-screen video, Quick Look for documents, and our own
-  [image viewer](../../apps/mobile/modules/t3-native-controls/ios/T3NativeImageViewer.swift) for
+  [image viewer](../../apps/mobile/modules/j6-native-controls/ios/T3NativeImageViewer.swift) for
   images (Quick Look drags images during swipe/dismiss). Do not layer a custom UIKit zoom transition
   over AVKit or Quick Look—it breaks AVKit's Close action and Quick Look's interactive dismiss.
 - Thumbnail registrations hold weak references and resolve promises only after dismissal so callers
