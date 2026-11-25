@@ -14,8 +14,6 @@ import * as HttpClient from "effect/http/HttpClient";
 
 import {
   appendClientConnectionParams,
-  type ClientOwnerParams,
-  readClientOwnerParams,
 } from "../authorization/remote.ts";
 import * as RemoteEnvironmentAuthorization from "../authorization/service.ts";
 import * as ClientCapabilities from "../platform/capabilities.ts";
@@ -80,13 +78,12 @@ const isBearerCredential = Schema.is(BearerConnectionCredential);
 function primarySocketUrl(
   target: PrimaryConnectionTarget,
   clientMetadata: AuthClientPresentationMetadata | undefined,
-  owners: ClientOwnerParams,
-): string {
+  ): string {
   const url = new URL(target.wsBaseUrl);
   if (url.pathname === "" || url.pathname === "/") {
     url.pathname = "/ws";
   }
-  appendClientConnectionParams(url, clientMetadata, "direct", owners);
+  appendClientConnectionParams(url, clientMetadata, "direct");
   return url.toString();
 }
 
@@ -104,7 +101,7 @@ const makePrimaryBroker = Effect.fn("clientRuntime.connection.broker.makePrimary
         environmentId: target.environmentId,
         label: target.label,
         httpBaseUrl: target.httpBaseUrl,
-        socketUrl: primarySocketUrl(target, presentation.metadata, yield* readClientOwnerParams),
+        socketUrl: primarySocketUrl(target, presentation.metadata),
         httpAuthorization: null,
         target,
       } satisfies PreparedConnection;

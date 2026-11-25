@@ -23,7 +23,6 @@ import * as Stream from "effect/Stream";
 
 import * as ElectronApp from "../electron/ElectronApp.ts";
 import * as ElectronPowerMonitor from "../electron/ElectronPowerMonitor.ts";
-import * as DesktopRendererHistory from "./DesktopRendererHistory.ts";
 import * as DesktopShellEnvironment from "../shell/DesktopShellEnvironment.ts";
 
 const LIVE_SAMPLE_INTERVAL = Duration.seconds(1);
@@ -146,7 +145,6 @@ function sampleInterval(
 export const make = Effect.fn("desktop.telemetryPublisher.make")(function* () {
   const electronApp = yield* ElectronApp.ElectronApp;
   const powerMonitor = yield* ElectronPowerMonitor.ElectronPowerMonitor;
-  const rendererHistory = yield* DesktopRendererHistory.DesktopRendererHistory;
   const shellEnvironment = yield* DesktopShellEnvironment.DesktopShellEnvironment;
   yield* electronApp.whenReady;
 
@@ -219,7 +217,6 @@ export const make = Effect.fn("desktop.telemetryPublisher.make")(function* () {
           { concurrency: "unbounded" },
         );
         // One Electron sampler preserves the shared CPU measurement interval.
-        yield* rendererHistory.recordMetrics(metrics);
         const polledLocked =
           systemIdleState === "unknown"
             ? currentPower.locked

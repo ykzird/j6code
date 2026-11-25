@@ -464,7 +464,6 @@ describe("DesktopShellEnvironment", () => {
             NODE_EXTRA_CA_CERTS: "/cached/ca.pem",
             SSL_CERT_FILE: "/cached/cert.pem",
             SSL_CERT_DIR: "/cached/certs",
-            T3CODE_TELEMETRY_ENABLED: "false",
             SSH_AUTH_SOCK: "/stale.sock",
             NODE_OPTIONS: "--bad",
           },
@@ -505,7 +504,6 @@ describe("DesktopShellEnvironment", () => {
         assert.equal(env.NODE_EXTRA_CA_CERTS, "/launcher/ca.pem");
         assert.equal(env.SSL_CERT_FILE, "");
         assert.equal(env.SSL_CERT_DIR, "/cached/certs");
-        assert.equal(env.T3CODE_TELEMETRY_ENABLED, "false");
         assert.equal(env.SSH_AUTH_SOCK, "/current.sock");
         assert.isUndefined(env.NODE_OPTIONS);
         assert.equal(yield* fs.readFileString(cachePath), contents);
@@ -1098,16 +1096,13 @@ describe("DesktopShellEnvironment", () => {
         platform: "win32",
         handler: (command) =>
           command._tag === "StandardCommand" &&
-          String(command.args.at(-1)).includes("T3CODE_TELEMETRY_ENABLED")
             ? envOutput({
                 PATH: "C:\\Windows\\System32",
-                T3CODE_TELEMETRY_ENABLED: "false",
                 DO_NOT_TRACK: "1",
               })
             : envOutput({ PATH: "C:\\Windows\\System32" }),
       });
 
-      assert.equal(env.T3CODE_TELEMETRY_ENABLED, "false");
       assert.equal(env.DO_NOT_TRACK, "1");
     }),
   );

@@ -335,7 +335,7 @@ const CI_VARIABLES = [
   "APPVEYOR",
 ] as const;
 
-/** CI runs are not installs, so telemetry is off there unless `T3CODE_TELEMETRY_ENABLED` says otherwise. */
+/** CI detection for environment defaults. */
 export const isCiEnvironment = (env: Readonly<Record<string, string | undefined>>) =>
   CI_VARIABLES.some((name) => {
     const value = env[name]?.trim().toLowerCase();
@@ -349,13 +349,9 @@ export const isDoNotTrackSet = (env: Readonly<Record<string, string | undefined>
 export const isRelayTracingEnabled = (env: Readonly<Record<string, string | undefined>>) =>
   Config.all({
     ...sdkFlags,
-    telemetry: flag("T3CODE_TELEMETRY_ENABLED", T3CODE_TRUE, T3CODE_FALSE, String),
   }).pipe(
     Effect.map(
-      ({ telemetry, t3, spec }) =>
-        (telemetry.value ?? !isCiEnvironment(env)) &&
-        !isDoNotTrackSet(env) &&
-        !(t3.value ?? spec.value ?? false),
+      ({ t3, spec }) => !isDoNotTrackSet(env) && !(t3.value ?? spec.value ?? false),
     ),
     Effect.provide(ConfigProvider.layer(ConfigProvider.fromEnvRecord(env))),
     Effect.orDie,

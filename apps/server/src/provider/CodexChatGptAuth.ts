@@ -9,7 +9,6 @@ import {
 import { codexCallbackUrl } from "@t3tools/shared/codexAuthHandoff";
 import * as Clock from "effect/Clock";
 import * as Cause from "effect/Cause";
-import * as AnalyticsService from "../telemetry/AnalyticsService.ts";
 import * as Digest from "effect/crypto/Digest";
 import * as SecureRandom from "effect/crypto/SecureRandom";
 import * as Signature from "effect/crypto/Signature";
@@ -120,50 +119,13 @@ export const makeCodexChatGptAuth = Effect.fn("makeCodexChatGptAuth")(function* 
   readonly telemetryFlow?: "direct" | "primary_handoff";
   readonly expectedProfileKey?: string;
 }) {
-  const analytics = yield* Effect.serviceOption(AnalyticsService.AnalyticsService);
   const settings = yield* Effect.serviceOption(ServerSettings.ServerSettingsService);
-  const track = Effect.fn("CodexChatGptAuth.track")(function* <A, E extends ProviderSetupError, R>(
-    event: "auth" | "transfer",
-    properties: Readonly<Record<string, string>>,
+  const track = <A, E extends ProviderSetupError, R>(
+    _event: "auth" | "transfer",
+    _properties: Readonly<Record<string, string>>,
     task: Effect.Effect<A, E, R>,
-    expiresAt?: number,
-  ) {
-    if (Option.isNone(analytics)) return yield* task;
-    const record = (name: string, properties: Readonly<Record<string, unknown>>) =>
-      analytics.value.record(name, properties).pipe(Effect.ignoreCause);
-    const startedAt = yield* Clock.currentTimeMillis;
-    yield* record(`chatgpt.${event}.started`, properties);
-    return yield* task.pipe(
-      Effect.onExit((result) =>
-        Effect.gen(function* () {
-          const endedAt = yield* Clock.currentTimeMillis;
-          const error = Exit.isFailure(result)
-            ? Cause.findErrorOption(result.cause)
-            : Option.none();
-          const counts =
-            Exit.isSuccess(result) &&
-            (event === "transfer" || options.telemetryFlow !== "primary_handoff")
-              ? yield* accountCounts.pipe(Effect.catchCause(() => Effect.succeed({})))
-              : {};
-          yield* record(`chatgpt.${event}.completed`, {
-            ...counts,
-            ...properties,
-            outcome: Exit.isSuccess(result)
-              ? "succeeded"
-              : Cause.hasInterruptsOnly(result.cause)
-                ? expiresAt !== undefined && endedAt >= expiresAt
-                  ? "expired"
-                  : "cancelled"
-                : "failed",
-            durationMs: Math.max(0, endedAt - startedAt),
-            ...(Option.isSome(error) && isSetupError(error.value)
-              ? { failureStage: error.value.operation }
-              : {}),
-          });
-        }),
-      ),
-    );
-  });
+    _expiresAt?: number,
+  ) => task;
   const http = yield* HttpClient.HttpClient;
   const store = yield* ProviderCredentialStore.make("codex-chatgpt", options.instanceId);
   const registrationStore = yield* ProviderCredentialStore.make(

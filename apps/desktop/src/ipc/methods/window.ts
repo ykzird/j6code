@@ -100,29 +100,6 @@ export const getAppBranding = DesktopIpc.makeSyncIpcMethod({
  * stops them. Read once here: a sync IPC handler cannot wait on the filesystem. Until the login
  * shell's environment (which may opt out) is known, answer null so the renderer asks again.
  */
-export const installRelayTelemetryEnabled = Effect.fn("desktop.ipc.window.installRelayTelemetry")(
-  function* () {
-    const ipc = yield* DesktopIpc.DesktopIpc;
-    const env = yield* HostProcess.Environment;
-    const policyAllows = yield* (yield* DesktopManagedPolicy.DesktopManagedPolicy).read.pipe(
-      Effect.map((found) => found?.document.limits?.telemetry !== false),
-      Effect.orElseSucceed(() => false),
-    );
-    const shellEnvironment = yield* DesktopShellEnvironment.DesktopShellEnvironment;
-    yield* ipc.handleSync(
-      DesktopIpc.makeSyncIpcMethod({
-        channel: IpcChannels.GET_RELAY_TELEMETRY_ENABLED_CHANNEL,
-        result: Schema.NullOr(Schema.Boolean),
-        handler: () =>
-          shellEnvironment.discoveryFinished.pipe(
-            Effect.map((known) =>
-              !policyAllows || !isRelayTracingEnabled(env) ? false : known ? true : null,
-            ),
-          ),
-      }),
-    );
-  },
-);
 
 export const getSystemLocale = DesktopIpc.makeSyncIpcMethod({
   channel: IpcChannels.GET_SYSTEM_LOCALE_CHANNEL,

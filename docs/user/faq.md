@@ -73,7 +73,7 @@ No. J6 Code is a serious developer tool. Locally runnable models are not capable
 
 ## Does my code go to J6 servers?
 
-No. Your code and prompts go from your machine to your provider (Anthropic, OpenAI, etc.), not to us. With J6 Connect, traffic rides a Cloudflare tunnel (`cloudflared` on your machine). Our relay sets up the link. It does not proxy your HTTP or WebSocket sessions. J6 Code does send basic product usage events (provider, model, token totals, that kind of thing). No prompts, no file contents. That is the same on Tailscale, LAN, or J6 Connect. Set `T3CODE_TELEMETRY_ENABLED=false` or `DO_NOT_TRACK=1` if you want it off. [Product usage data](./telemetry.md)
+No. Your code and prompts go from your machine to your provider (Anthropic, OpenAI, etc.), not to us. With J6 Connect, traffic rides a Cloudflare tunnel (`cloudflared` on your machine). Our relay sets up the link. It does not proxy your HTTP or WebSocket sessions. J6 Code sends no product usage data or analytics. Nothing leaves your machine except traffic to the agent providers you signed in to.
 
 ## Worktrees are eating my disk. How do I clean them up?
 

@@ -31,7 +31,6 @@ The desktop app includes the `j6` command; see [The `j6` command](./install.md#t
   "limits": {
     "maxRuntimeMode": "auto-accept-edits",
     "clients": ["desktop", "local-browser"],
-    "telemetry": false
   }
 }
 ```
@@ -171,7 +170,6 @@ A few settings need care:
     "browserCookieImport": false,
     "previewTunnel": false,
     "worktreeLayoutCommands": false,
-    "telemetry": false,
     "providers": {
       "allowedDrivers": ["claudeAgent", "codex"],
       "instances": {
@@ -262,13 +260,6 @@ so restart J6 Code after that.
   `t3.json` declares, whether or not a user approved them. Such a project gets no new worktree
   threads; existing thread folders are restored as plain checkouts and removed without the
   project's `remove` command.
-- `telemetry: false`: the server and desktop app send no [product usage data](./telemetry.md) or
-  relay connection traces, and neither does a browser opened from the server. A policy cannot turn
-  them on. The hosted web app at github.com/ykzird/j6code and the mobile app still send their own relay traces.
-
-### Providers
-
-`providers.allowedDrivers` lists the providers that may run, by ID: `codex` (Codex),
 `claudeAgent` (Claude), `cursor` (Cursor), `grok` (Grok), `opencode` (OpenCode), `antigravity`
 (Antigravity), `fx` (fx), `kiro` (Kiro), `pi` (Pi), `muse` (Muse Code), and `acpRegistry` (ACP
 Registry).

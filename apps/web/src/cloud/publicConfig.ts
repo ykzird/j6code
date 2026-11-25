@@ -63,36 +63,8 @@ export function resolveCloudPublicConfig(): CloudPublicConfig {
   };
 }
 
-let desktopRelayTelemetry: boolean | null = null;
-let serverRelayTelemetry: boolean | null = null;
 
-export function setServerRelayTelemetry(allowed: boolean | null): void {
-  serverRelayTelemetry = allowed;
-}
 
-export function relayTelemetryEnabled(): boolean | null {
-  if (typeof window === "undefined") return true;
-  if (window.desktopBridge) {
-    desktopRelayTelemetry ??= window.desktopBridge.getRelayTelemetryEnabled();
-    return desktopRelayTelemetry;
-  }
-  return serverRelayTelemetry ?? (isHostedStaticApp() ? true : null);
-}
-
-export function resolveRelayTracingConfig() {
-  // The relay exporter is created during module initialization, so this must be synchronous.
-  if (relayTelemetryEnabled() === false) {
-    return null;
-  }
-  const { relayTracing } = resolveCloudPublicConfig();
-  return relayTracing.tracesUrl && relayTracing.tracesDataset && relayTracing.tracesToken
-    ? {
-        tracesUrl: relayTracing.tracesUrl,
-        tracesDataset: relayTracing.tracesDataset,
-        tracesToken: relayTracing.tracesToken,
-      }
-    : null;
-}
 
 export function hasCloudPublicConfig(): boolean {
   const config = resolveCloudPublicConfig();

@@ -46,7 +46,6 @@ import * as PreviewPasskeys from "../preview/Passkeys.ts";
 import * as DesktopAppSettings from "../settings/DesktopAppSettings.ts";
 import * as DesktopShellEnvironment from "../shell/DesktopShellEnvironment.ts";
 import * as DesktopSnapShot from "../snapShot/DesktopSnapShot.ts";
-import * as DesktopRendererHistory from "../telemetry/DesktopRendererHistory.ts";
 import * as DesktopUpdates from "../updates/DesktopUpdates.ts";
 import * as DesktopApplicationMenu from "../window/DesktopApplicationMenu.ts";
 import * as DesktopWindow from "../window/DesktopWindow.ts";
@@ -84,7 +83,6 @@ interface StubbedDesktop {
   readonly windowStarted: Deferred.Deferred<void>;
   readonly registerLinuxUrlHandler: Effect.Effect<void>;
   readonly backends?: ReadonlyArray<{ readonly stop: () => Effect.Effect<void> }>;
-  readonly flushRendererHistory?: Effect.Effect<void>;
   readonly tokenRequested?: Deferred.Deferred<void>;
   readonly activationStarted?: Deferred.Deferred<void>;
 }
@@ -196,9 +194,6 @@ const runStubbedDesktop = (stub: StubbedDesktop) =>
             ? Deferred.succeed(stub.activationStarted, undefined)
             : Effect.void,
         } as unknown as DesktopAppActivation.DesktopAppActivation["Service"]),
-        Effect.provideService(DesktopRendererHistory.DesktopRendererHistory, {
-          shutdown: stub.flushRendererHistory ?? Effect.void,
-        } as DesktopRendererHistory.DesktopRendererHistory["Service"]),
       );
     return yield* runApp.pipe(
       Effect.provide(
@@ -265,8 +260,6 @@ it.effect.each([false, true])(
       const firstStopStarted = yield* Deferred.make<void>();
       const secondStopStarted = yield* Deferred.make<void>();
       const releaseStops = yield* Deferred.make<void>();
-      const historyStarted = yield* Deferred.make<void>();
-      const releaseHistory = yield* Deferred.make<void>();
       const tokenRequested = yield* Deferred.make<void>();
       const events: string[] = [];
       const app = yield* runStubbedDesktop({
@@ -298,10 +291,6 @@ it.effect.each([false, true])(
               ),
           },
         ],
-        flushRendererHistory: Deferred.succeed(historyStarted, undefined).pipe(
-          Effect.andThen(Deferred.await(releaseHistory)),
-          Effect.asVoid,
-        ),
       });
       yield* Deferred.await(registrationStarted);
       yield* Deferred.await(windowStarted);
@@ -317,12 +306,9 @@ it.effect.each([false, true])(
       yield* shutdown.request;
       yield* Deferred.await(firstStopStarted);
       yield* Deferred.await(secondStopStarted);
-      assert.isFalse(yield* Deferred.isDone(historyStarted));
       assert.isFalse(yield* shutdown.isComplete);
       yield* Deferred.succeed(releaseStops, undefined);
-      yield* Deferred.await(historyStarted);
       assert.isFalse(yield* shutdown.isComplete);
-      yield* Deferred.succeed(releaseHistory, undefined);
       const result = yield* Fiber.await(app);
       assert.equal(Exit.isFailure(result), stopDefect);
       assert.isTrue(yield* shutdown.isComplete);
