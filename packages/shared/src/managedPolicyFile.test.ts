@@ -338,7 +338,7 @@ describe("readManagedPolicy", () => {
         const product = value("ProductName");
         assert.match(product?.type === "REG_SZ" ? product.data : "", /Windows/);
         assert.equal(value("CurrentMajorVersionNumber")?.type, "REG_DWORD");
-        assert.isUndefined(yield* registry.readMachineKey("SOFTWARE\\T3CodeNoSuchKey"));
+        assert.isUndefined(yield* registry.readMachineKey("SOFTWARE\\J6CodeNoSuchKey"));
         const windows = yield* registry.readMachineKey(
           "SOFTWARE\\Microsoft\\Windows\\CurrentVersion",
         );

@@ -177,7 +177,7 @@ describe("browse navigation", () => {
 });
 
 describe("browse entry filtering", () => {
-  const entries = ["my-j6code", "j6code", "cotton", "T3Code-old", ".j6", "docs"].map((name) => ({
+  const entries = ["my-j6code", "j6code", "cotton", "J6Code-old", ".j6", "docs"].map((name) => ({
     name,
     fullPath: `~/code/${name}`,
   }));
@@ -185,13 +185,13 @@ describe("browse entry filtering", () => {
     filterFilesystemBrowseEntries(entries, query).visibleEntries.map((entry) => entry.name);
 
   it("keeps every visible entry in order for an empty query", () => {
-    expect(names("")).toEqual(["my-j6code", "j6code", "cotton", "T3Code-old", "docs"]);
+    expect(names("")).toEqual(["my-j6code", "j6code", "cotton", "J6Code-old", "docs"]);
   });
 
   it("matches substrings and subsequences, best match first", () => {
-    expect(names("code")).toEqual(["j6code", "T3Code-old", "my-j6code"]);
-    expect(names("t3c")).toEqual(["j6code", "T3Code-old", "my-j6code"]);
-    expect(names("tcd")).toEqual(["j6code", "T3Code-old", "my-j6code"]);
+    expect(names("code")).toEqual(["j6code", "J6Code-old", "my-j6code"]);
+    expect(names("t3c")).toEqual(["j6code", "J6Code-old", "my-j6code"]);
+    expect(names("tcd")).toEqual(["j6code", "J6Code-old", "my-j6code"]);
     expect(names("xyz")).toEqual([]);
   });
 

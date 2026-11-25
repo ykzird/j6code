@@ -11,18 +11,18 @@ import {
 /** Codex silently truncates additionalContext values over 1,000 tokens, counted as UTF-8 bytes / 4. */
 export const CODEX_ADDITIONAL_CONTEXT_VALUE_MAX_BYTES = 4_000;
 
-export interface T3CodeToolAvailability {
+export interface J6CodeToolAvailability {
   readonly browser: boolean;
   readonly device: boolean;
 }
 
 const normalizeAvailability = (
-  availability: boolean | T3CodeToolAvailability,
-): T3CodeToolAvailability =>
+  availability: boolean | J6CodeToolAvailability,
+): J6CodeToolAvailability =>
   typeof availability === "boolean" ? { browser: availability, device: false } : availability;
 
 /** Instructions for unavailable tools would steer the model away from its remaining automation. */
-const toolInstructions = (availability: boolean | T3CodeToolAvailability): string => {
+const toolInstructions = (availability: boolean | J6CodeToolAvailability): string => {
   const tools = normalizeAvailability(availability);
   return [
     tools.browser ? T3_CODE_BROWSER_TOOL_INSTRUCTIONS : "",
@@ -42,7 +42,7 @@ export interface CodexRuntimeInfo {
 /** Keep this outside collaboration mode; model-catalog mode text overrides client developer_instructions. */
 export function buildCodexAdditionalContext(
   runtime: CodexRuntimeInfo,
-  toolsAvailable: boolean | T3CodeToolAvailability = true,
+  toolsAvailable: boolean | J6CodeToolAvailability = true,
 ): Record<string, V2TurnStartParams__AdditionalContextEntry> {
   const tools = toolInstructions(toolsAvailable);
   // Split values to fit per-entry caps; number keys because Codex emits them in key order.

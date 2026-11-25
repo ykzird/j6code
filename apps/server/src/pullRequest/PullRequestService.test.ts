@@ -1092,7 +1092,7 @@ it.effect("reads a repository once when several worktrees share it", () =>
           id: "p2",
           title: "j6code worktree",
           workspaceRoot: "/b",
-          repository: "PingDotGG/T3Code",
+          repository: "PingDotGG/J6Code",
         }),
       ],
       providers: [

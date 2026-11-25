@@ -64,7 +64,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("AUR release", 
       const version = nightly ? "1.2.4-nightly.20261104.1" : "1.2.3";
       const pkgname = nightly ? "j6code-nightly-bin" : "j6code-bin";
       const prefix =
-        naming === "versioned" ? `T3-Code-${version}` : nightly ? "T3-Code-Nightly" : "T3-Code";
+        naming === "versioned" ? `J6-Code-${version}` : nightly ? "J6-Code-Nightly" : "J6-Code";
       const assets = [
         { name: `${prefix}-x86_64.AppImage`, digest: `sha256:${"a".repeat(64)}` },
         ...(failure === "missing"
@@ -73,7 +73,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("AUR release", 
               {
                 name:
                   failure === "version"
-                    ? "T3-Code-1.2.2-arm64.AppImage"
+                    ? "J6-Code-1.2.2-arm64.AppImage"
                     : `${prefix}-arm64.AppImage`,
                 digest: failure === "digest" ? "invalid" : `sha256:${"b".repeat(64)}`,
               },
@@ -113,7 +113,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("AUR release", 
           { ...env, CARCH: arch },
         );
         assert.equal(Number(selected.code), 0, selected.stderr);
-        const localName = `T3-Code-${version}-${upstreamArch}.AppImage`;
+        const localName = `J6-Code-${version}-${upstreamArch}.AppImage`;
         assert.deepEqual(selected.stdout.trim().split("\n"), [
           version.replace("-nightly.", "_nightly."),
           "x86_64 aarch64",

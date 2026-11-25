@@ -35,12 +35,12 @@ function makeProject(
     locator: {
       source: "git-remote",
       remoteName: "origin",
-      remoteUrl: "git@github.com:T3Tools/T3Code.git",
+      remoteUrl: "git@github.com:J6Tools/J6Code.git",
     },
     provider: SourceControlProviderKind.make("github"),
-    displayName: "T3Tools/T3Code",
-    owner: "T3Tools",
-    name: "T3Code",
+    displayName: "J6Tools/J6Code",
+    owner: "J6Tools",
+    name: "J6Code",
   },
 ): OrchestrationProjectShell {
   return {

@@ -14,7 +14,7 @@ const kindOf = (url: string) => sourceControlClients.parseChangeRequestUrl(url)?
 
 describe("sourceControlClients.parseChangeRequestUrl", () => {
   it("reads a GitHub pull request, lower-casing the repository", () => {
-    expect(parse("https://github.com/T3Tools/T3Code/pull/123")).toEqual({
+    expect(parse("https://github.com/J6Tools/J6Code/pull/123")).toEqual({
       host: "github.com",
       repository: "t3tools/j6code",
       number: 123,
@@ -23,7 +23,7 @@ describe("sourceControlClients.parseChangeRequestUrl", () => {
 
   it("reads a GitCafe pull request at its canonical /pull/ path and the older /pulls/ path", () => {
     for (const path of ["pull", "pulls"]) {
-      const url = `https://git.cafe/PingDotGG/T3Code/${path}/23897`;
+      const url = `https://git.cafe/PingDotGG/J6Code/${path}/23897`;
       expect(parse(url), path).toEqual({
         host: "git.cafe",
         repository: "pingdotgg/t3code",
@@ -209,7 +209,7 @@ describe("sourceControlClients.isSameChangeRequest", () => {
     expect(
       sourceControlClients.isSameChangeRequest(
         linked,
-        "https://github.com/PingDotGG/T3Code/pull/42/files",
+        "https://github.com/PingDotGG/J6Code/pull/42/files",
       ),
     ).toBe(true);
   });
@@ -316,18 +316,18 @@ describe("sourceControlClients.recognizeRemote", () => {
 describe("sourceControlClients repository keys", () => {
   // Persisted as `repositoryIdentity.canonicalKey` and in thread pull request keys.
   it.each([
-    ["git@github.com:T3Tools/T3Code.git", "github.com/t3tools/j6code"],
+    ["git@github.com:J6Tools/J6Code.git", "github.com/t3tools/j6code"],
     ["ssh://git@gitlab.company.com:2222/team/project.git", "gitlab.company.com/team/project"],
     [
-      "git@ssh.dev.azure.com:v3/T3Tools/Platform/T3Code",
+      "git@ssh.dev.azure.com:v3/J6Tools/Platform/J6Code",
       "dev.azure.com/t3tools/platform/_git/j6code",
     ],
     [
-      "T3Tools@vs-ssh.visualstudio.com:v3/T3Tools/Platform/T3Code",
+      "J6Tools@vs-ssh.visualstudio.com:v3/J6Tools/Platform/J6Code",
       "t3tools.visualstudio.com/platform/_git/j6code",
     ],
     [
-      "https://T3Tools.visualstudio.com/DefaultCollection/Platform/_git/T3Code",
+      "https://J6Tools.visualstudio.com/DefaultCollection/Platform/_git/J6Code",
       "t3tools.visualstudio.com/defaultcollection/platform/_git/j6code",
     ],
     ["git@ssh.dev.azure.com:v3/o/p", "ssh.dev.azure.com/v3/o/p"],

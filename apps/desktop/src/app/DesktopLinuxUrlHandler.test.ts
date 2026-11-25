@@ -40,7 +40,7 @@ const makeEnvironment = (path: Path.Path, overrides: Record<string, unknown> = {
     linuxDesktopEntryName: "com.ykzird.J6Code.desktop",
     linuxApplicationsDir: "/home/alice/.local/share/applications",
     desktopLauncherPath: Option.none(),
-    appImagePath: Option.some("/home/alice/Applications/T3-Code.AppImage"),
+    appImagePath: Option.some("/home/alice/Applications/J6-Code.AppImage"),
     path,
     ...overrides,
   } as unknown as DesktopEnvironment.DesktopEnvironment["Service"]);
@@ -205,16 +205,16 @@ describe("DesktopLinuxUrlHandler", () => {
   });
 
   it.each([
-    { from: "T3-Code-0.1.8-x86_64.AppImage", to: "T3-Code-x86_64.AppImage", restored: true },
+    { from: "J6-Code-0.1.8-x86_64.AppImage", to: "J6-Code-x86_64.AppImage", restored: true },
     {
-      from: "T3-Code-0.1.9-nightly.20261110.4449-arm64.AppImage",
-      to: "T3-Code-Nightly-arm64.AppImage",
+      from: "J6-Code-0.1.9-nightly.20261110.4449-arm64.AppImage",
+      to: "J6-Code-Nightly-arm64.AppImage",
       restored: true,
     },
-    { from: "T3-Code-0.1.8-x86_64.AppImage", to: "T3-Code-0.1.9-x86_64.AppImage", restored: false },
-    { from: "j6code.AppImage", to: "T3-Code-x86_64.AppImage", restored: false },
-    { from: "T3-Code-x86_64.AppImage", to: "T3-Code-x86_64.AppImage", restored: false },
-    { from: "../T3-Code-0.1.8-x86_64.AppImage", to: "T3-Code-x86_64.AppImage", restored: false },
+    { from: "J6-Code-0.1.8-x86_64.AppImage", to: "J6-Code-0.1.9-x86_64.AppImage", restored: false },
+    { from: "j6code.AppImage", to: "J6-Code-x86_64.AppImage", restored: false },
+    { from: "J6-Code-x86_64.AppImage", to: "J6-Code-x86_64.AppImage", restored: false },
+    { from: "../J6-Code-0.1.8-x86_64.AppImage", to: "J6-Code-x86_64.AppImage", restored: false },
   ])("finds the launch path an update from $from to $to removed", ({ from, to, restored }) => {
     for (const dir of ["/home/alice/Applications", '/home/al ice/My "100%" $Apps\\x']) {
       const previous = dir + "/" + from;
@@ -249,7 +249,7 @@ describe("DesktopLinuxUrlHandler", () => {
         );
         assert.include(
           recorded.files[0]?.content,
-          "Exec=/home/alice/Applications/T3-Code.AppImage %U",
+          "Exec=/home/alice/Applications/J6-Code.AppImage %U",
         );
         assert.include(recorded.files[0]?.content, "MimeType=x-scheme-handler/j6code;");
         assert.deepEqual(recorded.commands, [
@@ -303,7 +303,7 @@ describe("DesktopLinuxUrlHandler", () => {
       yield* runRegister(recorded, {
         existingEntry: DesktopLinuxUrlHandler.renderUrlHandlerDesktopEntry({
           displayName: "J6 Code (Alpha)",
-          execTarget: "/home/alice/Applications/T3-Code.AppImage",
+          execTarget: "/home/alice/Applications/J6-Code.AppImage",
           scheme: "j6code",
           iconPath: "/home/alice/.local/share/icons/com.ykzird.J6Code.desktop.png",
         }),
@@ -332,7 +332,7 @@ describe("DesktopLinuxUrlHandler", () => {
         iconSource: "/tmp/.mount_T3/resources/icon.png",
         existingEntry: DesktopLinuxUrlHandler.renderUrlHandlerDesktopEntry({
           displayName: "J6 Code (Alpha)",
-          execTarget: "/home/alice/Applications/T3-Code.AppImage",
+          execTarget: "/home/alice/Applications/J6-Code.AppImage",
           scheme: "j6code",
           iconPath,
         }),

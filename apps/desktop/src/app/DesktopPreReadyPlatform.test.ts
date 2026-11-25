@@ -194,7 +194,7 @@ describe("DesktopPreReadyPlatform", () => {
       vi.stubEnv("VITE_DEV_SERVER_URL", "");
       getSwitchValueMock.mockReturnValue("");
       const entryPath = "/xdg/applications/com.ykzird.J6Code.desktop";
-      const files = new Map([[entryPath, "Exec=/Applications/T3-Code-0.1.8-x86_64.AppImage %U\n"]]);
+      const files = new Map([[entryPath, "Exec=/Applications/J6-Code-0.1.8-x86_64.AppImage %U\n"]]);
       readFileSyncMock.mockImplementation((path: string) => files.get(path) ?? "{}");
       writeFileSyncMock.mockImplementation((path: string, contents: string | Buffer) => {
         files.set(path, String(contents));
@@ -208,7 +208,7 @@ describe("DesktopPreReadyPlatform", () => {
               Layer.provide(
                 DesktopConfig.layerTest({
                   XDG_DATA_HOME: "/xdg",
-                  APPIMAGE: "/Applications/T3-Code-x86_64.AppImage",
+                  APPIMAGE: "/Applications/J6-Code-x86_64.AppImage",
                   APPIMAGE_SILENT_INSTALL: relaunchedByUpdater,
                 }),
               ),
@@ -217,10 +217,10 @@ describe("DesktopPreReadyPlatform", () => {
           assert.deepEqual(
             symlinkSyncMock.mock.calls,
             restored
-              ? [["T3-Code-x86_64.AppImage", "/Applications/T3-Code-0.1.8-x86_64.AppImage"]]
+              ? [["J6-Code-x86_64.AppImage", "/Applications/J6-Code-0.1.8-x86_64.AppImage"]]
               : [],
           );
-          assert.include(files.get(entryPath), "Exec=/Applications/T3-Code-x86_64.AppImage %U");
+          assert.include(files.get(entryPath), "Exec=/Applications/J6-Code-x86_64.AppImage %U");
         }),
       ).pipe(Effect.ensuring(Effect.sync(() => vi.unstubAllEnvs())));
     },

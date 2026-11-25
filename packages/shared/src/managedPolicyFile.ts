@@ -36,11 +36,11 @@ export class ManagedPolicyFileError extends Schema.TaggedError<ManagedPolicyFile
 export function managedPolicyPath(platform: NodeJS.Platform): string {
   switch (platform) {
     case "darwin":
-      return "/Library/Application Support/T3Code/policy.json";
+      return "/Library/Application Support/J6Code/policy.json";
     case "win32":
       // Not ProgramData, where a user can create the folder first and own it; and not
       // %ProgramFiles%, which a user can point somewhere they write.
-      return "C:\\Program Files\\T3Code\\policy.json";
+      return "C:\\Program Files\\J6Code\\policy.json";
     default:
       return "/etc/j6code/policy.json";
   }
@@ -97,7 +97,7 @@ export const readManagedPolicyFile = Effect.fn("readManagedPolicyFile")(function
 /** Where a configuration profile's managed preferences land on macOS. */
 export const MACOS_MANAGED_PREFERENCES_PATH =
   "/Library/Managed Preferences/com.ykzird.j6code.plist";
-const WINDOWS_POLICY_SUBKEY = "SOFTWARE\\Policies\\T3Tools\\T3Code";
+const WINDOWS_POLICY_SUBKEY = "SOFTWARE\\Policies\\J6Tools\\J6Code";
 /**
  * The registry key Group Policy and Intune write to on Windows. It holds either the Group Policy
  * template's values, one per control, or a `Policy` string with the whole policy as JSON.

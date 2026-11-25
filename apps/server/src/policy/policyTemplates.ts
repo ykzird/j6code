@@ -230,7 +230,7 @@ const admxElement = (element: Element) => {
 export function windowsAdmx(): string {
   const body = policies().map((policy) => {
     const head = `<policy name="${policy.id}" class="Machine" displayName="$(string.${policy.id})" explainText="$(string.${policy.id}_Help)" key="${ADMX_KEY}"`;
-    const common = `<parentCategory ref="T3Code" />\n      <supportedOn ref="SUPPORTED_T3Code" />`;
+    const common = `<parentCategory ref="J6Code" />\n      <supportedOn ref="SUPPORTED_J6Code" />`;
     if (policy.toggle !== undefined) {
       return `    ${head} valueName="${policy.toggle}">
       ${common}
@@ -249,16 +249,16 @@ export function windowsAdmx(): string {
   return `<?xml version="1.0" encoding="utf-8"?>
 <policyDefinitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" revision="1.0" schemaVersion="1.0" xmlns="http://schemas.microsoft.com/GroupPolicy/2006/07/PolicyDefinitions">
   <policyNamespaces>
-    <target prefix="j6code" namespace="T3Tools.Policies.T3Code" />
+    <target prefix="j6code" namespace="J6Tools.Policies.J6Code" />
   </policyNamespaces>
   <resources minRequiredRevision="1.0" />
   <supportedOn>
     <definitions>
-      <definition name="SUPPORTED_T3Code" displayName="$(string.SUPPORTED_T3Code)" />
+      <definition name="SUPPORTED_J6Code" displayName="$(string.SUPPORTED_J6Code)" />
     </definitions>
   </supportedOn>
   <categories>
-    <category name="T3Code" displayName="$(string.T3Code)" />
+    <category name="J6Code" displayName="$(string.J6Code)" />
   </categories>
   <policies>
 ${body.join("\n")}
@@ -282,8 +282,8 @@ const presentationElement = (element: Element) => {
 /** The en-US strings and dialog layouts for `windowsAdmx`. */
 export function windowsAdml(): string {
   const strings: Array<readonly [string, string]> = [
-    ["T3Code", "J6 Code"],
-    ["SUPPORTED_T3Code", "J6 Code with managed policy support"],
+    ["J6Code", "J6 Code"],
+    ["SUPPORTED_J6Code", "J6 Code with managed policy support"],
   ];
   const presentations: Array<string> = [];
   for (const policy of policies()) {

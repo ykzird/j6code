@@ -648,7 +648,7 @@ describe("DesktopUpdates", () => {
   });
 
   it.effect("downloads again when the downloaded update file was deleted before install", () => {
-    const downloadedFile = "/cache/pending/T3-Code-1.2.4-arm64.zip";
+    const downloadedFile = "/cache/pending/J6-Code-1.2.4-arm64.zip";
     let installedFileExists: boolean | undefined;
     const harness = makeHarness({
       checkForUpdates: Effect.sync(() => harness.emit("update-available", { version: "1.2.4" })),

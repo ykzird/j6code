@@ -16,7 +16,7 @@ export { isKdeCaptureSession } from "./linuxCaptureSession.ts";
 
 export const KDE_CAPTURE_EXECUTABLE = "j6-kde-snap-shot";
 const DESKTOP_FILE = "com.ykzird.J6Code.KdeCapture.desktop";
-const MARKER = "X-T3Code-Capture-Helper=true";
+const MARKER = "X-J6Code-Capture-Helper=true";
 const decodeCapabilities = Schema.decodeUnknownSync(
   Schema.fromJsonString(Schema.Struct({ feedbackAvailable: Schema.optional(Schema.Boolean) })),
 );

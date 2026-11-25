@@ -603,6 +603,44 @@ it.layer(NodeServices.layer)("cli config resolution", (it) => {
     }),
   );
 
+  it.effect("maps the desktop control and telemetry fds from the bootstrap into the config", () =>
+    Effect.gen(function* () {
+      const fs = yield* FileSystem.FileSystem;
+      const baseDir = yield* fs.makeTempDirectoryScoped({
+        prefix: "j6-cli-config-fd-bootstrap-",
+      });
+      const fd = yield* openBootstrapFd(
+        makeDesktopBootstrap({
+          desktopTelemetryFd: 4,
+          desktopTelemetryControlFd: 5,
+          desktopBrowserFd: 6,
+          desktopBrowserControlFd: 7,
+        }),
+      );
+
+      const resolved = yield* resolveServerConfig(
+        { ...minimalDesktopFlags(baseDir), bootstrapFd: Option.some(fd) },
+        Option.none(),
+      ).pipe(
+        Effect.provide(
+          Layer.mergeAll(
+            ConfigProvider.layer(ConfigProvider.fromEnv({ env: {} })),
+            NetService.layer,
+          ),
+        ),
+      );
+
+      // The desktop gates startup readiness on the serverReady control message, so a
+      // bootstrap that drops the control fd leaves the app stuck on its splash screen.
+      expect(resolved).toMatchObject({
+        desktopTelemetryFd: 4,
+        desktopTelemetryControlFd: 5,
+        desktopBrowserFd: 6,
+        desktopBrowserControlFd: 7,
+      });
+    }),
+  );
+
   it.effect("reports saved settings as the source of endpoints read from settings.json", () =>
     Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;

@@ -15,12 +15,12 @@ it("removes URL credentials, query parameters, and fragments from error transpor
 });
 
 it.each([
-  ["git@github.com:T3Tools/j6code.git", "T3Tools/j6code"],
-  ["github.com:T3Tools/j6code.git", "T3Tools/j6code"],
-  ["gitlab.com:T3Tools/platform/j6code", "T3Tools/platform/j6code"],
-  ["https://github.com/T3Tools/j6code.git", "T3Tools/j6code"],
-  ["https://github.com/T3Tools/j6code.git?view=compact", "T3Tools/j6code"],
-  ["https://github.com/T3Tools/j6code.git#section", "T3Tools/j6code"],
+  ["git@github.com:J6Tools/j6code.git", "J6Tools/j6code"],
+  ["github.com:J6Tools/j6code.git", "J6Tools/j6code"],
+  ["gitlab.com:J6Tools/platform/j6code", "J6Tools/platform/j6code"],
+  ["https://github.com/J6Tools/j6code.git", "J6Tools/j6code"],
+  ["https://github.com/J6Tools/j6code.git?view=compact", "J6Tools/j6code"],
+  ["https://github.com/J6Tools/j6code.git#section", "J6Tools/j6code"],
   ["C:/repos/j6code", null],
 ])("reads the repository path of %s", (remoteUrl, expected) => {
   assert.strictEqual(repositoryPathFromRemoteUrl(remoteUrl), expected);

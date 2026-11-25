@@ -70,12 +70,12 @@ function makeProject(
     locator: {
       source: "git-remote",
       remoteName: "origin",
-      remoteUrl: "git@github.com:T3Tools/T3Code.git",
+      remoteUrl: "git@github.com:J6Tools/J6Code.git",
     },
     provider: SourceControlProviderKind.make("github"),
-    displayName: "T3Tools/T3Code",
-    owner: "T3Tools",
-    name: "T3Code",
+    displayName: "J6Tools/J6Code",
+    owner: "J6Tools",
+    name: "J6Code",
   },
 ): OrchestrationProjectShell {
   return {
@@ -276,13 +276,13 @@ describe("pull request toolkit handlers", () => {
     Effect.gen(function* () {
       const harness = yield* makeHarness();
       const result = yield* harness.call("link_pull_request", {
-        url: "https://github.com/T3Tools/T3Code/pull/123/files",
+        url: "https://github.com/J6Tools/J6Code/pull/123/files",
       });
       expect(result).toEqual({
         host: "github.com",
         repository: "t3tools/j6code",
         number: 123,
-        url: "https://github.com/T3Tools/T3Code/pull/123/files",
+        url: "https://github.com/J6Tools/J6Code/pull/123/files",
         alreadyLinked: false,
       });
       expect(yield* Ref.get(harness.commands)).toMatchObject([
@@ -322,9 +322,9 @@ describe("pull request toolkit handlers", () => {
       for (const host of ["git.cafe", "staging.git.cafe"]) {
         for (const project of [makeProject(), makeProject(null)]) {
           for (const target of [
-            { host, repository: "PingDotGG/T3Code", number: 21353 },
-            { url: `https://${host}/PingDotGG/T3Code/pull/21353` },
-            { url: `https://${host}/PingDotGG/T3Code/pulls/21353` },
+            { host, repository: "PingDotGG/J6Code", number: 21353 },
+            { url: `https://${host}/PingDotGG/J6Code/pull/21353` },
+            { url: `https://${host}/PingDotGG/J6Code/pulls/21353` },
           ]) {
             const harness = yield* makeHarness({ project });
             const result = yield* harness.call("link_pull_request", target);

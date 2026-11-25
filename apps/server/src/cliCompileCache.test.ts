@@ -81,7 +81,7 @@ it.live("loads the CLI with its cache settings only when the command needs it", 
     yield* fs.makeDirectory(`${cacheDir}/v24.0.0-x64-legacy-1000`, { recursive: true });
     yield* fs.writeFileString(`${cacheDir}/v24.0.0-x64-legacy-1000/0123abcd`, "stale");
     yield* fs.makeDirectory(`${cacheDir}/server`, { recursive: true });
-    const appImage = yield* run({ APPIMAGE: `${root}/T3Code.AppImage` });
+    const appImage = yield* run({ APPIMAGE: `${root}/J6Code.AppImage` });
     expect(appImage.exitCode).toBe(0);
     expect(appImage.stderr).toContain("CACHE=disabled");
     expect((yield* fs.readDirectory(cacheDir)).toSorted()).toEqual(["server"]);

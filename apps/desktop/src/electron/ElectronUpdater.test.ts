@@ -54,8 +54,8 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")(
         const fileSystem = yield* FileSystem.FileSystem;
         const path = yield* Path.Path;
         const dir = yield* fileSystem.makeTempDirectoryScoped({ prefix: "j6-appimage-install-" });
-        const appImagePath = path.join(dir, "T3-Code.AppImage");
-        const stagedPath = path.join(dir, "T3-Code-1.0.1.AppImage");
+        const appImagePath = path.join(dir, "J6-Code.AppImage");
+        const stagedPath = path.join(dir, "J6-Code-1.0.1.AppImage");
         const fdReportPath = path.join(dir, "relaunched-fds.txt");
         yield* fileSystem.writeFileString(appImagePath, "old AppImage");
         yield* fileSystem.writeFileString(

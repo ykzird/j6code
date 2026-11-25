@@ -18,19 +18,19 @@ import {
 
 describe("normalizeGitRemoteUrl", () => {
   it("canonicalizes equivalent GitHub remotes across protocol variants", () => {
-    expect(normalizeGitRemoteUrl("git@github.com:T3Tools/T3Code.git")).toBe(
+    expect(normalizeGitRemoteUrl("git@github.com:J6Tools/J6Code.git")).toBe(
       "github.com/t3tools/j6code",
     );
-    expect(normalizeGitRemoteUrl("https://github.com/T3Tools/T3Code.git")).toBe(
+    expect(normalizeGitRemoteUrl("https://github.com/J6Tools/J6Code.git")).toBe(
       "github.com/t3tools/j6code",
     );
-    expect(normalizeGitRemoteUrl("ssh://git@github.com/T3Tools/T3Code")).toBe(
+    expect(normalizeGitRemoteUrl("ssh://git@github.com/J6Tools/J6Code")).toBe(
       "github.com/t3tools/j6code",
     );
-    expect(normalizeGitRemoteUrl("https://github.com/T3Tools/T3Code.git?view=compact")).toBe(
+    expect(normalizeGitRemoteUrl("https://github.com/J6Tools/J6Code.git?view=compact")).toBe(
       "github.com/t3tools/j6code",
     );
-    expect(normalizeGitRemoteUrl("https://github.com/T3Tools/T3Code.git#section")).toBe(
+    expect(normalizeGitRemoteUrl("https://github.com/J6Tools/J6Code.git#section")).toBe(
       "github.com/t3tools/j6code",
     );
     expect(normalizeGitRemoteUrl("https://code.example.test/team/%C3%84pp.git")).toBe(
@@ -52,10 +52,10 @@ describe("normalizeGitRemoteUrl", () => {
   });
 
   it("preserves nested group paths for providers like GitLab", () => {
-    expect(normalizeGitRemoteUrl("git@gitlab.com:T3Tools/platform/T3Code.git")).toBe(
+    expect(normalizeGitRemoteUrl("git@gitlab.com:J6Tools/platform/J6Code.git")).toBe(
       "gitlab.com/t3tools/platform/j6code",
     );
-    expect(normalizeGitRemoteUrl("https://gitlab.com/T3Tools/platform/T3Code.git")).toBe(
+    expect(normalizeGitRemoteUrl("https://gitlab.com/J6Tools/platform/J6Code.git")).toBe(
       "gitlab.com/t3tools/platform/j6code",
     );
   });
