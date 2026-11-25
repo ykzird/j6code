@@ -3,7 +3,7 @@ import { type ToolActivityIcon } from "@j6/contracts";
 import { toolActivityFaviconUrl } from "@j6/shared/favicon";
 import { getProjectFaviconCacheKey } from "@j6/shared/projectFavicon";
 import { use, useState } from "react";
-import { T3Wordmark } from "../T3Wordmark";
+import { J6Wordmark } from "../J6Wordmark";
 import {
   BotIcon,
   BrainIcon,
@@ -245,7 +245,7 @@ function WorkEntryIcon({ name, className }: { name: WorkEntryIconName; className
     case "device":
       return <SmartphoneIcon className={className} aria-hidden />;
     case "j6-code":
-      return <T3Wordmark className={className} aria-hidden />;
+      return <J6Wordmark className={className} aria-hidden />;
     case "check":
       return <CheckIcon className={className} aria-hidden />;
     case "list-todo":
